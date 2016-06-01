@@ -1,0 +1,41 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+
+<head></head>
+
+<body>
+	<div layout:fragment="content">
+    	<div class="col-sm-12 bg">
+      		<div class="row">
+      			<br />
+      			<ol class="breadcrumb">
+					<li th:text="${game.name}"></li>
+					<li th:text="${map.level.name}"></li>
+					<!--<li th:text="${map.name}"></li>-->
+					<li th:text="#{app.phase}+' '+${phase.order}"></li>
+					<li th:text="#{app.test}" class="active"></li>
+				</ol>
+      		</div>
+      		<div class="row">
+				<div class="panel panel-primary">
+					<div class="panel-heading" th:text="#{app.test}"></div>
+					<div class="panel-body">
+						<form th:action="@{/games/result}" action="#" method="post">
+							<span style="margin-left:10px" th:each="question : ${questions}">
+			           			<br />
+			           			<b><span th:text="${question.order}+' - '+${question.name}"></span></b><br />
+			           			<span style="margin-left:10px" th:each="answer : ${question.answers}">
+			           				<input type="radio" th:name="${question.id}" th:value="${answer.id}" />
+			           				<span th:text="${answer.name}"></span><br />
+			           			</span>
+			           		</span>
+			           		<br />
+			           		<input type="submit" class="btn btn-primary" value="Enviar respostas" />
+		           		</form>
+					</div>
+				</div>
+			</div>
+    	</div>
+	</div>
+</body>
+</html>

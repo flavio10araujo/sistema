@@ -1,0 +1,72 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+
+<head></head>
+
+<body>
+	<div layout:fragment="content">
+		
+		<style>
+			.table-user-information > tbody > tr{border-top:1px solid rgb(221,221,221)}
+			.table-user-information > tbody > tr:first-child{border-top:0}
+			.table-user-information > tbody > tr > td{border-top:0}
+			.toppad{margin-top:20px}
+		</style>
+		
+		<div class="container">
+			<div class="row">
+			
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 toppad">
+          			<div class="panel panel-info">
+            			<div class="panel-heading">
+              				<h3 class="panel-title" th:text="#{app.score}"></h3>
+            			</div>
+            			<div class="panel-body">
+              				<div class="row">
+                				<div class="col-md-3 col-lg-3" align="center">
+                					<img alt="Image" th:src="@{'/static/upload/img/profile/'+${#authentication.principal.user.id}+'.jpg'}" class="img-circle img-responsive" />
+                				</div>
+                				<div class="col-md-9 col-lg-9">
+                  					<table class="table table-user-information">
+                    					<tbody>
+                    						<div th:each="playerPhase : ${playerPhases}">
+                      							<tr>
+	           										<td>Instrumento</td>
+	           										<td th:text="${playerPhase.phase.map.game.name}"></td>
+	           									</tr>
+	           									<tr>
+	           										<td>Nível</td>
+	           										<td th:text="${playerPhase.phase.map.level.name}"></td>
+           										</tr>
+           										<tr>
+           											<td>Fase</td>
+           											<td th:text="${playerPhase.phase.order}"></td>
+           										</tr>
+           										<tr>
+           											<td>Pontuação</td>
+           											<td th:text="${playerPhase.score}"></td>
+           										</tr>
+           										<tr>
+           											<td>Número de tentativas</td>
+           											<td th:text="${playerPhase.numAttempts}"></td>
+           										</tr>
+           										<tr>
+           											<td>Nota</td>
+           											<td th:text="${playerPhase.grade}"></td>
+           										</tr>
+           									</div>
+                    					</tbody>
+                  					</table>
+           						</div>
+                			</div>
+            			</div>
+                    	
+                    </div>
+        		</div>
+      		</div>
+    	</div>
+
+  	</div>
+
+</body>
+</html>

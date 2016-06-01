@@ -1,0 +1,54 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutLogin">
+
+<head></head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="row">
+	    	<div class="col-sm-6 bg">
+	    		<h1 th:text="#{sign_in}"></h1>
+	      		<form th:object="${player}" th:action="@{/player/create}" action="#" method="post">
+	  				<div class="form-group">
+	    				<input type="text" th:field="*{name}" class="form-control" required="true" th:placeholder="#{app.full_name}" />
+	  				</div>
+	  				<div class="form-group">
+	    				<input type="email" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" />
+	  				</div>
+	  				<div class="form-group">
+	    				<input type="password" th:field="*{password}" class="form-control" required="true" th:placeholder="#{app.password}" data-toggle="tooltip" th:title="#{msg.rule.password}" />
+	  				</div>
+	  				<input type="submit" class="btn btn-default" th:value="#{sign_in2}" />
+				</form>
+	    	</div>
+	    	<div class="col-sm-6 bg">
+	    		<br />
+	    		
+	    		<div th:if="${codRegister} == 1" class="alert alert-success">
+	  				<strong th:text="#{success_}"></strong> <label th:text="#{msg.register.ok}"></label><br />
+	  				<label tx:text="#{msg.welcome}"></label> 
+				</div>
+	    		<div th:if="${codRegister} == 2" class="alert alert-warning">
+	  				<strong th:text="#{attention_}"></strong> <label th:utext="${msgRegister}"></label>
+				</div>
+				
+				<div th:if="${error} != null" class="alert alert-warning">
+	  				<strong th:text="#{attention_}"></strong> <label th:text="#{msg.login.nOk}"></label>
+				</div>
+				<!--<div class="row">
+	      			Aprenda música por apenas R$ 1,00.
+	      		</div>
+	      		<div class="row">
+	      			Instrumentos disponíveis: Flauta, teclado, acordeão, saxofone e gaita de boca.
+	      		</div>
+	      		<div class="row">
+	      			Cursos classificados em 5 níveis: Iniciante, Básico, Intermediário, Intermediário-avançado e Avançado.
+	      		</div>
+	      		<div class="row">
+	      			As primeiras 5 aulas são gratuitas. Experimente!
+	      		</div>-->
+	    	</div>
+	  	</div>
+	</div>
+</body>
+</html>

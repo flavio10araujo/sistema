@@ -1,0 +1,107 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+
+<head></head>
+
+<body>
+	<div layout:fragment="content">
+		
+		<style>
+			.table-user-information > tbody > tr{border-top:1px solid rgb(221,221,221)}
+			.table-user-information > tbody > tr:first-child{border-top:0}
+			.table-user-information > tbody > tr > td{border-top:0}
+			.toppad{margin-top:20px}
+		</style>
+		
+		<div class="container">
+			<div class="row">
+			
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 toppad">
+          			<div class="panel panel-info">
+            			<div class="panel-heading">
+              				<h3 class="panel-title">Página de edição de dados</h3>
+            			</div>
+            			<div class="panel-body">
+              				<div class="row">
+                				<div class="col-md-3 col-lg-3" align="center">
+                					<img alt="Image" th:src="@{'/static/upload/img/profile/'+${player.id}+'.jpg'}" class="img-circle img-responsive" />
+                				</div>
+                				<div class="col-md-9 col-lg-9">
+                  					
+                  					<form th:object="${player}" th:action="@{/profile/player/update}" method="post">
+                  					
+                  						<input type="hidden" th:field="*{id}" />
+                  						
+	                  					<table class="table table-user-information">
+	                    					<tbody>
+	                    						<tr>
+	                        						<td th:text="#{app.full_name}"></td>
+	                        						<td>
+	                        							<input type="text" th:field="*{name}" th:id="name" class="form-control" required="true" />
+	                        						</td>
+	                      						</tr>
+	                    						
+	                    						<tr>
+	                        						<td th:text="#{app.email}"></td>
+	                        						<td>
+	                        							<input type="email" th:field="*{email}" th:id="email" class="form-control" required="true" />
+	                        						</td>
+	                      						</tr>
+	                      						
+	                      						<tr>
+	                        						<td th:text="#{app.phone}"></td>
+	                        						<td>
+	                        							<input type="text" th:field="*{phone}" th:id="phone" class="form-control" />
+	                        						</td>                           
+	                      						</tr>
+	                      						
+	                      						<tr>
+	                        						<td th:text="#{app.sex}"></td>
+	                        						<td>
+	                        							<select class="form-control" th:field="*{sex}" th:id="sex">
+								    						<option value="0"></option>
+								    						<option value="1" th:text="#{app.male}"></option>
+								    						<option value="2" th:text="#{app.female}"></option>
+								  						</select>
+	                        						</td>
+	                      						</tr>
+	                      						
+	                      						<tr>
+	                        						<td th:text="#{app.birth_date}"></td>
+	                        						<td>
+	                        							<input type="text" th:field="*{dtBirth}" th:id="dtBirth" class="form-control" />
+	                        						</td>
+	                      						</tr>
+	                      						
+	                      						<tr>
+	                        						<td th:text="#{app.address}"></td>
+	                        						<td>
+	                        							<input type="text" th:field="*{address}" th:id="address" class="form-control" />
+	                        						</td>
+	                      						</tr>
+	                      						
+	                      						<tr>
+	                        						<td th:text="#{app.password}"></td>
+	                        						<td>
+	                        							<input type="password" th:field="*{password}" th:id="password" class="form-control" />
+	                        						</td>
+	                      						</tr>
+	                    					</tbody>
+	                  					</table>
+									
+										<input type="submit" class="btn btn-danger pull-right" value="Save" />
+									
+									</form>
+           						</div>
+                			</div>
+            			</div>
+                    	
+                    </div>
+        		</div>
+      		</div>
+    	</div>
+
+  	</div>
+
+</body>
+</html>

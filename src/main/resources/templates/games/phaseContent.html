@@ -1,0 +1,31 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+
+<head></head>
+
+<body>
+	<div layout:fragment="content">
+    	<div class="col-sm-12 bg">
+      		<div class="row">
+      			<br />
+      			<ol class="breadcrumb">
+					<li><a th:href="@{'/games/'+${game.namelink}}" th:text="${game.name}"></a></li>
+					<li><a th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/1'}" th:text="${map.level.name}"></a></li>
+					<!--<li th:text="${map.name}"></li>-->
+					<li th:text="#{app.phase}+' '+${phase.order}" class="active"></li>
+				</ol>
+      		</div>
+      		<div class="row">
+				<div class="panel panel-primary">
+					<div class="panel-heading" th:text="${phase.name}"></div>
+					<div class="panel-body" th:utext="${content.content}"></div>
+				</div>
+			</div>
+			<div class="row">
+				<a th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/'+${map.order}+'/'+${phase.order}+'/test'}" class="btn btn-primary" role="button">Concluir</a>
+				<br /><br />
+			</div>
+    	</div>
+	</div>
+</body>
+</html>

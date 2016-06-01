@@ -1,0 +1,55 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+
+<head></head>
+
+<body>
+	<div layout:fragment="content">
+	
+		<div class="row">
+	    	<div class="col-sm-12 bg">
+	      		<div class="row">
+	      			
+	      			<div th:if="${codRegister} == 1" class="alert alert-success">
+	  					<label th:utext="${msg}"></label>
+					</div>
+	      			
+	      			<div th:if="${codRegister} == 2" class="alert alert-warning">
+	  					<strong th:text="#{attention_}"></strong> <label th:utext="${msg}"></label>
+					</div>
+					
+					<h1>Comprar créditos</h1>
+					
+					<form id="f_credit" th:action="@{/buycredits}" method="post">
+		  				<div class="form-group">
+		    				<input type="number" class="form-control" required="true" name="quantity" id="quantity" placeholder="Informe a quantidade de créditos desejada" min="1" max="100" />
+		  				</div>
+		  				<!--<input type="button" class="btn btn-default" value="Comprar" onclick="javascript:submitForm()" />-->
+		  				<input type="submit" class="btn btn-default" value="Comprar" />
+					</form>
+	      		</div>
+	    	</div>
+	  	</div>
+	  	
+	  	<script th:inline="javascript">
+	  		/*<![CDATA[*/	
+	  		function submitForm(){
+				if (document.getElementById("quantity").value == "") {
+					alert("Por favor, informe um valor entre 1 e 100.");
+					return;
+				}
+				
+				if (document.getElementById("quantity").value <= 0 || document.getElementById("quantity").value > 100) {
+					alert("Por favor, informe um valor entre 1 e 100.");
+					return;
+				}
+				
+				form=document.getElementById("f_credit");
+				//form.submit();
+			}
+	  		/*]]>*/
+		</script>
+	  	
+	</div>
+</body>
+</html>

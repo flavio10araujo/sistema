@@ -1,0 +1,24 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+
+<head></head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="row">
+	    	<div class="col-sm-12 bg">
+	      		<div class="row" th:if="${grade} &gt; 70">
+	      			Parabéns! Você passou de fase!<br />
+	      			A porcentagem de acertos foi de <span th:text="${grade}"></span>%.<br /><br />
+	      			<a th:href="@{'/games/'+${phase.map.game.namelink}+'/'+${phase.map.level.order}+'/'+${phase.map.order}+'/'+${phase.order}}" class="btn btn-primary" role="button">Ir para a próxima fase</a> 
+	      		</div>
+	      		<div class="row" th:if="${grade} &lt; 70">
+	      			Sua porcentagem de acertos foi de <span th:text="${grade}"></span>%.<br />
+	      			A porcentagem mínima para passar de fase é de 70%.<br /><br />
+	      			<a th:href="@{'/games/'+${phase.map.game.namelink}+'/'+${phase.map.level.order}+'/'+${phase.map.order}+'/'+${phase.order}}" class="btn btn-primary" role="button">Estudar mais</a>
+	      		</div>
+	    	</div>
+	  	</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutAdmin">
+
+<head></head>
+
+<body>
+
+	<div layout:fragment="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-offset-2 col-md-8">
+
+					<div th:if="${save eq 'unsuccess'}">
+          				<div class="alert alert-danger alert-dismissible" role="alert">
+  							<strong>Error!</strong> Data Not Updated.
+						</div>
+       				</div>
+       				<div th:if="${save eq 'success'}">
+          				<div class="alert alert-success alert-dismissible" role="alert">
+  							<strong>Success!</strong> Data Updated Successfully.
+						</div>
+       				</div>
+
+					<div class="panel panel-success">
+						<div class="panel-heading">
+					    	<h3 class="panel-title">Edit Phase</h3>
+					  	</div>
+					   	<div class="panel-body">
+							<form th:object="${phase}" th:action="@{/admin/basic/phase/update}" action="#" method="post">
+       						
+	       						<input type="hidden" th:field="*{id}" />
+	       						
+	       						<div class="form-group">
+									<label for="mapId">Map:</label>
+								  	<select class="form-control" th:field="*{map.id}" th:id="mapId" required="true">
+								    	<option value="0"></option>
+	  									<option th:each="map : ${maps}" th:value="${map.id}" th:text="${map.name}"></option>
+								  	</select>
+								</div>
+	       						
+	       						<div class="form-group">
+	       							<label for="name">Name:</label>
+	       							<input type="text" th:field="*{name}" th:id="name" class="form-control" required="true" />
+	       						</div>
+	       						
+	       						<div class="form-group">
+	       							<label for="order">Order:</label>
+	       							<input type="number" th:field="*{order}" th:id="order" class="form-control" required="true" min="1" />
+	       						</div>
+	       						
+	       						<input type="submit" class="btn btn-danger pull-right" value="Save" />
+								
+	 						</form>
+						</div>
+						<div class="panel-footer">
+							<a th:href="@{/admin/basic/phase/savepage}" class="btn btn-success">Back To Save Page</a>
+						</div>
+					</div>
+		      	</div>
+		   	</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<title th:text="#{title}"></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+		<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" />
+		
+		<style>
+			.navbar {
+			    padding-top: 15px;
+			    padding-bottom: 15px;
+			    border: 0;
+			    border-radius: 0;
+			    margin-bottom: 0;
+			    font-size: 12px;
+			    letter-spacing: 5px;
+			}
+			
+			.navbar-nav li a:hover {
+			    color: #1abc9c !important;
+			}
+			
+			body {
+			    color: #f5f6f7;
+			}
+			
+			.bg { 
+			    background-color: #fff;
+			    color: #000;
+			}
+		</style>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-inverse">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#" th:text="#{company}"></a>
+				</div>
+		    	<ul class="nav navbar-nav navbar-right">
+		    		<li>
+			    		<form th:action="@{/login}" method="post" class="form-inline" role="form">
+			    			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			    			<table>
+			    				<tr>
+			    					<td>
+			  							<div class="form-group"><input type="email" name="email" id="email" required="true" autofocus="true" class="form-control" th:placeholder="#{app.email}" /></div>
+			  							<div class="form-group"><input type="password" name="password" id="password" required="true" class="form-control" th:placeholder="#{app.password}" /></div>
+			  							<input type="submit" class="btn btn-default" th:value="#{log_in}" />
+			    					</td>
+			    				</tr>
+			    				<tr>
+			    					<td>
+			   							<label for="remember-me"><input type="checkbox" name="remember-me" id="remember-me" /> <label th:text="#{app.remember_me}"></label></label>
+			   							<a th:href="@{/passwordreset}">Esqueci minha senha</a>
+			    					</td>
+			    				</tr>
+			    			</table>
+			    		</form>
+		    		</li>
+		    	</ul>
+		  	</div>
+		</nav>
+		
+		<div class="container">
+			<div layout:fragment="content"></div>
+		</div>
+		
+		<nav class="navbar navbar-inverse navbar-fixed-bottom">
+			<div class="container">
+				<p class="navbar-text"><a href="#" th:text="#{company}"></a></p>
+			</div>
+		</nav>
+		
+		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+	</body>
+</html>

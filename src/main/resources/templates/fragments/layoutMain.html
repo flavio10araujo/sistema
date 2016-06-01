@@ -1,0 +1,48 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+	<head>
+		<title th:text="#{title}"></title>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+	
+		<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" />
+		
+		<style>
+			.navbar-nav li a:hover{color:#1abc9c !important}
+			.bg{background-color:#fff;color:#000}
+		</style>
+		
+	</head>
+
+	<body>
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" th:href="@{/}" th:text="#{company}"></a>
+		    	</div>
+		    	<ul class="nav navbar-nav navbar-right">
+		    		<li th:title="#{app.profile}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}|}" sec:authentication="principal.user.name"></a></li>
+		    		<li th:title="#{msg.toseemygrades}"><a th:href="@{/score}"><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>
+		    		<li th:title="#{msg.buymorecredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>: <span sec:authentication="principal.user.credit"></span></a></li>
+	     			<li th:title="#{log_out}"><a href="javascript:logout()"><span class="glyphicon glyphicon-log-out" th:text="' '+#{log_out}"></span></a></li>
+		    	</ul>
+		  	</div>
+		</nav>
+		
+		<div class="container">
+			<div layout:fragment="content"></div>
+		</div>
+		
+		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+		
+		<form name="f_logout" id="f_logout" th:action="@{/logout}" method="post" />
+		
+		<script>function logout(){form=document.getElementById("f_logout");form.submit();}</script>
+
+	</body>
+</html>
