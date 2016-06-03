@@ -16,6 +16,9 @@
 			.bg{background-color:#fff;color:#000}
 		</style>
 		
+		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+		
 	</head>
 
 	<body>
@@ -36,9 +39,6 @@
 		<div class="container">
 			<div layout:fragment="content"></div>
 		</div>
-		
-		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
-		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
 		
 		<form name="f_logout" id="f_logout" th:action="@{/logout}" method="post" />
 		

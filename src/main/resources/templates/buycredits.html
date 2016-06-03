@@ -24,8 +24,7 @@
 		  				<div class="form-group">
 		    				<input type="number" class="form-control" required="true" name="quantity" id="quantity" placeholder="Informe a quantidade de créditos desejada" min="1" max="100" />
 		  				</div>
-		  				<!--<input type="button" class="btn btn-default" value="Comprar" onclick="javascript:submitForm()" />-->
-		  				<input type="submit" class="btn btn-default" value="Comprar" />
+		  				<input type="submit" data-loading-text="Aguarde, conectando ao sistema de pagamento..." class="btn btn-primary active" id="btnBuy" value="Comprar" />
 					</form>
 	      		</div>
 	    	</div>
@@ -33,19 +32,25 @@
 	  	
 	  	<script th:inline="javascript">
 	  		/*<![CDATA[*/	
-	  		function submitForm(){
-				if (document.getElementById("quantity").value == "") {
-					alert("Por favor, informe um valor entre 1 e 100.");
-					return;
+  			$(document).ready(function(){
+  				$("#btnBuy").click(function(){
+  					$(this).button('loading');
+  					if(!verifyForm()){
+  						$(this).button('reset');
+  					}
+  				});
+  			});
+
+	  		function verifyForm(){
+				if ($("#quantity").val() == "") {
+					return false;
 				}
 				
-				if (document.getElementById("quantity").value <= 0 || document.getElementById("quantity").value > 100) {
-					alert("Por favor, informe um valor entre 1 e 100.");
-					return;
+				if ($("#quantity").val() <= 0 || $("#quantity").val() > 100) {
+					return false;
 				}
 				
-				form=document.getElementById("f_credit");
-				//form.submit();
+				return true;
 			}
 	  		/*]]>*/
 		</script>
