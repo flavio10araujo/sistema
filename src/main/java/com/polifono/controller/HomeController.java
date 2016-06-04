@@ -22,21 +22,6 @@ public class HomeController {
     	LOGGER.debug("Getting login page, error={}", error);
     	model.addAttribute("player", new Player());
     	model.addAttribute("error", error);
-    	
     	return "index";
 	}
-    
-    /*@RequestMapping("/error.html")
-    public String error(HttpServletRequest request, Model model) {
-    	model.addAttribute("errorCode", request.getAttribute("javax.servlet.error.status_code"));
-    	Throwable throwable = (Throwable) request.getAttribute("javax.servlet.error.exception");
-    	String errorMessage = null;
-      
-    	if (throwable != null) {
-    		errorMessage = throwable.getMessage();
-    	}
-      
-    	model.addAttribute("errorMessage", errorMessage);
-    	return "error.html";
-    }*/
 }

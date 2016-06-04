@@ -18,9 +18,9 @@ import com.polifono.domain.CurrentUser;
 import com.polifono.service.LoginService;
 
 @Component
-public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 	
-    private static final Logger LOGGER = LoggerFactory.getLogger(AppAuthenticationSuccessHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomAuthenticationSuccessHandler.class);
  
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
     
