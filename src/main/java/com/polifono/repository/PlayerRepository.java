@@ -10,8 +10,8 @@ import com.polifono.domain.Player;
 
 public interface PlayerRepository extends CrudRepository<Player, Integer> {
 
-	@Query("SELECT player FROM Player player WHERE player.email = :email")
-	public Optional<Player> findUserByEmail(@Param("email") String email);
+	@Query("SELECT player FROM Player player WHERE player.email = :email AND player.active = :status")
+	public Optional<Player> findUserByEmailAndStatus(@Param("email") String email, @Param("status") boolean status);
 	
 	@Query("SELECT player FROM Player player WHERE player.email = :email")
 	public Player findPlayerByEmail(@Param("email") String email);

@@ -24,6 +24,9 @@ public class Player {
 	@Column(name = "c001_dt_inc")
 	private Date dtInc;
 	
+	@Column(name = "c001_active")
+	private boolean active;
+	
 	@Column(name = "c001_email")
 	private String email;
 	
@@ -73,6 +76,22 @@ public class Player {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public Date getDtInc() {
+		return dtInc;
+	}
+
+	public void setDtInc(Date dtInc) {
+		this.dtInc = dtInc;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 
 	public String getName() {
 		return name;
@@ -96,14 +115,6 @@ public class Player {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public Date getDtInc() {
-		return dtInc;
-	}
-
-	public void setDtInc(Date dtInc) {
-		this.dtInc = dtInc;
 	}
 
 	public int getScore() {

@@ -39,6 +39,7 @@ public class PlayerService {
 	
 	public final Player createPlayer(Player player) {
 		player.setDtInc(new Date());
+		player.setActive(true);
 		player.setPassword(encryptPassword(player.getPassword()));
 		player.setCredit(3); // 3 credits are given to the player when he creates the account.
 		player.setRole(Role.USER);
@@ -67,8 +68,8 @@ public class PlayerService {
 	 * @param email
 	 * @return
 	 */
-	public Optional<Player> getUserByEmail(String email) {
+	public Optional<Player> getUserByEmailAndStatus(String email, boolean status) {
         LOGGER.debug("Getting user by email={}", email.replaceFirst("@.*", "@***"));
-        return playerRepository.findUserByEmail(email);
+        return playerRepository.findUserByEmailAndStatus(email, status);
     }
 }
