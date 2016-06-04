@@ -14,12 +14,8 @@ import com.polifono.repository.PlayerPhaseRepository;
 @Service
 public class PlayerPhaseService {
 
-	private final PlayerPhaseRepository playerPhaseRepository;
-	
 	@Autowired
-	public PlayerPhaseService(final PlayerPhaseRepository playerPhaseRepository) {
-		this.playerPhaseRepository = playerPhaseRepository;
-	}
+	private PlayerPhaseRepository playerPhaseRepository;
 	
 	public final PlayerPhase save(PlayerPhase playerPhase) {
 		return playerPhaseRepository.save(playerPhase);

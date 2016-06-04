@@ -12,12 +12,8 @@ import com.polifono.repository.ContentRepository;
 @Service
 public class ContentService {
 
-	private final ContentRepository contentRepository;
-	
 	@Autowired
-	public ContentService(final ContentRepository contentRepository) {
-		this.contentRepository = contentRepository;
-	}
+	private ContentRepository contentRepository;
 	
 	public final Content save(Content content) {
 		return contentRepository.save(content);

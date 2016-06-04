@@ -11,12 +11,8 @@ import com.polifono.repository.LevelRepository;
 @Service
 public class LevelService {
 
-	private final LevelRepository levelRepository;
-	
 	@Autowired
-	public LevelService(final LevelRepository levelRepository) {
-		this.levelRepository = levelRepository;
-	}
+	private LevelRepository levelRepository;
 	
 	public final List<Level> findAll() {
 		return (List<Level>) levelRepository.findAll();

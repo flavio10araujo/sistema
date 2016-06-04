@@ -12,12 +12,8 @@ import com.polifono.repository.MapRepository;
 @Service
 public class MapService {
 
-	private final MapRepository mapRepository;
-	
 	@Autowired
-	public MapService(final MapRepository mapRepository) {
-		this.mapRepository = mapRepository;
-	}
+	private MapRepository mapRepository;
 	
 	public final Map save(Map map) {
 		return mapRepository.save(map);

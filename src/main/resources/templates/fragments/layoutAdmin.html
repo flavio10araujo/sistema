@@ -13,8 +13,8 @@
 			
 		<style>.navbar-nav li a:hover{color:#1abc9c !important}</style>
 		
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
- 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
 	</head>
 
 	<body>
@@ -50,12 +50,6 @@
 		
 		<form name="f_logout" id="f_logout" th:action="@{/logout}" method="post" />
 	
-		<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
- 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>-->
- 	
- 		<!--<script src="/vendors/jquery/dist/jquery.min.js"></script>
-		<script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>-->
-		
 		<script>
 			function logout(){form=document.getElementById("f_logout");form.submit();}
 			function deleteItem(url){if(confirm("Are you sure to delete?")){location.href=url;}}

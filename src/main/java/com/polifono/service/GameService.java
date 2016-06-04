@@ -11,12 +11,8 @@ import com.polifono.repository.GameRepository;
 @Service
 public class GameService {
 
-	private final GameRepository gameRepository;
-
 	@Autowired
-	public GameService(final GameRepository gameRepository) {
-		this.gameRepository = gameRepository;
-	}
+	private GameRepository gameRepository;
 
 	public final List<Game> findAll() {
 		return (List<Game>) gameRepository.findAll();

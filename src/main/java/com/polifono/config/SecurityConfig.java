@@ -18,6 +18,9 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    
+    @Autowired
+    private AppAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -46,9 +49,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     	
     	http.authorizeRequests().antMatchers("/admin/**").hasAuthority("ADMIN"); // It's necessary to have the ADMIN role to see this pages.
         
-    	//http.authorizeRequests().anyRequest().fullyAuthenticated(); // It's not possible to access the pages with the remember-me.
-        
-    	http.authorizeRequests().anyRequest().authenticated(); // It's necessary to be logged to access the other pages.
+    	http.authorizeRequests().anyRequest().fullyAuthenticated(); // It's not possible to access the pages with the remember-me.
+    	//http.authorizeRequests().anyRequest().authenticated(); // It's necessary to be logged to access the other pages.
         
     	http.formLogin().loginPage("/login");
     	
@@ -58,9 +60,11 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     	
     	http.formLogin().permitAll();
     	
+    	http.formLogin().successHandler(authenticationSuccessHandler);
+    	
     	http.logout().logoutUrl("/logout");
     	
-    	http.logout().deleteCookies("remember-me");
+    	//http.logout().deleteCookies("remember-me");
         
     	http.logout().logoutSuccessUrl("/");
         

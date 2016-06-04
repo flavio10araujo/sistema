@@ -20,13 +20,10 @@ import com.polifono.repository.PlayerRepository;
 @Service
 public class PlayerService {
 
-	private final PlayerRepository playerRepository;
-	private static final Logger LOGGER = LoggerFactory.getLogger(PlayerService.class);
-	
 	@Autowired
-	public PlayerService(final PlayerRepository playerRepository) {
-		this.playerRepository = playerRepository;
-	}
+	private PlayerRepository playerRepository;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(PlayerService.class);
 	
 	public final Player save(Player player) {
 		return playerRepository.save(player);

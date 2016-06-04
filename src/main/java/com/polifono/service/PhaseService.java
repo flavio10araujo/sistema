@@ -15,12 +15,8 @@ import com.polifono.repository.PhaseRepository;
 @Service
 public class PhaseService {
 
-	private final PhaseRepository phaseRepository;
-	
 	@Autowired
-	public PhaseService(final PhaseRepository phaseRepository) {
-		this.phaseRepository = phaseRepository;
-	}
+	private PhaseRepository phaseRepository;
 	
 	public final Phase save(Phase phase) {
 		return phaseRepository.save(phase);

@@ -11,12 +11,8 @@ import com.polifono.repository.QuestionRepository;
 @Service
 public class QuestionService {
 
-	private final QuestionRepository questionRepository;
-	
 	@Autowired
-	public QuestionService(final QuestionRepository questionRepository) {
-		this.questionRepository = questionRepository;
-	}
+	private QuestionRepository questionRepository;
 	
 	public final Question save(Question question) {
 		return questionRepository.save(question);
