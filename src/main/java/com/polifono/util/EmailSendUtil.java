@@ -81,6 +81,24 @@ public class EmailSendUtil {
 			
 			message = replaceParamsMessage(message, args);
 		}
+		else if (messageType == 4) {
+			from = "polifono@polifono.com";
+			subject = "Você foi convidado para uma sala de aula na Polifono.com";
+			message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">"
+					+ "<thead><tr><td align=\"center\"><font color=\"#ff8533\" face=\"arial\" size=\"+2\"><b>POLIFONO.COM</b></font><hr size=\"3\" color=\"#ff8533\"></td></tr></thead><tbody><tr><td>"
+					+ "<p><font color=\"#ff8533\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
+					+ "<p><font face=\"arial\" size=\"2\">O professor {1} te adicionou na sala de aula {2}.</font></p>"
+					+ "<p><font face=\"arial\" size=\"2\"><br />Caso você queira participar dessa sala de aula, acesse o seguinte link para confirmar sua participação:</font></p>"
+					+ "<p><font face=\"arial\" size=\"2\"><br /><br /><a href=\"http://www.polifono.com/classinvitation\">www.polifono.com/classinvitation</a></font></p>"
+					+ "</td></tr><tr><td>"
+					+ "<font face=\"arial\" size=\"-1\"><br />Atenciosamente,<br />Equipe Polifono.com<br /><br /><strong>Polifono.com</strong> - A vida sem música seria um engano.</font>"
+					+ "</td></tr><tr><td align=\"center\">"
+					+ "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"http://www.polifono.com/faq\">www.polifono.com/faq</a></font>"
+					+ "</td></tr><tr><td align=\"center\"><hr size=\"2\" color=\"#EFEFEF\">"
+					+ "</td></tr></tbody></table>";
+			
+			message = replaceParamsMessage(message, args);
+		}
 		
 		new EmailSendUtil.MailThread(from, subject, message, to).start();
 	}
@@ -107,7 +125,7 @@ public class EmailSendUtil {
 				hm.setHostName("smtp.gmail.com");
 				hm.setSslSmtpPort("587");
 				hm.setSmtpPort(Integer.parseInt("587"));
-				hm.setAuthentication("flavio10araujo@gmail.com", "pW1985google");
+				hm.setAuthentication("flavio10araujoTESTE@gmail.com", "senha");
 				hm.setTLS(true);
 				hm.setCharset("UTF-8");
 				
