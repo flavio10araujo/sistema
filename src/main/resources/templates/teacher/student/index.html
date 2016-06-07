@@ -61,6 +61,16 @@
   						<strong th:text="#{error_}">Error!</strong> <span>O estudante buscado já está cadastrado nessa sala de aula.</span>
 					</div>
        			</div>
+       			<div th:if="${message eq 'studentNotPending'}">
+          			<div class="alert alert-danger alert-dismissible" role="alert">
+  						<strong th:text="#{error_}">Error!</strong> <span>Somente é possível enviar o e-mail para estudantes Pendentes de Confirmação.</span>
+					</div>
+       			</div>
+       			<div th:if="${message eq 'emailSent'}">
+          			<div class="alert alert-success alert-dismissible" role="alert">
+  						<strong th:text="#{success_}">Success!</strong> <span th:text="#{msg.emailSent}">The e-mail was sent successfully.</span>
+					</div>
+       			</div>
 
 				<div class="panel panel-success">
 					<div class="panel-heading">
@@ -114,18 +124,23 @@
 								<tr class="btn-success">
 									<th th:text="#{app.class}"></th>
 									<th th:text="#{app.student}"></th>
+									<th th:text="#{app.email}"></th>
 									<th th:text="#{app.operation}"></th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr th:if="${#lists.isEmpty(classPlayers)}" class="btn-warning">
-									<td colspan="3" align="center" th:text="#{crud.list.empty}"></td> 
+									<td colspan="4" align="center" th:text="#{crud.list.empty}"></td> 
 								</tr>
 								<tr th:each="item : ${classPlayers}">
 									<td th:text="${item.clazz.name}"></td>
 									<td th:text="${item.player.name}"></td>
-									<td align="center">
-										<a th:href="@{/teacher/class/edit/{id}(id=${item.id})}"><span class="glyphicon glyphicon-ok"></span></a>
+									<td th:text="${item.player.email}"></td>
+									<td align="left">
+										<a th:if="${item.status==1}" th:href="@{/teacher/student/resendemail/{id}(id=${item.id})}" style="margin-right:10%"><span class="glyphicon glyphicon-repeat"></span></a>
+										<a th:if="${item.status==2}" th:href="@{/profile/player/{id}/score(id=${item.player.id})}" style="margin-right:10%"><span class="glyphicon glyphicon-stats"></span></a>
+										<a th:if="${item.status==2}" th:href="@{/profile/player/{id}/attendance(id=${item.player.id})}" style="margin-right:10%"><span class="glyphicon glyphicon-list-alt"></span></a>
+										<a th:href="'javascript:deleteItem(\'/teacher/student/delete/' + ${item.id} + '\')'"><span class="glyphicon glyphicon-trash"></span></a>
 									</td>
 								</tr>
 							</tbody>

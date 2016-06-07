@@ -1,20 +1,19 @@
 package com.polifono.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
-import com.polifono.domain.PlayerPhase;
 import com.polifono.service.ClassPlayerService;
-import com.polifono.service.PlayerPhaseService;
 import com.polifono.service.PlayerService;
 import com.polifono.util.EmailSendUtil;
 import com.polifono.util.EmailUtil;
@@ -25,9 +24,6 @@ public class PlayerController extends BaseController {
 	
 	@Autowired
 	private PlayerService playerService;
-	
-	@Autowired
-	private PlayerPhaseService playerPhaseService;
 	
 	@Autowired
 	private ClassPlayerService classPlayerService;
@@ -65,20 +61,6 @@ public class PlayerController extends BaseController {
 		}
 		
 		return "index";
-	}
-	
-	@RequestMapping(value = {"/score"}, method = RequestMethod.GET)
-	public final String score(final Model model) {
-		
-		List<PlayerPhase> playerPhases = playerPhaseService.findPlayerPhaseByPlayer(currentAuthenticatedUser().getUser());
-		
-		if (playerPhases == null) {
-			playerPhases = new ArrayList<PlayerPhase>();
-		}
-		
-		model.addAttribute("playerPhases", playerPhases);
-		
-		return "score";
 	}
 	
 	@RequestMapping(value = {"/emailconfirmation"}, method = RequestMethod.GET)
@@ -272,6 +254,40 @@ public class PlayerController extends BaseController {
 		model.addAttribute("classPlayers", classPlayers);
 		
 		return "classinvitation";
+	}
+	
+	@RequestMapping(value = {"/classinvitation/{id}"}, method = RequestMethod.GET)
+	public final String classinvitationsubmit(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes, final Model model) {
+		
+		try {
+			ClassPlayer current = classPlayerService.find(id.intValue());
+			
+			// If the classPlayer doesn't exist.
+			if (current == null) {
+				return "redirect:/";
+			}
+			
+			// Verifying if the student logged in is not the player of this classPlayer.
+			if (current.getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) {
+				return "redirect:/";
+			}
+			
+			if (current.getStatus() != 1) {
+				return "classinvitation";
+			}
+			
+			if (classPlayerService.changeStatus(id.intValue(), 2)) {
+				redirectAttributes.addFlashAttribute("message", "success");
+			}
+			else {
+				redirectAttributes.addFlashAttribute("message", "unsuccess");
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/classinvitation";
 	}
 	
 	public String validateCreatePlayer(Player player) {

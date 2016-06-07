@@ -119,59 +119,70 @@ public class StudentController extends BaseController {
 		return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
 	}
 
-	@RequestMapping(value = "/student/{operation}/{id}", method = RequestMethod.GET)
-	public String editRemove(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes, Model model) {
+	@RequestMapping(value = "/student/resendemail/{id}", method = RequestMethod.GET)
+	public String resendemail(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes, Model model) {
 
-		// The teacher only can edit/delete his own classes.
-		/*com.polifono.domain.Class current = classService.find(id.intValue());
-		if (current.getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) {
-			return "redirect:/";
-		}*/
-		
-		if (operation.equals("delete")) {
-			if (classPlayerService.delete(id.intValue())) {
-				redirectAttributes.addFlashAttribute("deletion", "success");
+		try {
+			// The teacher only can send email to students from his own classes.
+			ClassPlayer current = classPlayerService.find(id.intValue());
+			
+			// If the classPlayer doesn't exist.
+			if (current == null) {
+				return "redirect:/";
 			}
-			else {
-				redirectAttributes.addFlashAttribute("deletion", "unsuccess");
+			
+			// Verifying if the teacher logged in is the owner of this class.
+			if (current.getClazz().getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) {
+				return "redirect:/";
 			}
+			
+			// Verifying if the student is not in the Pending status anymore.
+			if (current.getStatus() != 1) {
+				redirectAttributes.addFlashAttribute("message", "studentNotPending");
+				return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+			}
+			
+			sendEmailInvitationToClass(currentAuthenticatedUser().getUser(), current);
+			
+			redirectAttributes.addFlashAttribute("message", "emailSent");
 		}
-		else if (operation.equals("edit")) {
-			ClassPlayer edit = classPlayerService.find(id.intValue());
-
-			if (edit != null) {
-				model.addAttribute("classPlayer", edit);
-				return URL_ADMIN_BASIC_EDIT;
-			}
-			else {
-				redirectAttributes.addFlashAttribute("status", "notfound");
-			}
+		catch(Exception e) {
+			e.printStackTrace();
 		}
 
 		return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
 	}
 	
-	@RequestMapping(value = "/student/update", method = RequestMethod.POST)
-	public String update(@ModelAttribute("edit") ClassPlayer edit, final RedirectAttributes redirectAttributes) {
-		
-		ClassPlayer current = classPlayerService.find(edit.getId());
-		
-		// The teacher only can edit his own classes.
-		/*if (current.getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) {
-			return "redirect:/";
-		}*/
-		
-		//edit.setPlayer(current.getPlayer());
-		//edit.setDtInc(current.getDtInc());
-		//edit.setActive(current.isActive());
-		
-		if (classPlayerService.save(edit) != null) {
-			redirectAttributes.addFlashAttribute("edit", "success");
+	@RequestMapping(value = "/student/{operation}/{id}", method = RequestMethod.GET)
+	public String editRemove(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes, Model model) {
+
+		try {
+			// The teacher only can edit/delete his own classes.
+			ClassPlayer current = classPlayerService.find(id.intValue());
+			
+			// If the classPlayer doesn't exist.
+			if (current == null) {
+				return "redirect:/";
+			}
+			
+			// Verifying if the teacher logged in is the owner of this class.
+			if (current.getClazz().getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) {
+				return "redirect:/";
+			}
+			
+			if (operation.equals("delete")) {
+				if (classPlayerService.delete(id.intValue())) {
+					redirectAttributes.addFlashAttribute("deletion", "success");
+				}
+				else {
+					redirectAttributes.addFlashAttribute("deletion", "unsuccess");
+				}
+			}
 		}
-		else {
-			redirectAttributes.addFlashAttribute("edit", "unsuccess");
+		catch(Exception e) {
+			e.printStackTrace();
 		}
-		
+
 		return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
 	}
 	

@@ -39,7 +39,7 @@
 	   			</ul>
 		    	<ul class="nav navbar-nav navbar-right">
 		    		<li th:title="#{app.profile}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}|}" sec:authentication="principal.user.name"></a></li>
-		    		<li th:title="#{msg.toseemygrades}"><a th:href="@{/score}"><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>
+		    		<li th:title="#{msg.toseemygrades}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}/score|}"><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>
 		    		<li th:title="#{msg.buymorecredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>: <span sec:authentication="principal.user.credit"></span></a></li>
 	     			<li th:title="#{log_out}"><a href="javascript:logout()"><span class="glyphicon glyphicon-log-out" th:text="' '+#{log_out}"></span></a></li>
 		    	</ul>

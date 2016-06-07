@@ -31,7 +31,8 @@ public class ClassPlayerService {
 		
 		if (temp != null) {
 			try {
-				classPlayerRepository.delete(temp);
+				temp.setStatus(3);
+				classPlayerRepository.save(temp);
 			}
 			catch (Exception e) {
 				return false;
@@ -51,10 +52,43 @@ public class ClassPlayerService {
 		return (List<ClassPlayer>) classPlayerRepository.findAll();
 	}
 	
+	public Boolean changeStatus(int id, int status) {
+		ClassPlayer temp = classPlayerRepository.findOne(id);
+		
+		if (temp != null) {
+			try {
+				temp.setStatus(status);
+				classPlayerRepository.save(temp);
+			}
+			catch (Exception e) {
+				return false;
+			}
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Get all the students of this teacher (playerId).
+	 * Get only student in the status 1 (pending) and 2 (confirmed). 
+	 * 
+	 * @param playerId
+	 * @return
+	 */
 	public final List<ClassPlayer> findByTeacher(int playerId) {
 		return classPlayerRepository.findByTeacher(playerId);
 	}
 	
+	/**
+	 * Get all the students of a specific class (clazzId) of this teacher (playerId).
+	 * Get only student in the status 1 (pending) and 2 (confirmed). 
+	 * 
+	 * @param playerId
+	 * @param clazzId
+	 * @return
+	 */
 	public final List<ClassPlayer> findByTeacherAndClass(int playerId, int clazzId) {
 		return classPlayerRepository.findByTeacherAndClass(playerId, clazzId);
 	}
@@ -65,5 +99,17 @@ public class ClassPlayerService {
 	
 	public final List<ClassPlayer> findByPlayerAndStatus(int playerId, int status) {
 		return classPlayerRepository.findByPlayerAndStatus(playerId, status);
+	}
+	
+	/**
+	 * Method used to see if studentId is student of teacherId in any class.
+	 * The studentId must be in status 2 (confirmed).
+	 * 
+	 * @param teacherId
+	 * @param studentId
+	 * @return
+	 */
+	public final List<ClassPlayer> findByTeacherAndStudent(int teacherId, int studentId) {
+		return classPlayerRepository.findByTeacherAndStudent(teacherId, studentId);
 	}
 }

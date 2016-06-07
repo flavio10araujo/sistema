@@ -5,7 +5,21 @@
 
 <body>
 	<div layout:fragment="content">
-	
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<div th:if="${message eq 'success'}">
+		          	<div class="alert alert-success alert-dismissible" role="alert">
+		  				<strong th:text="#{success_}">Success!</strong> <span th:text="#{crud.msg.savedSuccessfully}">Data Saved Successfully.</span>
+					</div>
+		       	</div>
+		       	<div th:if="${message eq 'unsuccess'}">
+					<div class="alert alert-danger alert-dismissible" role="alert">
+						<strong th:text="#{error_}">Error!</strong> <span th:text="#{crud.msg.notSaved}">Data Not Saved.</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 		<div class="row" style="margin-bottom:50px;">
 			<div class="col-md-offset-2 col-md-8">
 				<div class="panel panel-success">
@@ -29,7 +43,7 @@
 									<td th:text="${item.clazz.player.name}"></td>
 									<td th:text="${item.clazz.name}"></td>
 									<td align="center">
-										<a th:href="@{/teacher/class/edit/{id}(id=${item.id})}"><span class="glyphicon glyphicon-ok"></span></a>
+										<a th:href="@{/classinvitation/{id}(id=${item.id})}"><span class="glyphicon glyphicon-ok"></span></a>
 									</td>
 								</tr>
 							</tbody>
