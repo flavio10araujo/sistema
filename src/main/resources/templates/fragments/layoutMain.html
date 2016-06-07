@@ -27,6 +27,16 @@
 				<div class="navbar-header">
 					<a class="navbar-brand" th:href="@{/}" th:text="#{company}"></a>
 		    	</div>
+		    	<ul class="nav navbar-nav">
+	     			<li class="dropdown">
+	       				<a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{app.teacher}"><span class="caret"></span></a>
+	       				<ul class="dropdown-menu">
+	         				<li><a th:href="@{/teacher/class}" th:text="#{menu.teacher.class}"></a></li>
+	         				<li><a th:href="@{/teacher/student}" th:text="#{menu.teacher.student}"></a></li>
+	         				<li><a th:href="@{/teacher/class}" th:text="#{menu.teacher.report}"></a></li>
+	       				</ul>
+	     			</li>
+	   			</ul>
 		    	<ul class="nav navbar-nav navbar-right">
 		    		<li th:title="#{app.profile}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}|}" sec:authentication="principal.user.name"></a></li>
 		    		<li th:title="#{msg.toseemygrades}"><a th:href="@{/score}"><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>

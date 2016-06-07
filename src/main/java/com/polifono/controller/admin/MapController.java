@@ -30,16 +30,14 @@ public class MapController extends BaseController {
 	public static final String URL_ADMIN_BASIC_EDIT = "admin/basic/map/editPage";
 	public static final String URL_ADMIN_BASIC_SAVEPAGE = "admin/basic/map/savepage";
 	
-	private final GameService gameService;
-	private final LevelService levelService;
-	private final MapService mapService;
-
 	@Autowired
-	public MapController(final GameService gameService, final LevelService levelService, final MapService mapService) {
-		this.gameService = gameService;
-		this.levelService = levelService;
-		this.mapService = mapService;
-	}
+	private GameService gameService;
+	
+	@Autowired
+	private LevelService levelService;
+	
+	@Autowired
+	private MapService mapService;
 
 	@RequestMapping(value = {"/map", "/map/savepage"}, method = RequestMethod.GET)
 	public String savePage(HttpSession session, Model model) {

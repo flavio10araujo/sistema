@@ -68,8 +68,12 @@ public class PlayerService {
 	 * @param email
 	 * @return
 	 */
-	public Optional<Player> getUserByEmailAndStatus(String email, boolean status) {
+	public Optional<Player> getUserByEmailAndStatusForLogin(String email, boolean status) {
         LOGGER.debug("Getting user by email={}", email.replaceFirst("@.*", "@***"));
+        return playerRepository.findUserByEmailAndStatusForLogin(email, status);
+    }
+	
+	public Player getUserByEmailAndStatus(String email, boolean status) {
         return playerRepository.findUserByEmailAndStatus(email, status);
     }
 }

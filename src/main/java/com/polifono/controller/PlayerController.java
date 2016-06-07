@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
+import com.polifono.service.ClassPlayerService;
 import com.polifono.service.PlayerPhaseService;
 import com.polifono.service.PlayerService;
 import com.polifono.util.EmailSendUtil;
@@ -26,6 +28,9 @@ public class PlayerController extends BaseController {
 	
 	@Autowired
 	private PlayerPhaseService playerPhaseService;
+	
+	@Autowired
+	private ClassPlayerService classPlayerService;
 	
 	@RequestMapping(value = {"/player/create"}, method = RequestMethod.POST)
 	public final String createPlayer(final Model model, @ModelAttribute("player") Player player) {
@@ -256,6 +261,17 @@ public class PlayerController extends BaseController {
 		}
 		
 		return "passwordreset";
+	}
+	
+	@RequestMapping(value = {"/classinvitation"}, method = RequestMethod.GET)
+	public final String classinvitation(final Model model) {
+		
+		// Get all the invitation to classes that the student hasn't confirmed his participation yet.
+		List<ClassPlayer> classPlayers = classPlayerService.findByPlayerAndStatus(currentAuthenticatedUser().getUser().getId(), 1);
+		
+		model.addAttribute("classPlayers", classPlayers);
+		
+		return "classinvitation";
 	}
 	
 	public String validateCreatePlayer(Player player) {

@@ -1,0 +1,144 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+
+<head></head>
+
+<body>
+
+	<div layout:fragment="content">
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<!-- Save Alert Messages -->
+				<div th:if="${save eq 'unsuccess'}">
+          			<div class="alert alert-danger alert-dismissible" role="alert">
+  						<strong th:text="#{error_}">Error!</strong> <span th:text="#{crud.msg.notSaved}">Data Not Saved.</span>
+					</div>
+       			</div>
+       			<div th:if="${save eq 'success'}">
+          			<div class="alert alert-success alert-dismissible" role="alert">
+  						<strong th:text="#{success_}">Success!</strong> <span th:text="#{crud.msg.savedSuccessfully}">Data Saved Successfully.</span>
+					</div>
+       			</div>
+
+				<!-- Deletion Alert Messages -->
+        		<div th:if="${deletion eq 'unsuccess'}">
+          			<div class="alert alert-danger alert-dismissible" role="alert">
+  						<strong th:text="#{error_}">Error!</strong> <span th:text="#{crud.msg.notDeleted}">Data Not Deleted.</span>
+					</div>
+       			</div>
+       			<div th:if="${deletion eq 'success'}">
+          			<div class="alert alert-success alert-dismissible" role="alert">
+  						<strong th:text="#{success_}">Success!</strong> <span th:text="#{crud.msg.deletedSuccessfully}">Data Deleted Successfully.</span>
+					</div>
+       			</div>
+
+				<!-- Edit Alert Message -->
+    			<div th:if="${status eq 'notfound'}">
+          			<div class="alert alert-danger alert-dismissible" role="alert">
+  						<strong th:text="#{error_}">Error!</strong> <span th:text="#{crud.msg.invalidItem}">Invalid item.</span>
+					</div>
+       			</div>
+       			<div th:if="${edit eq 'unsuccess'}">
+          			<div class="alert alert-danger alert-dismissible" role="alert">
+  						<strong th:text="#{error_}">Error!</strong> <span th:text="#{crud.msg.notEdited}">Data Not Edited.</span>
+					</div>
+       			</div>
+       			<div th:if="${edit eq 'success'}">
+          			<div class="alert alert-success alert-dismissible" role="alert">
+  						<strong th:text="#{success_}">Success!</strong> <span th:text="#{crud.msg.editedSuccessfully}">Data Edited Successfully.</span>
+					</div>
+       			</div>
+       			
+       			<!-- Other messages -->
+       			<div th:if="${message eq 'studentNotFound'}">
+          			<div class="alert alert-danger alert-dismissible" role="alert">
+  						<strong th:text="#{error_}">Error!</strong> <span>O e-mail informado não está cadastrado no sistema.</span>
+					</div>
+       			</div>
+       			<div th:if="${message eq 'studentAlreadyRegistered'}">
+          			<div class="alert alert-danger alert-dismissible" role="alert">
+  						<strong th:text="#{error_}">Error!</strong> <span>O estudante buscado já está cadastrado nessa sala de aula.</span>
+					</div>
+       			</div>
+
+				<div class="panel panel-success">
+					<div class="panel-heading">
+  						<h3 class="panel-title" th:text="#{crud.add.student}"></h3>
+					</div>
+   					<div class="panel-body">
+    					<form th:object="${classPlayer}" th:action="@{/teacher/student/save}" action="#" method="post">
+       						
+       						<div class="form-group">
+								<label for="clazzId" th:text="#{app.class}">Class</label>
+							  	<select class="form-control" th:field="*{clazz.id}" th:id="clazzId" required="true">
+							    	<option value="0"></option>
+  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.name}"></option>
+							  	</select>
+							</div>
+       						
+       						<div class="form-group">
+       							<label for="email" th:text="#{app.email}"></label>
+       							<input type="email" th:field="*{player.email}" th:id="player.email" class="form-control" required="true" />
+       						</div>
+       						
+       						<input type="submit" class="btn btn-danger pull-right" th:value="#{app.save}" />
+							
+ 						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row" style="margin-bottom:50px;">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title" th:text="#{crud.list.student}"></h3>
+					</div>
+					<div class="panel-body">
+    					<form th:object="${classFilter}" th:action="@{/teacher/student}" method="post">
+       						<div class="form-group">
+								<label for="clazzIdFilter" th:text="#{app.class}">Class</label>
+							  	<select class="form-control" th:field="*{id}" th:id="clazzFilterId" required="true">
+							    	<option value="0"></option>
+  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.name}"></option>
+							  	</select>
+							</div>
+							<input type="submit" class="btn btn-default pull-right" th:value="#{app.filter}" />
+						</form>
+					</div>
+					<div class="panel-body">
+						<table class="table table-bordered">
+							<thead>
+								<tr class="btn-success">
+									<th th:text="#{app.class}"></th>
+									<th th:text="#{app.student}"></th>
+									<th th:text="#{app.operation}"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:if="${#lists.isEmpty(classPlayers)}" class="btn-warning">
+									<td colspan="3" align="center" th:text="#{crud.list.empty}"></td> 
+								</tr>
+								<tr th:each="item : ${classPlayers}">
+									<td th:text="${item.clazz.name}"></td>
+									<td th:text="${item.player.name}"></td>
+									<td align="center">
+										<a th:href="@{/teacher/class/edit/{id}(id=${item.id})}"><span class="glyphicon glyphicon-ok"></span></a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			function deleteItem(url){if(confirm("Você tem certeza que deseja deletar esse item?")){location.href=url;}}
+		</script>
+	</div>
+
+</body>
+</html>

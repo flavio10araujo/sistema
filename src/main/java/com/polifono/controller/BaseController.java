@@ -17,7 +17,7 @@ public abstract class BaseController {
      * Used by child class controllers to obtain the currently authenticated user from Spring Security.
      */
     @Nullable
-    final CurrentUser currentAuthenticatedUser() {
+	protected final CurrentUser currentAuthenticatedUser() {
     	CurrentUser currentUser = null;
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         

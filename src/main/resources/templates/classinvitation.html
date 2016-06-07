@@ -1,0 +1,44 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+
+<head></head>
+
+<body>
+	<div layout:fragment="content">
+	
+		<div class="row" style="margin-bottom:50px;">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title">Lista de convites para salas de aula</h3>
+					</div>
+					<div class="panel-body">
+						<table class="table table-bordered">
+							<thead>
+								<tr class="btn-success">
+									<th th:text="#{app.teacher}"></th>
+									<th th:text="#{app.class}"></th>
+									<th th:text="#{app.operation}"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:if="${#lists.isEmpty(classPlayers)}" class="btn-warning">
+									<td colspan="3" align="center" th:text="#{crud.list.empty}"></td> 
+								</tr>
+								<tr th:each="item : ${classPlayers}">
+									<td th:text="${item.clazz.player.name}"></td>
+									<td th:text="${item.clazz.name}"></td>
+									<td align="center">
+										<a th:href="@{/teacher/class/edit/{id}(id=${item.id})}"><span class="glyphicon glyphicon-ok"></span></a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	  	
+	</div>
+</body>
+</html>

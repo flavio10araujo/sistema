@@ -1,0 +1,57 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+
+<head></head>
+
+<body>
+
+	<div layout:fragment="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-offset-2 col-md-8">
+
+					<div th:if="${save eq 'unsuccess'}">
+          				<div class="alert alert-danger alert-dismissible" role="alert">
+  							<strong th:text="#{error_}">Error!</strong> <span th:text="#{crud.msg.notEdited}">Data Not Updated.</span>
+						</div>
+       				</div>
+       				<div th:if="${save eq 'success'}">
+          				<div class="alert alert-success alert-dismissible" role="alert">
+  							<strong th:text="#{success_}">Success!</strong> <span th:text="#{crud.msg.editedSuccessfully}">Data Updated Successfully.</span>
+						</div>
+       				</div>
+
+					<div class="panel panel-success">
+						<div class="panel-heading">
+					    	<h3 class="panel-title" th:text="#{crud.edit.class}">Edit Class</h3>
+					  	</div>
+					   	<div class="panel-body">
+							<form th:object="${class}" th:action="@{/teacher/class/update}" action="#" method="post">
+       						
+	       						<input type="hidden" th:field="*{id}" />
+	       						
+	       						<div class="form-group">
+	       							<label for="name" th:text="#{app.name}">Name:</label>
+	       							<input type="text" th:field="*{name}" th:id="name" class="form-control" required="true" />
+	       						</div>
+	       						
+	       						<div class="form-group">
+	       							<label for="description" th:text="#{app.description}">Description:</label>
+	       							<input type="text" th:field="*{description}" th:id="description" class="form-control" required="true" />
+	       						</div>
+	       						
+	       						<input type="submit" class="btn btn-danger pull-right" th:value="#{app.save}" />
+								
+	 						</form>
+						</div>
+						<div class="panel-footer">
+							<a th:href="@{/teacher/class/savepage}" class="btn btn-success" th:text="#{app.back}">Back To Save Page</a>
+						</div>
+					</div>
+		      	</div>
+		   	</div>
+		</div>
+	</div>
+</body>
+</html>
