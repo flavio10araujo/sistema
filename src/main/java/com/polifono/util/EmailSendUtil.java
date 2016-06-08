@@ -7,10 +7,10 @@ public class EmailSendUtil {
 	public static void main(String args[]) {
 		try {
 			String[] args2 = new String[3];
-			args2[0] = "João Tavares";
-			args2[1] = "joaotavares@gmail.com";
-			args2[2] = "666999";
-			EmailSendUtil.sendHtmlMail(1, "flavio10araujo@yahoo.com.br", args2);
+			args2[0] = "Flávio Moisés de Araújo";
+			args2[1] = "João Tavares";
+			args2[2] = "Turma Nono Ano";
+			EmailSendUtil.sendHtmlMail(4, "flavio10araujo@gmail.com", args2);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -122,13 +122,22 @@ public class EmailSendUtil {
 			try	{
 				MultiPartEmail hm = new MultiPartEmail();
 				
+				
+				/*
+				Gmail configuration.
 				hm.setHostName("smtp.gmail.com");
 				hm.setSslSmtpPort("587");
 				hm.setSmtpPort(Integer.parseInt("587"));
-				hm.setAuthentication("flavio10araujoTESTE@gmail.com", "senha");
+				hm.setAuthentication("email@gmail.com", "senha");
 				hm.setTLS(true);
-				hm.setCharset("UTF-8");
+				*/
 				
+				// Integrator configuration.
+				hm.setHostName("localhost"); 
+				hm.setSmtpPort(Integer.parseInt("25")); 
+				hm.setAuthentication("polifono@polifono.com", "senha"); 
+				
+				hm.setCharset("UTF-8");
 				hm.setSubject(subject);
 				hm.setFrom(senderAddress);
 				hm.addTo(recipientAddress);
@@ -140,7 +149,7 @@ public class EmailSendUtil {
 				
 				hm.send();
 				
-				System.out.println("Email enviado!");
+				System.out.println("E-mail enviado!");
 			}
 			catch (Exception e) {
 				e.printStackTrace();
