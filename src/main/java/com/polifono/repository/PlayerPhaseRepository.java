@@ -11,9 +11,6 @@ import com.polifono.domain.PlayerPhase;
 
 public interface PlayerPhaseRepository extends CrudRepository<PlayerPhase, UUID> {
 
-	@Query("SELECT playerPhase FROM PlayerPhase playerPhase WHERE playerPhase.id = :id")
-	public PlayerPhase findNextPhaseOLD(@Param("id") int id);
-	
 	@Query("SELECT playerPhase FROM PlayerPhase playerPhase, Phase phase, Map map "
 	+ "WHERE playerPhase.phase.id = phase.id AND phase.map.id = map.id AND playerPhase.player.id = :playerId "
 	+ "AND playerPhase.phasestatus.id = 3 AND map.game.id = :gameId ORDER BY phase.order DESC")
@@ -24,4 +21,10 @@ public interface PlayerPhaseRepository extends CrudRepository<PlayerPhase, UUID>
 	
 	@Query("SELECT playerPhase FROM PlayerPhase playerPhase WHERE playerPhase.player.id = :playerId AND playerPhase.phase.id = :phaseId AND playerPhase.phasestatus.id = :phasestatusId")
 	public PlayerPhase findPlayerPhaseByPlayerPhaseAndStatus(@Param("playerId") int playerId, @Param("phaseId") int phaseId, @Param("phasestatusId") int phasestatusId);
+	
+	@Query("SELECT playerPhase FROM PlayerPhase playerPhase, Phase phase, Map map "
+	+ "WHERE playerPhase.phase.id = phase.id AND phase.map.id = map.id AND playerPhase.player.id = :playerId "
+	+ "AND playerPhase.phasestatus.id = 3 AND map.game.id = :gameId "
+	+ "AND (phase.order >= :phaseBegin AND phase.order <= :phaseEnd) ")
+	public List<PlayerPhase> findForReportGeneral(@Param("playerId") int playerId, @Param("gameId") int gameId, @Param("phaseBegin") int phaseBegin, @Param("phaseEnd") int phaseEnd);
 }

@@ -63,9 +63,9 @@
        						</div>
        						
        						<div class="form-group">
-       							<label for="description" th:text="#{app.description}"></label>
-       							<input type="text" th:field="*{description}" th:id="description" class="form-control" />
-       						</div>
+								<label for="description" th:text="#{app.description}"></label>
+							  	<textarea class="form-control" rows="3" th:field="*{description}" th:id="description"></textarea>
+							</div>
        						
        						<input type="submit" class="btn btn-danger pull-right" th:value="#{app.save}" />
 							

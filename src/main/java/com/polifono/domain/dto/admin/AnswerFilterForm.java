@@ -1,22 +1,25 @@
-package com.polifono.domain.dto;
+package com.polifono.domain.dto.admin;
 
 import com.polifono.domain.Game;
 import com.polifono.domain.Level;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
+import com.polifono.domain.Question;
 
-public class QuestionFilterForm {
+public class AnswerFilterForm {
 
 	private Game game;
 	private Level level;
 	private Map map;
 	private Phase phase;
+	private Question question;
 	
-	public QuestionFilterForm() {
+	public AnswerFilterForm() {
 		this.game = new Game();
 		this.level = new Level();
 		this.map = new Map();
 		this.phase = new Phase();
+		this.question = new Question();
 	}
 	
 	public Game getGame() {
@@ -49,5 +52,13 @@ public class QuestionFilterForm {
 
 	public void setPhase(Phase phase) {
 		this.phase = phase;
+	}
+
+	public Question getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(Question question) {
+		this.question = question;
 	}
 }

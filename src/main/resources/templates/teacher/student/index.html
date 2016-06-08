@@ -110,7 +110,7 @@
     					<form th:object="${classFilter}" th:action="@{/teacher/student}" method="post">
        						<div class="form-group">
 								<label for="clazzIdFilter" th:text="#{app.class}">Class</label>
-							  	<select class="form-control" th:field="*{id}" th:id="clazzFilterId" required="true">
+							  	<select class="form-control" th:field="*{id}" th:id="clazzIdFilter" required="true">
 							    	<option value="0"></option>
   									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.name}"></option>
 							  	</select>

@@ -13,6 +13,9 @@ public interface ClassPlayerRepository extends CrudRepository<ClassPlayer, Integ
 	@Query("SELECT classPlayer FROM ClassPlayer classPlayer, com.polifono.domain.Class clazz WHERE classPlayer.clazz.id = clazz.id AND clazz.player.id = :playerId AND (classPlayer.status = 1 OR classPlayer.status = 2)")
 	public List<ClassPlayer> findByTeacher(@Param("playerId") int playerId);
 	
+	@Query("SELECT classPlayer FROM ClassPlayer classPlayer WHERE classPlayer.clazz.id = :clazzId")
+	public List<ClassPlayer> findByClass(@Param("clazzId") int clazzId);
+	
 	@Query("SELECT classPlayer FROM ClassPlayer classPlayer, com.polifono.domain.Class clazz WHERE classPlayer.clazz.id = clazz.id AND clazz.player.id = :playerId AND classPlayer.clazz.id = :clazzId AND (classPlayer.status = 1 OR classPlayer.status = 2)")
 	public List<ClassPlayer> findByTeacherAndClass(@Param("playerId") int playerId, @Param("clazzId") int clazzId);
 	

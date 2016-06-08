@@ -1,5 +1,6 @@
 package com.polifono.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import com.polifono.domain.Game;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
+import com.polifono.domain.dto.teacher.ReportGeneralForm;
 import com.polifono.repository.PlayerPhaseRepository;
 
 @Service
@@ -47,6 +49,22 @@ public class PlayerPhaseService {
 		
 		if (list == null || list.size() == 0) {
 			return null;
+		}
+		
+		return list;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param playerId
+	 * @return
+	 */
+	public final List<PlayerPhase> findForReportGeneral(ReportGeneralForm reportGeneralForm, Player player) {
+		List<PlayerPhase> list = playerPhaseRepository.findForReportGeneral(player.getId(), reportGeneralForm.getGame().getId(), reportGeneralForm.getPhaseBegin(), reportGeneralForm.getPhaseEnd()); 
+		
+		if (list == null || list.size() == 0) {
+			return new ArrayList<PlayerPhase>();
 		}
 		
 		return list;

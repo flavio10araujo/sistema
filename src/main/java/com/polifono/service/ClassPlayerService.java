@@ -93,8 +93,12 @@ public class ClassPlayerService {
 		return classPlayerRepository.findByTeacherAndClass(playerId, clazzId);
 	}
 	
-	public final List<ClassPlayer> findByClassAndPlayer(int classId, int playerId) {
-		return classPlayerRepository.findByClassAndPlayer(classId, playerId);
+	public final List<ClassPlayer> findByClass(int clazzId) {
+		return classPlayerRepository.findByClass(clazzId);
+	}
+	
+	public final List<ClassPlayer> findByClassAndPlayer(int clazzId, int playerId) {
+		return classPlayerRepository.findByClassAndPlayer(clazzId, playerId);
 	}
 	
 	public final List<ClassPlayer> findByPlayerAndStatus(int playerId, int status) {

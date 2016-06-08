@@ -1,0 +1,99 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+
+<head></head>
+
+<body>
+
+	<div layout:fragment="content">
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<!-- Other messages -->
+       			<div th:if="${message eq 'error'}">
+          			<div class="alert alert-danger alert-dismissible" role="alert">
+  						<strong th:text="#{error_}">Error!</strong> <span th:utext="${messageContent}"></span>
+					</div>
+       			</div>
+			</div>
+		</div>
+		
+		<div class="row" style="margin-bottom:50px;">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title" th:text="#{app.report}"></h3>
+					</div>
+					<div class="panel-body">
+    					<form id="f_filter" th:object="${reportGeneralForm}" th:action="@{/teacher/report}" method="post">
+       						<div class="form-group">
+								<label for="gameId" th:text="#{app.course}">Course</label>
+							  	<select class="form-control" th:field="*{game.id}" th:id="gameId" required="true">
+							    	<option value="0"></option>
+  									<option th:each="game : ${games}" th:value="${game.id}" th:text="${game.name}"></option>
+							  	</select>
+							</div>
+							<div class="form-group">
+								<label for="clazzId" th:text="#{app.class}">Class</label>
+							  	<select class="form-control" th:field="*{clazz.id}" th:id="clazzId" required="true">
+							    	<option value="0"></option>
+  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.name}"></option>
+							  	</select>
+							</div>
+							<div class="form-group">
+								<input type="number" class="form-control" required="true" th:name="phaseBegin" th:field="*{phaseBegin}" th:id="phaseBegin" placeholder="Informe o número da aula a partir da qual o relatório irá considerar" min="1" />
+							</div>
+							<div class="form-group">
+								<input type="number" class="form-control" required="true" th:name="phaseEnd" th:field="*{phaseEnd}" th:id="phaseEnd" placeholder="Informe o número da aula até a qual o relatório irá considerar" min="1" />
+							</div>
+							<input type="submit" class="btn btn-default pull-right" th:value="#{app.filter}" />
+						</form>
+					</div>
+					<div class="panel-body">
+						<table class="table table-bordered">
+							<thead>
+								<tr class="btn-success">
+									<th th:text="#{app.student}"></th>
+									<th th:text="#{app.email}"></th>
+									<th th:text="#{app.score}"></th>
+									<th th:text="#{app.average}"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:if="${#lists.isEmpty(reportGeneral)}" class="btn-warning">
+									<td colspan="4" align="center" th:text="#{crud.list.empty}"></td> 
+								</tr>
+								<span th:each="item : ${reportGeneral}">
+									<tr>
+										<td th:text="${item.player.name}"></td>
+										<td th:text="${item.player.email}"></td>
+										<td th:text="${item.score}"></td>
+										<td th:text="${item.average}"></td>
+									</tr>
+									<tr th:if="${#lists.isEmpty(item.playerPhase)}">
+										<td colspan="4" align="left">
+											Pontuação obtida em cada aula:
+											<span th:text="#{crud.list.empty}"></span>
+										</td>
+									</tr>
+									<tr th:unless="${#lists.isEmpty(item.playerPhase)}">
+										<td colspan="4" align="left">
+											Pontuação obtida em cada aula:
+											<span th:each="playerPhase : ${item.playerPhase}">
+												<span th:text="${playerPhase.phase.order+'='+playerPhase.score}"></span>
+											</span>
+										</td>
+									</tr>
+								</span>
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+</body>
+</html>
