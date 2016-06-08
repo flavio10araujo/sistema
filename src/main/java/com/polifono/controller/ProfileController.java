@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.domain.ClassPlayer;
+import com.polifono.domain.Login;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.service.ClassPlayerService;
+import com.polifono.service.LoginService;
 import com.polifono.service.PhaseService;
 import com.polifono.service.PlayerPhaseService;
 import com.polifono.service.PlayerService;
@@ -36,6 +38,9 @@ public class ProfileController extends BaseController {
 	
 	@Autowired
 	private ClassPlayerService classPlayerService;
+	
+	@Autowired
+	private LoginService loginService;
 
 	@RequestMapping(value = {"/player/{playerId}"}, method = RequestMethod.GET)
 	public final String profilePlayer(final Model model, @PathVariable("playerId") String playerId) {
@@ -122,7 +127,7 @@ public class ProfileController extends BaseController {
 			return "redirect:/";
 		}
 		
-		// The teacher only can see his own score page and of his students.
+		// The teacher only can see his own page and of his students.
 		if (currentAuthenticatedUser().getUser().getId() != Integer.parseInt(playerId) && 
 				currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")) {
 			if (!isMyStudent(currentAuthenticatedUser().getUser(), player)) {
@@ -140,6 +145,51 @@ public class ProfileController extends BaseController {
 		model.addAttribute("playerId", playerId);
 		
 		return "profile/profileScore";
+	}
+	
+	@RequestMapping(value = {"/player/{playerId}/attendance"}, method = RequestMethod.GET)
+	public final String attendance(final Model model, @PathVariable("playerId") String playerId) {
+		
+		List<String> intParameters = new ArrayList<String>();
+		intParameters.add(playerId);
+		
+		if (playerId == null || !isParameterInteger(intParameters)) {
+			return "redirect:/";
+		}
+		
+		Player player = playerService.getPlayer(Integer.parseInt(playerId));
+		
+		if (player == null) {
+			return "profile/profileNotFound";
+		}
+		
+		// If the player logged in is not the player Id && is not ADMIN and is not TEACHER.
+		if (
+				currentAuthenticatedUser().getUser().getId() != Integer.parseInt(playerId) &&
+				!currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN") &&
+				!currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")
+			) {
+			return "redirect:/";
+		}
+		
+		// The teacher only can see his own page and of his students.
+		if (currentAuthenticatedUser().getUser().getId() != Integer.parseInt(playerId) && 
+				currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")) {
+			if (!isMyStudent(currentAuthenticatedUser().getUser(), player)) {
+				return "redirect:/";
+			}
+		}
+		
+		List<Login> logins = loginService.findByPlayer(player.getId());
+		
+		if (logins == null) {
+			logins = new ArrayList<Login>();
+		}
+		
+		model.addAttribute("logins", logins);
+		model.addAttribute("playerId", playerId);
+		
+		return "profile/profileAttendance";
 	}
 	
 	@RequestMapping(value = {"/player/edit/{playerId}"}, method = RequestMethod.GET)

@@ -27,7 +27,10 @@
 				<div class="navbar-header">
 					<a class="navbar-brand" th:href="@{/}" th:text="#{company}"></a>
 		    	</div>
-		    	<ul class="nav navbar-nav">
+		    	<ul class="nav navbar-nav" sec:authorize="hasAuthority('ADMIN')">
+	     			<li><a href="/admin" th:text="#{menu.admin.home}"></a></li>
+	   			</ul>
+		    	<ul class="nav navbar-nav" sec:authorize="hasAuthority('TEACHER')">
 	     			<li class="dropdown">
 	       				<a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{app.teacher}"><span class="caret"></span></a>
 	       				<ul class="dropdown-menu">
