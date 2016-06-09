@@ -135,7 +135,7 @@ public class EmailSendUtil {
 				// Integrator configuration.
 				hm.setHostName("localhost"); 
 				hm.setSmtpPort(Integer.parseInt("25")); 
-				hm.setAuthentication("polifono@polifono.com", "senha"); 
+				hm.setAuthentication("email", "senha"); 
 				
 				hm.setCharset("UTF-8");
 				hm.setSubject(subject);
