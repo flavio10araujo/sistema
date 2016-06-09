@@ -80,9 +80,9 @@ public class PaymentController extends BaseController {
 		
 		int quantity = Integer.parseInt(quantityStr);
 		
-		if (quantity == 0 || quantity > 100) {
+		if (quantity < 5 || quantity > 135) {
 			model.addAttribute("codRegister", "2");
-			model.addAttribute("msg", "A quantidade de créditos deve ser entre 0 e 100.");
+			model.addAttribute("msg", "A quantidade de créditos deve ser entre 5 e 135.");
 			return "buycredits";
 		}
 		
@@ -138,7 +138,8 @@ public class PaymentController extends BaseController {
 
         checkout.setSender(
         	player.getName(), // Client's name.
-        	"c08806545722997224739@sandbox.pagseguro.com.br" // Client's e-mail. player.getEmail()
+        	//"c42247508001355723309@sandbox.pagseguro.com.br" // Client's e-mail. player.getEmail()
+        	"c123123"+t.getId()+"@sandbox.pagseguro.com.br"
         );
 
         checkout.setCurrency(Currency.BRL);
@@ -146,9 +147,9 @@ public class PaymentController extends BaseController {
         // Sets a reference code for this payment request. The T012.C002_ID is used in this attribute.
         checkout.setReference(""+t.getId());
 
-        checkout.setNotificationURL("http://www.polifono.com/pagseguronotification");
+        //checkout.setNotificationURL("http://www.polifono.com/pagseguronotification");
 
-        checkout.setRedirectURL("http://www.polifono.com/pagseguroreturn");
+        //checkout.setRedirectURL("http://www.polifono.com/pagseguroreturn");
         
         Boolean onlyCheckoutCode = false;
         String checkoutURL = checkout.register(PagSeguroConfig.getAccountCredentials(), onlyCheckoutCode);

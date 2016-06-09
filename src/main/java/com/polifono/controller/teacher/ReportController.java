@@ -62,7 +62,7 @@ public class ReportController extends BaseController {
 			return "teacher/report/index";
 		}
 		
-		List<ClassPlayer> classPlayers = classPlayerService.findByClass(reportGeneralForm.getClazz().getId());
+		List<ClassPlayer> classPlayers = classPlayerService.findByClassAndStatus(reportGeneralForm.getClazz().getId(), 2);
 		List<ReportGeneralDTO> list = new ArrayList<ReportGeneralDTO>();
 		
 		for (ClassPlayer classPlayer : classPlayers) {

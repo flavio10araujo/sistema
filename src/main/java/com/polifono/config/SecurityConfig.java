@@ -72,7 +72,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         
     	http.logout().permitAll();
     	
-    	http.rememberMe();
+    	//http.rememberMe();
     	
     	//http.csrf().disable();
     	http.csrf().ignoringAntMatchers("/pagseguronotification");
