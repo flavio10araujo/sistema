@@ -6,6 +6,8 @@ import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,7 +23,7 @@ import com.polifono.service.LoginService;
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 	
-    //private static final Logger LOGGER = LoggerFactory.getLogger(CustomAuthenticationSuccessHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomAuthenticationSuccessHandler.class);
  
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
     
@@ -36,18 +38,21 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     }
  
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        SavedRequest targetUrl = (SavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+        SavedRequest savedRequest = (SavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
     	
-    	/*String targetUrl = determineTargetUrl(authentication);
- 
-        if (response.isCommitted()) {
-        	LOGGER.debug("Response has already been committed. Unable to redirect to " + targetUrl);
-            return;
+        if (savedRequest == null) {
+	        String targetUrl = determineTargetUrl(authentication);
+	 
+	        if (response.isCommitted()) {
+	        	LOGGER.debug("Response has already been committed. Unable to redirect to " + targetUrl);
+	            return;
+	        }
+	
+			redirectStrategy.sendRedirect(request, response, targetUrl);
         }
-
-		redirectStrategy.sendRedirect(request, response, targetUrl);*/
-        
-        redirectStrategy.sendRedirect(request, response, targetUrl.getRedirectUrl());
+        else {
+        	redirectStrategy.sendRedirect(request, response, savedRequest.getRedirectUrl());
+        }
     }
     
     private final void registerLogin(Authentication authentication) {
