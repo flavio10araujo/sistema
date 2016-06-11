@@ -50,7 +50,7 @@
 								  	</select>
 								</div>
 	       						
-	       						<input type="submit" class="btn btn-danger pull-right" value="Save" />
+	       						<input type="submit" class="btn btn-danger pull-right" th:value="#{app.save}" />
 								
 	 						</form>
 						</div>
@@ -98,7 +98,7 @@
 									  	</select>
 									</div>
 								</div>
-								<input type="button" class="btn btn-default pull-right" value="Filter" onclick="javascript:submitFilter()" />
+								<input type="button" class="btn btn-default pull-right" th:value="#{app.filter}" onclick="javascript:submitFilter()" />
 							</form>
 						</div>
 						<div class="panel-body">
@@ -109,7 +109,7 @@
 										<th>Level</th>
 										<th>Map</th>
 										<th>Phase</th>
-										<th>Operation</th>
+										<th th:text="#{app.operation}">Operation</th>
 									</tr>
 								</thead>
 								<tbody>

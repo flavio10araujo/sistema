@@ -83,7 +83,7 @@
        							<input type="number" th:field="*{order}" th:id="order" class="form-control" required="true" min="1" />
        						</div>
 							
-							<input type="submit" class="btn btn-danger pull-right" value="Save" />
+							<input type="submit" class="btn btn-danger pull-right" th:value="#{app.save}" />
 							
  						</form>
 					</div>
@@ -106,7 +106,7 @@
   									<option th:each="game : ${games}" th:value="${game.id}" th:text="${game.name}"></option>
 							  	</select>
 							</div>
-							<input type="submit" class="btn btn-default pull-right" value="Filter" />
+							<input type="submit" class="btn btn-default pull-right" th:value="#{app.filter}" />
 						</form>
 					</div>
 					<div class="panel-body">
@@ -116,7 +116,7 @@
 									<th>Game</th>
 									<th>Level</th>
 									<th>Map</th>
-									<th>Operation</th>
+									<th th:text="#{app.operation}">Operation</th>
 								</tr>
 							</thead>
 							<tbody>

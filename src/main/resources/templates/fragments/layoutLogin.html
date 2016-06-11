@@ -40,7 +40,7 @@
 		<nav class="navbar navbar-inverse">
 			<div class="container">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="#" th:text="#{company}"></a>
+					<a class="navbar-brand" th:href="@{/}" th:text="#{company}"></a>
 				</div>
 		    	<ul class="nav navbar-nav navbar-right">
 		    		<li>
@@ -73,7 +73,8 @@
 		
 		<nav class="navbar navbar-inverse navbar-fixed-bottom">
 			<div class="container">
-				<p class="navbar-text"><a href="#" th:text="#{company}"></a></p>
+				<p class="navbar-text"><a th:href="@{/}" th:text="#{company}"></a></p>
+				<p class="navbar-text"><a th:href="@{/contact}" data-toggle="tooltip" data-placement="top" th:title="#{msg.contact}"><span class="glyphicon glyphicon-envelope" th:text="' '+#{app.contact}"></span></a></p>
 			</div>
 		</nav>
 		

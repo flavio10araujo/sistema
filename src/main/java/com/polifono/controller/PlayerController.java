@@ -298,10 +298,10 @@ public class PlayerController extends BaseController {
 		}
 		
 		if (player.getEmail() == null || player.getEmail().equals("")) {
-			msg = msg + "<br />O email precisa ser informado.";
+			msg = msg + "<br />O e-mail precisa ser informado.";
 		}
 		else if (!EmailUtil.validateEmail(player.getEmail())) {
-			msg = msg + "<br />O email informado não é válido.";
+			msg = msg + "<br />O e-mail informado não é válido.";
 		}
 		
 		if (player.getPassword() == null || player.getPassword().equals("")) {

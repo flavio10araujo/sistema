@@ -139,7 +139,8 @@ public class PaymentController extends BaseController {
         checkout.setSender(
         	player.getName(), // Client's name.
         	//"c42247508001355723309@sandbox.pagseguro.com.br" // Client's e-mail. player.getEmail()
-        	"c123123"+t.getId()+"@sandbox.pagseguro.com.br"
+        	//"c123123"+t.getId()+"@sandbox.pagseguro.com.br"
+        	player.getEmail()
         );
 
         checkout.setCurrency(Currency.BRL);

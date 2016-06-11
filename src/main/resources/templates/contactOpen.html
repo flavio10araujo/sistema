@@ -1,0 +1,42 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutLogin">
+
+<head></head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="row">
+	    	<div class="col-sm-6 bg">
+	    		<h1 th:text="#{app.contact}">Contact</h1>
+	      		<form th:action="@{/contact}" method="post">
+	  				<div class="form-group">
+						<label for="email" th:text="#{app.email}"></label>
+					  	<input type="email" th:name="email" th:id="email" class="form-control" required="true" />
+					</div>
+	  				
+	  				<div class="form-group">
+						<label for="message" th:text="#{app.message}"></label>
+					  	<textarea class="form-control" rows="5" th:name="message" th:id="message" required="true"></textarea>
+					</div>
+					
+	  				<input type="submit" class="btn btn-default" th:value="#{app.send}" />
+				</form>
+	    	</div>
+	    	<div class="col-sm-6 bg">
+	    		<br />
+	    		
+         		<div th:if="${message eq 'success'}" class="alert alert-success alert-dismissible" role="alert">
+ 					<strong th:text="#{success_}">Success!</strong> <span th:text="#{msg.emailSent}"></span>
+				</div>
+				
+				<div th:if="${message eq 'error'}" class="alert alert-danger alert-dismissible" role="alert">
+  					<strong th:text="#{error_}">Error!</strong> <span th:utext="${messageContent}"></span>
+				</div>
+	    	</div>
+	  	</div>
+	  	<div class="row">
+	  		<br /><br /><br /><br /><br />
+	  	</div>
+	</div>
+</body>
+</html>
