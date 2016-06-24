@@ -25,8 +25,7 @@
 			           			<br />
 			           			<b><span th:text="${question.order}+' - '+${question.name}"></span></b><br />
 			           			<span style="margin-left:10px" th:each="answer : ${question.answers}">
-			           				<input type="radio" th:name="${question.id}" th:value="${answer.id}" />
-			           				<span th:text="${answer.name}"></span><br />
+			           				<label><input type="radio" th:name="${question.id}" th:value="${answer.id}" /> <span th:text="${answer.name}" /></label><br />
 			           			</span>
 			           		</span>
 			           		<br />

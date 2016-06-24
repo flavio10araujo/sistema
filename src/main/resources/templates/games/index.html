@@ -10,9 +10,12 @@
 	      		<div class="row">
 	      			<br />
 	      			<span style="margin-bottom:10px;margin-left:10px;" th:each="game : ${games}">
-	           			<a th:href="@{'/games/'+${game.namelink}}" class="btn btn-primary" role="button" th:text="${game.name}"></a>
+	           			<a th:href="@{'/games/'+${game.namelink}}" class="btn btn-primary btn-lg" style="margin-bottom:10px" role="button" th:text="${game.name}"></a>
 	           		</span>
 				</div>
+				<div class="row">
+	  				<br /><br /><br /><br /><br />
+	  			</div>
 	    	</div>
 	    	<!--<div class="col-sm-6 bg">
 	    		<div>Você tem 5 créditos.</div>

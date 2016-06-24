@@ -11,33 +11,16 @@
 		<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" />
 		
 		<style>
-			.navbar {
-			    padding-top: 15px;
-			    padding-bottom: 15px;
-			    border: 0;
-			    border-radius: 0;
-			    margin-bottom: 0;
-			    font-size: 12px;
-			    letter-spacing: 5px;
-			}
-			
-			.navbar-nav li a:hover {
-			    color: #1abc9c !important;
-			}
-			
-			body {
-			    color: #f5f6f7;
-			}
-			
-			.bg { 
-			    background-color: #fff;
-			    color: #000;
-			}
+			.navbarLog{padding-top:15px;padding-bottom:15px;border:0;border-radius:0;margin-bottom:0;font-size:12px;letter-spacing:5px}
+			.navbar-nav li a:hover{color:#1abc9c !important}
+			body{color:#f5f6f7}
+			.bg{background-color:#fff;color:#000}
 		</style>
 	</head>
 
 	<body>
-		<nav class="navbar navbar-inverse">
+		<!-- NAVBAR - ANONYMOUS -->
+		<nav class="navbarLog navbar navbar-inverse" sec:authorize="isAnonymous()">
 			<div class="container">
 				<div class="navbar-header">
 					<a class="navbar-brand" th:href="@{/}" th:text="#{company}"></a>
@@ -67,11 +50,40 @@
 		  	</div>
 		</nav>
 		
+		<!-- NAVBAR - LOGGED IN -->
+		<nav class="navbar navbar-inverse" sec:authorize="isAuthenticated()">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" th:href="@{/}" th:text="#{company}"></a>
+		    	</div>
+		    	<ul class="nav navbar-nav" sec:authorize="hasAuthority('ADMIN')">
+	     			<li><a href="/admin" th:text="#{menu.admin.home}"></a></li>
+	   			</ul>
+		    	<ul class="nav navbar-nav" sec:authorize="hasAuthority('TEACHER')">
+	     			<li class="dropdown">
+	       				<a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{app.teacher}"><span class="caret"></span></a>
+	       				<ul class="dropdown-menu">
+	         				<li><a th:href="@{/teacher/class}" th:text="#{menu.teacher.class}"></a></li>
+	         				<li><a th:href="@{/teacher/student}" th:text="#{menu.teacher.student}"></a></li>
+	         				<li><a th:href="@{/teacher/report}" th:text="#{menu.teacher.report}"></a></li>
+	       				</ul>
+	     			</li>
+	   			</ul>
+		    	<ul class="nav navbar-nav navbar-right">
+		    		<li data-toggle="tooltip" data-placement="bottom" th:title="#{app.profile}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}|}" sec:authentication="principal.user.name"></a></li>
+		    		<li data-toggle="tooltip" data-placement="bottom" th:title="#{msg.toseemygrades}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}/score|}"><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>
+		    		<li data-toggle="tooltip" data-placement="bottom" th:title="#{msg.buymorecredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>: <span sec:authentication="principal.user.credit"></span></a></li>
+	     			<li data-toggle="tooltip" data-placement="bottom" th:title="#{msg.contact}"><a th:href="@{/contact}"><span class="glyphicon glyphicon-envelope" th:text="' '+#{app.contact}"></span></a></li>
+	     			<li data-toggle="tooltip" data-placement="bottom" th:title="#{log_out}"><a href="javascript:logout()"><span class="glyphicon glyphicon-log-out" th:text="' '+#{log_out}"></span></a></li>
+		    	</ul>
+		  	</div>
+		</nav>
+		
 		<div class="container">
 			<div layout:fragment="content"></div>
 		</div>
 		
-		<nav class="navbar navbar-inverse navbar-fixed-bottom">
+		<nav class="navbar navbar-inverse navbar-fixed-bottom" sec:authorize="isAnonymous()">
 			<div class="container">
 				<p class="navbar-text"><a th:href="@{/}" th:text="#{company}"></a></p>
 				<p class="navbar-text"><a th:href="@{/contact}" data-toggle="tooltip" data-placement="top" th:title="#{msg.contact}"><span class="glyphicon glyphicon-envelope" th:text="' '+#{app.contact}"></span></a></p>
@@ -80,5 +92,17 @@
 		
 		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
 		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+		
+		<form name="f_logout" id="f_logout" th:action="@{/logout}" method="post" />
+		
+		<script>function logout(){form=document.getElementById("f_logout");form.submit();}</script>
+		
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			$(document).ready(function(){
+    			$('[data-toggle="tooltip"]').tooltip(); 
+			});
+			/*]]>*/
+		</script>
 	</body>
 </html>

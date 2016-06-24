@@ -9,8 +9,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.polifono.util.DateUtil;
+import com.polifono.util.MD5Util;
 
 @Entity
 @Table(name = "t001_player")
@@ -66,6 +70,9 @@ public class Player {
 	@Column(name = "c001_dt_birth")
 	private Date dtBirth;
 	
+	@Transient
+	private String dtBirthStr;
+	
 	@Column(name = "c001_address")
 	private String address;
 	
@@ -107,6 +114,15 @@ public class Player {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getEmailMD5() {
+		
+		if (this.email == null || "".equals(email)) {
+			return "";
+		}
+		
+		return MD5Util.md5Hex(email.toLowerCase());
 	}
 
 	public String getPassword() {
@@ -163,6 +179,19 @@ public class Player {
 
 	public void setDtBirth(Date dtBirth) {
 		this.dtBirth = dtBirth;
+	}
+
+	public String getDtBirthStr() {
+		return DateUtil.formatDate(this.dtBirth);
+	}
+
+	public void setDtBirthStr(String dtBirthStr) {
+		try {
+			this.dtBirth = DateUtil.parseDate(dtBirthStr);
+		}
+		catch (Exception e) {
+			this.dtBirth = null;
+		}
 	}
 
 	public String getAddress() {

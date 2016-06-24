@@ -24,7 +24,7 @@
             			<div class="panel-body">
               				<div class="row">
                 				<div class="col-md-3 col-lg-3" align="center">
-                					<img alt="Image" th:src="@{'/static/upload/img/profile/'+${playerId}+'.jpg'}" th:onerror="'this.src=\'' + @{/static/upload/img/profile/notfound.jpg} + '\';'" class="img-circle img-responsive" />
+                					<img alt="Image" th:src="@{'https://www.gravatar.com/avatar/'+${player.emailMD5}+'.jpg?s=200'}" class="img-circle img-responsive" />
                 				</div>
                 				<div class="col-md-9 col-lg-9">
                   					<table class="table table-user-information">

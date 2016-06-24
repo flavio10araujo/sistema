@@ -15,7 +15,17 @@
 		
 		<div class="container">
 			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 toppad">
+					<!-- Other messages -->
+	       			<div th:if="${message eq 'error'}">
+	          			<div class="alert alert-danger alert-dismissible" role="alert">
+	  						<strong th:text="#{error_}">Error!</strong> <span th:utext="${messageContent}"></span>
+						</div>
+	       			</div>
+				</div>
+			</div>
 			
+			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 toppad">
           			<div class="panel panel-info">
             			<div class="panel-heading">
@@ -24,7 +34,7 @@
             			<div class="panel-body">
               				<div class="row">
                 				<div class="col-md-3 col-lg-3" align="center">
-                					<img alt="Image" th:src="@{'/static/upload/img/profile/'+${player.id}+'.jpg'}" class="img-circle img-responsive" />
+                					<img data-toggle="tooltip" data-placement="bottom" title="Para alterar sua imagem, acesse www.gravatar.com utilizando o mesmo email cadastrado na Polifono." alt="Image" th:src="@{'https://www.gravatar.com/avatar/'+${player.emailMD5}+'.jpg?s=200'}" class="img-circle img-responsive" />
                 				</div>
                 				<div class="col-md-9 col-lg-9">
                   					
@@ -37,21 +47,14 @@
 	                    						<tr>
 	                        						<td th:text="#{app.full_name}"></td>
 	                        						<td>
-	                        							<input type="text" th:field="*{name}" th:id="name" class="form-control" required="true" />
+	                        							<input type="text" th:field="*{name}" th:id="name" class="form-control" maxlength="255" required="true" />
 	                        						</td>
 	                      						</tr>
 	                    						
 	                    						<tr>
-	                        						<td th:text="#{app.email}"></td>
-	                        						<td>
-	                        							<input type="email" th:field="*{email}" th:id="email" class="form-control" required="true" />
-	                        						</td>
-	                      						</tr>
-	                      						
-	                      						<tr>
 	                        						<td th:text="#{app.phone}"></td>
 	                        						<td>
-	                        							<input type="text" th:field="*{phone}" th:id="phone" class="form-control" />
+	                        							<input type="text" th:field="*{phone}" th:id="phone" class="form-control" maxlength="20" />
 	                        						</td>                           
 	                      						</tr>
 	                      						
@@ -69,27 +72,20 @@
 	                      						<tr>
 	                        						<td th:text="#{app.birth_date}"></td>
 	                        						<td>
-	                        							<input type="text" th:field="*{dtBirth}" th:id="dtBirth" class="form-control" />
+	                        							<input type="text" th:field="*{dtBirthStr}" th:id="dtBirthStr" class="form-control" placeholder="DD/MM/AAAA" maxlength="10" />
 	                        						</td>
 	                      						</tr>
 	                      						
 	                      						<tr>
 	                        						<td th:text="#{app.address}"></td>
 	                        						<td>
-	                        							<input type="text" th:field="*{address}" th:id="address" class="form-control" />
-	                        						</td>
-	                      						</tr>
-	                      						
-	                      						<tr>
-	                        						<td th:text="#{app.password}"></td>
-	                        						<td>
-	                        							<input type="password" th:field="*{password}" th:id="password" class="form-control" />
+	                        							<input type="text" th:field="*{address}" th:id="address" class="form-control" maxlength="255" />
 	                        						</td>
 	                      						</tr>
 	                    					</tbody>
 	                  					</table>
 									
-										<input type="submit" class="btn btn-danger pull-right" value="Save" />
+										<input type="submit" class="btn btn-danger pull-right" th:value="#{app.save}" />
 									
 									</form>
            						</div>
@@ -99,6 +95,7 @@
                     </div>
         		</div>
       		</div>
+    		
     	</div>
 
   	</div>

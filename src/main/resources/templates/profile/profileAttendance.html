@@ -19,12 +19,12 @@
 				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 toppad">
           			<div class="panel panel-info">
             			<div class="panel-heading">
-              				<h3 class="panel-title" th:text="#{app.score}"></h3>
+              				<h3 class="panel-title">Histórico de login</h3>
             			</div>
             			<div class="panel-body">
               				<div class="row">
                 				<div class="col-md-3 col-lg-3" align="center">
-                					<img alt="Image" th:src="@{'/static/upload/img/profile/'+${playerId}+'.jpg'}" th:onerror="'this.src=\'' + @{/static/upload/img/profile/notfound.jpg} + '\';'" class="img-circle img-responsive" />
+                					<img alt="Image" th:src="@{'https://www.gravatar.com/avatar/'+${player.emailMD5}+'.jpg?s=200'}" class="img-circle img-responsive" />
                 				</div>
                 				<div class="col-md-9 col-lg-9">
                   					<table class="table table-user-information">

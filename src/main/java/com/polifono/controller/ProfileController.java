@@ -141,8 +141,8 @@ public class ProfileController extends BaseController {
 			playerPhases = new ArrayList<PlayerPhase>();
 		}
 		
+		model.addAttribute("player", player);
 		model.addAttribute("playerPhases", playerPhases);
-		model.addAttribute("playerId", playerId);
 		
 		return "profile/profileScore";
 	}
@@ -186,8 +186,8 @@ public class ProfileController extends BaseController {
 			logins = new ArrayList<Login>();
 		}
 		
+		model.addAttribute("player", player);
 		model.addAttribute("logins", logins);
-		model.addAttribute("playerId", playerId);
 		
 		return "profile/profileAttendance";
 	}
@@ -222,23 +222,38 @@ public class ProfileController extends BaseController {
 	
 	@RequestMapping(value = "/player/update", method = RequestMethod.POST)
 	public String update(@ModelAttribute("edit") Player edit, final RedirectAttributes redirectAttributes) {
+
+		// The player only can edit his own profile.
+		// The admin can edit all the profiles.
+		if (currentAuthenticatedUser().getUser().getId() != edit.getId() 
+				&& !currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN")) {
+			return "redirect:/";
+		}
+
+		String msg = validateEditProfile(edit);
 		
-		Player playerOld = playerService.getPlayer(edit.getId());
+		if (!"".equals(msg)) {
+			redirectAttributes.addFlashAttribute("message", "error");
+			redirectAttributes.addFlashAttribute("messageContent", msg);
+			return "redirect:/profile/player/edit/" + edit.getId();
+		}
+		
+		Player player = playerService.getPlayer(edit.getId());
 		
 		try  {
-			edit.setDtInc(playerOld.getDtInc());
-			edit.setRole(playerOld.getRole());
-			edit.setPassword(playerOld.getPassword());
-			edit.setCredit(playerOld.getCredit());
-			edit.setScore(playerOld.getScore());
+			player.setName(edit.getName());
+			player.setPhone(edit.getPhone());
+			player.setSex(edit.getSex());
+			player.setDtBirth(edit.getDtBirth());
+			player.setAddress(edit.getAddress());
 			
-			playerService.save(edit);
+			playerService.save(player);
 			redirectAttributes.addFlashAttribute("edit", "success");
 			
 			// If player logged is editing his own profile.
-			if (currentAuthenticatedUser().getUser().getId() == edit.getId()) {
+			if (currentAuthenticatedUser().getUser().getId() == player.getId()) {
 				// Update the currentAuthenticateUser
-				updateCurrentAuthenticateUser(edit);
+				updateCurrentAuthenticateUser(player);
 			}
 		}
 		catch(Exception e) {
@@ -264,5 +279,15 @@ public class ProfileController extends BaseController {
 		}
 		
 		return false;
+	}
+	
+	public String validateEditProfile(Player player) {
+		String msg = "";
+		
+		if (player.getName() == null || "".equals(player.getName())) {
+			msg = "O nome precisa ser informado.<br />";
+		}
+		
+		return msg;
 	}
 }

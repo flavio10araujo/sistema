@@ -18,12 +18,12 @@
 			
 				<div th:if="${edit eq 'unsuccess'}">
           			<div class="alert alert-danger alert-dismissible" role="alert">
-  						<strong>Error!</strong> Data Not Edited.
+  						<strong th:text="#{error_}">Error!</strong> <span th:text="#{crud.msg.notEdited}">Data Not Edited.</span>
 					</div>
        			</div>
        			<div th:if="${edit eq 'success'}">
           			<div class="alert alert-success alert-dismissible" role="alert">
-  						<strong>Success!</strong> Data Edited Successfully.
+  						<strong th:text="#{success_}">Success!</strong> <span th:text="#{crud.msg.editedSuccessfully}">Data Edited Successfully.</span>
 					</div>
        			</div>
 				
@@ -35,7 +35,8 @@
             			<div class="panel-body">
               				<div class="row">
                 				<div class="col-md-3 col-lg-3" align="center">
-                					<img alt="Image" th:src="@{'/static/upload/img/profile/'+${player.id}+'.jpg'}" th:onerror="'this.src=\'' + @{/static/upload/img/profile/notfound.jpg} + '\';'" class="img-circle img-responsive" />
+                					<img alt="Image" th:src="@{'https://www.gravatar.com/avatar/'+${player.emailMD5}+'.jpg?s=200'}" class="img-circle img-responsive" />
+                					<!--<img alt="Image" th:src="@{'/static/upload/img/profile/'+${player.id}+'.jpg'}" th:onerror="'this.src=\'' + @{/static/upload/img/profile/notfound.jpg} + '\';'" class="img-circle img-responsive" />-->
                 				</div>
                 				<div class="col-md-9 col-lg-9">
                   					<table class="table table-user-information">
@@ -88,7 +89,7 @@
                       						
                       						<tr th:if="${editAvailable == true}">
                         						<td th:text="#{app.password}"></td>
-                        						<td>Clique em editar o perfil para alterar sua senha.</td>
+                        						<td><a th:href="@{/passwordreset}" class="btn btn-default" role="button" th:text="#{app.edit}"></a></td>
                       						</tr>
                       						
                       						<div th:each="phase : ${phases}">
@@ -114,7 +115,7 @@
                  		<div class="panel-footer">
                         	<a type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
                         	<span class="pull-right">
-                            	<a th:if="${editAvailable == true}" th:href="@{'/profile/player/edit/'+${player.id}}" data-original-title="Edit this user" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+                            	<a th:if="${editAvailable == true}" th:href="@{'/profile/player/edit/'+${player.id}}" data-toggle="tooltip" data-placement="bottom" th:title="#{app.edit}" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
                             	<a th:if="${deleteAvailable == true}" data-original-title="Remove this user" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
                         	</span>
                     	</div>
