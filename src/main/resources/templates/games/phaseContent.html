@@ -26,6 +26,16 @@
 				<br /><br />
 			</div>
     	</div>
+    	
+    	<script th:inline="javascript">
+			/*<![CDATA[*/
+    		$(document).ready(function(){
+    			$("video").bind("contextmenu",function(){
+        			return false;
+        		});
+ 			});
+    		/*]]>*/
+		</script>
 	</div>
 </body>
 </html>
