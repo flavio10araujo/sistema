@@ -1,13 +1,16 @@
 package com.polifono.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -76,6 +79,9 @@ public class Player {
 	@Column(name = "c001_address")
 	private String address;
 	
+	@OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
+	private List<PlayerGame> playerGameList;
+	
 	public int getId() {
 		return id;
 	}
@@ -139,14 +145,6 @@ public class Player {
 
 	public void setScore(int score) {
 		this.score = score;
-	}
-
-	public int getCredit() {
-		return credit;
-	}
-
-	public void setCredit(int credit) {
-		this.credit = credit;
 	}
 
 	public Role getRole() {
@@ -224,5 +222,51 @@ public class Player {
 
 	public void setPasswordReset(String passwordReset) {
 		this.passwordReset = passwordReset;
+	}
+
+	public List<PlayerGame> getPlayerGameList() {
+		return playerGameList;
+	}
+
+	public void setPlayerGameList(List<PlayerGame> playerGameList) {
+		this.playerGameList = playerGameList;
+	}
+	
+	/**
+	 * Return the total quantity of credits: credit + specificCredit.
+	 * 
+	 * @return
+	 */
+	public int getTotalCredit() {
+		return getCredit() + getSpecifiCredit();
+	}
+
+	public int getCredit() {
+		return credit;
+	}
+
+	public void setCredit(int credit) {
+		this.credit = credit;
+	}
+	
+	/**
+	 * Return the quantity of specific credits.
+	 * 
+	 * @return
+	 */
+	public int getSpecifiCredit() {
+		List<PlayerGame> list = getPlayerGameList();
+		
+		if (list == null) {
+			return 0;
+		}
+		
+		int specificCredit = 0;
+		
+		for (PlayerGame pg : list) {
+			specificCredit = specificCredit + pg.getCredit();
+		}
+		
+		return specificCredit;
 	}
 }

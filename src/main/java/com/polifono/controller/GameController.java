@@ -22,6 +22,7 @@ import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Phasestatus;
 import com.polifono.domain.Player;
+import com.polifono.domain.PlayerGame;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.domain.Question;
 import com.polifono.service.ContentService;
@@ -29,6 +30,7 @@ import com.polifono.service.GameService;
 import com.polifono.service.LevelService;
 import com.polifono.service.MapService;
 import com.polifono.service.PhaseService;
+import com.polifono.service.PlayerGameService;
 import com.polifono.service.PlayerPhaseService;
 import com.polifono.service.PlayerService;
 import com.polifono.service.QuestionService;
@@ -59,6 +61,9 @@ public class GameController extends BaseController {
 	
 	@Autowired
 	private PlayerPhaseService playerPhaseService;
+	
+	@Autowired
+	private PlayerGameService playerGameService;
 
 	@RequestMapping(value = {"/"}, method = RequestMethod.GET)
 	public final String index(final Model model) {
@@ -495,8 +500,27 @@ public class GameController extends BaseController {
 		// If the player doesn't have credits anymore.
 		int playerId = currentAuthenticatedUser().getUser().getId();
 		Player player = playerService.getPlayer(playerId);
+		boolean hasCredits = false;
 		
-		if (player.getCredit() <= 0) {
+		// If the player has generic credits.
+		if (player.getCredit() > 0) {
+			hasCredits = true;
+		}
+		else {
+			label : {
+				// If the player has not generic credits.
+				for (PlayerGame pg : player.getPlayerGameList()) {
+					// If the player has specific credits of this game.
+					if ((phase.getMap().getGame().getId() == pg.getGame().getId()) && (pg.getCredit() > 0)) {
+						hasCredits = true;
+						break label;
+					}
+				}
+			}
+		}
+		
+		// If the player has not generic credits or specific credits of this game.
+		if (!hasCredits) {
 			// The first phase is always free.
 			if (phase.getOrder() > 1) {
 				
@@ -702,8 +726,7 @@ public class GameController extends BaseController {
 			
 			if (playerAnswer != null) {
 				for (Answer answer : questionAux.getAnswers()) {
-					if ((answer.getId() == Integer.parseInt(playerAnswer))
-							&& answer.isRight()) {
+					if ((answer.getId() == Integer.parseInt(playerAnswer)) && answer.isRight()) {
 						countQuestionsRight++;
 						continue;
 					}
@@ -728,14 +751,16 @@ public class GameController extends BaseController {
 			int playerId = currentAuthenticatedUser().getUser().getId();
 			Player player = playerService.getPlayer(playerId);
 			player.setScore(player.getScore() + playerPhase.getScore());
-			player.setCredit(player.getCredit() - 1);
 			
-			// Update session user. 
-			updateCurrentAuthenticateUser(player);
+			player = removeCreditFromUser(player, currentPhase.getMap().getGame());
 			
 			// Changing the status of this phase.
 			// Now the phase is completed and the player can play the next phase.
 			playerPhaseService.save(playerPhase);
+			
+			// Update session user.
+			//player.setCredit(player.getCredit() - 1);
+			updateCurrentAuthenticateUser(player);
 			
 			// Checking what is the map of the next phase.
 			Map map = findCurrentMap(currentPhase.getMap().getGame(), playerPhase);
@@ -849,5 +874,36 @@ public class GameController extends BaseController {
 	 */
 	public Player addCreditToPlayer(int playerId, int qtdCredits) {
 		return playerService.addCreditsToPlayer(playerId, qtdCredits);
+	}
+	
+	/**
+	 * 
+	 * @param player
+	 * @param game
+	 * @return
+	 */
+	public Player removeCreditFromUser(Player player, Game game) {
+		boolean hasSpecificCredits = false;
+		PlayerGame playerGame = null;
+		
+		label : {
+			// If the player has not generic credits.
+			for (PlayerGame pg : player.getPlayerGameList()) {
+				// If the player has specific credits of this game.
+				if ((game.getId() == pg.getGame().getId()) && (pg.getCredit() > 0)) {
+					hasSpecificCredits = true;
+					playerGame = pg;
+					break label;
+				}
+			}
+		}
+		
+		if (hasSpecificCredits) {
+			playerGameService.removeCreditsFromPlayer(playerGame, 1);
+			return playerService.getPlayer(player.getId());
+		}
+		else {
+			return playerService.removeCreditsFromPlayer(player.getId(), 1);
+		}
 	}
 }

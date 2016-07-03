@@ -52,9 +52,14 @@ public class PlayerService {
 		return playerRepository.save(player);
 	}
 	
+	public final Player removeCreditsFromPlayer(int playerId, int qtdCredits) {
+		Player player = getPlayer(playerId);
+		player.setCredit(player.getCredit() - qtdCredits);
+		return playerRepository.save(player);
+	}
+	
 	public final List<Player> findAll() {
-		List<Player> lista = (List<Player>) playerRepository.findAll();
-		return lista;
+		return (List<Player>) playerRepository.findAll();
 	}
 	
 	public String encryptPassword(@Nonnull final String rawPassword) {
