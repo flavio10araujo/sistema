@@ -1,12 +1,15 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutAdminWithEditor">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutAdmin">
 
 <head></head>
 
 <body>
 
 	<div layout:fragment="content">
+	
+		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/ckeditor/ckeditor.js}"></script>
+	
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
@@ -41,9 +44,9 @@
 	       						
 	       						<div class="form-group">
 	       							<label for="content">Content:</label>
-	       							<div id="editor">
-		      							<textarea th:field="*{content}" th:id="content"></textarea>
-		  							</div>
+	       							<div>
+										<textarea th:field="*{content}" th:id="editor"></textarea>
+									</div>
 	       						</div>
 	       						
 	       						<div class="form-group">
@@ -62,6 +65,13 @@
 		      	</div>
 		   	</div>
 		</div>
+		
+		<script th:inline="javascript">
+	  		/*<![CDATA[*/
+			CKEDITOR.replace('editor');
+			/*]]>*/
+		</script>
+		
 	</div>
 </body>
 </html>
