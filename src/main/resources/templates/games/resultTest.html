@@ -10,18 +10,29 @@
 	      		<div class="row" th:if="${grade} &gt; 70">
 	      			Parabéns! Você passou de fase!<br />
 	      			A porcentagem de acertos foi de <span th:text="${grade}"></span>%.<br /><br />
-	      			<a th:href="@{'/games/'+${phase.map.game.namelink}+'/'+${phase.map.level.order}+'/'+${phase.map.order}+'/'+${phase.order}}" class="btn btn-primary" role="button">Ir para a próxima fase</a> 
+	      			<a th:href="@{'/games/'+${phase.map.game.namelink}+'/'+${phase.map.level.order}+'/'+${phase.map.order}+'/'+${phase.order}}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Ir para a próxima fase</a> 
 	      		</div>
 	      		<div class="row" th:if="${grade} &lt; 70">
 	      			Sua porcentagem de acertos foi de <span th:text="${grade}"></span>%.<br />
 	      			A porcentagem mínima para passar de fase é de 70%.<br /><br />
-	      			<a th:href="@{'/games/'+${phase.map.game.namelink}+'/'+${phase.map.level.order}+'/'+${phase.map.order}+'/'+${phase.order}}" class="btn btn-primary" role="button">Estudar mais</a>
+	      			<a th:href="@{'/games/'+${phase.map.game.namelink}+'/'+${phase.map.level.order}+'/'+${phase.map.order}+'/'+${phase.order}}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Estudar mais</a>
 	      		</div>
 	    	</div>
 	  	</div>
 	  	<div class="row">
 	  		<br /><br /><br /><br /><br />
 	  	</div>
+	  	
+	  	<script th:inline="javascript">
+	  		/*<![CDATA[*/	
+  			$(document).ready(function(){
+  				$("#btnOk").click(function(){
+  					$(this).button('loading');
+  				});
+  			});
+	  		/*]]>*/
+		</script>
+	  	
 	</div>
 </body>
 </html>
