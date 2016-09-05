@@ -9,16 +9,16 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.domain.CurrentUser;
 import com.polifono.domain.Player;
-import com.polifono.service.PlayerService;
+import com.polifono.service.impl.PlayerServiceImpl;
 
 @Service
 public class CurrentUserDetailsService implements UserDetailsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CurrentUserDetailsService.class);
-    private final PlayerService userService;
+    private final PlayerServiceImpl userService;
 
     @Autowired
-    public CurrentUserDetailsService(PlayerService userService) {
+    public CurrentUserDetailsService(PlayerServiceImpl userService) {
         this.userService = userService;
     }
 

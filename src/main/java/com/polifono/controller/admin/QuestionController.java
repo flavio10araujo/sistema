@@ -21,12 +21,12 @@ import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Question;
 import com.polifono.form.admin.QuestionFilterForm;
-import com.polifono.service.ContentService;
-import com.polifono.service.GameService;
-import com.polifono.service.LevelService;
-import com.polifono.service.MapService;
-import com.polifono.service.PhaseService;
-import com.polifono.service.QuestionService;
+import com.polifono.service.impl.ContentServiceImpl;
+import com.polifono.service.impl.GameServiceImpl;
+import com.polifono.service.impl.LevelServiceImpl;
+import com.polifono.service.impl.MapServiceImpl;
+import com.polifono.service.impl.PhaseServiceImpl;
+import com.polifono.service.impl.QuestionServiceImpl;
 
 @Controller
 @RequestMapping("/admin/basic")
@@ -37,15 +37,15 @@ public class QuestionController extends BaseController {
 	public static final String URL_ADMIN_BASIC_EDIT = "admin/basic/question/editPage";
 	public static final String URL_ADMIN_BASIC_SAVEPAGE = "admin/basic/question/savepage";
 	
-	private final GameService gameService;
-	private final LevelService levelService;
-	private final MapService mapService;
-	private final PhaseService phaseService;
-	private final ContentService contentService;
-	private final QuestionService questionService;
+	private final GameServiceImpl gameService;
+	private final LevelServiceImpl levelService;
+	private final MapServiceImpl mapService;
+	private final PhaseServiceImpl phaseService;
+	private final ContentServiceImpl contentService;
+	private final QuestionServiceImpl questionService;
 	
 	@Autowired
-	public QuestionController(final GameService gameService, final LevelService levelService, final MapService mapService, final PhaseService phaseService, final ContentService contentService, final QuestionService questionService) {
+	public QuestionController(final GameServiceImpl gameService, final LevelServiceImpl levelService, final MapServiceImpl mapService, final PhaseServiceImpl phaseService, final ContentServiceImpl contentService, final QuestionServiceImpl questionService) {
 		this.gameService = gameService;
 		this.levelService = levelService;
 		this.mapService = mapService;

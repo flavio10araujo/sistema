@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CurrentUserServiceImpl implements CurrentUserService {
+public class CurrentUserServiceImpl implements ICurrentUserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CurrentUserDetailsService.class);
 

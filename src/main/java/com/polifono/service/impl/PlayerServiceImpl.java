@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import java.security.SecureRandom;
 import java.util.Date;
@@ -18,12 +18,12 @@ import com.polifono.domain.Role;
 import com.polifono.repository.PlayerRepository;
 
 @Service
-public class PlayerService {
+public class PlayerServiceImpl {
 
 	@Autowired
 	private PlayerRepository playerRepository;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(PlayerService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PlayerServiceImpl.class);
 	
 	public final Player save(Player player) {
 		return playerRepository.save(player);

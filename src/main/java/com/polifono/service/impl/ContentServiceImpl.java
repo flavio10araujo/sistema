@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import com.polifono.domain.Phase;
 import com.polifono.repository.ContentRepository;
 
 @Service
-public class ContentService {
+public class ContentServiceImpl {
 
 	@Autowired
 	private ContentRepository contentRepository;

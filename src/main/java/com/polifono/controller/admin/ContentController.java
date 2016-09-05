@@ -21,11 +21,11 @@ import com.polifono.domain.Level;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
 import com.polifono.form.admin.ContentFilterForm;
-import com.polifono.service.ContentService;
-import com.polifono.service.GameService;
-import com.polifono.service.LevelService;
-import com.polifono.service.MapService;
-import com.polifono.service.PhaseService;
+import com.polifono.service.impl.ContentServiceImpl;
+import com.polifono.service.impl.GameServiceImpl;
+import com.polifono.service.impl.LevelServiceImpl;
+import com.polifono.service.impl.MapServiceImpl;
+import com.polifono.service.impl.PhaseServiceImpl;
 
 @Controller
 @RequestMapping("/admin/basic")
@@ -41,19 +41,19 @@ public class ContentController extends BaseController {
 	public static final String URL_ADMIN_BASIC_SAVEPAGE_TEST = "admin/basic/contentTest/savepage";
 	
 	@Autowired
-	private GameService gameService;
+	private GameServiceImpl gameService;
 	
 	@Autowired
-	private LevelService levelService;
+	private LevelServiceImpl levelService;
 	
 	@Autowired
-	private MapService mapService;
+	private MapServiceImpl mapService;
 	
 	@Autowired
-	private PhaseService phaseService;
+	private PhaseServiceImpl phaseService;
 	
 	@Autowired
-	private ContentService contentService;
+	private ContentServiceImpl contentService;
 	
 	@RequestMapping(value = {"/content", "/content/savepage"}, method = RequestMethod.GET)
 	public String savePage(HttpSession session, Model model) {

@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import java.util.List;
 
@@ -9,12 +9,12 @@ import com.polifono.domain.Transaction;
 import com.polifono.repository.TransactionRepository;
 
 @Service
-public class TransactionService {
+public class TransactionServiceImpl {
 
 	private final TransactionRepository transactionRepository;
 	
 	@Autowired
-	public TransactionService(final TransactionRepository transactionRepository) {
+	public TransactionServiceImpl(final TransactionRepository transactionRepository) {
 		this.transactionRepository = transactionRepository;
 	}
 	

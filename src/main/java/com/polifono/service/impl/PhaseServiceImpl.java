@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import com.polifono.domain.Player;
 import com.polifono.repository.PhaseRepository;
 
 @Service
-public class PhaseService {
+public class PhaseServiceImpl {
 
 	@Autowired
 	private PhaseRepository phaseRepository;

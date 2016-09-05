@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.controller.BaseController;
-import com.polifono.service.ClassService;
+import com.polifono.service.impl.ClassServiceImpl;
 
 @Controller
 @RequestMapping("/teacher")
@@ -25,7 +25,7 @@ public class ClassController extends BaseController {
 	public static final String URL_ADMIN_BASIC_SAVEPAGE = "teacher/class/savepage";
 	
 	@Autowired
-	private ClassService classService;
+	private ClassServiceImpl classService;
 
 	@RequestMapping(value = {"/class", "/class/savepage"}, method = RequestMethod.GET)
 	public String savePage(HttpSession session, Model model) {

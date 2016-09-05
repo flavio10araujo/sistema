@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import com.polifono.domain.Level;
 import com.polifono.repository.LevelRepository;
 
 @Service
-public class LevelService {
+public class LevelServiceImpl {
 
 	@Autowired
 	private LevelRepository levelRepository;

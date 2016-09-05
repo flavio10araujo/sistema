@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import com.polifono.domain.Question;
 import com.polifono.repository.QuestionRepository;
 
 @Service
-public class QuestionService {
+public class QuestionServiceImpl {
 
 	@Autowired
 	private QuestionRepository questionRepository;

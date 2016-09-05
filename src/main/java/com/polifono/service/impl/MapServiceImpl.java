@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import com.polifono.domain.Map;
 import com.polifono.repository.MapRepository;
 
 @Service
-public class MapService {
+public class MapServiceImpl {
 
 	@Autowired
 	private MapRepository mapRepository;

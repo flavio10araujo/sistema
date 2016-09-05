@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -10,7 +10,7 @@ import com.polifono.domain.Player;
 import com.polifono.repository.ClassRepository;
 
 @Service
-public class ClassService {
+public class ClassServiceImpl {
 
 	@Autowired
 	private ClassRepository classRepository;

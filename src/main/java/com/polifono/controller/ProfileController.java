@@ -17,30 +17,30 @@ import com.polifono.domain.Login;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
-import com.polifono.service.ClassPlayerService;
-import com.polifono.service.LoginService;
-import com.polifono.service.PhaseService;
-import com.polifono.service.PlayerPhaseService;
-import com.polifono.service.PlayerService;
+import com.polifono.service.impl.ClassPlayerServiceImpl;
+import com.polifono.service.impl.LoginServiceImpl;
+import com.polifono.service.impl.PhaseServiceImpl;
+import com.polifono.service.impl.PlayerPhaseServiceImpl;
+import com.polifono.service.impl.PlayerServiceImpl;
 
 @Controller
 @RequestMapping("/profile")
 public class ProfileController extends BaseController {
 	
 	@Autowired
-	private PlayerService playerService;
+	private PlayerServiceImpl playerService;
 	
 	@Autowired
-	private PhaseService phaseService;
+	private PhaseServiceImpl phaseService;
 	
 	@Autowired
-	private PlayerPhaseService playerPhaseService;
+	private PlayerPhaseServiceImpl playerPhaseService;
 	
 	@Autowired
-	private ClassPlayerService classPlayerService;
+	private ClassPlayerServiceImpl classPlayerService;
 	
 	@Autowired
-	private LoginService loginService;
+	private LoginServiceImpl loginService;
 
 	@RequestMapping(value = {"/player/{playerId}"}, method = RequestMethod.GET)
 	public final String profilePlayer(final Model model, @PathVariable("playerId") String playerId) {

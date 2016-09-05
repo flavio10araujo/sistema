@@ -13,8 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
-import com.polifono.service.ClassPlayerService;
-import com.polifono.service.PlayerService;
+import com.polifono.service.impl.ClassPlayerServiceImpl;
+import com.polifono.service.impl.PlayerServiceImpl;
 import com.polifono.util.EmailSendUtil;
 import com.polifono.util.EmailUtil;
 import com.polifono.util.RandomStringUtil;
@@ -23,10 +23,10 @@ import com.polifono.util.RandomStringUtil;
 public class PlayerController extends BaseController {
 	
 	@Autowired
-	private PlayerService playerService;
+	private PlayerServiceImpl playerService;
 	
 	@Autowired
-	private ClassPlayerService classPlayerService;
+	private ClassPlayerServiceImpl classPlayerService;
 	
 	@RequestMapping(value = {"/player/create"}, method = RequestMethod.POST)
 	public final String createPlayer(final Model model, @ModelAttribute("player") Player player) {

@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import com.polifono.form.teacher.ReportGeneralForm;
 import com.polifono.repository.PlayerPhaseRepository;
 
 @Service
-public class PlayerPhaseService {
+public class PlayerPhaseServiceImpl {
 
 	@Autowired
 	private PlayerPhaseRepository playerPhaseRepository;

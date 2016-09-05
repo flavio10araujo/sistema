@@ -25,45 +25,45 @@ import com.polifono.domain.Player;
 import com.polifono.domain.PlayerGame;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.domain.Question;
-import com.polifono.service.ContentService;
-import com.polifono.service.GameService;
-import com.polifono.service.LevelService;
-import com.polifono.service.MapService;
-import com.polifono.service.PhaseService;
-import com.polifono.service.PlayerGameService;
-import com.polifono.service.PlayerPhaseService;
-import com.polifono.service.PlayerService;
-import com.polifono.service.QuestionService;
+import com.polifono.service.impl.ContentServiceImpl;
+import com.polifono.service.impl.GameServiceImpl;
+import com.polifono.service.impl.LevelServiceImpl;
+import com.polifono.service.impl.MapServiceImpl;
+import com.polifono.service.impl.PhaseServiceImpl;
+import com.polifono.service.impl.PlayerGameServiceImpl;
+import com.polifono.service.impl.PlayerPhaseServiceImpl;
+import com.polifono.service.impl.PlayerServiceImpl;
+import com.polifono.service.impl.QuestionServiceImpl;
 
 @Controller
 public class GameController extends BaseController {
 
 	@Autowired
-	private PlayerService playerService;
+	private PlayerServiceImpl playerService;
 	
 	@Autowired
-	private GameService gameService;
+	private GameServiceImpl gameService;
 	
 	@Autowired
-	private LevelService levelService;
+	private LevelServiceImpl levelService;
 	
 	@Autowired
-	private MapService mapService;
+	private MapServiceImpl mapService;
 	
 	@Autowired
-	private PhaseService phaseService;
+	private PhaseServiceImpl phaseService;
 	
 	@Autowired
-	private ContentService contentService;
+	private ContentServiceImpl contentService;
 	
 	@Autowired
-	private QuestionService questionService;
+	private QuestionServiceImpl questionService;
 	
 	@Autowired
-	private PlayerPhaseService playerPhaseService;
+	private PlayerPhaseServiceImpl playerPhaseService;
 	
 	@Autowired
-	private PlayerGameService playerGameService;
+	private PlayerGameServiceImpl playerGameService;
 
 	@RequestMapping(value = {"/"}, method = RequestMethod.GET)
 	public final String index(final Model model) {

@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,7 +7,7 @@ import com.polifono.domain.PlayerGame;
 import com.polifono.repository.PlayerGameRepository;
 
 @Service
-public class PlayerGameService {
+public class PlayerGameServiceImpl {
 
 	@Autowired
 	private PlayerGameRepository playerGameRepository;

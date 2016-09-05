@@ -19,10 +19,10 @@ import com.polifono.domain.Level;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
 import com.polifono.form.admin.PhaseFilterForm;
-import com.polifono.service.GameService;
-import com.polifono.service.LevelService;
-import com.polifono.service.MapService;
-import com.polifono.service.PhaseService;
+import com.polifono.service.impl.GameServiceImpl;
+import com.polifono.service.impl.LevelServiceImpl;
+import com.polifono.service.impl.MapServiceImpl;
+import com.polifono.service.impl.PhaseServiceImpl;
 
 @Controller
 @RequestMapping("/admin/basic")
@@ -33,13 +33,13 @@ public class PhaseController extends BaseController {
 	public static final String URL_ADMIN_BASIC_EDIT = "admin/basic/phase/editPage";
 	public static final String URL_ADMIN_BASIC_SAVEPAGE = "admin/basic/phase/savepage";
 	
-	private final GameService gameService;
-	private final LevelService levelService;
-	private final MapService mapService;
-	private final PhaseService phaseService;
+	private final GameServiceImpl gameService;
+	private final LevelServiceImpl levelService;
+	private final MapServiceImpl mapService;
+	private final PhaseServiceImpl phaseService;
 	
 	@Autowired
-	public PhaseController(final GameService gameService, final LevelService levelService, final MapService mapService, final PhaseService phaseService) {
+	public PhaseController(final GameServiceImpl gameService, final LevelServiceImpl levelService, final MapServiceImpl mapService, final PhaseServiceImpl phaseService) {
 		this.gameService = gameService;
 		this.levelService = levelService;
 		this.mapService = mapService;

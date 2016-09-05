@@ -21,12 +21,12 @@ import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Question;
 import com.polifono.form.admin.AnswerFilterForm;
-import com.polifono.service.AnswerService;
-import com.polifono.service.GameService;
-import com.polifono.service.LevelService;
-import com.polifono.service.MapService;
-import com.polifono.service.PhaseService;
-import com.polifono.service.QuestionService;
+import com.polifono.service.impl.AnswerServiceImpl;
+import com.polifono.service.impl.GameServiceImpl;
+import com.polifono.service.impl.LevelServiceImpl;
+import com.polifono.service.impl.MapServiceImpl;
+import com.polifono.service.impl.PhaseServiceImpl;
+import com.polifono.service.impl.QuestionServiceImpl;
 
 @Controller
 @RequestMapping("/admin/basic")
@@ -38,22 +38,22 @@ public class AnswerController extends BaseController {
 	public static final String URL_ADMIN_BASIC_SAVEPAGE = "admin/basic/answer/savepage";
 	
 	@Autowired
-	private GameService gameService;
+	private GameServiceImpl gameService;
 	
 	@Autowired
-	private LevelService levelService;
+	private LevelServiceImpl levelService;
 	
 	@Autowired
-	private MapService mapService;
+	private MapServiceImpl mapService;
 	
 	@Autowired
-	private PhaseService phaseService;
+	private PhaseServiceImpl phaseService;
 	
 	@Autowired
-	private QuestionService questionService;
+	private QuestionServiceImpl questionService;
 	
 	@Autowired
-	private AnswerService answerService;
+	private AnswerServiceImpl answerService;
 	
 	@RequestMapping(value = {"/answer", "/answer/savepage"}, method = RequestMethod.GET)
 	public String savePage(HttpSession session, Model model) {

@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import com.polifono.domain.Game;
 import com.polifono.repository.GameRepository;
 
 @Service
-public class GameService {
+public class GameServiceImpl {
 
 	@Autowired
 	private GameRepository gameRepository;
