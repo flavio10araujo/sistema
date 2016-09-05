@@ -20,7 +20,7 @@ import com.polifono.domain.Game;
 import com.polifono.domain.Level;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
-import com.polifono.domain.dto.admin.ContentFilterForm;
+import com.polifono.form.admin.ContentFilterForm;
 import com.polifono.service.ContentService;
 import com.polifono.service.GameService;
 import com.polifono.service.LevelService;

@@ -1,4 +1,4 @@
-package com.polifono.domain.dto.teacher;
+package com.polifono.dto.teacher;
 
 import java.util.List;
 

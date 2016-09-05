@@ -18,7 +18,7 @@ import com.polifono.domain.Game;
 import com.polifono.domain.Level;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
-import com.polifono.domain.dto.admin.PhaseFilterForm;
+import com.polifono.form.admin.PhaseFilterForm;
 import com.polifono.service.GameService;
 import com.polifono.service.LevelService;
 import com.polifono.service.MapService;

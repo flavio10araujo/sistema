@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.polifono.controller.BaseController;
 import com.polifono.domain.ClassPlayer;
-import com.polifono.domain.dto.teacher.ReportGeneralDTO;
-import com.polifono.domain.dto.teacher.ReportGeneralForm;
+import com.polifono.dto.teacher.ReportGeneralDTO;
+import com.polifono.form.teacher.ReportGeneralForm;
 import com.polifono.service.ClassPlayerService;
 import com.polifono.service.ClassService;
 import com.polifono.service.GameService;

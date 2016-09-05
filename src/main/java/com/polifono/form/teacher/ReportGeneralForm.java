@@ -1,4 +1,4 @@
-package com.polifono.domain.dto.teacher;
+package com.polifono.form.teacher;
 
 import com.polifono.domain.Game;
 

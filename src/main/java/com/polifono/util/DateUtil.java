@@ -18,8 +18,13 @@ public class DateUtil {
 	 * @param data an object of type Date
 	 */
 	public static String formatDate(Object data) {
-		if ((data instanceof String && !"".equals(data)) || data != null) {
-			return simpleDateFormat.format(data);
+		if (data != null && !"".equals(data) && data instanceof String) {
+			//try {
+				return simpleDateFormat.format(data);
+			/*}
+			catch(IllegalArgumentException e) {
+				return "";
+			}*/
 		}
 
 		return "";

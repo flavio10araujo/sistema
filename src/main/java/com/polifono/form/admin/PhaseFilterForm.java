@@ -1,4 +1,4 @@
-package com.polifono.domain.dto.admin;
+package com.polifono.form.admin;
 
 import com.polifono.domain.Game;
 import com.polifono.domain.Level;

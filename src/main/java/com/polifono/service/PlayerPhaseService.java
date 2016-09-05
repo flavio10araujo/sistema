@@ -10,7 +10,7 @@ import com.polifono.domain.Game;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
-import com.polifono.domain.dto.teacher.ReportGeneralForm;
+import com.polifono.form.teacher.ReportGeneralForm;
 import com.polifono.repository.PlayerPhaseRepository;
 
 @Service
