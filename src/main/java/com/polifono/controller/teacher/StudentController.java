@@ -90,7 +90,7 @@ public class StudentController extends BaseController {
 			
 			// Get the player by his email.
 			// Get the player only if he is active.
-			classPlayer.setPlayer(playerService.getUserByEmailAndStatus(classPlayer.getPlayer().getEmail(), true));
+			classPlayer.setPlayer(playerService.findByEmailAndStatus(classPlayer.getPlayer().getEmail(), true));
 			
 			// If the email is not registered at the system.
 			if (classPlayer.getPlayer() == null) {

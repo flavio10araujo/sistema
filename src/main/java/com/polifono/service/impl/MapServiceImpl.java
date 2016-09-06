@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 import com.polifono.domain.Game;
 import com.polifono.domain.Map;
 import com.polifono.repository.IMapRepository;
+import com.polifono.service.IMapService;
 
 @Service
-public class MapServiceImpl {
+public class MapServiceImpl implements IMapService {
 
 	@Autowired
 	private IMapRepository mapRepository;

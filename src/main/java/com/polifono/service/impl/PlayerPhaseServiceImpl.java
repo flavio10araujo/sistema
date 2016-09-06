@@ -12,9 +12,10 @@ import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.form.teacher.ReportGeneralForm;
 import com.polifono.repository.IPlayerPhaseRepository;
+import com.polifono.service.IPlayerPhaseService;
 
 @Service
-public class PlayerPhaseServiceImpl {
+public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 
 	@Autowired
 	private IPlayerPhaseRepository playerPhaseRepository;

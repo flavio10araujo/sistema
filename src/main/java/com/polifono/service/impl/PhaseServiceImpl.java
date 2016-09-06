@@ -11,9 +11,10 @@ import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.repository.IPhaseRepository;
+import com.polifono.service.IPhaseService;
 
 @Service
-public class PhaseServiceImpl {
+public class PhaseServiceImpl implements IPhaseService {
 
 	@Autowired
 	private IPhaseRepository phaseRepository;

@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Transaction;
 import com.polifono.repository.ITransactionRepository;
+import com.polifono.service.ITransactionService;
 
 @Service
-public class TransactionServiceImpl {
+public class TransactionServiceImpl implements ITransactionService {
 
 	private final ITransactionRepository transactionRepository;
 	

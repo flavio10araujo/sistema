@@ -59,7 +59,7 @@ public class PaymentController extends BaseController {
 	public boolean verifyEmailConfirmed() {
 		
 		int playerId = currentAuthenticatedUser().getUser().getId();
-		Player player = playerService.getPlayer(playerId);
+		Player player = playerService.find(playerId);
 		
 		if (player.isIndEmailConfirmed()) {
 			return true;

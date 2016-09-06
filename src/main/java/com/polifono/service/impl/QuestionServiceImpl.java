@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Question;
 import com.polifono.repository.IQuestionRepository;
+import com.polifono.service.IQuestionService;
 
 @Service
-public class QuestionServiceImpl {
+public class QuestionServiceImpl implements IQuestionService {
 
 	@Autowired
 	private IQuestionRepository questionRepository;
