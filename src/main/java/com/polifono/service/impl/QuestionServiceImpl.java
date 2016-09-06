@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Question;
-import com.polifono.repository.QuestionRepository;
+import com.polifono.repository.IQuestionRepository;
 
 @Service
 public class QuestionServiceImpl {
 
 	@Autowired
-	private QuestionRepository questionRepository;
+	private IQuestionRepository questionRepository;
 	
 	public final Question save(Question question) {
 		return questionRepository.save(question);

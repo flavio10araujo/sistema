@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.PlayerGame;
-import com.polifono.repository.PlayerGameRepository;
+import com.polifono.repository.IPlayerGameRepository;
 
 @Service
 public class PlayerGameServiceImpl {
 
 	@Autowired
-	private PlayerGameRepository playerGameRepository;
+	private IPlayerGameRepository playerGameRepository;
 	
 	public final PlayerGame removeCreditsFromPlayer(PlayerGame playerGame, int qtdCredits) {
 		playerGame.setCredit(playerGame.getCredit() - qtdCredits);

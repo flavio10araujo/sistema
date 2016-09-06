@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.polifono.domain.Map;
 
-public interface MapRepository extends CrudRepository<Map, Integer> {
+public interface IMapRepository extends CrudRepository<Map, Integer> {
 
 	@Query("SELECT map FROM Map map WHERE map.game.id = :gameId ORDER BY map.order ASC")
 	public List<Map> findMapsByGame(@Param("gameId") int gameId);

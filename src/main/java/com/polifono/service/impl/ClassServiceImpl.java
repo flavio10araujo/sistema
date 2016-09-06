@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Player;
-import com.polifono.repository.ClassRepository;
+import com.polifono.repository.IClassRepository;
 
 @Service
 public class ClassServiceImpl {
 
 	@Autowired
-	private ClassRepository classRepository;
+	private IClassRepository classRepository;
 	
 	public final com.polifono.domain.Class create(com.polifono.domain.Class clazz, Player player) {
 		clazz.setPlayer(player);

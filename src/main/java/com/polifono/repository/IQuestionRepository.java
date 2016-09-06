@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.polifono.domain.Question;
 
-public interface QuestionRepository extends CrudRepository<Question, Integer> {
+public interface IQuestionRepository extends CrudRepository<Question, Integer> {
 
 	@Query("SELECT question FROM Question question, Content content, Phase phase, Map map WHERE question.content.id = content.id AND content.phase.id = phase.id AND phase.map.id = map.id AND content.contenttype.id = 1 AND map.game.id = :gameId")
 	public List<Question> findQuestionsByGame(@Param("gameId") int gameId);

@@ -6,15 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Transaction;
-import com.polifono.repository.TransactionRepository;
+import com.polifono.repository.ITransactionRepository;
 
 @Service
 public class TransactionServiceImpl {
 
-	private final TransactionRepository transactionRepository;
+	private final ITransactionRepository transactionRepository;
 	
 	@Autowired
-	public TransactionServiceImpl(final TransactionRepository transactionRepository) {
+	public TransactionServiceImpl(final ITransactionRepository transactionRepository) {
 		this.transactionRepository = transactionRepository;
 	}
 	

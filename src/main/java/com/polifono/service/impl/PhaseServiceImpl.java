@@ -10,13 +10,13 @@ import com.polifono.domain.Game;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
-import com.polifono.repository.PhaseRepository;
+import com.polifono.repository.IPhaseRepository;
 
 @Service
 public class PhaseServiceImpl {
 
 	@Autowired
-	private PhaseRepository phaseRepository;
+	private IPhaseRepository phaseRepository;
 	
 	public final Phase save(Phase phase) {
 		return phaseRepository.save(phase);

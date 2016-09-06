@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.ClassPlayer;
-import com.polifono.repository.ClassPlayerRepository;
+import com.polifono.repository.IClassPlayerRepository;
 
 @Service
 public class ClassPlayerServiceImpl {
 
 	@Autowired
-	private ClassPlayerRepository classPlayerRepository;
+	private IClassPlayerRepository classPlayerRepository;
 	
 	public final ClassPlayer create(ClassPlayer classPlayer) {
 		classPlayer.setDtInc(new Date());

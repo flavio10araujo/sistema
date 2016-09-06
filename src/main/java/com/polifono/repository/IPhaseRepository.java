@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.polifono.domain.Phase;
 
-public interface PhaseRepository extends CrudRepository<Phase, Integer> {
+public interface IPhaseRepository extends CrudRepository<Phase, Integer> {
 
 	@Query("SELECT phase FROM Phase phase WHERE phase.map.id = :mapId")
 	public List<Phase> findPhasesByMap(@Param("mapId") int mapId);

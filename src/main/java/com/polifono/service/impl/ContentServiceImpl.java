@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Content;
 import com.polifono.domain.Phase;
-import com.polifono.repository.ContentRepository;
+import com.polifono.repository.IContentRepository;
 
 @Service
 public class ContentServiceImpl {
 
 	@Autowired
-	private ContentRepository contentRepository;
+	private IContentRepository contentRepository;
 	
 	public final Content save(Content content) {
 		return contentRepository.save(content);

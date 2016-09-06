@@ -6,13 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Answer;
-import com.polifono.repository.AnswerRepository;
+import com.polifono.repository.IAnswerRepository;
+import com.polifono.service.IAnswerService;
 
 @Service
-public class AnswerServiceImpl {
+public class AnswerServiceImpl implements IAnswerService {
 
 	@Autowired
-	private AnswerRepository answerRepository;
+	private IAnswerRepository answerRepository;
 	
 	public final Answer save(Answer answer) {
 		return answerRepository.save(answer);

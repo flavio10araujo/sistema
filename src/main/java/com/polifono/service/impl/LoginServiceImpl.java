@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Login;
 import com.polifono.domain.Player;
-import com.polifono.repository.LoginRepository;
+import com.polifono.repository.ILoginRepository;
 
 @Service
 public class LoginServiceImpl {
 
 	@Autowired
-	private LoginRepository loginRepository;
+	private ILoginRepository loginRepository;
 	
 	public final Login registerLogin(Player player) {
 		Login login = new Login();

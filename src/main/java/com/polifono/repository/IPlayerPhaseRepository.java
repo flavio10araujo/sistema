@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.polifono.domain.PlayerPhase;
 
-public interface PlayerPhaseRepository extends CrudRepository<PlayerPhase, UUID> {
+public interface IPlayerPhaseRepository extends CrudRepository<PlayerPhase, UUID> {
 
 	@Query("SELECT playerPhase FROM PlayerPhase playerPhase, Phase phase, Map map "
 	+ "WHERE playerPhase.phase.id = phase.id AND phase.map.id = map.id AND playerPhase.player.id = :playerId "

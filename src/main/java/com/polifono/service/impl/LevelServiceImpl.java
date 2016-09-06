@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Level;
-import com.polifono.repository.LevelRepository;
+import com.polifono.repository.ILevelRepository;
 
 @Service
 public class LevelServiceImpl {
 
 	@Autowired
-	private LevelRepository levelRepository;
+	private ILevelRepository levelRepository;
 	
 	public final List<Level> findAll() {
 		return (List<Level>) levelRepository.findAll();

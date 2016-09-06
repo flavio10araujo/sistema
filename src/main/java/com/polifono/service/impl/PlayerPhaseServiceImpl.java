@@ -11,13 +11,13 @@ import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.form.teacher.ReportGeneralForm;
-import com.polifono.repository.PlayerPhaseRepository;
+import com.polifono.repository.IPlayerPhaseRepository;
 
 @Service
 public class PlayerPhaseServiceImpl {
 
 	@Autowired
-	private PlayerPhaseRepository playerPhaseRepository;
+	private IPlayerPhaseRepository playerPhaseRepository;
 	
 	public final PlayerPhase save(PlayerPhase playerPhase) {
 		return playerPhaseRepository.save(playerPhase);

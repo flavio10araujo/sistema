@@ -15,13 +15,13 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Player;
 import com.polifono.domain.Role;
-import com.polifono.repository.PlayerRepository;
+import com.polifono.repository.IPlayerRepository;
 
 @Service
 public class PlayerServiceImpl {
 
 	@Autowired
-	private PlayerRepository playerRepository;
+	private IPlayerRepository playerRepository;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PlayerServiceImpl.class);
 	

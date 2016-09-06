@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.polifono.domain.Transaction;
 
-public interface TransactionRepository extends CrudRepository<Transaction, Integer> {
+public interface ITransactionRepository extends CrudRepository<Transaction, Integer> {
 
 	@Query("SELECT transaction FROM Transaction transaction WHERE transaction.code = :code")
 	public List<Transaction> findTransactionByCode(@Param("code") String code);

@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Game;
-import com.polifono.repository.GameRepository;
+import com.polifono.repository.IGameRepository;
 
 @Service
 public class GameServiceImpl {
 
 	@Autowired
-	private GameRepository gameRepository;
+	private IGameRepository gameRepository;
 
 	public final List<Game> findAll() {
 		return (List<Game>) gameRepository.findAll();

@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.polifono.domain.ClassPlayer;
 
-public interface ClassPlayerRepository extends CrudRepository<ClassPlayer, Integer> {
+public interface IClassPlayerRepository extends CrudRepository<ClassPlayer, Integer> {
 
 	@Query("SELECT classPlayer FROM ClassPlayer classPlayer, com.polifono.domain.Class clazz WHERE classPlayer.clazz.id = clazz.id AND clazz.player.id = :playerId AND (classPlayer.status = 1 OR classPlayer.status = 2)")
 	public List<ClassPlayer> findByTeacher(@Param("playerId") int playerId);

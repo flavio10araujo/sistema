@@ -4,7 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.polifono.domain.PlayerGame;
 
-public interface PlayerGameRepository extends CrudRepository<PlayerGame, Integer> {
+public interface IPlayerGameRepository extends CrudRepository<PlayerGame, Integer> {
 
 	
 }

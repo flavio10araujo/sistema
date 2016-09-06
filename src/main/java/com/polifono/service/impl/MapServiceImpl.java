@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Game;
 import com.polifono.domain.Map;
-import com.polifono.repository.MapRepository;
+import com.polifono.repository.IMapRepository;
 
 @Service
 public class MapServiceImpl {
 
 	@Autowired
-	private MapRepository mapRepository;
+	private IMapRepository mapRepository;
 	
 	public final Map save(Map map) {
 		return mapRepository.save(map);
