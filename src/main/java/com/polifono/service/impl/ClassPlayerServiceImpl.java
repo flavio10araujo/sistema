@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.domain.ClassPlayer;
 import com.polifono.repository.IClassPlayerRepository;
+import com.polifono.service.IClassPlayerService;
 
 @Service
-public class ClassPlayerServiceImpl {
+public class ClassPlayerServiceImpl implements IClassPlayerService {
 
 	@Autowired
 	private IClassPlayerRepository classPlayerRepository;

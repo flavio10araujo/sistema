@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Game;
 import com.polifono.repository.IGameRepository;
+import com.polifono.service.IGameService;
 
 @Service
-public class GameServiceImpl {
+public class GameServiceImpl implements IGameService {
 
 	@Autowired
 	private IGameRepository gameRepository;

@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Level;
 import com.polifono.repository.ILevelRepository;
+import com.polifono.service.ILevelService;
 
 @Service
-public class LevelServiceImpl {
+public class LevelServiceImpl implements ILevelService {
 
 	@Autowired
 	private ILevelRepository levelRepository;

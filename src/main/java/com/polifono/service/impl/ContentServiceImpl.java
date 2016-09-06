@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 import com.polifono.domain.Content;
 import com.polifono.domain.Phase;
 import com.polifono.repository.IContentRepository;
+import com.polifono.service.IContentService;
 
 @Service
-public class ContentServiceImpl {
+public class ContentServiceImpl implements IContentService {
 
 	@Autowired
 	private IContentRepository contentRepository;
