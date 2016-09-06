@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,45 +26,46 @@ import com.polifono.domain.Player;
 import com.polifono.domain.PlayerGame;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.domain.Question;
-import com.polifono.service.impl.ContentServiceImpl;
-import com.polifono.service.impl.GameServiceImpl;
-import com.polifono.service.impl.LevelServiceImpl;
-import com.polifono.service.impl.MapServiceImpl;
-import com.polifono.service.impl.PhaseServiceImpl;
-import com.polifono.service.impl.PlayerGameServiceImpl;
-import com.polifono.service.impl.PlayerPhaseServiceImpl;
-import com.polifono.service.impl.PlayerServiceImpl;
-import com.polifono.service.impl.QuestionServiceImpl;
+import com.polifono.service.IContentService;
+import com.polifono.service.IGameService;
+import com.polifono.service.ILevelService;
+import com.polifono.service.IMapService;
+import com.polifono.service.IPhaseService;
+import com.polifono.service.IPlayerGameService;
+import com.polifono.service.IPlayerPhaseService;
+import com.polifono.service.IPlayerService;
+import com.polifono.service.IQuestionService;
 
 @Controller
 public class GameController extends BaseController {
 
 	@Autowired
-	private PlayerServiceImpl playerService;
+	@Qualifier("playerServiceImpl")
+	private IPlayerService playerService;
 	
 	@Autowired
-	private GameServiceImpl gameService;
+	private IGameService gameService;
 	
 	@Autowired
-	private LevelServiceImpl levelService;
+	private ILevelService levelService;
 	
 	@Autowired
-	private MapServiceImpl mapService;
+	private IMapService mapService;
 	
 	@Autowired
-	private PhaseServiceImpl phaseService;
+	private IPhaseService phaseService;
 	
 	@Autowired
-	private ContentServiceImpl contentService;
+	private IContentService contentService;
 	
 	@Autowired
-	private QuestionServiceImpl questionService;
+	private IQuestionService questionService;
 	
 	@Autowired
-	private PlayerPhaseServiceImpl playerPhaseService;
+	private IPlayerPhaseService playerPhaseService;
 	
 	@Autowired
-	private PlayerGameServiceImpl playerGameService;
+	private IPlayerGameService playerGameService;
 
 	@RequestMapping(value = {"/"}, method = RequestMethod.GET)
 	public final String index(final Model model) {

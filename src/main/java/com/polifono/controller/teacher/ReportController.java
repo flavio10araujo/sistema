@@ -14,26 +14,26 @@ import com.polifono.controller.BaseController;
 import com.polifono.domain.ClassPlayer;
 import com.polifono.dto.teacher.ReportGeneralDTO;
 import com.polifono.form.teacher.ReportGeneralForm;
-import com.polifono.service.impl.ClassPlayerServiceImpl;
-import com.polifono.service.impl.ClassServiceImpl;
-import com.polifono.service.impl.GameServiceImpl;
-import com.polifono.service.impl.PlayerPhaseServiceImpl;
+import com.polifono.service.IClassPlayerService;
+import com.polifono.service.IClassService;
+import com.polifono.service.IGameService;
+import com.polifono.service.IPlayerPhaseService;
 
 @Controller
 @RequestMapping("/teacher")
 public class ReportController extends BaseController {
 	
 	@Autowired
-	private GameServiceImpl gameService;
+	private IGameService gameService;
 	
 	@Autowired
-	private ClassServiceImpl classService;
+	private IClassService classService;
 	
 	@Autowired
-	private ClassPlayerServiceImpl classPlayerService;
+	private IClassPlayerService classPlayerService;
 	
 	@Autowired
-	private PlayerPhaseServiceImpl playerPhaseService;
+	private IPlayerPhaseService playerPhaseService;
 
 	@RequestMapping(value = {"/report"}, method = RequestMethod.GET)
 	public String reportGeneral(Model model) {

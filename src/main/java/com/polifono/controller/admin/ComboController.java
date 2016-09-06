@@ -13,21 +13,21 @@ import com.polifono.domain.Combo;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Question;
-import com.polifono.service.impl.MapServiceImpl;
-import com.polifono.service.impl.PhaseServiceImpl;
-import com.polifono.service.impl.QuestionServiceImpl;
+import com.polifono.service.IMapService;
+import com.polifono.service.IPhaseService;
+import com.polifono.service.IQuestionService;
 
 @RestController
 public class ComboController extends BaseController {
 
     @Autowired
-    private MapServiceImpl mapService;
+    private IMapService mapService;
     
     @Autowired
-    private PhaseServiceImpl phaseService;
+    private IPhaseService phaseService;
     
     @Autowired
-    private QuestionServiceImpl questionService;
+    private IQuestionService questionService;
 
     @RequestMapping("/comboMap")
     public List<Combo> comboMap(@RequestParam(value="gameId") String gameId, @RequestParam(value="levelId") String levelId) {

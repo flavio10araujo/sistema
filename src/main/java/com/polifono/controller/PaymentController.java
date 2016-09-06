@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.polifono.domain.Player;
 import com.polifono.domain.Transaction;
-import com.polifono.service.impl.PlayerServiceImpl;
-import com.polifono.service.impl.TransactionServiceImpl;
+import com.polifono.service.IPlayerService;
+import com.polifono.service.ITransactionService;
 import com.polifono.util.EmailSendUtil;
 
 import br.com.uol.pagseguro.domain.checkout.Checkout;
@@ -30,10 +30,10 @@ import br.com.uol.pagseguro.service.TransactionSearchService;
 public class PaymentController extends BaseController {
 	
 	@Autowired
-	private TransactionServiceImpl transactionService;
+	private ITransactionService transactionService;
 	
 	@Autowired
-	private PlayerServiceImpl playerService;
+	private IPlayerService playerService;
 
 	@RequestMapping(value = {"/buycredits"}, method = RequestMethod.GET)
 	public final String buycredits(final Model model) {

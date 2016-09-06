@@ -17,9 +17,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.polifono.controller.BaseController;
 import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
-import com.polifono.service.impl.ClassPlayerServiceImpl;
-import com.polifono.service.impl.ClassServiceImpl;
-import com.polifono.service.impl.PlayerServiceImpl;
+import com.polifono.service.IClassPlayerService;
+import com.polifono.service.IClassService;
+import com.polifono.service.IPlayerService;
 import com.polifono.util.EmailSendUtil;
 
 @Controller
@@ -32,13 +32,13 @@ public class StudentController extends BaseController {
 	public static final String URL_ADMIN_BASIC_SAVEPAGE = "teacher/student/savepage";
 	
 	@Autowired
-	private ClassServiceImpl classService;
+	private IClassService classService;
 	
 	@Autowired
-	private PlayerServiceImpl playerService;
+	private IPlayerService playerService;
 	
 	@Autowired
-	private ClassPlayerServiceImpl classPlayerService;
+	private IClassPlayerService classPlayerService;
 
 	@RequestMapping(value = {"/student", "/student/savepage"}, method = RequestMethod.GET)
 	public String savePage(HttpSession session, Model model) {

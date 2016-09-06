@@ -21,12 +21,12 @@ import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Question;
 import com.polifono.form.admin.QuestionFilterForm;
-import com.polifono.service.impl.ContentServiceImpl;
-import com.polifono.service.impl.GameServiceImpl;
-import com.polifono.service.impl.LevelServiceImpl;
-import com.polifono.service.impl.MapServiceImpl;
-import com.polifono.service.impl.PhaseServiceImpl;
-import com.polifono.service.impl.QuestionServiceImpl;
+import com.polifono.service.IContentService;
+import com.polifono.service.IGameService;
+import com.polifono.service.ILevelService;
+import com.polifono.service.IMapService;
+import com.polifono.service.IPhaseService;
+import com.polifono.service.IQuestionService;
 
 @Controller
 @RequestMapping("/admin/basic")
@@ -37,22 +37,23 @@ public class QuestionController extends BaseController {
 	public static final String URL_ADMIN_BASIC_EDIT = "admin/basic/question/editPage";
 	public static final String URL_ADMIN_BASIC_SAVEPAGE = "admin/basic/question/savepage";
 	
-	private final GameServiceImpl gameService;
-	private final LevelServiceImpl levelService;
-	private final MapServiceImpl mapService;
-	private final PhaseServiceImpl phaseService;
-	private final ContentServiceImpl contentService;
-	private final QuestionServiceImpl questionService;
+	@Autowired
+	private IGameService gameService;
 	
 	@Autowired
-	public QuestionController(final GameServiceImpl gameService, final LevelServiceImpl levelService, final MapServiceImpl mapService, final PhaseServiceImpl phaseService, final ContentServiceImpl contentService, final QuestionServiceImpl questionService) {
-		this.gameService = gameService;
-		this.levelService = levelService;
-		this.mapService = mapService;
-		this.phaseService = phaseService;
-		this.contentService = contentService;
-		this.questionService = questionService;
-	}
+	private ILevelService levelService;
+	
+	@Autowired
+	private IMapService mapService;
+	
+	@Autowired
+	private IPhaseService phaseService;
+	
+	@Autowired
+	private IContentService contentService;
+	
+	@Autowired
+	private IQuestionService questionService;
 	
 	@RequestMapping(value = {"/question", "/question/savepage"}, method = RequestMethod.GET)
 	public String savePage(HttpSession session, Model model) {

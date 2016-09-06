@@ -17,9 +17,9 @@ import com.polifono.controller.BaseController;
 import com.polifono.domain.Game;
 import com.polifono.domain.Level;
 import com.polifono.domain.Map;
-import com.polifono.service.impl.GameServiceImpl;
-import com.polifono.service.impl.LevelServiceImpl;
-import com.polifono.service.impl.MapServiceImpl;
+import com.polifono.service.IGameService;
+import com.polifono.service.ILevelService;
+import com.polifono.service.IMapService;
 
 @Controller
 @RequestMapping("/admin/basic")
@@ -31,13 +31,13 @@ public class MapController extends BaseController {
 	public static final String URL_ADMIN_BASIC_SAVEPAGE = "admin/basic/map/savepage";
 	
 	@Autowired
-	private GameServiceImpl gameService;
+	private IGameService gameService;
 	
 	@Autowired
-	private LevelServiceImpl levelService;
+	private ILevelService levelService;
 	
 	@Autowired
-	private MapServiceImpl mapService;
+	private IMapService mapService;
 
 	@RequestMapping(value = {"/map", "/map/savepage"}, method = RequestMethod.GET)
 	public String savePage(HttpSession session, Model model) {
