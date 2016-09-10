@@ -20,7 +20,6 @@ public class GameServiceImpl implements IGameService {
 	}
 	
 	public final Game findByNamelink(String namelink) {
-		Game game = gameRepository.findByNamelink(namelink); 
-		return game;
+		return gameRepository.findByNamelink(namelink);
 	}
 }
