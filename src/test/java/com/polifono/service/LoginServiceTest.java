@@ -26,4 +26,8 @@ public class LoginServiceTest extends AbstractTest {
     public void tearDown() {
         // Clean up after each test method.
     }
+    
+    //registerLogin
+    
+    //findByPlayer
 }

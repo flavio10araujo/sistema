@@ -26,4 +26,24 @@ public class PlayerServiceTest extends AbstractTest {
     public void tearDown() {
         // Clean up after each test method.
     }
+    
+    //create
+    
+    //save
+    
+    //find
+    
+    //findAll
+    
+    //findByEmail
+    
+    //findByEmailAndStatus
+    
+    //findByEmailAndStatusForLogin
+    
+    //encryptPassword
+    
+    //addCreditsToPlayer
+    
+    //removeCreditsFromPlayer
 }

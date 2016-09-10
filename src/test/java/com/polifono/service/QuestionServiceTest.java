@@ -26,4 +26,22 @@ public class QuestionServiceTest extends AbstractTest {
     public void tearDown() {
         // Clean up after each test method.
     }
+    
+    //save
+    
+    //delete
+    
+    //find
+    
+    //findAll
+    
+    //findQuestionsByGame
+    
+    //findQuestionsByGameAndLevel
+    
+    //findQuestionsByMap
+    
+    //findQuestionsByPhase
+    
+    //findQuestionsByContent
 }

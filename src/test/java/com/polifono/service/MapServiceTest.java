@@ -26,4 +26,23 @@ public class MapServiceTest extends AbstractTest {
     public void tearDown() {
         // Clean up after each test method.
     }
+    
+    //save
+    
+    //delete
+    
+    //find
+    
+    //findAll
+    
+    //findMapsByGame
+    
+    //findMapsByGameAndLevel
+    
+    //findMapByGameAndLevel
+    
+    //findMapsByGameLevelAndOrder
+    
+    //findNextMapSameLevel
+
 }

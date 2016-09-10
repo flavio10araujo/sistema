@@ -82,5 +82,4 @@ public class PlayerServiceImpl implements IPlayerService {
 		player.setCredit(player.getCredit() - qtdCredits);
 		return playerRepository.save(player);
 	}
-
 }

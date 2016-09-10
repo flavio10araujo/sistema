@@ -26,4 +26,14 @@ public class PlayerPhaseServiceTest extends AbstractTest {
     public void tearDown() {
         // Clean up after each test method.
     }
+    
+    //save
+    
+    //findLastPhaseCompleted
+    
+    //findPlayerPhaseByPlayerPhaseAndStatus
+    
+    //findPlayerPhaseByPlayer
+    
+    //findForReportGeneral
 }

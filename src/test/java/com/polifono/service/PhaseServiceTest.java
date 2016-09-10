@@ -26,4 +26,30 @@ public class PhaseServiceTest extends AbstractTest {
     public void tearDown() {
         // Clean up after each test method.
     }
+    
+    //save
+    
+    //delete
+    
+    //find
+    
+    //findAll
+    
+    //findPhasesByGame
+    
+    //findPhasesByGameAndLevel
+    
+    //findPhasesByMap
+    
+    //findPhaseByMapAndOrder
+    
+    //findNextPhaseInThisMap
+    
+    //findLastPhaseDoneByPlayerAndGame
+    
+    //findLastPhaseOfTheLevel
+    
+    //findGamesForProfile
+    
+    
 }
