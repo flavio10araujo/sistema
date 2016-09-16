@@ -40,8 +40,6 @@
 		/* LISTAS DAS FASES V2: http://bootsnipp.com/snippets/featured/form-process-steps - FIM */
 		</style>
 		
-		
-		
 		<div class="col-sm-12 bg">
 		  	<div class="row">
 	     		<br />
@@ -51,35 +49,8 @@
 					<!--<li th:text="${map.name}" class="active"></li>-->
 				</ol>
 	      	</div>
-		  	
-		  	
-		  	<!-- LISTA DAS FASES: ORIGINAL -->
-		  	<!--
-		  	<div class="row">
-		    	<div class="col-sm-12">
-		      		<br />
-		      		<span style="margin-left:10px" th:each="phase : ${phases}">
-		           		<a th:if="${phase.opened}" th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/'+${map.order}+'/'+${phase.order}}" class="btn btn-primary" role="button" th:text="${phase.order}"></a>
-		           		<a th:if="${not phase.opened}" href="#" class="btn btn-primary disabled" role="button" th:text="${phase.order}"></a>
-		           	</span>
-		    	</div>
-	  		</div>
-	  		-->
-	  		<!-- LISTA DAS FASES: ORIGINAL - FIM -->
-	  		
-	  		<!-- LISTAS DAS FASES V1: http://bootsnipp.com/snippets/BDrW4 -->
-	  		<!--<div class="stepwizard">
-			    <div class="stepwizard-row">
-			        <div class="stepwizard-step" th:each="phase : ${phases}">
-			            <a th:if="${phase.opened}" th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/'+${map.order}+'/'+${phase.order}}" class="btn btn-primary btn-circle" th:text="${phase.order}" />
-			            <button th:if="${not phase.opened}" type="button" class="btn btn-default btn-circle" disabled="disabled" th:text="${phase.order}" />
-			            <p th:text="${phase.name}"></p>
-			        </div>
-			    </div>
-			</div>-->
-			<!-- LISTAS DAS FASES V1: http://bootsnipp.com/snippets/BDrW4 - FIM -->
-			
-			<!-- LISTAS DAS FASES V2: http://bootsnipp.com/snippets/featured/form-process-steps -->
+
+		  	<!-- LISTAS DAS FASES V2: http://bootsnipp.com/snippets/featured/form-process-steps -->
            	<div class="row bs-wizard" style="border-bottom:0">
                 <div th:each="phase : ${phases}" th:class="((${phase.opened}) ? 'col-xs-3 bs-wizard-step complete' : 'col-xs-3 bs-wizard-step disabled')">
 					<div class="text-center bs-wizard-stepnum" th:text="${phase.order}"></div>

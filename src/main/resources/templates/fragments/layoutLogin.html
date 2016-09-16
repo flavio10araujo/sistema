@@ -16,6 +16,9 @@
 			body{color:#f5f6f7}
 			.bg{background-color:#fff;color:#000}
 		</style>
+		
+		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
 	</head>
 
 	<body>
@@ -89,9 +92,6 @@
 				<p class="navbar-text"><a th:href="@{/contact}" data-toggle="tooltip" data-placement="top" th:title="#{msg.contact}"><span class="glyphicon glyphicon-envelope" th:text="' '+#{app.contact}"></span></a></p>
 			</div>
 		</nav>
-		
-		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
-		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
 		
 		<form name="f_logout" id="f_logout" th:action="@{/logout}" method="post" />
 		

@@ -821,12 +821,12 @@ public class GameController extends BaseController {
 		 2
 		 100 = 70 
 		 90 = 65
-		 80 = 55
+		 80 = 60
 		 70 = 50
 		 3
 		 100 = 50
 		 90 = 45
-		 80 = 35
+		 80 = 40
 		 70 = 30
 		 4...
 		 10 
@@ -844,7 +844,7 @@ public class GameController extends BaseController {
 				return 65;
 			}
 			if (grade > 70) {
-				return 55;
+				return 60;
 			}
 			if (grade == 70) {
 				return 50;
@@ -859,7 +859,7 @@ public class GameController extends BaseController {
 				return 45;
 			}
 			if (grade > 70) {
-				return 35;
+				return 40;
 			}
 			if (grade == 70) {
 				return 30;

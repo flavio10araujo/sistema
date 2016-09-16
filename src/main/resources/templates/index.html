@@ -16,8 +16,11 @@
 	    				<input type="email" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" />
 	  				</div>
 	  				<div class="form-group">
-	    				<input type="password" th:field="*{password}" class="form-control" required="true" th:placeholder="#{app.password}" data-toggle="tooltip" th:title="#{msg.rule.password}" />
+	    				<input type="password" th:field="*{password}" th:id="create_password" class="form-control" required="true" th:placeholder="#{app.password}" data-toggle="tooltip" th:title="#{msg.rule.password}" />
 	  				</div>
+	  				<div class="checkbox">
+  						<label><input type="checkbox" value="1" id="create_show_password" />Mostrar senha</label>
+					</div>
 	  				<input type="submit" class="btn btn-default" th:value="#{sign_in2}" />
 				</form>
 	    	</div>
@@ -35,23 +38,23 @@
 				<div th:if="${error} != null" class="alert alert-warning">
 	  				<strong th:text="#{attention_}"></strong> <label th:text="#{msg.login.nOk}"></label>
 				</div>
-				<!--<div class="row">
-	      			Aprenda música por apenas R$ 1,00.
-	      		</div>
-	      		<div class="row">
-	      			Instrumentos disponíveis: Flauta, teclado, acordeão, saxofone e gaita de boca.
-	      		</div>
-	      		<div class="row">
-	      			Cursos classificados em 5 níveis: Iniciante, Básico, Intermediário, Intermediário-avançado e Avançado.
-	      		</div>
-	      		<div class="row">
-	      			As primeiras 5 aulas são gratuitas. Experimente!
-	      		</div>-->
 	    	</div>
 	  	</div>
 	  	<div class="row">
 	  		<br /><br /><br /><br /><br />
 	  	</div>
+	  	
+	  	<script th:inline="javascript">
+			/*<![CDATA[*/
+			$('#create_show_password').click(function(){
+				if($('#create_show_password').prop('checked')) {
+					$('#create_password').attr('type', 'text');
+				} else {
+					$('#create_password').attr('type', 'password');
+				}
+			});
+			/*]]>*/
+		</script>
 	</div>
 </body>
 </html>

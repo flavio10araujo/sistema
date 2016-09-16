@@ -30,7 +30,7 @@ public class PlayerServiceImpl implements IPlayerService {
 		player.setDtInc(new Date());
 		player.setActive(true);
 		player.setPassword(encryptPassword(player.getPassword()));
-		player.setCredit(3); // 3 credits are given to the player when he creates the account.
+		player.setCredit(30); // n credits are given to the player when he creates the account.
 		player.setRole(Role.USER);
 		return playerRepository.save(player);
 	}
