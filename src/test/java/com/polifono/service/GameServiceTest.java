@@ -22,7 +22,7 @@ public class GameServiceTest extends AbstractTest {
 	@Autowired
     private IGameService service;
 	
-	private String NAME_LINK = "recorder";
+	private final String NAME_LINK = "recorder";
 
     @Before
     public void setUp() {
@@ -34,9 +34,11 @@ public class GameServiceTest extends AbstractTest {
         // Clean up after each test method.
     }
 
+    /* findAll - begin */
     @Test
     public void findAll_ListIsNull_ExceptionThrown() {
-    	Assert.assertNotNull("failure - expected not null", service.findAll()); // Esse teste é meio desnecessário, pois mesmo se o banco estiver vazio, aqui é retornada uma lista vazia e não um null.
+    	List<Game> list = service.findAll();
+    	Assert.assertNotNull("failure - expected not null", list);
     }
     
     @Test
@@ -44,10 +46,13 @@ public class GameServiceTest extends AbstractTest {
     	List<Game> list = service.findAll();
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
     }
+    /* findAll - end */
 
+    /* findByNamelink - begin */
     @Test
     public void findByNamelink_ReturnIsNull_ExceptionThrown() {
     	Game item = service.findByNamelink(NAME_LINK);
     	Assert.assertNotNull("failure - expected not null for '" + NAME_LINK + "'", item);
     }
+    /* findByNamelink - end */
 }

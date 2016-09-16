@@ -501,7 +501,7 @@ public class GameController extends BaseController {
 	public boolean playerHasCredits(Phase phase) {
 		// If the player doesn't have credits anymore.
 		int playerId = currentAuthenticatedUser().getUser().getId();
-		Player player = playerService.find(playerId);
+		Player player = playerService.findOne(playerId);
 		boolean hasCredits = false;
 		
 		// If the player has generic credits.
@@ -672,7 +672,7 @@ public class GameController extends BaseController {
 			playerPhase.setPhasestatus(phasestatus);
 			
 			int playerId = currentAuthenticatedUser().getUser().getId();
-			Player player = playerService.find(playerId);
+			Player player = playerService.findOne(playerId);
 			
 			playerPhase.setPlayer(player);
 		}
@@ -751,7 +751,7 @@ public class GameController extends BaseController {
 			playerPhase.setScore(calculateScore(playerPhase.getNumAttempts(), grade));
 			
 			int playerId = currentAuthenticatedUser().getUser().getId();
-			Player player = playerService.find(playerId);
+			Player player = playerService.findOne(playerId);
 			player.setScore(player.getScore() + playerPhase.getScore());
 			
 			player = removeCreditFromUser(player, currentPhase.getMap().getGame());
@@ -902,7 +902,7 @@ public class GameController extends BaseController {
 		
 		if (hasSpecificCredits) {
 			playerGameService.removeCreditsFromPlayer(playerGame, 1);
-			return playerService.find(player.getId());
+			return playerService.findOne(player.getId());
 		}
 		else {
 			return playerService.removeCreditsFromPlayer(player.getId(), 1);

@@ -13,7 +13,7 @@ public interface IPlayerService {
 	
 	public Player save(Player player);
 	
-	public Player find(int id);
+	public Player findOne(int id);
 	
 	public List<Player> findAll();
 	

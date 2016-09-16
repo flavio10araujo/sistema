@@ -17,6 +17,7 @@ import com.polifono.domain.Player;
 import com.polifono.domain.Role;
 import com.polifono.repository.IPlayerRepository;
 import com.polifono.service.IPlayerService;
+import com.polifono.util.RandomStringUtil;
 
 @Service
 public class PlayerServiceImpl implements IPlayerService {
@@ -32,6 +33,7 @@ public class PlayerServiceImpl implements IPlayerService {
 		player.setPassword(encryptPassword(player.getPassword()));
 		player.setCredit(30); // n credits are given to the player when he creates the account.
 		player.setRole(Role.USER);
+		player.setEmailConfirmed(new RandomStringUtil(10).nextString()); // This field is sent to the player's email to confirm if the email is real.
 		return playerRepository.save(player);
 	}
 	
@@ -39,7 +41,7 @@ public class PlayerServiceImpl implements IPlayerService {
 		return playerRepository.save(player);
 	}
 	
-	public Player find(int id) {
+	public Player findOne(int id) {
         return playerRepository.findOne(id);
     }
 	
@@ -48,11 +50,11 @@ public class PlayerServiceImpl implements IPlayerService {
 	}
 	
 	public Player findByEmail(String email) {
-        return playerRepository.findPlayerByEmail(email);
+        return playerRepository.findByEmail(email);
     }
 	
 	public Player findByEmailAndStatus(String email, boolean status) {
-        return playerRepository.findUserByEmailAndStatus(email, status);
+        return playerRepository.findByEmailAndStatus(email, status);
     }
 	
 	/**
@@ -63,7 +65,7 @@ public class PlayerServiceImpl implements IPlayerService {
 	 */
 	public Optional<Player> findByEmailAndStatusForLogin(String email, boolean status) {
         LOGGER.debug("Getting user by email={}", email.replaceFirst("@.*", "@***"));
-        return playerRepository.findUserByEmailAndStatusForLogin(email, status);
+        return playerRepository.findByEmailAndStatusForLogin(email, status);
     }
 	
 	public String encryptPassword(@Nonnull final String rawPassword) {
@@ -72,13 +74,13 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 	
 	public final Player addCreditsToPlayer(int playerId, int qtdCredits) {
-		Player player = find(playerId);
+		Player player = findOne(playerId);
 		player.setCredit(player.getCredit() + qtdCredits);
 		return playerRepository.save(player);
 	}
 	
 	public final Player removeCreditsFromPlayer(int playerId, int qtdCredits) {
-		Player player = find(playerId);
+		Player player = findOne(playerId);
 		player.setCredit(player.getCredit() - qtdCredits);
 		return playerRepository.save(player);
 	}

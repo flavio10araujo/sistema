@@ -52,7 +52,7 @@ public class ProfileController extends BaseController {
 			return "redirect:/";
 		}
 		
-		Player player = playerService.find(Integer.parseInt(playerId));
+		Player player = playerService.findOne(Integer.parseInt(playerId));
 		
 		if (player == null) {
 			return "profile/profileNotFound";
@@ -112,7 +112,7 @@ public class ProfileController extends BaseController {
 			return "redirect:/";
 		}
 		
-		Player player = playerService.find(Integer.parseInt(playerId));
+		Player player = playerService.findOne(Integer.parseInt(playerId));
 		
 		if (player == null) {
 			return "profile/profileNotFound";
@@ -157,7 +157,7 @@ public class ProfileController extends BaseController {
 			return "redirect:/";
 		}
 		
-		Player player = playerService.find(Integer.parseInt(playerId));
+		Player player = playerService.findOne(Integer.parseInt(playerId));
 		
 		if (player == null) {
 			return "profile/profileNotFound";
@@ -204,7 +204,7 @@ public class ProfileController extends BaseController {
 
 		// Verify if the playerId belongs to the player logged OR the user logged is an admin.
 		if (currentAuthenticatedUser().getUser().getId() == Integer.parseInt(playerId) || currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN")) {
-			Player player = playerService.find(Integer.parseInt(playerId));
+			Player player = playerService.findOne(Integer.parseInt(playerId));
 			
 			if (player == null) {
 				return "profile/profileNotFound";
@@ -238,7 +238,7 @@ public class ProfileController extends BaseController {
 			return "redirect:/profile/player/edit/" + edit.getId();
 		}
 		
-		Player player = playerService.find(edit.getId());
+		Player player = playerService.findOne(edit.getId());
 		
 		try  {
 			player.setName(edit.getName());

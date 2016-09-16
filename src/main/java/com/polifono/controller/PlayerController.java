@@ -48,7 +48,6 @@ public class PlayerController extends BaseController {
 			
 			// If there is not errors.
 			if (msg.equals("")) {
-				player.setEmailConfirmed(new RandomStringUtil(10).nextString()); // This field is sent to the player's email to confirm if the email is real.
 				model.addAttribute("player", playerService.create(player));
 				model.addAttribute("codRegister", 1);
 				sendEmailConfirmRegister(player);
