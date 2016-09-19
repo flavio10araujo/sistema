@@ -13,7 +13,7 @@ public interface IPhaseService {
 	
 	public Boolean delete(Integer id);
 	
-	public Phase find(int phaseId);
+	public Phase findOne(int phaseId);
 	
 	public List<Phase> findAll();
 	
@@ -23,7 +23,7 @@ public interface IPhaseService {
 	
 	public List<Phase> findPhasesByMap(int mapId);
 	
-	public Phase findPhaseByMapAndOrder(Map map, int phaseOrder);
+	public Phase findByMapAndOrder(Map map, int phaseOrder);
 	
 	public Phase findNextPhaseInThisMap(Map map, int phaseOrder);
 	

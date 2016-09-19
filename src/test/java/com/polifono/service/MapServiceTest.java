@@ -100,6 +100,8 @@ public class MapServiceTest extends AbstractTest {
     @Test
     public void delete_MapExistent_ReturnTrue() {
     	Assert.assertTrue("failure - expected return true", service.delete(MAP_ID_EXISTENT));
+    	Map entity = service.findOne(MAP_ID_EXISTENT);
+    	Assert.assertNull("failure - expected null", entity);
     }
     
     @Test
@@ -182,33 +184,33 @@ public class MapServiceTest extends AbstractTest {
     }
     /* findMapsByGameAndLevel - end */
     
-    /* findMapByGameAndLevel - begin */
+    /* findByGameAndLevel - begin */
     @Test
-    public void findMapByGameAndLevel_SearchGameAndLevelExistents_ReturnItem() {
-    	Map entity = service.findMapByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
+    public void findByGameAndLevel_SearchGameAndLevelExistents_ReturnItem() {
+    	Map entity = service.findByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
         Assert.assertNotNull("failure - expected not null", entity);
     }
     
     @Test
-    public void findMapByGameAndLevel_SearchGameAndLevelInexistents_ReturnNull() {
-    	Map entity = service.findMapByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT);
+    public void findByGameAndLevel_SearchGameAndLevelInexistents_ReturnNull() {
+    	Map entity = service.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT);
         Assert.assertNull("failure - expected null", entity);
     }
-    /* findMapByGameAndLevel - end */
+    /* findByGameAndLevel - end */
     
-    /* findMapByGameLevelAndOrder - begin */
+    /* findByGameLevelAndOrder - begin */
     @Test
-    public void findMapByGameLevelAndOrder_SearchGameLevelAndOrderExistents_ReturnItem() {
-    	Map entity = service.findMapByGameLevelAndOrder(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT, 1);
+    public void findByGameLevelAndOrder_SearchGameLevelAndOrderExistents_ReturnItem() {
+    	Map entity = service.findByGameLevelAndOrder(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT, 1);
         Assert.assertNotNull("failure - expected not null", entity);
     }
     
     @Test
-    public void findMapByGameLevelAndOrder_SearchGameLevelAndOrderInexistents_ReturnNull() {
-    	Map entity = service.findMapByGameLevelAndOrder(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT, 0);
+    public void findByGameLevelAndOrder_SearchGameLevelAndOrderInexistents_ReturnNull() {
+    	Map entity = service.findByGameLevelAndOrder(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT, 0);
         Assert.assertNull("failure - expected null", entity);
     }
-    /* findMapByGameLevelAndOrder - end */
+    /* findByGameLevelAndOrder - end */
     
     /* findNextMapSameLevel - begin */
     @Test

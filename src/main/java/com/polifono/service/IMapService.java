@@ -18,9 +18,9 @@ public interface IMapService {
 	
 	public List<Map> findMapsByGameAndLevel(int gameId, int levelId);
 	
-	public Map findMapByGameAndLevel(int gameId, int levelId);
+	public Map findByGameAndLevel(int gameId, int levelId);
 	
-	public Map findMapByGameLevelAndOrder(int gameId, int levelId, int mapOrder);
+	public Map findByGameLevelAndOrder(int gameId, int levelId, int mapOrder);
 	
 	public Map findNextMapSameLevel(Map mapCurrent);
 

@@ -123,7 +123,7 @@ public class PhaseController extends BaseController {
 			}
 		}
 		else if (operation.equals("edit")) {
-			Phase edit = phaseService.find(id.intValue());
+			Phase edit = phaseService.findOne(id.intValue());
 
 			if (edit != null) {
 				model.addAttribute("phase", edit);

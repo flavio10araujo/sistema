@@ -52,7 +52,7 @@ public class MapServiceImpl implements IMapService {
 		return mapRepository.findMapsByGameAndLevel(gameId, levelId);
 	}
 	
-	public final Map findMapByGameAndLevel(int gameId, int levelId) {
+	public final Map findByGameAndLevel(int gameId, int levelId) {
 		List<Map> maps = mapRepository.findMapsByGameAndLevel(gameId, levelId);
 		
 		if (maps.size() > 0) {
@@ -62,7 +62,7 @@ public class MapServiceImpl implements IMapService {
 		return null;
 	}
 	
-	public final Map findMapByGameLevelAndOrder(int gameId, int levelId, int mapOrder) {
+	public final Map findByGameLevelAndOrder(int gameId, int levelId, int mapOrder) {
 		List<Map> maps = mapRepository.findMapsByGameLevelAndOrder(gameId, levelId, mapOrder);
 		
 		if (maps.size() > 0) {

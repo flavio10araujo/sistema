@@ -40,7 +40,7 @@ public class PhaseServiceImpl implements IPhaseService {
 		return false;
 	}
 	
-	public final Phase find(int phaseId) {
+	public final Phase findOne(int phaseId) {
 		return phaseRepository.findOne(phaseId);
 	}
 	
@@ -60,7 +60,7 @@ public class PhaseServiceImpl implements IPhaseService {
 		return phaseRepository.findPhasesByMap(mapId);
 	}
 	
-	public final Phase findPhaseByMapAndOrder(Map map, int phaseOrder) {
+	public final Phase findByMapAndOrder(Map map, int phaseOrder) {
 		return phaseRepository.findPhaseByMapAndOrder(map.getId(), phaseOrder);
 	}
 	

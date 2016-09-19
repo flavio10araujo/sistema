@@ -189,7 +189,7 @@ public class GameController extends BaseController {
 			return "redirect:/";
 		}
 		
-		Map map = mapService.findMapByGameLevelAndOrder(game.getId(), levelOrder, mapOrder);
+		Map map = mapService.findByGameLevelAndOrder(game.getId(), levelOrder, mapOrder);
 		
 		// If the map doesn't exist.
 		if (map == null) {
@@ -346,7 +346,7 @@ public class GameController extends BaseController {
 		// If the player has never completed any phase of this game. 
 		if (lastPhaseCompleted == null) {
 			// Find the first map of the first level of this game.
-			map = mapService.findMapByGameAndLevel(game.getId(), 1);
+			map = mapService.findByGameAndLevel(game.getId(), 1);
 		}
 		// If the player has already completed at least one phase of this game.
 		else {
@@ -369,7 +369,7 @@ public class GameController extends BaseController {
 				// If the next map is not in the same level. 
 				else {
 					// Find the first map of the next level.
-					Map firstMapNextLevel = mapService.findMapByGameAndLevel(game.getId(), lastPhaseCompleted.getPhase().getMap().getLevel().getId() + 1);
+					Map firstMapNextLevel = mapService.findByGameAndLevel(game.getId(), lastPhaseCompleted.getPhase().getMap().getLevel().getId() + 1);
 
 					// If it has found the first map of the next level.
 					if (firstMapNextLevel != null) {
@@ -450,14 +450,14 @@ public class GameController extends BaseController {
 			return "redirect:/";
 		}
 		
-		Map map = mapService.findMapByGameLevelAndOrder(game.getId(), levelOrder, mapOrder);
+		Map map = mapService.findByGameLevelAndOrder(game.getId(), levelOrder, mapOrder);
 		
 		// If the map doesn't exist.
 		if (map == null) {
 			return "redirect:/";
 		}
 		
-		Phase phase = phaseService.findPhaseByMapAndOrder(map, phaseOrder);
+		Phase phase = phaseService.findByMapAndOrder(map, phaseOrder);
 		
 		// If the phase doesn't exist.
 		if (phase == null) {
@@ -598,14 +598,14 @@ public class GameController extends BaseController {
 			return "redirect:/";
 		}
 		
-		Map map = mapService.findMapByGameLevelAndOrder(game.getId(), levelOrder, mapOrder);
+		Map map = mapService.findByGameLevelAndOrder(game.getId(), levelOrder, mapOrder);
 		
 		// If the map doesn't exist.
 		if (map == null) {
 			return "redirect:/";
 		}
 		
-		Phase phase = phaseService.findPhaseByMapAndOrder(map, phaseOrder);
+		Phase phase = phaseService.findByMapAndOrder(map, phaseOrder);
 		
 		// If the phase doesn't exist.
 		if (phase == null) {
