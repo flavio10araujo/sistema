@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Game;
 import com.polifono.domain.Map;
 import com.polifono.repository.IMapRepository;
 import com.polifono.service.IMapService;
@@ -37,7 +36,7 @@ public class MapServiceImpl implements IMapService {
 		return false;
 	}
 	
-	public Map find(int id) {
+	public Map findOne(int id) {
         return mapRepository.findOne(id);
     }
 
@@ -63,9 +62,14 @@ public class MapServiceImpl implements IMapService {
 		return null;
 	}
 	
-	public final Map findMapsByGameLevelAndOrder(Game game, int levelId, int mapOrder) {
-		Map map = mapRepository.findMapsByGameLevelAndOrder(game.getId(), levelId, mapOrder);
-		return map;
+	public final Map findMapByGameLevelAndOrder(int gameId, int levelId, int mapOrder) {
+		List<Map> maps = mapRepository.findMapsByGameLevelAndOrder(gameId, levelId, mapOrder);
+		
+		if (maps.size() > 0) {
+			return maps.get(0);
+		}
+		
+		return null;
 	}
 	
 	public final Map findNextMapSameLevel(Map mapCurrent) {

@@ -189,7 +189,7 @@ public class GameController extends BaseController {
 			return "redirect:/";
 		}
 		
-		Map map = mapService.findMapsByGameLevelAndOrder(game, levelOrder, mapOrder);
+		Map map = mapService.findMapByGameLevelAndOrder(game.getId(), levelOrder, mapOrder);
 		
 		// If the map doesn't exist.
 		if (map == null) {
@@ -450,7 +450,7 @@ public class GameController extends BaseController {
 			return "redirect:/";
 		}
 		
-		Map map = mapService.findMapsByGameLevelAndOrder(game, levelOrder, mapOrder);
+		Map map = mapService.findMapByGameLevelAndOrder(game.getId(), levelOrder, mapOrder);
 		
 		// If the map doesn't exist.
 		if (map == null) {
@@ -598,7 +598,7 @@ public class GameController extends BaseController {
 			return "redirect:/";
 		}
 		
-		Map map = mapService.findMapsByGameLevelAndOrder(game, levelOrder, mapOrder);
+		Map map = mapService.findMapByGameLevelAndOrder(game.getId(), levelOrder, mapOrder);
 		
 		// If the map doesn't exist.
 		if (map == null) {

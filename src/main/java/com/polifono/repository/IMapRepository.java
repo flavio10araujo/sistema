@@ -17,7 +17,7 @@ public interface IMapRepository extends CrudRepository<Map, Integer> {
 	public List<Map> findMapsByGameAndLevel(@Param("gameId") int gameId, @Param("levelId") int levelId);
 	
 	@Query("SELECT map FROM Map map WHERE map.game.id = :gameId AND map.level.id = :levelId AND map.order = :mapOrder")
-	public Map findMapsByGameLevelAndOrder(@Param("gameId") int gameId, @Param("levelId") int levelId, @Param("mapOrder") int mapOrder);
+	public List<Map> findMapsByGameLevelAndOrder(@Param("gameId") int gameId, @Param("levelId") int levelId, @Param("mapOrder") int mapOrder);
 	
 	@Query("SELECT map FROM Map map WHERE map.game.id = :gameId AND map.level.id = :levelId AND map.order > :mapOrder")
 	public Map findNextMapSameLevel(@Param("gameId") int gameId, @Param("levelId") int levelId, @Param("mapOrder") int mapOrder);

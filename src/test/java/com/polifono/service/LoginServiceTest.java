@@ -1,5 +1,7 @@
 package com.polifono.service;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.polifono.AbstractTest;
+import com.polifono.domain.Login;
 import com.polifono.domain.Player;
 
 /**
@@ -19,6 +22,9 @@ public class LoginServiceTest extends AbstractTest {
 
 	@Autowired
     private ILoginService service;
+	
+	private final Integer PLAYER_ID_EXISTENT = 1;
+	private final Integer PLAYER_ID_INEXISTENT = Integer.MAX_VALUE;
 
     @Before
     public void setUp() {
@@ -31,19 +37,28 @@ public class LoginServiceTest extends AbstractTest {
     }
 
     @Test
-    public void registerLogin_PlayerNotRegistered_ExceptionThrown() {
+    public void registerLogin() {
     	Player player = new Player();
-    	player.setId(1);
-    	service.registerLogin(player);
-    	Assert.assertNotEquals("failure - not expected ID equals 0", 0, player.getId());
+    	player.setId(PLAYER_ID_EXISTENT);
+    	Login entity = service.registerLogin(player);
+    	Assert.assertNotEquals("failure - not expected ID equals 0", 0, entity.getId());
     }
 
     //findByPlayer
-    //1 - não buscou nada e deveria buscar;
-    //2 - buscou algo, mas não deveria buscar;
-    //3 - buscou valores, mas estão incorretos;
-    /*@Test
-    public void findByPlayer_PlayerNotFound_ExceptionThrown() {
-    	
-    }*/
+    @Test
+    public void findByPlayer_PlayerExistent() {
+    	Player player = new Player();
+    	player.setId(PLAYER_ID_EXISTENT);
+    	service.registerLogin(player);
+
+    	List<Login> list = service.findByPlayer(PLAYER_ID_EXISTENT);
+    	Assert.assertNotNull("failure - not expected null", list);
+    	Assert.assertNotEquals("failure - not size 0", 0, list.size());
+    }
+    
+    @Test
+    public void findByPlayer_PlayerInexistent() {
+    	List<Login> list = service.findByPlayer(PLAYER_ID_INEXISTENT);
+    	Assert.assertNull("failure - expected null", list);
+    }
 }

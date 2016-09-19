@@ -100,7 +100,7 @@ public class MapController extends BaseController {
 			}
 		}
 		else if (operation.equals("edit")) {
-			Map edit = mapService.find(id.intValue());
+			Map edit = mapService.findOne(id.intValue());
 
 			if (edit != null) {
 				model.addAttribute("map", edit);

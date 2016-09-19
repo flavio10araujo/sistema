@@ -188,14 +188,103 @@ public class PlayerServiceTest extends AbstractTest {
     	Assert.assertNull("failure - expected null", entity);
     }
     /* findByEmail - end */
+
+    /* findByEmailAndStatus - begin */
+    @Test
+    public void findByEmailAndStatus_SearchPlayerExistentActive_ReturnPlayer() {
+    	Player entity = service.findByEmailAndStatus(PLAYER_EMAIL_EXISTENT, true);
+        Assert.assertNotNull("failure - expected not null", entity);
+        Assert.assertEquals("failure - expected email attribute match", PLAYER_EMAIL_EXISTENT, entity.getEmail());
+        Assert.assertTrue("failure - expected id attribute greater than 0", entity.getId() > 0);
+        Assert.assertNotNull("failure - expected dtInc not null", entity.getDtInc());
+        Assert.assertNotNull("failure - expected active not null", entity.isActive());
+        Assert.assertNotNull("failure - expected email not null", entity.getEmail());
+        Assert.assertNotNull("failure - expected password not null", entity.getPassword());
+        Assert.assertNotNull("failure - expected name not null", entity.getName());
+        Assert.assertNotNull("failure - expected score not null", entity.getScore());
+        Assert.assertNotNull("failure - expected credit not null", entity.getCredit());
+        Assert.assertNotNull("failure - expected role not null", entity.getRole());
+        Assert.assertNotNull("failure - expected indEmailConfirmed not null", entity.isIndEmailConfirmed());
+        Assert.assertNotNull("failure - expected sex not null", entity.getSex());
+    }
     
-    //findByEmailAndStatus
+    @Test
+    public void findByEmailAndStatus_SearchPlayerExistentWrongStatus_ReturnNull() {
+    	Player entity = service.findByEmailAndStatus(PLAYER_EMAIL_EXISTENT, false);
+        Assert.assertNull("failure - expected null", entity);
+    }
     
-    //findByEmailAndStatusForLogin
+    @Test
+    public void findByEmailAndStatus_SearchPlayerInexistent() {
+    	Player entity = service.findByEmailAndStatus(PLAYER_EMAIL_INEXISTENT, true);
+    	Assert.assertNull("failure - expected null", entity);
+    }
+    /* findByEmailAndStatus - end */
     
-    //encryptPassword
+    /* findByEmailAndStatusForLogin - begin */
+    @Test
+    public void findByEmailAndStatusForLogin_SearchPlayerExistentActive_ReturnPlayer() {
+    	Player entity = service.findByEmailAndStatusForLogin(PLAYER_EMAIL_EXISTENT, true).orElse(new Player());
+    	
+        Assert.assertNotNull("failure - expected not null", entity);
+        Assert.assertEquals("failure - expected email attribute match", PLAYER_EMAIL_EXISTENT, entity.getEmail());
+        Assert.assertTrue("failure - expected id attribute greater than 0", entity.getId() > 0);
+        Assert.assertNotNull("failure - expected dtInc not null", entity.getDtInc());
+        Assert.assertNotNull("failure - expected active not null", entity.isActive());
+        Assert.assertNotNull("failure - expected email not null", entity.getEmail());
+        Assert.assertNotNull("failure - expected password not null", entity.getPassword());
+        Assert.assertNotNull("failure - expected name not null", entity.getName());
+        Assert.assertNotNull("failure - expected score not null", entity.getScore());
+        Assert.assertNotNull("failure - expected credit not null", entity.getCredit());
+        Assert.assertNotNull("failure - expected role not null", entity.getRole());
+        Assert.assertNotNull("failure - expected indEmailConfirmed not null", entity.isIndEmailConfirmed());
+        Assert.assertNotNull("failure - expected sex not null", entity.getSex());
+    }
     
-    //addCreditsToPlayer
+    @Test
+    public void findByEmailAndStatusForLogin_SearchPlayerExistentWrongStatus_ReturnNull() {
+    	Player entity = service.findByEmailAndStatusForLogin(PLAYER_EMAIL_EXISTENT, false).orElse(null);
+        Assert.assertNull("failure - expected null", entity);
+    }
     
-    //removeCreditsFromPlayer
+    @Test
+    public void findByEmailAndStatusForLogin_SearchPlayerInexistent() {
+    	Player entity = service.findByEmailAndStatusForLogin(PLAYER_EMAIL_INEXISTENT, true).orElse(null);
+    	Assert.assertNull("failure - expected null", entity);
+    }
+    /* findByEmailAndStatusForLogin - end */
+    
+    /* encryptPassword - begin */
+    @Test
+    public void encryptPassword() {
+    	String rawPassword = "12345";
+    	String ret = service.encryptPassword(rawPassword);
+    	Assert.assertNotNull("failure - expected not null", ret);
+    	Assert.assertTrue("failure - expected size bigger than 0", ret.length() > 0);
+    }
+    /* encryptPassword - end */
+    
+    /* addCreditsToPlayer - begin */
+    @Test
+    public void addCreditsToPlayer() {
+    	Player entity = service.findOne(PLAYER_ID_EXISTENT);
+    	int credits = entity.getCredit();
+    	int qtdCredits = 12;
+    	Player entityUpdated = service.addCreditsToPlayer(PLAYER_ID_EXISTENT, qtdCredits);
+    	Assert.assertEquals("failure - expected current credits equals old credits plus qtdCredits", credits + qtdCredits, entityUpdated.getCredit());
+    	
+    }
+    /* addCreditsToPlayer - end */
+    
+    /* removeCreditsFromPlayer - begin */
+    @Test
+    public void removeCreditsFromPlayer() {
+    	Player entity = service.findOne(PLAYER_ID_EXISTENT);
+    	int credits = entity.getCredit();
+    	int qtdCredits = 12;
+    	Player entityUpdated = service.removeCreditsFromPlayer(PLAYER_ID_EXISTENT, qtdCredits);
+    	Assert.assertEquals("failure - expected current credits equals old credits plus qtdCredits", credits - qtdCredits, entityUpdated.getCredit());
+    	
+    }
+    /* removeCreditsFromPlayer - end */
 }

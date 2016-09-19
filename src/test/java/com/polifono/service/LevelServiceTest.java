@@ -22,7 +22,7 @@ public class LevelServiceTest extends AbstractTest {
 	@Autowired
     private ILevelService service;
 	
-	private int gameId = 1;
+	private final Integer GAME_ID_EXISTENT = 1;
 
     @Before
     public void setUp() {
@@ -47,12 +47,12 @@ public class LevelServiceTest extends AbstractTest {
 
     @Test
     public void findByGame_ListIsNullForValidGame_ExceptionThrown() {
-    	Assert.assertNotNull("failure - not expected list size 0", service.findByGame(gameId));
+    	Assert.assertNotNull("failure - not expected list size 0", service.findByGame(GAME_ID_EXISTENT));
     }
     
     @Test
     public void findByGame_ListHasSizeZeroForValidGame_ExceptionThrown() {
-    	List<Level> list = service.findByGame(gameId);
+    	List<Level> list = service.findByGame(GAME_ID_EXISTENT);
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
     }
     
