@@ -14,7 +14,7 @@ import com.polifono.service.IClassPlayerService;
 public class ClassPlayerServiceImpl implements IClassPlayerService {
 
 	@Autowired
-	private IClassPlayerRepository classPlayerRepository;
+	private IClassPlayerRepository repository;
 	
 	public final ClassPlayer create(ClassPlayer classPlayer) {
 		classPlayer.setDtInc(new Date());
@@ -24,16 +24,16 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
 	}
 	
 	public final ClassPlayer save(ClassPlayer classPlayer) {
-		return classPlayerRepository.save(classPlayer);
+		return repository.save(classPlayer);
 	}
 	
 	public Boolean delete(Integer id) {
-		ClassPlayer temp = classPlayerRepository.findOne(id);
+		ClassPlayer temp = repository.findOne(id);
 		
 		if (temp != null) {
 			try {
 				temp.setStatus(3);
-				classPlayerRepository.save(temp);
+				repository.save(temp);
 			}
 			catch (Exception e) {
 				return false;
@@ -46,20 +46,20 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
 	}
 	
 	public ClassPlayer find(int id) {
-        return classPlayerRepository.findOne(id);
+        return repository.findOne(id);
     }
 
 	public final List<ClassPlayer> findAll() {
-		return (List<ClassPlayer>) classPlayerRepository.findAll();
+		return (List<ClassPlayer>) repository.findAll();
 	}
 	
 	public Boolean changeStatus(int id, int status) {
-		ClassPlayer temp = classPlayerRepository.findOne(id);
+		ClassPlayer temp = repository.findOne(id);
 		
 		if (temp != null) {
 			try {
 				temp.setStatus(status);
-				classPlayerRepository.save(temp);
+				repository.save(temp);
 			}
 			catch (Exception e) {
 				return false;
@@ -79,7 +79,7 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
 	 * @return
 	 */
 	public final List<ClassPlayer> findByTeacher(int playerId) {
-		return classPlayerRepository.findByTeacher(playerId);
+		return repository.findByTeacher(playerId);
 	}
 	
 	/**
@@ -91,19 +91,19 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
 	 * @return
 	 */
 	public final List<ClassPlayer> findByTeacherAndClass(int playerId, int clazzId) {
-		return classPlayerRepository.findByTeacherAndClass(playerId, clazzId);
+		return repository.findByTeacherAndClass(playerId, clazzId);
 	}
 	
 	public final List<ClassPlayer> findByClassAndStatus(int clazzId, int status) {
-		return classPlayerRepository.findByClassAndStatus(clazzId, status);
+		return repository.findByClassAndStatus(clazzId, status);
 	}
 	
 	public final List<ClassPlayer> findByClassAndPlayer(int clazzId, int playerId) {
-		return classPlayerRepository.findByClassAndPlayer(clazzId, playerId);
+		return repository.findByClassAndPlayer(clazzId, playerId);
 	}
 	
 	public final List<ClassPlayer> findByPlayerAndStatus(int playerId, int status) {
-		return classPlayerRepository.findByPlayerAndStatus(playerId, status);
+		return repository.findByPlayerAndStatus(playerId, status);
 	}
 	
 	/**
@@ -115,6 +115,6 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
 	 * @return
 	 */
 	public final List<ClassPlayer> findByTeacherAndStudent(int teacherId, int studentId) {
-		return classPlayerRepository.findByTeacherAndStudent(teacherId, studentId);
+		return repository.findByTeacherAndStudent(teacherId, studentId);
 	}
 }

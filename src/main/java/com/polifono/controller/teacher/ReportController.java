@@ -67,7 +67,7 @@ public class ReportController extends BaseController {
 		
 		for (ClassPlayer classPlayer : classPlayers) {
 			list.add(new ReportGeneralDTO(reportGeneralForm.getPhaseBegin(), reportGeneralForm.getPhaseEnd(), classPlayer.getPlayer(), 
-					playerPhaseService.findForReportGeneral(reportGeneralForm, classPlayer.getPlayer())
+					playerPhaseService.findForReportGeneral(reportGeneralForm, classPlayer.getPlayer().getId())
 				));
 		}
 		

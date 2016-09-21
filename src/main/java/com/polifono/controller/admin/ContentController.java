@@ -230,7 +230,7 @@ public class ContentController extends BaseController {
 			}
 		}
 		else if (operation.equals("edit")) {
-			Content edit = contentService.find(id.intValue());
+			Content edit = contentService.findOne(id.intValue());
 
 			if (edit != null) {
 				model.addAttribute("content", edit);

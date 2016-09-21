@@ -97,6 +97,7 @@ public class EmailSendUtil {
 		}
 		else if (messageType == 5) {
 			from = resourceBundle.getString("email.general");
+			to = resourceBundle.getString("email.general");
 			subject = "Novo contato: " + args[0];
 			message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">"
 					+ "<thead><tr><td align=\"center\"><font color=\"#ff8533\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#ff8533\"></td></tr></thead><tbody><tr><td>"

@@ -15,17 +15,17 @@ import com.polifono.service.ILoginService;
 public class LoginServiceImpl implements ILoginService {
 
 	@Autowired
-	private ILoginRepository loginRepository;
+	private ILoginRepository repository;
 	
 	public final Login registerLogin(Player player) {
 		Login login = new Login();
 		login.setPlayer(player);
 		login.setDtLogin(new Date());
-		return loginRepository.save(login);
+		return repository.save(login);
 	}
 	
 	public final List<Login> findByPlayer(int playerId) {
-		List<Login> list = loginRepository.findByPlayer(playerId); 
+		List<Login> list = repository.findByPlayer(playerId); 
 		
 		if (list == null || list.size() == 0) {
 			return null;

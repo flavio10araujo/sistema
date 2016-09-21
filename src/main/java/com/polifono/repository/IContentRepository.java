@@ -41,5 +41,5 @@ public interface IContentRepository extends CrudRepository<Content, Integer> {
 	public List<Content> findContentsTestByPhase(@Param("phaseId") int phaseId);
 	
 	@Query("SELECT content FROM Content content WHERE content.phase.id = :phaseId AND content.order = :contentOrder")
-	public Content findContentByPhaseAndOrder(@Param("phaseId") int phaseId, @Param("contentOrder") int contentOrder);
+	public Content findByPhaseAndOrder(@Param("phaseId") int phaseId, @Param("contentOrder") int contentOrder);
 }

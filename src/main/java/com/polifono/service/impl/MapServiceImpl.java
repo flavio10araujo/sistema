@@ -13,18 +13,18 @@ import com.polifono.service.IMapService;
 public class MapServiceImpl implements IMapService {
 
 	@Autowired
-	private IMapRepository mapRepository;
+	private IMapRepository repository;
 	
 	public final Map save(Map map) {
-		return mapRepository.save(map);
+		return repository.save(map);
 	}
 	
 	public Boolean delete(Integer id) {
-		Map temp = mapRepository.findOne(id);
+		Map temp = repository.findOne(id);
 		
 		if (temp != null) {
 			try {
-				mapRepository.delete(temp);
+				repository.delete(temp);
 			}
 			catch (Exception e) {
 				return false;
@@ -37,23 +37,23 @@ public class MapServiceImpl implements IMapService {
 	}
 	
 	public Map findOne(int id) {
-        return mapRepository.findOne(id);
+        return repository.findOne(id);
     }
 
 	public final List<Map> findAll() {
-		return (List<Map>) mapRepository.findAll();
+		return (List<Map>) repository.findAll();
 	}
 	
 	public final List<Map> findMapsByGame(int gameId) {
-		return mapRepository.findMapsByGame(gameId);
+		return repository.findMapsByGame(gameId);
 	}
 	
 	public final List<Map> findMapsByGameAndLevel(int gameId, int levelId) {
-		return mapRepository.findMapsByGameAndLevel(gameId, levelId);
+		return repository.findMapsByGameAndLevel(gameId, levelId);
 	}
 	
 	public final Map findByGameAndLevel(int gameId, int levelId) {
-		List<Map> maps = mapRepository.findMapsByGameAndLevel(gameId, levelId);
+		List<Map> maps = repository.findMapsByGameAndLevel(gameId, levelId);
 		
 		if (maps.size() > 0) {
 			return maps.get(0);
@@ -63,7 +63,7 @@ public class MapServiceImpl implements IMapService {
 	}
 	
 	public final Map findByGameLevelAndOrder(int gameId, int levelId, int mapOrder) {
-		List<Map> maps = mapRepository.findMapsByGameLevelAndOrder(gameId, levelId, mapOrder);
+		List<Map> maps = repository.findMapsByGameLevelAndOrder(gameId, levelId, mapOrder);
 		
 		if (maps.size() > 0) {
 			return maps.get(0);
@@ -73,7 +73,7 @@ public class MapServiceImpl implements IMapService {
 	}
 	
 	public final Map findNextMapSameLevel(Map mapCurrent) {
-		Map nextMap = mapRepository.findNextMapSameLevel(mapCurrent.getGame().getId(), mapCurrent.getLevel().getId(), mapCurrent.getOrder());
+		Map nextMap = repository.findNextMapSameLevel(mapCurrent.getGame().getId(), mapCurrent.getLevel().getId(), mapCurrent.getOrder());
 		return nextMap;
 	}
 }

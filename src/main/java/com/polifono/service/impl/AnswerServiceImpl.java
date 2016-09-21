@@ -13,18 +13,18 @@ import com.polifono.service.IAnswerService;
 public class AnswerServiceImpl implements IAnswerService {
 
 	@Autowired
-	private IAnswerRepository answerRepository;
+	private IAnswerRepository repository;
 	
 	public final Answer save(Answer answer) {
-		return answerRepository.save(answer);
+		return repository.save(answer);
 	}
 	
 	public Boolean delete(Integer id) {
-		Answer temp = answerRepository.findOne(id);
+		Answer temp = repository.findOne(id);
 		
 		if (temp != null) {
 			try {
-				answerRepository.delete(temp);
+				repository.delete(temp);
 			}
 			catch (Exception e) {
 				return false;
@@ -37,30 +37,30 @@ public class AnswerServiceImpl implements IAnswerService {
 	}
 	
 	public final Answer find(int answerId) {
-		return answerRepository.findOne(answerId);
+		return repository.findOne(answerId);
 	}
 	
 	public final List<Answer> findAll() {
-		return (List<Answer>) answerRepository.findAll();
+		return (List<Answer>) repository.findAll();
 	}
 	
 	public final List<Answer> findAnswersByGame(int gameId) {
-		return answerRepository.findAnswersByGame(gameId);
+		return repository.findAnswersByGame(gameId);
 	}
 	
 	public final List<Answer> findAnswersByGameAndLevel(int gameId, int levelId) {
-		return answerRepository.findAnswersByGameAndLevel(gameId, levelId);
+		return repository.findAnswersByGameAndLevel(gameId, levelId);
 	}
 	
 	public final List<Answer> findAnswersByMap(int mapId) {
-		return answerRepository.findAnswersByMap(mapId);
+		return repository.findAnswersByMap(mapId);
 	}
 	
 	public final List<Answer> findAnswersByPhase(int phaseId) {
-		return answerRepository.findAnswersByPhase(phaseId);
+		return repository.findAnswersByPhase(phaseId);
 	}
 	
 	public final List<Answer> findAnswersByQuestion(int questionId) {
-		return answerRepository.findAnswersByQuestion(questionId);
+		return repository.findAnswersByQuestion(questionId);
 	}
 }

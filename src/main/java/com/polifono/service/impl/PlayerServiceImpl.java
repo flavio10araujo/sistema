@@ -23,7 +23,7 @@ import com.polifono.util.RandomStringUtil;
 public class PlayerServiceImpl implements IPlayerService {
 
 	@Autowired
-	private IPlayerRepository playerRepository;
+	private IPlayerRepository repository;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PlayerServiceImpl.class);
 	
@@ -34,27 +34,27 @@ public class PlayerServiceImpl implements IPlayerService {
 		player.setCredit(30); // n credits are given to the player when he creates the account.
 		player.setRole(Role.USER);
 		player.setEmailConfirmed(new RandomStringUtil(10).nextString()); // This field is sent to the player's email to confirm if the email is real.
-		return playerRepository.save(player);
+		return repository.save(player);
 	}
 	
 	public final Player save(Player player) {
-		return playerRepository.save(player);
+		return repository.save(player);
 	}
 	
 	public Player findOne(int id) {
-        return playerRepository.findOne(id);
+        return repository.findOne(id);
     }
 	
 	public final List<Player> findAll() {
-		return (List<Player>) playerRepository.findAll();
+		return (List<Player>) repository.findAll();
 	}
 	
 	public Player findByEmail(String email) {
-        return playerRepository.findByEmail(email);
+        return repository.findByEmail(email);
     }
 	
 	public Player findByEmailAndStatus(String email, boolean status) {
-        return playerRepository.findByEmailAndStatus(email, status);
+        return repository.findByEmailAndStatus(email, status);
     }
 	
 	/**
@@ -65,7 +65,7 @@ public class PlayerServiceImpl implements IPlayerService {
 	 */
 	public Optional<Player> findByEmailAndStatusForLogin(String email, boolean status) {
         LOGGER.debug("Getting user by email={}", email.replaceFirst("@.*", "@***"));
-        return playerRepository.findByEmailAndStatusForLogin(email, status);
+        return repository.findByEmailAndStatusForLogin(email, status);
     }
 	
 	public String encryptPassword(@Nonnull final String rawPassword) {
@@ -76,12 +76,12 @@ public class PlayerServiceImpl implements IPlayerService {
 	public final Player addCreditsToPlayer(int playerId, int qtdCredits) {
 		Player player = findOne(playerId);
 		player.setCredit(player.getCredit() + qtdCredits);
-		return playerRepository.save(player);
+		return repository.save(player);
 	}
 	
 	public final Player removeCreditsFromPlayer(int playerId, int qtdCredits) {
 		Player player = findOne(playerId);
 		player.setCredit(player.getCredit() - qtdCredits);
-		return playerRepository.save(player);
+		return repository.save(player);
 	}
 }

@@ -11,10 +11,10 @@ import com.polifono.service.IPlayerGameService;
 public class PlayerGameServiceImpl implements IPlayerGameService {
 
 	@Autowired
-	private IPlayerGameRepository playerGameRepository;
+	private IPlayerGameRepository repository;
 	
 	public final PlayerGame removeCreditsFromPlayer(PlayerGame playerGame, int qtdCredits) {
 		playerGame.setCredit(playerGame.getCredit() - qtdCredits);
-		return playerGameRepository.save(playerGame);
+		return repository.save(playerGame);
 	}
 }

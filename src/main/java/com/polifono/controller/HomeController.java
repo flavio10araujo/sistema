@@ -111,7 +111,7 @@ public class HomeController extends BaseController {
 		args[1] = message;
 		
 		try {
-			EmailSendUtil.sendHtmlMail(5, "polifono@polifono.com", args);
+			EmailSendUtil.sendHtmlMail(5, "", args);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

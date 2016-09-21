@@ -14,18 +14,18 @@ import com.polifono.service.IPhaseService;
 public class PhaseServiceImpl implements IPhaseService {
 
 	@Autowired
-	private IPhaseRepository phaseRepository;
+	private IPhaseRepository repository;
 	
 	public final Phase save(Phase phase) {
-		return phaseRepository.save(phase);
+		return repository.save(phase);
 	}
 	
 	public Boolean delete(Integer id) {
-		Phase temp = phaseRepository.findOne(id);
+		Phase temp = repository.findOne(id);
 		
 		if (temp != null) {
 			try {
-				phaseRepository.delete(temp);
+				repository.delete(temp);
 			}
 			catch (Exception e) {
 				return false;
@@ -38,38 +38,38 @@ public class PhaseServiceImpl implements IPhaseService {
 	}
 	
 	public final Phase findOne(int phaseId) {
-		return phaseRepository.findOne(phaseId);
+		return repository.findOne(phaseId);
 	}
 	
 	public final List<Phase> findAll() {
-		return (List<Phase>) phaseRepository.findAll();
+		return (List<Phase>) repository.findAll();
 	}
 	
 	public final List<Phase> findPhasesByGame(int gameId) {
-		return phaseRepository.findPhasesByGame(gameId);
+		return repository.findPhasesByGame(gameId);
 	}
 	
 	public final List<Phase> findPhasesByGameAndLevel(int gameId, int levelId) {
-		return phaseRepository.findPhasesByGameAndLevel(gameId, levelId);
+		return repository.findPhasesByGameAndLevel(gameId, levelId);
 	}
 	
 	public final List<Phase> findPhasesByMap(int mapId) {
-		return phaseRepository.findPhasesByMap(mapId);
+		return repository.findPhasesByMap(mapId);
 	}
 	
 	public final Phase findByMapAndOrder(int mapId, int phaseOrder) {
-		return phaseRepository.findPhaseByMapAndOrder(mapId, phaseOrder);
+		return repository.findPhaseByMapAndOrder(mapId, phaseOrder);
 	}
 	
 	/**
 	 * phaseOrder = it's the order of the phase that will be returned.
 	 */
 	public final Phase findNextPhaseInThisMap(int mapId, int phaseOrder) {
-		return phaseRepository.findNextPhaseInThisMap(mapId, phaseOrder);
+		return repository.findNextPhaseInThisMap(mapId, phaseOrder);
 	}
 	
 	public final Phase findLastPhaseDoneByPlayerAndGame(int playerId, int gameId) {
-		List<Phase> list = phaseRepository.findLastPhaseDoneByPlayerAndGame(playerId, gameId); 
+		List<Phase> list = repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId); 
 		
 		if (list == null || list.size() == 0) {
 			return null;
@@ -79,7 +79,7 @@ public class PhaseServiceImpl implements IPhaseService {
 	}
 	
 	public final Phase findLastPhaseOfTheLevel(int gameId, int levelId) {
-		List<Phase> list = phaseRepository.findLastPhaseOfTheLevel(gameId, levelId);
+		List<Phase> list = repository.findLastPhaseOfTheLevel(gameId, levelId);
 		
 		if (list == null || list.size() == 0) {
 			return null;
@@ -95,7 +95,7 @@ public class PhaseServiceImpl implements IPhaseService {
 	 * @return
 	 */
 	public final List<Phase> findGamesForProfile(int playerId) {
-		List<Phase> list = phaseRepository.findGamesForProfile(playerId); 
+		List<Phase> list = repository.findGamesForProfile(playerId); 
 		
 		if (list == null || list.size() == 0) {
 			return null;

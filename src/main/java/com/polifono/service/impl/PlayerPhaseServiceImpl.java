@@ -6,9 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Game;
-import com.polifono.domain.Phase;
-import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.form.teacher.ReportGeneralForm;
 import com.polifono.repository.IPlayerPhaseRepository;
@@ -18,10 +15,10 @@ import com.polifono.service.IPlayerPhaseService;
 public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 
 	@Autowired
-	private IPlayerPhaseRepository playerPhaseRepository;
+	private IPlayerPhaseRepository repository;
 	
 	public final PlayerPhase save(PlayerPhase playerPhase) {
-		return playerPhaseRepository.save(playerPhase);
+		return repository.save(playerPhase);
 	}
 	
 	/**
@@ -31,8 +28,8 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 	 * @param game
 	 * @return
 	 */
-	public final PlayerPhase findLastPhaseCompleted(Player player, Game game) {
-		List<PlayerPhase> playerPhases = playerPhaseRepository.findLastPhaseCompleted(player.getId(), game.getId());
+	public final PlayerPhase findLastPhaseCompleted(int playerId, int gameId) {
+		List<PlayerPhase> playerPhases = repository.findLastPhaseCompleted(playerId, gameId);
 		
 		if (playerPhases.size() > 0) {
 			return playerPhases.get(0);
@@ -41,12 +38,12 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 		return null;
 	}
 	
-	public final PlayerPhase findPlayerPhaseByPlayerPhaseAndStatus(Player player, Phase phase, int phasestatusId) {
-		return playerPhaseRepository.findPlayerPhaseByPlayerPhaseAndStatus(player.getId(), phase.getId(), phasestatusId);
+	public final PlayerPhase findByPlayerPhaseAndStatus(int playerId, int phaseId, int phasestatusId) {
+		return repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId);
 	}
 	
-	public final List<PlayerPhase> findPlayerPhaseByPlayer(Player player) {
-		List<PlayerPhase> list = playerPhaseRepository.findPlayerPhaseByPlayer(player.getId()); 
+	public final List<PlayerPhase> findPlayerPhasesByPlayer(int playerId) {
+		List<PlayerPhase> list = repository.findPlayerPhasesByPlayer(playerId); 
 		
 		if (list == null || list.size() == 0) {
 			return null;
@@ -61,10 +58,10 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 	 * @param playerId
 	 * @return
 	 */
-	public final List<PlayerPhase> findForReportGeneral(ReportGeneralForm reportGeneralForm, Player player) {
-		List<PlayerPhase> list = playerPhaseRepository.findForReportGeneral(player.getId(), reportGeneralForm.getGame().getId(), reportGeneralForm.getPhaseBegin(), reportGeneralForm.getPhaseEnd()); 
+	public final List<PlayerPhase> findForReportGeneral(ReportGeneralForm reportGeneralForm, int playerId) {
+		List<PlayerPhase> list = repository.findForReportGeneral(playerId, reportGeneralForm.getGame().getId(), reportGeneralForm.getPhaseBegin(), reportGeneralForm.getPhaseEnd()); 
 		
-		if (list == null || list.size() == 0) {
+		if (list == null) {
 			return new ArrayList<PlayerPhase>();
 		}
 		

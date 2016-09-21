@@ -120,7 +120,7 @@ public class GameController extends BaseController {
 		int levelPermitted = 0;
 		
 		// Checking what is the last phase completed by this player in this game.
-		PlayerPhase lastPlayerPhaseCompleted = playerPhaseService.findLastPhaseCompleted(currentAuthenticatedUser().getUser(), game);
+		PlayerPhase lastPlayerPhaseCompleted = playerPhaseService.findLastPhaseCompleted(currentAuthenticatedUser().getUser().getId(), game.getId());
 		
 		// If the player has never played any phase of this game.
 		if (lastPlayerPhaseCompleted == null) {
@@ -197,7 +197,7 @@ public class GameController extends BaseController {
 		}
 		
 		// Checking what is the last phase completed by this player in this game.
-		PlayerPhase lastPhaseCompleted = playerPhaseService.findLastPhaseCompleted(currentAuthenticatedUser().getUser(), game);
+		PlayerPhase lastPhaseCompleted = playerPhaseService.findLastPhaseCompleted(currentAuthenticatedUser().getUser().getId(), game.getId());
 		
 		// Looking for the phases of the map.
 		List<Phase> phases = findPhasesByMap(map, lastPhaseCompleted);
@@ -470,7 +470,7 @@ public class GameController extends BaseController {
 		}
 		
 		// Get the first content of this phase.
-		Content content = contentService.findContentByPhaseAndOrder(phase, 1);
+		Content content = contentService.findByPhaseAndOrder(phase.getId(), 1);
 		
 		// If the content doesn't exist.
 		if (content == null) {
@@ -632,7 +632,7 @@ public class GameController extends BaseController {
 		setTestAttempt(phase);
 		
 		// Get the questionary of this phase.
-		Content content = contentService.findContentByPhaseAndOrder(phase, 0);
+		Content content = contentService.findByPhaseAndOrder(phase.getId(), 0);
 		List<Question> questions = questionService.findQuestionsByContent(content.getId());
 		
 		model.addAttribute("game", game);
@@ -656,7 +656,7 @@ public class GameController extends BaseController {
 	 * @param phase
 	 */
 	public void setTestAttempt(Phase phase) {
-		PlayerPhase playerPhase = playerPhaseService.findPlayerPhaseByPlayerPhaseAndStatus(currentAuthenticatedUser().getUser(), phase, 2);
+		PlayerPhase playerPhase = playerPhaseService.findByPlayerPhaseAndStatus(currentAuthenticatedUser().getUser().getId(), phase.getId(), 2);
 		
 		// If this is not the first attempt.
 		if (playerPhase != null) {
@@ -688,7 +688,7 @@ public class GameController extends BaseController {
 	 */
 	public boolean phaseAlreadyCompleted(Phase phase) {
 
-		PlayerPhase playerPhase = playerPhaseService.findPlayerPhaseByPlayerPhaseAndStatus(currentAuthenticatedUser().getUser(), phase, 3);
+		PlayerPhase playerPhase = playerPhaseService.findByPlayerPhaseAndStatus(currentAuthenticatedUser().getUser().getId(), phase.getId(), 3);
 		
 		// This phase is already completed by this phase.
 		if (playerPhase != null) {
@@ -741,7 +741,7 @@ public class GameController extends BaseController {
 		model.addAttribute("grade", grade);
 		
 		if (grade >= 70) {
-			PlayerPhase playerPhase = playerPhaseService.findPlayerPhaseByPlayerPhaseAndStatus(currentAuthenticatedUser().getUser(), currentPhase, 2);
+			PlayerPhase playerPhase = playerPhaseService.findByPlayerPhaseAndStatus(currentAuthenticatedUser().getUser().getId(), currentPhase.getId(), 2);
 			
 			playerPhase.setGrade(grade);
 			Phasestatus phasestatus = new Phasestatus();

@@ -14,7 +14,7 @@ import com.polifono.service.IClassService;
 public class ClassServiceImpl implements IClassService {
 
 	@Autowired
-	private IClassRepository classRepository;
+	private IClassRepository repository;
 	
 	public final com.polifono.domain.Class create(com.polifono.domain.Class clazz, Player player) {
 		clazz.setPlayer(player);
@@ -24,16 +24,16 @@ public class ClassServiceImpl implements IClassService {
 	}
 	
 	public final com.polifono.domain.Class save(com.polifono.domain.Class clazz) {
-		return classRepository.save(clazz);
+		return repository.save(clazz);
 	}
 	
 	public Boolean delete(Integer id) {
-		com.polifono.domain.Class temp = classRepository.findOne(id);
+		com.polifono.domain.Class temp = repository.findOne(id);
 		
 		if (temp != null) {
 			try {
 				temp.setActive(false);
-				classRepository.save(temp);
+				repository.save(temp);
 			}
 			catch (Exception e) {
 				return false;
@@ -46,14 +46,14 @@ public class ClassServiceImpl implements IClassService {
 	}
 	
 	public com.polifono.domain.Class find(int id) {
-        return classRepository.findOne(id);
+        return repository.findOne(id);
     }
 
 	public final List<com.polifono.domain.Class> findAll() {
-		return (List<com.polifono.domain.Class>) classRepository.findAll();
+		return (List<com.polifono.domain.Class>) repository.findAll();
 	}
 	
 	public final List<com.polifono.domain.Class> findByTeacherAndStatus(int playerId, boolean status) {
-		return classRepository.findByTeacherAndStatus(playerId, status);
+		return repository.findByTeacherAndStatus(playerId, status);
 	}
 }

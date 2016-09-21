@@ -13,13 +13,13 @@ import com.polifono.service.IGameService;
 public class GameServiceImpl implements IGameService {
 
 	@Autowired
-	private IGameRepository gameRepository;
+	private IGameRepository repository;
 
 	public final List<Game> findAll() {
-		return (List<Game>) gameRepository.findAll();
+		return (List<Game>) repository.findAll();
 	}
 	
 	public final Game findByNamelink(String namelink) {
-		return gameRepository.findByNamelink(namelink);
+		return repository.findByNamelink(namelink);
 	}
 }

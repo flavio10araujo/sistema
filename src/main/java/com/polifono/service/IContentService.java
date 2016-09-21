@@ -3,7 +3,6 @@ package com.polifono.service;
 import java.util.List;
 
 import com.polifono.domain.Content;
-import com.polifono.domain.Phase;
 
 public interface IContentService {
 
@@ -11,7 +10,7 @@ public interface IContentService {
 	
 	public Boolean delete(Integer id);
 	
-	public Content find(int contentId);
+	public Content findOne(int contentId);
 	
 	public List<Content> findAll();
 	
@@ -35,6 +34,6 @@ public interface IContentService {
 	
 	public List<Content> findContentsTestByPhase(int phaseId);
 
-	public Content findContentByPhaseAndOrder(Phase phase, int contentOrder);
+	public Content findByPhaseAndOrder(int phaseId, int contentOrder);
 
 }

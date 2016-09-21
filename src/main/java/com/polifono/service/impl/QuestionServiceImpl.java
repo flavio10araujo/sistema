@@ -13,18 +13,18 @@ import com.polifono.service.IQuestionService;
 public class QuestionServiceImpl implements IQuestionService {
 
 	@Autowired
-	private IQuestionRepository questionRepository;
+	private IQuestionRepository repository;
 	
 	public final Question save(Question question) {
-		return questionRepository.save(question);
+		return repository.save(question);
 	}
 	
 	public Boolean delete(Integer id) {
-		Question temp = questionRepository.findOne(id);
+		Question temp = repository.findOne(id);
 		
 		if (temp != null) {
 			try {
-				questionRepository.delete(temp);
+				repository.delete(temp);
 			}
 			catch (Exception e) {
 				return false;
@@ -37,31 +37,31 @@ public class QuestionServiceImpl implements IQuestionService {
 	}
 	
 	public final Question find(int questionId) {
-		return questionRepository.findOne(questionId);
+		return repository.findOne(questionId);
 	}
 	
 	public final List<Question> findAll() {
-		return (List<Question>) questionRepository.findAll();
+		return (List<Question>) repository.findAll();
 	}
 	
 	public final List<Question> findQuestionsByGame(int gameId) {
-		return questionRepository.findQuestionsByGame(gameId);
+		return repository.findQuestionsByGame(gameId);
 	}
 	
 	public final List<Question> findQuestionsByGameAndLevel(int gameId, int levelId) {
-		return questionRepository.findQuestionsByGameAndLevel(gameId, levelId);
+		return repository.findQuestionsByGameAndLevel(gameId, levelId);
 	}
 	
 	public final List<Question> findQuestionsByMap(int mapId) {
-		return questionRepository.findQuestionsByMap(mapId);
+		return repository.findQuestionsByMap(mapId);
 	}
 	
 	public final List<Question> findQuestionsByPhase(int phaseId) {
-		return questionRepository.findQuestionsByPhase(phaseId);
+		return repository.findQuestionsByPhase(phaseId);
 	}
 	
 	public final List<Question> findQuestionsByContent(int contentId) {
-		List<Question> question = questionRepository.findQuestionsByContent(contentId);
+		List<Question> question = repository.findQuestionsByContent(contentId);
 		return question;
 	}
 }

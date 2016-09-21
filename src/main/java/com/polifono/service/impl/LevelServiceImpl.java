@@ -13,13 +13,13 @@ import com.polifono.service.ILevelService;
 public class LevelServiceImpl implements ILevelService {
 
 	@Autowired
-	private ILevelRepository levelRepository;
+	private ILevelRepository repository;
 	
 	public final List<Level> findAll() {
-		return (List<Level>) levelRepository.findAll();
+		return (List<Level>) repository.findAll();
 	}
 	
 	public List<Level> findByGame(int gameId) {
-		return (List<Level>) levelRepository.findByGame(gameId);
+		return (List<Level>) repository.findByGame(gameId);
 	}
 }

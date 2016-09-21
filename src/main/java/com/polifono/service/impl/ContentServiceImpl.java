@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Content;
-import com.polifono.domain.Phase;
 import com.polifono.repository.IContentRepository;
 import com.polifono.service.IContentService;
 
@@ -14,18 +13,18 @@ import com.polifono.service.IContentService;
 public class ContentServiceImpl implements IContentService {
 
 	@Autowired
-	private IContentRepository contentRepository;
+	private IContentRepository repository;
 	
 	public final Content save(Content content) {
-		return contentRepository.save(content);
+		return repository.save(content);
 	}
 	
 	public Boolean delete(Integer id) {
-		Content temp = contentRepository.findOne(id);
+		Content temp = repository.findOne(id);
 		
 		if (temp != null) {
 			try {
-				contentRepository.delete(temp);
+				repository.delete(temp);
 			}
 			catch (Exception e) {
 				return false;
@@ -37,12 +36,12 @@ public class ContentServiceImpl implements IContentService {
 		return false;
 	}
 	
-	public final Content find(int contentId) {
-		return contentRepository.findOne(contentId);
+	public final Content findOne(int contentId) {
+		return repository.findOne(contentId);
 	}
 	
 	public final List<Content> findAll() {
-		return (List<Content>) contentRepository.findAll();
+		return (List<Content>) repository.findAll();
 	}
 	
 	/**
@@ -51,7 +50,7 @@ public class ContentServiceImpl implements IContentService {
 	 * @return
 	 */
 	public final List<Content> findAllText() {
-		return (List<Content>) contentRepository.findAllText();
+		return (List<Content>) repository.findAllText();
 	}
 	
 	/**
@@ -61,7 +60,7 @@ public class ContentServiceImpl implements IContentService {
 	 * @return
 	 */
 	public final List<Content> findContentsTextByGame(int gameId) {
-		return contentRepository.findContentsTextByGame(gameId);
+		return repository.findContentsTextByGame(gameId);
 	}
 	
 	/**
@@ -72,7 +71,7 @@ public class ContentServiceImpl implements IContentService {
 	 * @return
 	 */
 	public final List<Content> findContentsTextByGameAndLevel(int gameId, int levelId) {
-		return contentRepository.findContentsTextByGameAndLevel(gameId, levelId);
+		return repository.findContentsTextByGameAndLevel(gameId, levelId);
 	}
 	
 	/**
@@ -82,7 +81,7 @@ public class ContentServiceImpl implements IContentService {
 	 * @return
 	 */
 	public final List<Content> findContentsTextByMap(int mapId) {
-		return contentRepository.findContentsTextByMap(mapId);
+		return repository.findContentsTextByMap(mapId);
 	}
 	
 	/**
@@ -92,7 +91,7 @@ public class ContentServiceImpl implements IContentService {
 	 * @return
 	 */
 	public final List<Content> findContentsTextByPhase(int phaseId) {
-		return contentRepository.findContentsTextByPhase(phaseId);
+		return repository.findContentsTextByPhase(phaseId);
 	}
 	
 	/**
@@ -101,7 +100,7 @@ public class ContentServiceImpl implements IContentService {
 	 * @return
 	 */
 	public final List<Content> findAllTest() {
-		return (List<Content>) contentRepository.findAllTest();
+		return (List<Content>) repository.findAllTest();
 	}
 	
 	/**
@@ -111,7 +110,7 @@ public class ContentServiceImpl implements IContentService {
 	 * @return
 	 */
 	public final List<Content> findContentsTestByGame(int gameId) {
-		return contentRepository.findContentsTestByGame(gameId);
+		return repository.findContentsTestByGame(gameId);
 	}
 	
 	/**
@@ -122,7 +121,7 @@ public class ContentServiceImpl implements IContentService {
 	 * @return
 	 */
 	public final List<Content> findContentsTestByGameAndLevel(int gameId, int levelId) {
-		return contentRepository.findContentsTestByGameAndLevel(gameId, levelId);
+		return repository.findContentsTestByGameAndLevel(gameId, levelId);
 	}
 	
 	/**
@@ -132,7 +131,7 @@ public class ContentServiceImpl implements IContentService {
 	 * @return
 	 */
 	public final List<Content> findContentsTestByMap(int mapId) {
-		return contentRepository.findContentsTestByMap(mapId);
+		return repository.findContentsTestByMap(mapId);
 	}
 	
 	/**
@@ -142,11 +141,10 @@ public class ContentServiceImpl implements IContentService {
 	 * @return
 	 */
 	public final List<Content> findContentsTestByPhase(int phaseId) {
-		return contentRepository.findContentsTestByPhase(phaseId);
+		return repository.findContentsTestByPhase(phaseId);
 	}
 
-	public final Content findContentByPhaseAndOrder(Phase phase, int contentOrder) {
-		Content content = contentRepository.findContentByPhaseAndOrder(phase.getId(), contentOrder);
-		return content;
+	public final Content findByPhaseAndOrder(int phaseId, int contentOrder) {
+		return repository.findByPhaseAndOrder(phaseId, contentOrder);
 	}
 }

@@ -12,22 +12,22 @@ import com.polifono.service.ITransactionService;
 @Service
 public class TransactionServiceImpl implements ITransactionService {
 
-	private final ITransactionRepository transactionRepository;
+	private final ITransactionRepository repository;
 	
 	@Autowired
 	public TransactionServiceImpl(final ITransactionRepository transactionRepository) {
-		this.transactionRepository = transactionRepository;
+		this.repository = transactionRepository;
 	}
 	
 	public final Transaction save(Transaction transaction) {
-		return transactionRepository.save(transaction);
+		return repository.save(transaction);
 	}
 	
 	public final Transaction find(int transactionId) {
-		return transactionRepository.findOne(transactionId);
+		return repository.findOne(transactionId);
 	}
 	
 	public final List<Transaction> findTransactionByCode(String code) {
-		return transactionRepository.findTransactionByCode(code);
+		return repository.findTransactionByCode(code);
 	}
 }

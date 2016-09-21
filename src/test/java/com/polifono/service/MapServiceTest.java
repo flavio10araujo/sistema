@@ -27,6 +27,7 @@ public class MapServiceTest extends AbstractTest {
 	
 	private final Integer GAME_ID_EXISTENT = 1;
 	private final Integer GAME_ID_INEXISTENT = Integer.MAX_VALUE;
+	
 	private final Integer LEVEL_ID_EXISTENT = 1;
 	private final Integer LEVEL_ID_INEXISTENT = Integer.MAX_VALUE;
 	
@@ -58,9 +59,11 @@ public class MapServiceTest extends AbstractTest {
     	map.setGame(game);
     	map.setLevel(level);
     	
-    	Map entity = service.save(map);
+    	Map entitySaved = service.save(map);
+    	Map entity = service.findOne(entitySaved.getId()); 
+
     	Assert.assertNotNull("failure - expected not null", entity);
-    	Assert.assertNotEquals("failure - expected id attribute bigger not 0", 0, entity.getId());
+    	Assert.assertNotEquals("failure - expected id attribute bigger than 0", 0, entity.getId());
     }
 
     @Test
