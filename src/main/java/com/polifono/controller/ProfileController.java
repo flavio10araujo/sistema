@@ -83,7 +83,7 @@ public class ProfileController extends BaseController {
 			model.addAttribute("deleteAvailable", false);
 		}
 		
-		List<Phase> phases = phaseService.findGamesForProfile(player);
+		List<Phase> phases = phaseService.findGamesForProfile(player.getId());
 		
 		if (phases == null) {
 			phases = new ArrayList<Phase>();

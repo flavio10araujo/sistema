@@ -26,7 +26,19 @@ public class PhaseServiceTest extends AbstractTest {
 	private final Integer PHASE_ID_EXISTENT = 1;
 	private final Integer PHASE_ID_INEXISTENT = Integer.MAX_VALUE;
 	
+	private final Integer GAME_ID_EXISTENT = 1;
+	private final Integer GAME_ID_INEXISTENT = Integer.MAX_VALUE;
+	
+	private final Integer LEVEL_ID_EXISTENT = 1;
+	private final Integer LEVEL_ID_INEXISTENT = Integer.MAX_VALUE;
+	
 	private final Integer MAP_ID_EXISTENT = 1;
+	private final Integer MAP_ID_INEXISTENT = Integer.MAX_VALUE;
+	
+	private final Integer ORDER_EXISTENT = 1;
+	private final Integer ORDER_INEXISTENT = Integer.MAX_VALUE;
+	
+	private final Integer PLAYER_ID_EXISTENT = 1;
 
     @Before
     public void setUp() {
@@ -135,26 +147,123 @@ public class PhaseServiceTest extends AbstractTest {
     /* findAll - end */
     
     /* findPhasesByGame - begin */
+    @Test
+    public void findPhasesByGame_SearchGameExistent_ReturnList() {
+    	List<Phase> list = service.findPhasesByGame(GAME_ID_EXISTENT);
+        Assert.assertNotNull("failure - not expected null", list);
+        Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
+    }
+
+    @Test
+    public void findPhasesByGame_SearchGameInexistent_ReturnListEmpty() {
+    	List<Phase> list = service.findPhasesByGame(GAME_ID_INEXISTENT);
+    	Assert.assertEquals("failure - expected empty list", 0, list.size());
+    }
     /* findPhasesByGame - end */
     
     /* findPhasesByGameAndLevel - begin */
+    @Test
+    public void findPhasesByGameAndLevel_SearchGameAndLevelExistents_ReturnList() {
+    	List<Phase> list = service.findPhasesByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
+        Assert.assertNotNull("failure - not expected null", list);
+        Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
+    }
+
+    @Test
+    public void findPhasesByGameAndLevel_SearchGameAndLevelInexistents_ReturnListEmpty() {
+    	List<Phase> list = service.findPhasesByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT);
+    	Assert.assertEquals("failure - expected empty list", 0, list.size());
+    }
+    
+    @Test
+    public void findPhasesByGameAndLevel_SearchGameExistentButLevelInexistent_ReturnListEmpty() {
+    	List<Phase> list = service.findPhasesByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT);
+    	Assert.assertEquals("failure - expected empty list", 0, list.size());
+    }
+    
+    @Test
+    public void findPhasesByGameAndLevel_SearchLevelExistentButGaemInexistent_ReturnListEmpty() {
+    	List<Phase> list = service.findPhasesByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT);
+    	Assert.assertEquals("failure - expected empty list", 0, list.size());
+    }
     /* findPhasesByGameAndLevel - end */
     
     /* findPhasesByMap - begin */
+    @Test
+    public void findPhasesByMap_SearchMapExistent_ReturnList() {
+    	List<Phase> list = service.findPhasesByMap(MAP_ID_EXISTENT);
+        Assert.assertNotNull("failure - not expected null", list);
+        Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
+    }
+
+    @Test
+    public void findPhasesByMap_SearchMapInexistent_ReturnListEmpty() {
+    	List<Phase> list = service.findPhasesByMap(MAP_ID_INEXISTENT);
+    	Assert.assertEquals("failure - expected empty list", 0, list.size());
+    }
     /* findPhasesByMap - end */
     
     /* findByMapAndOrder - begin */
+    @Test
+    public void findByMapAndOrder_SearchMapAndOrderExistents_ReturnList() {
+    	Phase entity = service.findByMapAndOrder(GAME_ID_EXISTENT, ORDER_EXISTENT);
+    	Assert.assertNotNull("failure - expected not null", entity);
+    }
+
+    @Test
+    public void findByMapAndOrder_SearchMapAndOrderInexistents_ReturnListEmpty() {
+    	Phase entity = service.findByMapAndOrder(GAME_ID_INEXISTENT, ORDER_INEXISTENT);
+    	Assert.assertNull("failure - expected null", entity);
+    }
     /* findByMapAndOrder - end */
     
     /* findNextPhaseInThisMap - begin */
+    @Test
+    public void findNextPhaseInThisMap_WhensNextPhaseExist_ReturnItem() {
+    	List<Phase> list = service.findPhasesByMap(MAP_ID_EXISTENT);
+    	Phase firstPhase = list.get(0);
+    	Phase entity = service.findNextPhaseInThisMap(firstPhase.getMap().getId(), firstPhase.getOrder() + 1);
+    	
+    	Assert.assertNotNull("failure - expected not null", entity);
+    	Assert.assertEquals(firstPhase.getOrder() + 1, entity.getOrder());
+    }
+    
+    @Test
+    public void findNextPhaseInThisMap_WhensNextPhaseInexist_ReturnNull() {
+    	List<Phase> list = service.findPhasesByMap(MAP_ID_EXISTENT);
+    	Phase firstPhase = list.get(list.size() - 1);
+    	Phase entity = service.findNextPhaseInThisMap(firstPhase.getMap().getId(), firstPhase.getOrder() + 1);
+    	
+    	Assert.assertNull("failure - expected null", entity);
+    }
     /* findNextPhaseInThisMap - end */
     
     /* findLastPhaseDoneByPlayerAndGame - begin */
+    @Test
+    public void findLastPhaseDoneByPlayerAndGame_WhenPlayerAlreadyFinishedAtLeastOnePhase_ReturnItem() {
+    	Phase entity = service.findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, GAME_ID_EXISTENT);
+    	Assert.assertNotNull("failure - expected not null", entity);
+    	Assert.assertNotEquals("failure - expected id attribute bigger than 0", 0, entity.getId());
+    }
     /* findLastPhaseDoneByPlayerAndGame - end */
     
     /* findLastPhaseOfTheLevel - begin */
+    @Test
+    public void findLastPhaseOfTheLevel() {
+    	Phase entity = service.findLastPhaseOfTheLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
+    	Assert.assertNotNull("failure - expected not null", entity);
+    	Assert.assertNotEquals("failure - expected id attribute bigger than 0", 0, entity.getId());
+    	
+    	Phase entityNull = service.findNextPhaseInThisMap(entity.getMap().getId(), entity.getOrder() + 1);
+    	Assert.assertNull("failure - expected null", entityNull);
+    }
     /* findLastPhaseOfTheLevel - end */
     
     /* findGamesForProfile - begin */
+    @Test
+    public void findGamesForProfile() {
+    	List<Phase> list = service.findGamesForProfile(PLAYER_ID_EXISTENT);
+    	Assert.assertNotNull("failure - expected not null", list);
+    }
     /* findGamesForProfile - end */   
 }

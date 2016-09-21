@@ -7,6 +7,7 @@ import com.polifono.service.GameServiceTest;
 import com.polifono.service.LevelServiceTest;
 import com.polifono.service.LoginServiceTest;
 import com.polifono.service.MapServiceTest;
+import com.polifono.service.PhaseServiceTest;
 import com.polifono.service.PlayerServiceTest;
 
 @RunWith(Suite.class)
@@ -15,7 +16,8 @@ import com.polifono.service.PlayerServiceTest;
 	LoginServiceTest.class,
 	GameServiceTest.class,
 	LevelServiceTest.class,
-	MapServiceTest.class
+	MapServiceTest.class,
+	PhaseServiceTest.class
 })
 public class SuiteTest {
 

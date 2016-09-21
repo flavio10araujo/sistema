@@ -214,7 +214,7 @@ public class MapServiceTest extends AbstractTest {
     
     /* findNextMapSameLevel - begin */
     @Test
-    public void findNextMapSameLevel() {
+    public void findNextMapSameLevel_WhenNextMapExists_ReturnItem() {
     	Map mapCurrent = service.findOne(MAP_ID_EXISTENT);
     	
     	Map nextMapSameLevel = new Map();

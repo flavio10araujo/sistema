@@ -6,10 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Game;
-import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
-import com.polifono.domain.Player;
 import com.polifono.repository.IPhaseRepository;
 import com.polifono.service.IPhaseService;
 
@@ -60,16 +57,19 @@ public class PhaseServiceImpl implements IPhaseService {
 		return phaseRepository.findPhasesByMap(mapId);
 	}
 	
-	public final Phase findByMapAndOrder(Map map, int phaseOrder) {
-		return phaseRepository.findPhaseByMapAndOrder(map.getId(), phaseOrder);
+	public final Phase findByMapAndOrder(int mapId, int phaseOrder) {
+		return phaseRepository.findPhaseByMapAndOrder(mapId, phaseOrder);
 	}
 	
-	public final Phase findNextPhaseInThisMap(Map map, int phaseOrder) {
-		return phaseRepository.findNextPhaseInThisMap(map.getId(), phaseOrder);
+	/**
+	 * phaseOrder = it's the order of the phase that will be returned.
+	 */
+	public final Phase findNextPhaseInThisMap(int mapId, int phaseOrder) {
+		return phaseRepository.findNextPhaseInThisMap(mapId, phaseOrder);
 	}
 	
-	public final Phase findLastPhaseDoneByPlayerAndGame(Player player, Game game) {
-		List<Phase> list = phaseRepository.findLastPhaseDoneByPlayerAndGame(player.getId(), game.getId()); 
+	public final Phase findLastPhaseDoneByPlayerAndGame(int playerId, int gameId) {
+		List<Phase> list = phaseRepository.findLastPhaseDoneByPlayerAndGame(playerId, gameId); 
 		
 		if (list == null || list.size() == 0) {
 			return null;
@@ -94,8 +94,8 @@ public class PhaseServiceImpl implements IPhaseService {
 	 * @param player
 	 * @return
 	 */
-	public final List<Phase> findGamesForProfile(Player player) {
-		List<Phase> list = phaseRepository.findGamesForProfile(player.getId()); 
+	public final List<Phase> findGamesForProfile(int playerId) {
+		List<Phase> list = phaseRepository.findGamesForProfile(playerId); 
 		
 		if (list == null || list.size() == 0) {
 			return null;

@@ -233,7 +233,7 @@ public class GameController extends BaseController {
 		}
 		
 		// Get the last phase that the player has done in a specific game.
-		Phase lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(currentAuthenticatedUser().getUser(), map.getGame());
+		Phase lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(currentAuthenticatedUser().getUser().getId(), map.getGame().getId());
 		
 		// If the player is trying to access a map different of the first map of the first level and he never had finished a phase of this game.
 		if (lastPhaseDone == null && (map.getLevel().getOrder() != 1 || map.getOrder() != 1)) {
@@ -351,7 +351,7 @@ public class GameController extends BaseController {
 		// If the player has already completed at least one phase of this game.
 		else {
 			// Looking for the next phase.
-			Phase nextPhase = phaseService.findNextPhaseInThisMap(lastPhaseCompleted.getPhase().getMap(), lastPhaseCompleted.getPhase().getOrder() + 1);
+			Phase nextPhase = phaseService.findNextPhaseInThisMap(lastPhaseCompleted.getPhase().getMap().getId(), lastPhaseCompleted.getPhase().getOrder() + 1);
 
 			// If the next phase is in the same map than the last phase completed by the player for this game.
 			if (nextPhase != null) {
@@ -457,7 +457,7 @@ public class GameController extends BaseController {
 			return "redirect:/";
 		}
 		
-		Phase phase = phaseService.findByMapAndOrder(map, phaseOrder);
+		Phase phase = phaseService.findByMapAndOrder(map.getId(), phaseOrder);
 		
 		// If the phase doesn't exist.
 		if (phase == null) {
@@ -527,7 +527,7 @@ public class GameController extends BaseController {
 			if (phase.getOrder() > 1) {
 				
 				// Get the last phase that the player has done in a specific game.
-				Phase lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(currentAuthenticatedUser().getUser(), phase.getMap().getGame());
+				Phase lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(currentAuthenticatedUser().getUser().getId(), phase.getMap().getGame().getId());
 				
 				// If the player is trying to access a phase that he has already finished, it's OK.
 				if (lastPhaseDone.getOrder() < phase.getOrder()) {
@@ -554,7 +554,7 @@ public class GameController extends BaseController {
 		}
 		
 		// Get the last phase that the player has done in a specific game.
-		Phase lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(currentAuthenticatedUser().getUser(), phase.getMap().getGame());
+		Phase lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(currentAuthenticatedUser().getUser().getId(), phase.getMap().getGame().getId());
 		
 		// If the player is trying to access a phase but he never had finished a phase of this game.
 		if (lastPhaseDone == null) {
@@ -605,7 +605,7 @@ public class GameController extends BaseController {
 			return "redirect:/";
 		}
 		
-		Phase phase = phaseService.findByMapAndOrder(map, phaseOrder);
+		Phase phase = phaseService.findByMapAndOrder(map.getId(), phaseOrder);
 		
 		// If the phase doesn't exist.
 		if (phase == null) {
