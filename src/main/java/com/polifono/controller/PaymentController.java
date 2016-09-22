@@ -169,7 +169,7 @@ public class PaymentController extends BaseController {
 			return "redirect:/";
 		}
 		
-		List<Transaction> transactions = transactionService.findTransactionByCode(transactionCode);
+		List<Transaction> transactions = transactionService.findTransactionsByCode(transactionCode);
 		
 		// It the transaction is already registered.
 		if (transactions != null && transactions.size() > 0) {
@@ -192,7 +192,7 @@ public class PaymentController extends BaseController {
         	}
         }
         
-        Transaction transaction = transactionService.find(Integer.parseInt(pagSeguroTransaction.getReference()));
+        Transaction transaction = transactionService.findOne(Integer.parseInt(pagSeguroTransaction.getReference()));
         
         transaction.setCode(pagSeguroTransaction.getCode());
         transaction.setReference(pagSeguroTransaction.getReference());
@@ -249,7 +249,7 @@ public class PaymentController extends BaseController {
         // TODO - posso considerar o status PAID ou CANCELLED como sendo o último?
         
         // pagSeguroTransaction.getReference() == T012.C012_ID
-        Transaction transaction = transactionService.find(Integer.parseInt(pagSeguroTransaction.getReference()));
+        Transaction transaction = transactionService.findOne(Integer.parseInt(pagSeguroTransaction.getReference()));
         
         // If the player has already received this credits.
         if (transaction.isClosed()) {

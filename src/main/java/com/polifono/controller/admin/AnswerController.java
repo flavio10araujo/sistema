@@ -154,7 +154,7 @@ public class AnswerController extends BaseController {
 			}
 		}
 		else if (operation.equals("edit")) {
-			Answer edit = answerService.find(id.intValue());
+			Answer edit = answerService.findOne(id.intValue());
 
 			if (edit != null) {
 				model.addAttribute("answer", edit);

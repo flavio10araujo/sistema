@@ -11,5 +11,5 @@ import com.polifono.domain.Transaction;
 public interface ITransactionRepository extends CrudRepository<Transaction, Integer> {
 
 	@Query("SELECT transaction FROM Transaction transaction WHERE transaction.code = :code")
-	public List<Transaction> findTransactionByCode(@Param("code") String code);
+	public List<Transaction> findTransactionsByCode(@Param("code") String code);
 }

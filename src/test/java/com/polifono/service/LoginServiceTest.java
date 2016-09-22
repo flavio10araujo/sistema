@@ -36,6 +36,7 @@ public class LoginServiceTest extends AbstractTest {
         // Clean up after each test method.
     }
 
+    /* registerLogin - begin */
     @Test
     public void registerLogin() {
     	Player player = new Player();
@@ -43,8 +44,9 @@ public class LoginServiceTest extends AbstractTest {
     	Login entity = service.registerLogin(player);
     	Assert.assertNotEquals("failure - not expected ID equals 0", 0, entity.getId());
     }
+    /* registerLogin - end */
 
-    //findByPlayer
+    /* findByPlayer - begin */
     @Test
     public void findByPlayer_PlayerExistent() {
     	Player player = new Player();
@@ -61,4 +63,5 @@ public class LoginServiceTest extends AbstractTest {
     	List<Login> list = service.findByPlayer(PLAYER_ID_INEXISTENT);
     	Assert.assertNull("failure - expected null", list);
     }
+    /* findByPlayer - end */
 }

@@ -8,8 +8,8 @@ public interface ITransactionService {
 
 	public Transaction save(Transaction transaction);
 	
-	public Transaction find(int transactionId);
+	public Transaction findOne(int transactionId);
 	
-	public List<Transaction> findTransactionByCode(String code);
+	public List<Transaction> findTransactionsByCode(String code);
 
 }

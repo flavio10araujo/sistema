@@ -36,7 +36,7 @@ public class AnswerServiceImpl implements IAnswerService {
 		return false;
 	}
 	
-	public final Answer find(int answerId) {
+	public final Answer findOne(int answerId) {
 		return repository.findOne(answerId);
 	}
 	

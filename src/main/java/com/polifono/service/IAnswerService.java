@@ -10,7 +10,7 @@ public interface IAnswerService {
 	
 	public Boolean delete(Integer id);
 	
-	public Answer find(int answerId);
+	public Answer findOne(int answerId);
 	
 	public List<Answer> findAll();
 	

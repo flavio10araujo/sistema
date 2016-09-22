@@ -36,7 +36,7 @@ public class QuestionServiceImpl implements IQuestionService {
 		return false;
 	}
 	
-	public final Question find(int questionId) {
+	public final Question findOne(int questionId) {
 		return repository.findOne(questionId);
 	}
 	

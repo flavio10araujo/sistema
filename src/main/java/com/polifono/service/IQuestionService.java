@@ -10,7 +10,7 @@ public interface IQuestionService {
 	
 	public Boolean delete(Integer id);
 	
-	public Question find(int questionId);
+	public Question findOne(int questionId);
 	
 	public List<Question> findAll();
 	

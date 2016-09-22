@@ -717,7 +717,7 @@ public class GameController extends BaseController {
 		String playerAnswer = null;
 		
 		for (Integer questionId : questionsId) {
-			questionAux = questionService.find(questionId);
+			questionAux = questionService.findOne(questionId);
 			
 			if (questionAux.getContent().getPhase().getOrder() > phaseOrder) {
 				phaseOrder = questionAux.getContent().getPhase().getOrder();

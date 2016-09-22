@@ -147,7 +147,7 @@ public class QuestionController extends BaseController {
 			}
 		}
 		else if (operation.equals("edit")) {
-			Question edit = questionService.find(id.intValue());
+			Question edit = questionService.findOne(id.intValue());
 
 			if (edit != null) {
 				model.addAttribute("question", edit);

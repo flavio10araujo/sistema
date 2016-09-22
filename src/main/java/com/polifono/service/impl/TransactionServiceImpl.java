@@ -23,11 +23,11 @@ public class TransactionServiceImpl implements ITransactionService {
 		return repository.save(transaction);
 	}
 	
-	public final Transaction find(int transactionId) {
+	public final Transaction findOne(int transactionId) {
 		return repository.findOne(transactionId);
 	}
 	
-	public final List<Transaction> findTransactionByCode(String code) {
-		return repository.findTransactionByCode(code);
+	public final List<Transaction> findTransactionsByCode(String code) {
+		return repository.findTransactionsByCode(code);
 	}
 }
