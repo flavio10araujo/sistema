@@ -168,7 +168,7 @@ public class QuestionServiceTest extends AbstractTest {
     }
     
     @Test
-    public void findQuestionsByGameAndLevel_SearchLevelExistentButGaemInexistent_ReturnListEmpty() {
+    public void findQuestionsByGameAndLevel_SearchLevelExistentButGameInexistent_ReturnListEmpty() {
     	List<Question> list = service.findQuestionsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }

@@ -12,22 +12,22 @@ public interface IClassPlayerService {
 	
 	public Boolean delete(Integer id);
 	
-	public ClassPlayer find(int id);
+	public ClassPlayer findOne(int id);
 
 	public List<ClassPlayer> findAll();
 	
 	public Boolean changeStatus(int id, int status);
 	
-	public List<ClassPlayer> findByTeacher(int playerId);
+	public List<ClassPlayer> findClassPlayersByTeacher(int playerId);
 	
-	public List<ClassPlayer> findByTeacherAndClass(int playerId, int clazzId);
+	public List<ClassPlayer> findClassPlayersByTeacherAndClass(int playerId, int clazzId);
 	
-	public List<ClassPlayer> findByClassAndStatus(int clazzId, int status);
+	public List<ClassPlayer> findClassPlayersByClassAndStatus(int clazzId, int status);
 	
-	public List<ClassPlayer> findByClassAndPlayer(int clazzId, int playerId);
+	public List<ClassPlayer> findClassPlayersByClassAndPlayer(int clazzId, int playerId);
 	
-	public List<ClassPlayer> findByPlayerAndStatus(int playerId, int status);
+	public List<ClassPlayer> findClassPlayersByPlayerAndStatus(int playerId, int status);
 	
-	public List<ClassPlayer> findByTeacherAndStudent(int teacherId, int studentId);
+	public List<ClassPlayer> findClassPlayersByTeacherAndStudent(int teacherId, int studentId);
 
 }

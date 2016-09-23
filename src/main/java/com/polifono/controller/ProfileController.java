@@ -272,7 +272,7 @@ public class ProfileController extends BaseController {
 	 * @return
 	 */
 	public boolean isMyStudent(Player teacher, Player student) {
-		List<ClassPlayer> classPlayers = classPlayerService.findByTeacherAndStudent(teacher.getId(), student.getId());
+		List<ClassPlayer> classPlayers = classPlayerService.findClassPlayersByTeacherAndStudent(teacher.getId(), student.getId());
 		
 		if (classPlayers != null && classPlayers.size() > 0) {
 			return true;

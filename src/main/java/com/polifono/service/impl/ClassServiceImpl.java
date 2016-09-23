@@ -45,7 +45,7 @@ public class ClassServiceImpl implements IClassService {
 		return false;
 	}
 	
-	public com.polifono.domain.Class find(int id) {
+	public com.polifono.domain.Class findOne(int id) {
         return repository.findOne(id);
     }
 
@@ -53,7 +53,7 @@ public class ClassServiceImpl implements IClassService {
 		return (List<com.polifono.domain.Class>) repository.findAll();
 	}
 	
-	public final List<com.polifono.domain.Class> findByTeacherAndStatus(int playerId, boolean status) {
-		return repository.findByTeacherAndStatus(playerId, status);
+	public final List<com.polifono.domain.Class> findClassesByTeacherAndStatus(int playerId, boolean status) {
+		return repository.findClassesByTeacherAndStatus(playerId, status);
 	}
 }

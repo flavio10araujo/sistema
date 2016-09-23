@@ -12,10 +12,10 @@ public interface IClassService {
 	
 	public Boolean delete(Integer id);
 	
-	public com.polifono.domain.Class find(int id);
+	public com.polifono.domain.Class findOne(int id);
 
 	public List<com.polifono.domain.Class> findAll();
 	
-	public List<com.polifono.domain.Class> findByTeacherAndStatus(int playerId, boolean status);
+	public List<com.polifono.domain.Class> findClassesByTeacherAndStatus(int playerId, boolean status);
 
 }

@@ -4,6 +4,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import com.polifono.service.AnswerServiceTest;
+import com.polifono.service.ClassPlayerServiceTest;
+import com.polifono.service.ClassServiceTest;
 import com.polifono.service.ContentServiceTest;
 import com.polifono.service.GameServiceTest;
 import com.polifono.service.LevelServiceTest;
@@ -27,7 +29,9 @@ import com.polifono.service.TransactionServiceTest;
 	ContentServiceTest.class,
 	QuestionServiceTest.class,
 	AnswerServiceTest.class,
-	TransactionServiceTest.class
+	TransactionServiceTest.class,
+	ClassServiceTest.class,
+	ClassPlayerServiceTest.class
 })
 public class SuiteTest {
 

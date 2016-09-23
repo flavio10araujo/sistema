@@ -42,7 +42,7 @@ public class StudentController extends BaseController {
 
 	@RequestMapping(value = {"/student", "/student/savepage"}, method = RequestMethod.GET)
 	public String savePage(HttpSession session, Model model) {
-		model.addAttribute("classes", (ArrayList<com.polifono.domain.Class>) classService.findByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
+		model.addAttribute("classes", (ArrayList<com.polifono.domain.Class>) classService.findClassesByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
 		model.addAttribute("classPlayer", new ClassPlayer());
 		
 		if (session.getAttribute("clazzId") != null) {
@@ -50,11 +50,11 @@ public class StudentController extends BaseController {
 			filterClass.setId((int) session.getAttribute("clazzId"));
 			model.addAttribute("classFilter", filterClass);
 			
-			model.addAttribute("classPlayers", classPlayerService.findByTeacherAndClass(currentAuthenticatedUser().getUser().getId(), (int) session.getAttribute("clazzId")));
+			model.addAttribute("classPlayers", classPlayerService.findClassPlayersByTeacherAndClass(currentAuthenticatedUser().getUser().getId(), (int) session.getAttribute("clazzId")));
 		}
 		else {
 			model.addAttribute("classFilter", new com.polifono.domain.Class());
-			model.addAttribute("classPlayers", (ArrayList<ClassPlayer>) classPlayerService.findByTeacher(currentAuthenticatedUser().getUser().getId()));
+			model.addAttribute("classPlayers", (ArrayList<ClassPlayer>) classPlayerService.findClassPlayersByTeacher(currentAuthenticatedUser().getUser().getId()));
 		}
 		
 		return URL_ADMIN_BASIC_INDEX;
@@ -83,7 +83,7 @@ public class StudentController extends BaseController {
 			}
 			
 			// The teacher only can add players in his own classes.
-			com.polifono.domain.Class currentClass = classService.find(classPlayer.getClazz().getId());
+			com.polifono.domain.Class currentClass = classService.findOne(classPlayer.getClazz().getId());
 			if (currentClass.getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) {
 				return "redirect:/";
 			}
@@ -99,7 +99,7 @@ public class StudentController extends BaseController {
 			}
 			
 			// Verify if the player is already registered in this class.
-			List<ClassPlayer> classPlayerAux = classPlayerService.findByClassAndPlayer(classPlayer.getClazz().getId(), classPlayer.getPlayer().getId());
+			List<ClassPlayer> classPlayerAux = classPlayerService.findClassPlayersByClassAndPlayer(classPlayer.getClazz().getId(), classPlayer.getPlayer().getId());
 			
 			if (classPlayerAux != null && classPlayerAux.size() > 0) {
 				redirectAttributes.addFlashAttribute("message", "studentAlreadyRegistered");
@@ -124,7 +124,7 @@ public class StudentController extends BaseController {
 
 		try {
 			// The teacher only can send email to students from his own classes.
-			ClassPlayer current = classPlayerService.find(id.intValue());
+			ClassPlayer current = classPlayerService.findOne(id.intValue());
 			
 			// If the classPlayer doesn't exist.
 			if (current == null) {
@@ -158,7 +158,7 @@ public class StudentController extends BaseController {
 
 		try {
 			// The teacher only can edit/delete his own classes.
-			ClassPlayer current = classPlayerService.find(id.intValue());
+			ClassPlayer current = classPlayerService.findOne(id.intValue());
 			
 			// If the classPlayer doesn't exist.
 			if (current == null) {

@@ -30,7 +30,7 @@ public class ClassController extends BaseController {
 	@RequestMapping(value = {"/class", "/class/savepage"}, method = RequestMethod.GET)
 	public String savePage(HttpSession session, Model model) {
 		model.addAttribute("class", new com.polifono.domain.Class());
-		model.addAttribute("classes", (ArrayList<com.polifono.domain.Class>) classService.findByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
+		model.addAttribute("classes", (ArrayList<com.polifono.domain.Class>) classService.findClassesByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
 		
 		return URL_ADMIN_BASIC_INDEX;
 	}
@@ -53,7 +53,7 @@ public class ClassController extends BaseController {
 	public String editRemove(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes, Model model) {
 
 		// The teacher only can edit/delete his own classes.
-		com.polifono.domain.Class current = classService.find(id.intValue());
+		com.polifono.domain.Class current = classService.findOne(id.intValue());
 		if (current.getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) {
 			return "redirect:/";
 		}
@@ -67,7 +67,7 @@ public class ClassController extends BaseController {
 			}
 		}
 		else if (operation.equals("edit")) {
-			com.polifono.domain.Class edit = classService.find(id.intValue());
+			com.polifono.domain.Class edit = classService.findOne(id.intValue());
 
 			if (edit != null) {
 				model.addAttribute("class", edit);
@@ -84,7 +84,7 @@ public class ClassController extends BaseController {
 	@RequestMapping(value = "/class/update", method = RequestMethod.POST)
 	public String update(@ModelAttribute("edit") com.polifono.domain.Class edit, final RedirectAttributes redirectAttributes) {
 		
-		com.polifono.domain.Class current = classService.find(edit.getId());
+		com.polifono.domain.Class current = classService.findOne(edit.getId());
 		
 		// The teacher only can edit his own classes.
 		if (current.getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) {

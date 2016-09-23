@@ -48,7 +48,7 @@ public class LoginServiceTest extends AbstractTest {
 
     /* findByPlayer - begin */
     @Test
-    public void findByPlayer_PlayerExistent() {
+    public void findByPlayer_PlayerExistent_returnList() {
     	Player player = new Player();
     	player.setId(PLAYER_ID_EXISTENT);
     	service.registerLogin(player);
@@ -59,7 +59,7 @@ public class LoginServiceTest extends AbstractTest {
     }
     
     @Test
-    public void findByPlayer_PlayerInexistent() {
+    public void findByPlayer_PlayerInexistent_returnNull() {
     	List<Login> list = service.findByPlayer(PLAYER_ID_INEXISTENT);
     	Assert.assertNull("failure - expected null", list);
     }

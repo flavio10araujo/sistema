@@ -248,7 +248,7 @@ public class PlayerController extends BaseController {
 	public final String classinvitation(final Model model) {
 		
 		// Get all the invitation to classes that the student hasn't confirmed his participation yet.
-		List<ClassPlayer> classPlayers = classPlayerService.findByPlayerAndStatus(currentAuthenticatedUser().getUser().getId(), 1);
+		List<ClassPlayer> classPlayers = classPlayerService.findClassPlayersByPlayerAndStatus(currentAuthenticatedUser().getUser().getId(), 1);
 		
 		model.addAttribute("classPlayers", classPlayers);
 		
@@ -259,7 +259,7 @@ public class PlayerController extends BaseController {
 	public final String classinvitationsubmit(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes, final Model model) {
 		
 		try {
-			ClassPlayer current = classPlayerService.find(id.intValue());
+			ClassPlayer current = classPlayerService.findOne(id.intValue());
 			
 			// If the classPlayer doesn't exist.
 			if (current == null) {

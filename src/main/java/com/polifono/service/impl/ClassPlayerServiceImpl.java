@@ -45,7 +45,7 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
 		return false;
 	}
 	
-	public ClassPlayer find(int id) {
+	public ClassPlayer findOne(int id) {
         return repository.findOne(id);
     }
 
@@ -78,8 +78,8 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
 	 * @param playerId
 	 * @return
 	 */
-	public final List<ClassPlayer> findByTeacher(int playerId) {
-		return repository.findByTeacher(playerId);
+	public final List<ClassPlayer> findClassPlayersByTeacher(int playerId) {
+		return repository.findClassPlayersByTeacher(playerId);
 	}
 	
 	/**
@@ -90,20 +90,20 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
 	 * @param clazzId
 	 * @return
 	 */
-	public final List<ClassPlayer> findByTeacherAndClass(int playerId, int clazzId) {
-		return repository.findByTeacherAndClass(playerId, clazzId);
+	public final List<ClassPlayer> findClassPlayersByTeacherAndClass(int playerId, int clazzId) {
+		return repository.findClassPlayersByTeacherAndClass(playerId, clazzId);
 	}
 	
-	public final List<ClassPlayer> findByClassAndStatus(int clazzId, int status) {
-		return repository.findByClassAndStatus(clazzId, status);
+	public final List<ClassPlayer> findClassPlayersByClassAndStatus(int clazzId, int status) {
+		return repository.findClassPlayersByClassAndStatus(clazzId, status);
 	}
 	
-	public final List<ClassPlayer> findByClassAndPlayer(int clazzId, int playerId) {
-		return repository.findByClassAndPlayer(clazzId, playerId);
+	public final List<ClassPlayer> findClassPlayersByClassAndPlayer(int clazzId, int playerId) {
+		return repository.findClassPlayersByClassAndPlayer(clazzId, playerId);
 	}
 	
-	public final List<ClassPlayer> findByPlayerAndStatus(int playerId, int status) {
-		return repository.findByPlayerAndStatus(playerId, status);
+	public final List<ClassPlayer> findClassPlayersByPlayerAndStatus(int playerId, int status) {
+		return repository.findClassPlayersByPlayerAndStatus(playerId, status);
 	}
 	
 	/**
@@ -114,7 +114,7 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
 	 * @param studentId
 	 * @return
 	 */
-	public final List<ClassPlayer> findByTeacherAndStudent(int teacherId, int studentId) {
-		return repository.findByTeacherAndStudent(teacherId, studentId);
+	public final List<ClassPlayer> findClassPlayersByTeacherAndStudent(int teacherId, int studentId) {
+		return repository.findClassPlayersByTeacherAndStudent(teacherId, studentId);
 	}
 }
