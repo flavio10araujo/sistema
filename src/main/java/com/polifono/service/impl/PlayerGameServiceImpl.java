@@ -13,6 +13,10 @@ public class PlayerGameServiceImpl implements IPlayerGameService {
 	@Autowired
 	private IPlayerGameRepository repository;
 	
+	public final PlayerGame findOne(int playerGameId) {
+		return repository.findOne(playerGameId);
+	}
+	
 	public final PlayerGame removeCreditsFromPlayer(PlayerGame playerGame, int qtdCredits) {
 		playerGame.setCredit(playerGame.getCredit() - qtdCredits);
 		return repository.save(playerGame);

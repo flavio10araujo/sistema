@@ -12,6 +12,7 @@ import com.polifono.service.LevelServiceTest;
 import com.polifono.service.LoginServiceTest;
 import com.polifono.service.MapServiceTest;
 import com.polifono.service.PhaseServiceTest;
+import com.polifono.service.PlayerGameServiceTest;
 import com.polifono.service.PlayerPhaseServiceTest;
 import com.polifono.service.PlayerServiceTest;
 import com.polifono.service.QuestionServiceTest;
@@ -31,7 +32,8 @@ import com.polifono.service.TransactionServiceTest;
 	AnswerServiceTest.class,
 	TransactionServiceTest.class,
 	ClassServiceTest.class,
-	ClassPlayerServiceTest.class
+	ClassPlayerServiceTest.class,
+	PlayerGameServiceTest.class
 })
 public class SuiteTest {
 
