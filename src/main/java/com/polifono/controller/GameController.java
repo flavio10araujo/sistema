@@ -3,6 +3,8 @@ package com.polifono.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpSession;
 
@@ -66,6 +68,12 @@ public class GameController extends BaseController {
 	
 	@Autowired
 	private IPlayerGameService playerGameService;
+	
+	private static ResourceBundle applicationResourceBundle;
+	
+	static {
+		applicationResourceBundle = ResourceBundle.getBundle("application", Locale.getDefault());
+	}
 
 	@RequestMapping(value = {"/"}, method = RequestMethod.GET)
 	public final String index(final Model model) {
@@ -769,13 +777,13 @@ public class GameController extends BaseController {
 			
 			// The attribute levelCompleted will be true if the player has just finished the last phase of the last map of the level.
 			if (map.isLevelCompleted()) {
-				updateCurrentAuthenticateUser(addCreditToPlayer(currentAuthenticatedUser().getUser().getId(), 3));
+				updateCurrentAuthenticateUser(addCreditToPlayer(currentAuthenticatedUser().getUser().getId(), Integer.parseInt(applicationResourceBundle.getString("credits.levelCompleted"))));
 				return "games/endoflevel";
 			}
 			
 			// The attribute gameCompleted will be true if the player has just finished the last phase of the last map of the last level of the game.
 			if (map.isGameCompleted()) {
-				updateCurrentAuthenticateUser(addCreditToPlayer(currentAuthenticatedUser().getUser().getId(), 3));
+				updateCurrentAuthenticateUser(addCreditToPlayer(currentAuthenticatedUser().getUser().getId(), Integer.parseInt(applicationResourceBundle.getString("credits.gameCompleted"))));
 				return "games/endofgame";
 			}
 			

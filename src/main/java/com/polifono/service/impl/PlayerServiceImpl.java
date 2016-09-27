@@ -3,7 +3,9 @@ package com.polifono.service.impl;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 import javax.annotation.Nonnull;
 
@@ -27,11 +29,17 @@ public class PlayerServiceImpl implements IPlayerService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PlayerServiceImpl.class);
 	
+	private static ResourceBundle resourceBundle;
+	
+	static {
+		 resourceBundle = ResourceBundle.getBundle("application", Locale.getDefault());
+	}
+	
 	public final Player create(Player player) {
 		player.setDtInc(new Date());
 		player.setActive(true);
 		player.setPassword(encryptPassword(player.getPassword()));
-		player.setCredit(30); // n credits are given to the player when he creates the account.
+		player.setCredit(Integer.parseInt(resourceBundle.getString("credits.creation"))); // n credits are given to the player when he creates the account.
 		player.setRole(Role.USER);
 		player.setEmailConfirmed(new RandomStringUtil(10).nextString()); // This field is sent to the player's email to confirm if the email is real.
 		return repository.save(player);
