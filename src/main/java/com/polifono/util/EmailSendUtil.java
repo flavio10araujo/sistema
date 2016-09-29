@@ -5,12 +5,76 @@ import java.util.ResourceBundle;
 
 import org.apache.commons.mail.MultiPartEmail;
 
+import com.polifono.domain.Player;
+
 public class EmailSendUtil {
 	
 	private static ResourceBundle resourceBundle;
 	
 	static {
 		 resourceBundle = ResourceBundle.getBundle("application", Locale.getDefault());
+	}
+	
+	static class MailThread extends Thread {
+
+		private String senderAddress;
+		private String recipientAddress;
+		private String subject;
+		private String message;
+
+		public MailThread(String senderAddress, String subject, String message, String recipientAddress) {
+			this.senderAddress = senderAddress;
+			this.subject = subject;
+			this.message = message;
+			this.recipientAddress = recipientAddress;
+		}
+
+		@Override
+		public void run() {
+			try	{
+				MultiPartEmail hm = new MultiPartEmail();
+				
+				/*
+				Gmail configuration.
+				hm.setHostName("smtp.gmail.com");
+				hm.setSslSmtpPort("587");
+				hm.setSmtpPort(Integer.parseInt("587"));
+				hm.setAuthentication("email@gmail.com", "senha");
+				hm.setTLS(true);
+				*/
+
+				// Integrator configuration.
+				// TODO - verificar o motivo de funciona localhost/25 pra um e não funcionar pro outro.
+				if (resourceBundle.getString("email.url").equals("www.polifono.com")) {
+					hm.setHostName("localhost");
+					hm.setSmtpPort(Integer.parseInt("25"));
+				}
+				else if (resourceBundle.getString("email.url").equals("www.hbmelhoriadenegocios.net")) {
+					hm.setHostName("mail.hbmelhoriadenegocios.net");
+					hm.setSmtpPort(Integer.parseInt("587"));
+				}
+
+				hm.setAuthentication(resourceBundle.getString("email.general"), resourceBundle.getString("email.general.password"));
+				
+				hm.setCharset("UTF-8");
+				hm.setSubject(subject);
+				hm.setFrom(senderAddress);
+				hm.addTo(recipientAddress);
+				
+				message = HTMLEntitiesUtil.unhtmlentities(message);
+				message = HTMLEntitiesUtil.htmlentities(message);
+				
+				hm.addPart(message, org.apache.commons.mail.Email.TEXT_HTML);
+				
+				hm.send();
+				
+				System.out.println("E-mail enviado!");
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException("An email was not sent: ", e);
+			}
+		}
 	}
 	
 	public static void sendHtmlMail(int messageType, String to, String[] args) throws Exception {
@@ -116,68 +180,82 @@ public class EmailSendUtil {
 		new EmailSendUtil.MailThread(from, subject, message, to).start();
 	}
 	
-	static class MailThread extends Thread {
-
-		private String senderAddress;
-		private String recipientAddress;
-		private String subject;
-		private String message;
-
-		public MailThread(String senderAddress, String subject, String message, String recipientAddress) {
-			this.senderAddress = senderAddress;
-			this.subject = subject;
-			this.message = message;
-			this.recipientAddress = recipientAddress;
+	/**
+	 * This method is used to send the email to the user confirm his email.
+	 * 
+	 * @param player
+	 */
+	public static void sendEmailConfirmRegister(Player player) {
+		String[] args = new String[3];
+		args[0] = player.getName();
+		args[1] = player.getEmail();
+		args[2] = player.getEmailConfirmed();
+		
+		try {
+			EmailSendUtil.sendHtmlMail(1, player.getEmail(), args);
 		}
-
-		@Override
-		public void run() {
-			try	{
-				MultiPartEmail hm = new MultiPartEmail();
-				
-				/*
-				Gmail configuration.
-				hm.setHostName("smtp.gmail.com");
-				hm.setSslSmtpPort("587");
-				hm.setSmtpPort(Integer.parseInt("587"));
-				hm.setAuthentication("email@gmail.com", "senha");
-				hm.setTLS(true);
-				*/
-
-				// Integrator configuration.
-				// TODO - verificar o motivo de funciona localhost/25 pra um e não funcionar pro outro.
-				if (resourceBundle.getString("email.url").equals("www.polifono.com")) {
-					hm.setHostName("localhost");
-					hm.setSmtpPort(Integer.parseInt("25"));
-				}
-				else if (resourceBundle.getString("email.url").equals("www.hbmelhoriadenegocios.net")) {
-					hm.setHostName("mail.hbmelhoriadenegocios.net");
-					hm.setSmtpPort(Integer.parseInt("587"));
-				}
-
-				hm.setAuthentication(resourceBundle.getString("email.general"), resourceBundle.getString("email.general.password"));
-				
-				hm.setCharset("UTF-8");
-				hm.setSubject(subject);
-				hm.setFrom(senderAddress);
-				hm.addTo(recipientAddress);
-				
-				message = HTMLEntitiesUtil.unhtmlentities(message);
-				message = HTMLEntitiesUtil.htmlentities(message);
-				
-				hm.addPart(message, org.apache.commons.mail.Email.TEXT_HTML);
-				
-				hm.send();
-				
-				System.out.println("E-mail enviado!");
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-				throw new RuntimeException("An email was not sent: ", e);
-			}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * This method is used to send the email to the user when he doesn't remember his password.
+	 * 
+	 * @param player
+	 */
+	public static void sendEmailPasswordReset(Player player) {
+		String[] args = new String[3];
+		args[0] = player.getName();
+		args[1] = player.getEmail();
+		args[2] = player.getPasswordReset();
+		
+		try {
+			EmailSendUtil.sendHtmlMail(2, player.getEmail(), args);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Send one email of the type 3 (payment registered).
+	 * 
+	 * @param player
+	 * @param quantity
+	 */
+	public static void sendEmailPaymentRegistered(Player player, int quantity) {
+		String[] args = new String[2];
+		args[0] = player.getName();
+		args[1] = ""+quantity;
+		
+		try {
+			EmailSendUtil.sendHtmlMail(3, player.getEmail(), args);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Send one email of the type 5 (contact).
+	 * 
+	 * @param email
+	 * @param message
+	 */
+	public static void sendEmailContact(String email, String message) {
+		String[] args = new String[2];
+		args[0] = email;
+		args[1] = message;
+		
+		try {
+			EmailSendUtil.sendHtmlMail(5, "", args);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * This method get an email and replaces the strings into the email by the args strings.<br>
 	 * Eg:<br>

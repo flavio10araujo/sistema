@@ -2,6 +2,8 @@ package com.polifono.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +18,6 @@ import com.polifono.domain.Player;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IPlayerService;
 import com.polifono.util.EmailSendUtil;
-import com.polifono.util.EmailUtil;
 import com.polifono.util.RandomStringUtil;
 
 @Controller
@@ -28,11 +29,22 @@ public class PlayerController extends BaseController {
 	@Autowired
 	private IClassPlayerService classPlayerService;
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(PlayerController.class);
+	
+	public static final String URL_INDEX = "index";
+	public static final String URL_EMAILCONFIRMATION = "emailconfirmation";
+	public static final String URL_PASSWORDRESET = "passwordreset";
+	public static final String URL_CLASSINVITATION = "classinvitation";
+	
+	public static final String REDIRECT_HOME = "redirect:/";
+	public static final String REDIRECT_CLASSINVITATION = "redirect:/classinvitation";
+	
 	@RequestMapping(value = {"/player/create"}, method = RequestMethod.POST)
 	public final String createPlayer(final Model model, @ModelAttribute("player") Player player) {
 		if (player == null) {
+			LOGGER.debug("/player/create POST player is null");
 			model.addAttribute("player", new Player());
-			return "index";
+			return URL_INDEX;
 		}
 		
 		// Verify if the email is already in use.
@@ -41,16 +53,17 @@ public class PlayerController extends BaseController {
 		if (playerOld != null) {
 			model.addAttribute("player", player);
 			model.addAttribute("codRegister", 2);
+			// TODO - buscar msg do messages.
 			model.addAttribute("msgRegister", "<br />O email " + player.getEmail() + " já está cadastrado para outra pessoa.");
 		}
 		else {
-			String msg = validateCreatePlayer(player);
+			String msg = playerService.validateCreatePlayer(player);
 			
 			// If there is not errors.
 			if (msg.equals("")) {
 				model.addAttribute("player", playerService.create(player));
 				model.addAttribute("codRegister", 1);
-				sendEmailConfirmRegister(player);
+				EmailSendUtil.sendEmailConfirmRegister(player);
 			}
 			else {
 				model.addAttribute("player", player);
@@ -59,14 +72,14 @@ public class PlayerController extends BaseController {
 			}
 		}
 		
-		return "index";
+		return URL_INDEX;
 	}
 	
 	@RequestMapping(value = {"/emailconfirmation"}, method = RequestMethod.GET)
 	public final String emailconfirmation(final Model model) {
 		model.addAttribute("player", new Player());
 		model.addAttribute("playerResend", new Player());
-		return "emailconfirmation";
+		return URL_EMAILCONFIRMATION;
 	}
 	
 	@RequestMapping(value = {"/emailconfirmation"}, method = RequestMethod.POST)
@@ -75,7 +88,7 @@ public class PlayerController extends BaseController {
 		
 		if (player == null) {
 			model.addAttribute("player", new Player());
-			return "emailconfirmation";
+			return URL_EMAILCONFIRMATION;
 		}
 		
 		// Verify if there is a player with this email.
@@ -85,6 +98,7 @@ public class PlayerController extends BaseController {
 		if (playerOld == null) {
 			model.addAttribute("codRegister", 2);
 			model.addAttribute("player", player);
+			// TODO - pegar msg do messages.
 			model.addAttribute("msgRegister", "<br />O email " + player.getEmail() + " não está cadastrado no sistema.");
 		}
 		else {
@@ -92,6 +106,7 @@ public class PlayerController extends BaseController {
 			if (playerOld.isIndEmailConfirmed()) {
 				model.addAttribute("codRegister", 2);
 				model.addAttribute("player", player);
+				// TODO - pegar msg do messages.
 				model.addAttribute("msgRegister", "<br />Este cadastro já se encontra ativo.");
 			}
 			else {
@@ -99,6 +114,7 @@ public class PlayerController extends BaseController {
 				if (!player.getEmailConfirmed().equals(playerOld.getEmailConfirmed())) {
 					model.addAttribute("codRegister", 2);
 					model.addAttribute("player", player);
+					// TODO - pegar msg do messages.
 					model.addAttribute("msgRegister", "<br />O código de ativação informado está incorreto. Obs.: caso tenha recebido mais de um e-mail, o código válido é o do último e-mail recebido.");
 				}
 				else {
@@ -107,12 +123,13 @@ public class PlayerController extends BaseController {
 										
 					model.addAttribute("codRegister", 1);
 					model.addAttribute("player", new Player());
+					// TODO - pegar msg do messages.
 					model.addAttribute("msgRegister", "<br />O e-mail " + playerOld.getEmail() + " foi confirmado com sucesso!");
 				}
 			}
 		}
 		
-		return "emailconfirmation";
+		return URL_EMAILCONFIRMATION;
 	}
 	
 	@RequestMapping(value = {"/emailconfirmationresend"}, method = RequestMethod.POST)
@@ -122,7 +139,7 @@ public class PlayerController extends BaseController {
 		
 		if (playerResend == null) {
 			model.addAttribute("playerResend", new Player());
-			return "emailconfirmation";
+			return URL_EMAILCONFIRMATION;
 		}
 		
 		// Verify if there is a player with this email.
@@ -132,6 +149,7 @@ public class PlayerController extends BaseController {
 		if (playerOld == null) {
 			model.addAttribute("codRegister", 2);
 			model.addAttribute("playerResend", playerResend);
+			// TODO - pegar msg do messages.
 			model.addAttribute("msgRegister", "<br />O email " + playerResend.getEmail() + " não está cadastrado no sistema.");
 		}
 		else {
@@ -139,27 +157,29 @@ public class PlayerController extends BaseController {
 			if (playerOld.isIndEmailConfirmed()) {
 				model.addAttribute("codRegister", 2);
 				model.addAttribute("playerResend", playerResend);
+				// TODO - pegar msg do messages.
 				model.addAttribute("msgRegister", "<br />Este cadastro já se encontra ativo.");
 			}
 			else {
 				playerOld.setEmailConfirmed(new RandomStringUtil(10).nextString());
 				playerService.save(playerOld);
-				sendEmailConfirmRegister(playerOld);
+				EmailSendUtil.sendEmailConfirmRegister(playerOld);
 				
 				model.addAttribute("codRegister", 1);
 				model.addAttribute("playerResend", new Player());
+				// TODO - pegar msg do messages.
 				model.addAttribute("msgRegister", "<br />O e-mail com o código de ativação foi reenviado para " + playerOld.getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
 			}
 		}
 		
-		return "emailconfirmation";
+		return URL_EMAILCONFIRMATION;
 	}
 	
 	@RequestMapping(value = {"/passwordreset"}, method = RequestMethod.GET)
 	public final String passwordreset(final Model model) {
 		model.addAttribute("player", new Player());
 		model.addAttribute("playerResend", new Player());
-		return "passwordreset";
+		return URL_PASSWORDRESET;
 	}
 	
 	@RequestMapping(value = {"/passwordresetresend"}, method = RequestMethod.POST)
@@ -169,7 +189,7 @@ public class PlayerController extends BaseController {
 		
 		if (playerResend == null) {
 			model.addAttribute("playerResend", new Player());
-			return "passwordreset";
+			return URL_PASSWORDRESET;
 		}
 		
 		// Verify if there is a player with this email.
@@ -179,19 +199,21 @@ public class PlayerController extends BaseController {
 		if (playerOld == null) {
 			model.addAttribute("codRegister", 2);
 			model.addAttribute("playerResend", playerResend);
+			// TODO - pegar msg do messages.
 			model.addAttribute("msgRegister", "<br />O email " + playerResend.getEmail() + " não está cadastrado no sistema.");
 		}
 		else {
 			playerOld.setPasswordReset(new RandomStringUtil(10).nextString());
 			playerService.save(playerOld);
-			sendEmailPasswordReset(playerOld);
+			EmailSendUtil.sendEmailPasswordReset(playerOld);
 				
 			model.addAttribute("codRegister", 1);
 			model.addAttribute("playerResend", new Player());
+			// TODO - pegar msg do messages.
 			model.addAttribute("msgRegister", "<br />O e-mail com o código para alterar a senha foi enviado para " + playerOld.getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
 		}
 		
-		return "passwordreset";
+		return URL_PASSWORDRESET;
 	}
 	
 	@RequestMapping(value = {"/passwordreset"}, method = RequestMethod.POST)
@@ -200,7 +222,7 @@ public class PlayerController extends BaseController {
 		
 		if (player == null) {
 			model.addAttribute("player", new Player());
-			return "passwordreset";
+			return URL_PASSWORDRESET;
 		}
 		
 		// Verify if there is a player with this email.
@@ -210,6 +232,7 @@ public class PlayerController extends BaseController {
 		if (playerOld == null) {
 			model.addAttribute("codRegister", 2);
 			model.addAttribute("player", player);
+			// TODO - pegar msg do messages.
 			model.addAttribute("msgRegister", "<br />O email " + player.getEmail() + " não está cadastrado no sistema.");
 		}
 		else {
@@ -217,11 +240,12 @@ public class PlayerController extends BaseController {
 			if (!player.getPasswordReset().equals(playerOld.getPasswordReset())) {
 				model.addAttribute("codRegister", 2);
 				model.addAttribute("player", player);
+				// TODO - pegar msg do messages.
 				model.addAttribute("msgRegister", "<br />O código de confirmação da alteração da senha informado está incorreto. Obs.: caso tenha recebido mais de um e-mail, o código válido é o do último e-mail recebido.");
 			}
 			else {
 				playerOld.setPassword(player.getPassword());
-				String msg = validateCreatePlayer(playerOld);
+				String msg = playerService.validateCreatePlayer(playerOld);
 				
 				// If there is not errors.
 				if (msg.equals("")) {
@@ -231,6 +255,7 @@ public class PlayerController extends BaseController {
 					
 					model.addAttribute("codRegister", 1);
 					model.addAttribute("player", new Player());
+					// TODO - pegar msg do messages.
 					model.addAttribute("msgRegister", "<br />A senha de acesso para o e-mail " + playerOld.getEmail() + " foi alterada com sucesso!");
 				}
 				else {
@@ -241,20 +266,17 @@ public class PlayerController extends BaseController {
 			}
 		}
 		
-		return "passwordreset";
+		return URL_PASSWORDRESET;
 	}
 	
 	@RequestMapping(value = {"/classinvitation"}, method = RequestMethod.GET)
 	public final String classinvitation(final Model model) {
-		
 		// Get all the invitation to classes that the student hasn't confirmed his participation yet.
 		List<ClassPlayer> classPlayers = classPlayerService.findClassPlayersByPlayerAndStatus(currentAuthenticatedUser().getUser().getId(), 1);
-		
 		model.addAttribute("classPlayers", classPlayers);
-		
-		return "classinvitation";
+		return URL_CLASSINVITATION;
 	}
-	
+
 	@RequestMapping(value = {"/classinvitation/{id}"}, method = RequestMethod.GET)
 	public final String classinvitationsubmit(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes, final Model model) {
 		
@@ -262,18 +284,13 @@ public class PlayerController extends BaseController {
 			ClassPlayer current = classPlayerService.findOne(id.intValue());
 			
 			// If the classPlayer doesn't exist.
-			if (current == null) {
-				return "redirect:/";
-			}
+			if (current == null) return REDIRECT_HOME;
 			
 			// Verifying if the student logged in is not the player of this classPlayer.
-			if (current.getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) {
-				return "redirect:/";
-			}
+			if (current.getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) return REDIRECT_HOME;
 			
-			if (current.getStatus() != 1) {
-				return "classinvitation";
-			}
+			// If the player has already confirmed his participation in this class.
+			if (current.getStatus() != 1) return URL_CLASSINVITATION;
 			
 			if (classPlayerService.changeStatus(id.intValue(), 2)) {
 				redirectAttributes.addFlashAttribute("message", "success");
@@ -286,71 +303,6 @@ public class PlayerController extends BaseController {
 			e.printStackTrace();
 		}
 		
-		return "redirect:/classinvitation";
-	}
-	
-	public String validateCreatePlayer(Player player) {
-		String msg = "";
-		
-		if (player.getName() == null || player.getName().equals("")) {
-			msg = msg + "<br />O nome precisa ser informado.";
-		}
-		
-		if (player.getEmail() == null || player.getEmail().equals("")) {
-			msg = msg + "<br />O e-mail precisa ser informado.";
-		}
-		else if (!EmailUtil.validateEmail(player.getEmail())) {
-			msg = msg + "<br />O e-mail informado não é válido.";
-		}
-		
-		if (player.getPassword() == null || player.getPassword().equals("")) {
-			msg = msg + "<br />A senha precisa ser informada.";
-		}
-		else if (player.getPassword().length() < 6 || player.getPassword().length() > 20) {
-			msg = msg + "<br />A senha precisa possuir entre 6 e 20 caracteres.";
-		}
-		else if (!EmailUtil.validatePassword(player.getPassword())) {
-			msg = msg + "<br />A senha precisa possuir ao menos 1 número e ao menos 1 letra.";
-		}
-		
-		return msg;
-	}
-	
-	/**
-	 * This method is used to send the email to the user confirm his email.
-	 * 
-	 * @param player
-	 */
-	public void sendEmailConfirmRegister(Player player) {
-		String[] args = new String[3];
-		args[0] = player.getName();
-		args[1] = player.getEmail();
-		args[2] = player.getEmailConfirmed();
-		
-		try {
-			EmailSendUtil.sendHtmlMail(1, player.getEmail(), args);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * This method is used to send the email to the user when he doesn't remember his password.
-	 * 
-	 * @param player
-	 */
-	public void sendEmailPasswordReset(Player player) {
-		String[] args = new String[3];
-		args[0] = player.getName();
-		args[1] = player.getEmail();
-		args[2] = player.getPasswordReset();
-		
-		try {
-			EmailSendUtil.sendHtmlMail(2, player.getEmail(), args);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		return REDIRECT_CLASSINVITATION;
 	}
 }

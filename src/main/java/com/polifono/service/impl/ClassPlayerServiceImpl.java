@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.ClassPlayer;
+import com.polifono.domain.Player;
 import com.polifono.repository.IClassPlayerRepository;
 import com.polifono.service.IClassPlayerService;
 
@@ -116,5 +117,23 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
 	 */
 	public final List<ClassPlayer> findClassPlayersByTeacherAndStudent(int teacherId, int studentId) {
 		return repository.findClassPlayersByTeacherAndStudent(teacherId, studentId);
+	}
+	
+	/**
+	 * Method used to see if student is student of teacher in any class.
+	 * Return true if student is student of teacher.
+	 * 
+	 * @param teacher
+	 * @param student
+	 * @return
+	 */
+	public boolean isMyStudent(Player teacher, Player student) {
+		List<ClassPlayer> classPlayers = this.findClassPlayersByTeacherAndStudent(teacher.getId(), student.getId());
+		
+		if (classPlayers != null && classPlayers.size() > 0) {
+			return true;
+		}
+		
+		return false;
 	}
 }

@@ -3,6 +3,7 @@ package com.polifono.service;
 import java.util.List;
 
 import com.polifono.domain.ClassPlayer;
+import com.polifono.domain.Player;
 
 public interface IClassPlayerService {
 
@@ -29,5 +30,7 @@ public interface IClassPlayerService {
 	public List<ClassPlayer> findClassPlayersByPlayerAndStatus(int playerId, int status);
 	
 	public List<ClassPlayer> findClassPlayersByTeacherAndStudent(int teacherId, int studentId);
+
+	public boolean isMyStudent(Player user, Player player);
 
 }

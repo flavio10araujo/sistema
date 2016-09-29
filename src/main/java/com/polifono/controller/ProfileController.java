@@ -3,6 +3,8 @@ package com.polifono.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Login;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
@@ -41,19 +42,27 @@ public class ProfileController extends BaseController {
 	
 	@Autowired
 	private ILoginService loginService;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileController.class);
+	
+	public static final String URL_PROFILE_PROFILEPLAYER = "profile/profilePlayer";
+	public static final String URL_PROFILE_PROFILEPLAYEREDIT = "profile/profilePlayerEdit";
+	public static final String URL_PROFILE_PROFILESCORE = "profile/profileScore";
+	public static final String URL_PROFILE_PROFILEATTENDANCE = "profile/profileAttendance";
+	public static final String URL_PROFILE_PROFILENOTFOUND = "profile/profileNotFound";
+	
+	public static final String REDIRECT_HOME = "redirect:/";
 
 	@RequestMapping(value = {"/player/{playerId}"}, method = RequestMethod.GET)
 	public final String profilePlayer(final Model model, @PathVariable("playerId") Integer playerId) {
 		
 		Player player = playerService.findOne(playerId);
 		
-		if (player == null) {
-			return "profile/profileNotFound";
-		}
+		if (player == null) return URL_PROFILE_PROFILENOTFOUND;
 		
 		// If the user is logged AND (he is accessing his own profile OR he is an admin).
 		if (
-				currentAuthenticatedUser() != null 
+				this.currentAuthenticatedUser() != null 
 				&& 
 				(
 						currentAuthenticatedUser().getUser().getId() == playerId
@@ -92,7 +101,7 @@ public class ProfileController extends BaseController {
 		model.addAttribute("phases", phases);
 		model.addAttribute("playerPhases", playerPhases);
 		
-		return "profile/profilePlayer";
+		return URL_PROFILE_PROFILEPLAYER;
 	}
 	
 	@RequestMapping(value = {"/player/{playerId}/score"}, method = RequestMethod.GET)
@@ -100,24 +109,23 @@ public class ProfileController extends BaseController {
 		
 		Player player = playerService.findOne(playerId);
 		
-		if (player == null) {
-			return "profile/profileNotFound";
-		}
+		if (player == null) return URL_PROFILE_PROFILENOTFOUND;
 		
 		// If the player logged in is not the player Id && is not ADMIN and is not TEACHER.
 		if (
-				currentAuthenticatedUser().getUser().getId() != playerId &&
-				!currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN") &&
-				!currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")
+				this.currentAuthenticatedUser().getUser().getId() != playerId &&
+				!this.currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN") &&
+				!this.currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")
 			) {
-			return "redirect:/";
+			return REDIRECT_HOME;
 		}
-		
+
 		// The teacher only can see his own page and of his students.
-		if (currentAuthenticatedUser().getUser().getId() != playerId && 
-				currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")) {
-			if (!isMyStudent(currentAuthenticatedUser().getUser(), player)) {
-				return "redirect:/";
+		if (this.currentAuthenticatedUser().getUser().getId() != playerId && 
+				this.currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")) {
+			
+			if (!classPlayerService.isMyStudent(currentAuthenticatedUser().getUser(), player)) {
+				return REDIRECT_HOME;
 			}
 		}
 		
@@ -130,7 +138,7 @@ public class ProfileController extends BaseController {
 		model.addAttribute("player", player);
 		model.addAttribute("playerPhases", playerPhases);
 		
-		return "profile/profileScore";
+		return URL_PROFILE_PROFILESCORE;
 	}
 	
 	@RequestMapping(value = {"/player/{playerId}/attendance"}, method = RequestMethod.GET)
@@ -138,9 +146,7 @@ public class ProfileController extends BaseController {
 		
 		Player player = playerService.findOne(playerId);
 		
-		if (player == null) {
-			return "profile/profileNotFound";
-		}
+		if (player == null) return URL_PROFILE_PROFILENOTFOUND;
 		
 		// If the player logged in is not the player Id && is not ADMIN and is not TEACHER.
 		if (
@@ -148,14 +154,15 @@ public class ProfileController extends BaseController {
 				!currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN") &&
 				!currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")
 			) {
-			return "redirect:/";
+			return REDIRECT_HOME;
 		}
 		
 		// The teacher only can see his own page and of his students.
 		if (currentAuthenticatedUser().getUser().getId() != playerId && 
 				currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")) {
-			if (!isMyStudent(currentAuthenticatedUser().getUser(), player)) {
-				return "redirect:/";
+			
+			if (!classPlayerService.isMyStudent(currentAuthenticatedUser().getUser(), player)) {
+				return REDIRECT_HOME;
 			}
 		}
 		
@@ -168,41 +175,39 @@ public class ProfileController extends BaseController {
 		model.addAttribute("player", player);
 		model.addAttribute("logins", logins);
 		
-		return "profile/profileAttendance";
+		return URL_PROFILE_PROFILEATTENDANCE;
 	}
 	
 	@RequestMapping(value = {"/player/edit/{playerId}"}, method = RequestMethod.GET)
 	public final String profilePlayerEdit(final Model model, @PathVariable("playerId") Integer playerId) {
 		
 		// Verify if the playerId belongs to the player logged OR the user logged is an admin.
-		if (currentAuthenticatedUser().getUser().getId() == playerId || currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN")) {
+		if (this.currentAuthenticatedUser().getUser().getId() == playerId || this.currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN")) {
 			Player player = playerService.findOne(playerId);
 			
-			if (player == null) {
-				return "profile/profileNotFound";
-			}
+			if (player == null) return URL_PROFILE_PROFILENOTFOUND;
 			
 			model.addAttribute("player", player);
 		}
 		else {
-			return "redirect:/";
+			LOGGER.debug("Someone tried to edit another player with a different id.");
+			return REDIRECT_HOME;
 		}
-		
-		
-		return "profile/profilePlayerEdit";
+
+		return URL_PROFILE_PROFILEPLAYEREDIT;
 	}
-	
+
 	@RequestMapping(value = "/player/update", method = RequestMethod.POST)
 	public String update(@ModelAttribute("edit") Player edit, final RedirectAttributes redirectAttributes) {
 
 		// The player only can edit his own profile.
 		// The admin can edit all the profiles.
-		if (currentAuthenticatedUser().getUser().getId() != edit.getId() 
-				&& !currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN")) {
-			return "redirect:/";
+		if (this.currentAuthenticatedUser().getUser().getId() != edit.getId() 
+				&& !this.currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN")) {
+			return REDIRECT_HOME;
 		}
 
-		String msg = validateEditProfile(edit);
+		String msg = playerService.validateUpdateProfile(edit);
 		
 		if (!"".equals(msg)) {
 			redirectAttributes.addFlashAttribute("message", "error");
@@ -225,7 +230,7 @@ public class ProfileController extends BaseController {
 			// If player logged is editing his own profile.
 			if (currentAuthenticatedUser().getUser().getId() == player.getId()) {
 				// Update the currentAuthenticateUser
-				updateCurrentAuthenticateUser(player);
+				this.updateCurrentAuthenticateUser(player);
 			}
 		}
 		catch(Exception e) {
@@ -233,33 +238,5 @@ public class ProfileController extends BaseController {
 		}
 		
 		return "redirect:/profile/player/" + edit.getId();
-	}
-	
-	/**
-	 * Method used to see if student is student of teacher in any class.
-	 * Return true if student is student of teacher.
-	 * 
-	 * @param teacher
-	 * @param student
-	 * @return
-	 */
-	public boolean isMyStudent(Player teacher, Player student) {
-		List<ClassPlayer> classPlayers = classPlayerService.findClassPlayersByTeacherAndStudent(teacher.getId(), student.getId());
-		
-		if (classPlayers != null && classPlayers.size() > 0) {
-			return true;
-		}
-		
-		return false;
-	}
-	
-	public String validateEditProfile(Player player) {
-		String msg = "";
-		
-		if (player.getName() == null || "".equals(player.getName())) {
-			msg = "O nome precisa ser informado.<br />";
-		}
-		
-		return msg;
 	}
 }

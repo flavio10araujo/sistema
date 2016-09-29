@@ -20,16 +20,21 @@ public class HomeController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
     
+    public static final String URL_INDEX = "index";
+    public static final String URL_CONTACT = "contact";
+    public static final String URL_CONTACTOPEN = "contactOpen";
+    public static final String REDIRECT_GAMES = "redirect:/games/";
+    
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
 	public final String index(final Model model) {
 		
 		// If the player is not logged.
 		if (this.currentAuthenticatedUser() == null) {
 			model.addAttribute("player", new Player());
-			return "index";
+			return URL_INDEX;
 		}
 		else {
-			return "redirect:/games";
+			return REDIRECT_GAMES;
 		}
 	}
 
@@ -38,29 +43,20 @@ public class HomeController extends BaseController {
     	LOGGER.debug("Getting login page, error={}", error);
     	model.addAttribute("player", new Player());
     	model.addAttribute("error", error);
-    	return "index";
+    	return URL_INDEX;
 	}
     
     @RequestMapping(value = {"/contact"}, method = RequestMethod.GET)
     public final String contact() {
-    	
-    	boolean logged = false;
-    	
-    	CurrentUser currentUser = currentAuthenticatedUser();
-    	
     	// If the user is logged in.
-    	if (currentUser != null) {
-    		logged = true;
-    	}
-    	
-    	if (logged) {
-			return "contact";
+    	if (this.currentAuthenticatedUser() != null) {
+    		return URL_CONTACT;
 		}
 		else {
-			return "contactOpen";
+			return URL_CONTACTOPEN;
 		}
     }
-    
+
     @RequestMapping(value = {"/contact"}, method = RequestMethod.POST)
     public final String contactsubmit(final Model model, @RequestParam(value = "email", defaultValue = "") String email, @RequestParam("message") String message) {
     	
@@ -74,33 +70,25 @@ public class HomeController extends BaseController {
     		email = currentUser.getUser().getEmail();
     	}
     	
-    	String msg = validateContact(email, message);
+    	String msg = this.validateContact(email, message);
     	
     	// If there are errors.
     	if (!msg.equals("")) {
     		model.addAttribute("message", "error");
 			model.addAttribute("messageContent", msg);
 			
-			if (logged) {
-				return "contact";
-			}
-			else {
-				return "contactOpen";
-			}
+			if (logged) return URL_CONTACT;
+			else return URL_CONTACTOPEN;
     	}
-    	
-    	sendEmailContact(email, message);
+
+    	EmailSendUtil.sendEmailContact(email, message);
     	
     	model.addAttribute("message", "success");
     	
-    	if (logged) {
-			return "contact";
-		}
-		else {
-			return "contactOpen";
-		}
+    	if (logged) return URL_CONTACT;
+		else return URL_CONTACTOPEN;
     }
-    
+
     public String validateContact(String email, String message) {
 		String msg = "";
 		
@@ -116,18 +104,5 @@ public class HomeController extends BaseController {
 		}
 		
 		return msg;
-	}
-    
-    public void sendEmailContact(String email, String message) {
-		String[] args = new String[2];
-		args[0] = email;
-		args[1] = message;
-		
-		try {
-			EmailSendUtil.sendHtmlMail(5, "", args);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }

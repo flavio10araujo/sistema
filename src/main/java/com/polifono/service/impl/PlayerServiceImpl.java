@@ -23,6 +23,7 @@ import com.polifono.domain.Role;
 import com.polifono.repository.IPlayerRepository;
 import com.polifono.service.IPlayerGameService;
 import com.polifono.service.IPlayerService;
+import com.polifono.util.EmailUtil;
 import com.polifono.util.RandomStringUtil;
 
 @Service
@@ -168,5 +169,73 @@ public class PlayerServiceImpl implements IPlayerService {
 		}
 		
 		return hasCredits;
+	}
+	
+	/**
+	 * Verify if the player has already confirmed his e-mail.
+	 * Return true if the player has already confirmed it. Return false otherwise.
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public boolean verifyEmailConfirmed(Player player) {
+		player = this.findOne(player.getId());
+		
+		if (player.isIndEmailConfirmed()) {
+			return true;
+		}
+
+		return false;
+	}
+	
+	/**
+	 * Verify if the player has all the attributes mandatories when we are creating a new player.
+	 * If everything is OK, return an empty string.
+	 * Otherwise, return one string with the message of the error.
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public String validateCreatePlayer(Player player) {
+		String msg = "";
+		
+		if (player.getName() == null || player.getName().equals("")) {
+			msg = msg + "<br />O nome precisa ser informado.";
+		}
+		
+		if (player.getEmail() == null || player.getEmail().equals("")) {
+			msg = msg + "<br />O e-mail precisa ser informado.";
+		}
+		else if (!EmailUtil.validateEmail(player.getEmail())) {
+			msg = msg + "<br />O e-mail informado não é válido.";
+		}
+		
+		if (player.getPassword() == null || player.getPassword().equals("")) {
+			msg = msg + "<br />A senha precisa ser informada.";
+		}
+		else if (player.getPassword().length() < 6 || player.getPassword().length() > 20) {
+			msg = msg + "<br />A senha precisa possuir entre 6 e 20 caracteres.";
+		}
+		else if (!EmailUtil.validatePassword(player.getPassword())) {
+			msg = msg + "<br />A senha precisa possuir ao menos 1 número e ao menos 1 letra.";
+		}
+		
+		return msg;
+	}
+	
+	/**
+	 * Verify if the player has all the attributes mandatories when we are updating a player.
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public String validateUpdateProfile(Player player) {
+		String msg = "";
+		
+		if (player.getName() == null || "".equals(player.getName())) {
+			msg = "O nome precisa ser informado.<br />";
+		}
+		
+		return msg;
 	}
 }
