@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import org.apache.commons.mail.MultiPartEmail;
 
+import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
 
 public class EmailSendUtil {
@@ -231,6 +232,26 @@ public class EmailSendUtil {
 		
 		try {
 			EmailSendUtil.sendHtmlMail(3, player.getEmail(), args);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Send one email of the type 4 (invitation to class).
+	 * 
+	 * @param player
+	 * @param classPlayer
+	 */
+	public static void sendEmailInvitationToClass(Player player, ClassPlayer classPlayer) {
+		String[] args = new String[3];
+		args[0] = classPlayer.getPlayer().getName(); // Student
+		args[1] = player.getName(); // Teacher
+		args[2] = classPlayer.getClazz().getName();
+		
+		try {
+			EmailSendUtil.sendHtmlMail(4, classPlayer.getPlayer().getEmail(), args);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

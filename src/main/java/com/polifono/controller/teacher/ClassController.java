@@ -24,6 +24,8 @@ public class ClassController extends BaseController {
 	public static final String URL_ADMIN_BASIC_EDIT = "teacher/class/editPage";
 	public static final String URL_ADMIN_BASIC_SAVEPAGE = "teacher/class/savepage";
 	
+	public static final String REDIRECT_HOME = "redirect:/";
+	
 	@Autowired
 	private IClassService classService;
 
@@ -39,7 +41,7 @@ public class ClassController extends BaseController {
 	public String save(@ModelAttribute("class") com.polifono.domain.Class clazz, final RedirectAttributes redirectAttributes) {
 
 		try {
-			classService.create(clazz, currentAuthenticatedUser().getUser());
+			classService.create(clazz, this.currentAuthenticatedUser().getUser());
 			redirectAttributes.addFlashAttribute("save", "success");
 		}
 		catch(Exception e) {
@@ -54,9 +56,8 @@ public class ClassController extends BaseController {
 
 		// The teacher only can edit/delete his own classes.
 		com.polifono.domain.Class current = classService.findOne(id.intValue());
-		if (current.getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) {
-			return "redirect:/";
-		}
+		
+		if (current.getPlayer().getId() != this.currentAuthenticatedUser().getUser().getId()) return REDIRECT_HOME;
 		
 		if (operation.equals("delete")) {
 			if (classService.delete(id.intValue())) {
@@ -87,9 +88,7 @@ public class ClassController extends BaseController {
 		com.polifono.domain.Class current = classService.findOne(edit.getId());
 		
 		// The teacher only can edit his own classes.
-		if (current.getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) {
-			return "redirect:/";
-		}
+		if (current.getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) return REDIRECT_HOME;
 		
 		edit.setPlayer(current.getPlayer());
 		edit.setDtInc(current.getDtInc());

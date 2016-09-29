@@ -16,7 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.controller.BaseController;
 import com.polifono.domain.ClassPlayer;
-import com.polifono.domain.Player;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
 import com.polifono.service.IPlayerService;
@@ -39,6 +38,8 @@ public class StudentController extends BaseController {
 	
 	@Autowired
 	private IClassPlayerService classPlayerService;
+	
+	public static final String REDIRECT_HOME = "redirect:/";
 
 	@RequestMapping(value = {"/student", "/student/savepage"}, method = RequestMethod.GET)
 	public String savePage(HttpSession session, Model model) {
@@ -84,9 +85,8 @@ public class StudentController extends BaseController {
 			
 			// The teacher only can add players in his own classes.
 			com.polifono.domain.Class currentClass = classService.findOne(classPlayer.getClazz().getId());
-			if (currentClass.getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) {
-				return "redirect:/";
-			}
+			
+			if (currentClass.getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) return REDIRECT_HOME;
 			
 			// Get the player by his email.
 			// Get the player only if he is active.
@@ -108,7 +108,7 @@ public class StudentController extends BaseController {
 
 			classPlayerService.create(classPlayer);
 			
-			sendEmailInvitationToClass(currentAuthenticatedUser().getUser(), classPlayer);
+			EmailSendUtil.sendEmailInvitationToClass(currentAuthenticatedUser().getUser(), classPlayer);
 			
 			redirectAttributes.addFlashAttribute("save", "success");
 		}
@@ -127,14 +127,10 @@ public class StudentController extends BaseController {
 			ClassPlayer current = classPlayerService.findOne(id.intValue());
 			
 			// If the classPlayer doesn't exist.
-			if (current == null) {
-				return "redirect:/";
-			}
+			if (current == null) return REDIRECT_HOME;
 			
 			// Verifying if the teacher logged in is the owner of this class.
-			if (current.getClazz().getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) {
-				return "redirect:/";
-			}
+			if (current.getClazz().getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) return REDIRECT_HOME;
 			
 			// Verifying if the student is not in the Pending status anymore.
 			if (current.getStatus() != 1) {
@@ -142,7 +138,7 @@ public class StudentController extends BaseController {
 				return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
 			}
 			
-			sendEmailInvitationToClass(currentAuthenticatedUser().getUser(), current);
+			EmailSendUtil.sendEmailInvitationToClass(currentAuthenticatedUser().getUser(), current);
 			
 			redirectAttributes.addFlashAttribute("message", "emailSent");
 		}
@@ -161,14 +157,10 @@ public class StudentController extends BaseController {
 			ClassPlayer current = classPlayerService.findOne(id.intValue());
 			
 			// If the classPlayer doesn't exist.
-			if (current == null) {
-				return "redirect:/";
-			}
+			if (current == null) return REDIRECT_HOME;
 			
 			// Verifying if the teacher logged in is the owner of this class.
-			if (current.getClazz().getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) {
-				return "redirect:/";
-			}
+			if (current.getClazz().getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) return REDIRECT_HOME;
 			
 			if (operation.equals("delete")) {
 				if (classPlayerService.delete(id.intValue())) {
@@ -184,19 +176,5 @@ public class StudentController extends BaseController {
 		}
 
 		return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
-	}
-	
-	public void sendEmailInvitationToClass(Player player, ClassPlayer classPlayer) {
-		String[] args = new String[3];
-		args[0] = classPlayer.getPlayer().getName(); // Student
-		args[1] = player.getName(); // Teacher
-		args[2] = classPlayer.getClazz().getName();
-		
-		try {
-			EmailSendUtil.sendHtmlMail(4, classPlayer.getPlayer().getEmail(), args);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }
