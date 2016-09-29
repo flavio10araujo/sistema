@@ -6,6 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.polifono.domain.Phase;
+import com.polifono.domain.Phasestatus;
+import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.form.teacher.ReportGeneralForm;
 import com.polifono.repository.IPlayerPhaseRepository;
@@ -66,5 +69,52 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 		}
 		
 		return list;
+	}
+	
+	/**
+	 * Verify if the phase was already done by the player.
+	 * 
+	 * @param phase
+	 * @return
+	 */
+	public boolean phaseAlreadyCompletedByPlayer(Phase phase, Player player) {
+
+		PlayerPhase playerPhase = this.findByPlayerPhaseAndStatus(player.getId(), phase.getId(), 3);
+		
+		// This phase is already completed by this phase.
+		if (playerPhase != null) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * This method is used to register an attempt of doing the test.
+	 * 
+	 * @param phase
+	 */
+	public void setTestAttempt(Player player, Phase phase) {
+		PlayerPhase playerPhase = this.findByPlayerPhaseAndStatus(player.getId(), phase.getId(), 2);
+		
+		// If this is not the first attempt.
+		if (playerPhase != null) {
+			playerPhase.setNumAttempts(playerPhase.getNumAttempts() + 1);
+		}
+		else {
+			playerPhase = new PlayerPhase();
+			
+			playerPhase.setNumAttempts(1);
+			playerPhase.setPhase(phase);
+			Phasestatus phasestatus = new Phasestatus();
+			phasestatus.setId(2);
+			playerPhase.setPhasestatus(phasestatus);
+			
+			//Player p = playerService.findOne(player.getId());
+			//playerPhase.setPlayer(p);
+			playerPhase.setPlayer(player);
+		}
+		
+		this.save(playerPhase);
 	}
 }

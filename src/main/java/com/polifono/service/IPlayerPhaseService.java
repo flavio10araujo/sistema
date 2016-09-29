@@ -2,6 +2,8 @@ package com.polifono.service;
 
 import java.util.List;
 
+import com.polifono.domain.Phase;
+import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.form.teacher.ReportGeneralForm;
 
@@ -16,5 +18,9 @@ public interface IPlayerPhaseService {
 	public List<PlayerPhase> findPlayerPhasesByPlayer(int playerId);
 	
 	public List<PlayerPhase> findForReportGeneral(ReportGeneralForm reportGeneralForm, int playerId);
+
+	public boolean phaseAlreadyCompletedByPlayer(Phase phase, Player user);
+
+	public void setTestAttempt(Player user, Phase phase);
 
 }

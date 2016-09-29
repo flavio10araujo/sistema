@@ -10,4 +10,6 @@ public interface IGameService {
 	
 	public Game findByNamelink(String namelink);
 
+	public int calculateScore(int numAttempts, int grade);
+
 }

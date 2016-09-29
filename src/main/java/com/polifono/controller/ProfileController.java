@@ -43,16 +43,9 @@ public class ProfileController extends BaseController {
 	private ILoginService loginService;
 
 	@RequestMapping(value = {"/player/{playerId}"}, method = RequestMethod.GET)
-	public final String profilePlayer(final Model model, @PathVariable("playerId") String playerId) {
+	public final String profilePlayer(final Model model, @PathVariable("playerId") Integer playerId) {
 		
-		List<String> intParameters = new ArrayList<String>();
-		intParameters.add(playerId);
-		
-		if (playerId == null || !isParameterInteger(intParameters)) {
-			return "redirect:/";
-		}
-		
-		Player player = playerService.findOne(Integer.parseInt(playerId));
+		Player player = playerService.findOne(playerId);
 		
 		if (player == null) {
 			return "profile/profileNotFound";
@@ -63,7 +56,7 @@ public class ProfileController extends BaseController {
 				currentAuthenticatedUser() != null 
 				&& 
 				(
-						currentAuthenticatedUser().getUser().getId() == Integer.parseInt(playerId)
+						currentAuthenticatedUser().getUser().getId() == playerId
 						||
 						currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN")
 				)
@@ -103,16 +96,9 @@ public class ProfileController extends BaseController {
 	}
 	
 	@RequestMapping(value = {"/player/{playerId}/score"}, method = RequestMethod.GET)
-	public final String score(final Model model, @PathVariable("playerId") String playerId) {
+	public final String score(final Model model, @PathVariable("playerId") Integer playerId) {
 		
-		List<String> intParameters = new ArrayList<String>();
-		intParameters.add(playerId);
-		
-		if (playerId == null || !isParameterInteger(intParameters)) {
-			return "redirect:/";
-		}
-		
-		Player player = playerService.findOne(Integer.parseInt(playerId));
+		Player player = playerService.findOne(playerId);
 		
 		if (player == null) {
 			return "profile/profileNotFound";
@@ -120,7 +106,7 @@ public class ProfileController extends BaseController {
 		
 		// If the player logged in is not the player Id && is not ADMIN and is not TEACHER.
 		if (
-				currentAuthenticatedUser().getUser().getId() != Integer.parseInt(playerId) &&
+				currentAuthenticatedUser().getUser().getId() != playerId &&
 				!currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN") &&
 				!currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")
 			) {
@@ -128,7 +114,7 @@ public class ProfileController extends BaseController {
 		}
 		
 		// The teacher only can see his own page and of his students.
-		if (currentAuthenticatedUser().getUser().getId() != Integer.parseInt(playerId) && 
+		if (currentAuthenticatedUser().getUser().getId() != playerId && 
 				currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")) {
 			if (!isMyStudent(currentAuthenticatedUser().getUser(), player)) {
 				return "redirect:/";
@@ -148,16 +134,9 @@ public class ProfileController extends BaseController {
 	}
 	
 	@RequestMapping(value = {"/player/{playerId}/attendance"}, method = RequestMethod.GET)
-	public final String attendance(final Model model, @PathVariable("playerId") String playerId) {
+	public final String attendance(final Model model, @PathVariable("playerId") Integer playerId) {
 		
-		List<String> intParameters = new ArrayList<String>();
-		intParameters.add(playerId);
-		
-		if (playerId == null || !isParameterInteger(intParameters)) {
-			return "redirect:/";
-		}
-		
-		Player player = playerService.findOne(Integer.parseInt(playerId));
+		Player player = playerService.findOne(playerId);
 		
 		if (player == null) {
 			return "profile/profileNotFound";
@@ -165,7 +144,7 @@ public class ProfileController extends BaseController {
 		
 		// If the player logged in is not the player Id && is not ADMIN and is not TEACHER.
 		if (
-				currentAuthenticatedUser().getUser().getId() != Integer.parseInt(playerId) &&
+				currentAuthenticatedUser().getUser().getId() != playerId &&
 				!currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN") &&
 				!currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")
 			) {
@@ -173,7 +152,7 @@ public class ProfileController extends BaseController {
 		}
 		
 		// The teacher only can see his own page and of his students.
-		if (currentAuthenticatedUser().getUser().getId() != Integer.parseInt(playerId) && 
+		if (currentAuthenticatedUser().getUser().getId() != playerId && 
 				currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")) {
 			if (!isMyStudent(currentAuthenticatedUser().getUser(), player)) {
 				return "redirect:/";
@@ -193,18 +172,11 @@ public class ProfileController extends BaseController {
 	}
 	
 	@RequestMapping(value = {"/player/edit/{playerId}"}, method = RequestMethod.GET)
-	public final String profilePlayerEdit(final Model model, @PathVariable("playerId") String playerId) {
+	public final String profilePlayerEdit(final Model model, @PathVariable("playerId") Integer playerId) {
 		
-		List<String> intParameters = new ArrayList<String>();
-		intParameters.add(playerId);
-		
-		if (playerId == null || !isParameterInteger(intParameters)) {
-			return "redirect:/";
-		}
-
 		// Verify if the playerId belongs to the player logged OR the user logged is an admin.
-		if (currentAuthenticatedUser().getUser().getId() == Integer.parseInt(playerId) || currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN")) {
-			Player player = playerService.findOne(Integer.parseInt(playerId));
+		if (currentAuthenticatedUser().getUser().getId() == playerId || currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN")) {
+			Player player = playerService.findOne(playerId);
 			
 			if (player == null) {
 				return "profile/profileNotFound";

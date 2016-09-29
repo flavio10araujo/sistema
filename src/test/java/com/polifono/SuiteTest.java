@@ -17,6 +17,8 @@ import com.polifono.service.PlayerPhaseServiceTest;
 import com.polifono.service.PlayerServiceTest;
 import com.polifono.service.QuestionServiceTest;
 import com.polifono.service.TransactionServiceTest;
+import com.polifono.service.currentUser.CurrentUserServiceTest;
+import com.polifono.service.currentUser.UserDetailsServiceTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
@@ -33,7 +35,9 @@ import com.polifono.service.TransactionServiceTest;
 	TransactionServiceTest.class,
 	ClassServiceTest.class,
 	ClassPlayerServiceTest.class,
-	PlayerGameServiceTest.class
+	PlayerGameServiceTest.class,
+	CurrentUserServiceTest.class,
+	UserDetailsServiceTest.class
 })
 public class SuiteTest {
 

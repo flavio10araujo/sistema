@@ -2,7 +2,10 @@ package com.polifono.service;
 
 import java.util.List;
 
+import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
+import com.polifono.domain.Player;
+import com.polifono.domain.PlayerPhase;
 
 public interface IPhaseService {
 
@@ -29,4 +32,8 @@ public interface IPhaseService {
 	public Phase findLastPhaseOfTheLevel(int gameId, int levelId);
 	
 	public List<Phase> findGamesForProfile(int playerId);
+
+	public List<Phase> findPhasesCheckedByMap(Map map, PlayerPhase lastPhaseCompleted);
+
+	public boolean playerCanAccessThisPhase(Phase phase, Player user);
 }

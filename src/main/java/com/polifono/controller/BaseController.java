@@ -1,6 +1,7 @@
 package com.polifono.controller;
 
-import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.annotation.Nullable;
 
@@ -13,6 +14,14 @@ import com.polifono.domain.Player;
 
 public abstract class BaseController {
 
+	public static ResourceBundle applicationResourceBundle;
+	public static ResourceBundle messagesResourceBundle;
+	
+	static {
+		applicationResourceBundle = ResourceBundle.getBundle("application", Locale.getDefault());
+		messagesResourceBundle = ResourceBundle.getBundle("messages/messages", Locale.getDefault());
+	}
+	
 	/**
      * Used by child class controllers to obtain the currently authenticated user from Spring Security.
      */
@@ -33,24 +42,4 @@ public abstract class BaseController {
     	Authentication newAuth = new UsernamePasswordAuthenticationToken(new CurrentUser(player), auth.getCredentials(), auth.getAuthorities());
     	SecurityContextHolder.getContext().setAuthentication(newAuth);
     }
-    
-    /**
-	 * Verify if all the strings into an array can be converted to a int.
-	 * Return true if all the string can be converted to int.
-	 * 
-	 * @param list
-	 * @return
-	 */
-	public boolean isParameterInteger(List<String> list) {
-		for (String s : list) {
-			try {
-				Integer.parseInt(s);
-			}
-			catch (Exception e) {
-				return false;
-			}
-		}
-		
-		return true;
-	}
 }

@@ -1,7 +1,6 @@
 package com.polifono.controller;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,17 +68,8 @@ public class PaymentController extends BaseController {
 	}
 	
 	@RequestMapping(value = {"/buycredits"}, method = RequestMethod.POST)
-	public final String buycreditssubmit(final Model model, @RequestParam("quantity") String quantityStr) {
+	public final String buycreditssubmit(final Model model, @RequestParam("quantity") Integer quantity) {
 
-		List<String> intParameters = new ArrayList<String>();
-		intParameters.add(quantityStr);
-		
-		if (!isParameterInteger(intParameters)) {
-			return "redirect:/";
-		}
-		
-		int quantity = Integer.parseInt(quantityStr);
-		
 		if (quantity < 5 || quantity > 135) {
 			model.addAttribute("codRegister", "2");
 			model.addAttribute("msg", "A quantidade de créditos deve ser entre 5 e 135.");

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CurrentUserServiceImpl implements ICurrentUserService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CurrentUserDetailsService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
     @Override
     public boolean canAccessUser(CurrentUser currentUser, Long userId) {

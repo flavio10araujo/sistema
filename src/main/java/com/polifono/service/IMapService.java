@@ -2,7 +2,10 @@ package com.polifono.service;
 
 import java.util.List;
 
+import com.polifono.domain.Game;
 import com.polifono.domain.Map;
+import com.polifono.domain.Player;
+import com.polifono.domain.PlayerPhase;
 
 public interface IMapService {
 
@@ -23,5 +26,9 @@ public interface IMapService {
 	public Map findByGameLevelAndOrder(int gameId, int levelId, int mapOrder);
 	
 	public Map findNextMapSameLevel(Map mapCurrent);
+
+	public boolean playerCanAccessThisMap(Map map, Player user);
+
+	public Map findCurrentMap(Game game, PlayerPhase playerPhase);
 
 }

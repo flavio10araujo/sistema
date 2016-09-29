@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import com.polifono.domain.Game;
+import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 
 public interface IPlayerService {
@@ -28,5 +30,9 @@ public interface IPlayerService {
 	public Player addCreditsToPlayer(int playerId, int qtdCredits);
 	
 	public Player removeCreditsFromPlayer(int playerId, int qtdCredits);
+
+	public Player removeOneCreditFromPlayer(Player player, Game game);
+
+	public boolean playerHasCredits(Player user, Phase phase);
 
 }

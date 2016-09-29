@@ -6,7 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
+import com.polifono.domain.Player;
+import com.polifono.domain.PlayerPhase;
 import com.polifono.repository.IPhaseRepository;
 import com.polifono.service.IPhaseService;
 
@@ -55,6 +58,39 @@ public class PhaseServiceImpl implements IPhaseService {
 	
 	public final List<Phase> findPhasesByMap(int mapId) {
 		return repository.findPhasesByMap(mapId);
+	}
+	
+	/**
+	 * Get the phases of the map.
+	 * Check which phases are opened.
+	 * 
+	 * @param map
+	 * @return
+	 */
+	public final List<Phase> findPhasesCheckedByMap(Map map, PlayerPhase lastPhaseCompleted) {
+		List<Phase> phases = this.findPhasesByMap(map.getId());
+		
+		// If there are not phases in the map.
+		if (phases == null || phases.size() == 0) {
+			return null;
+		}
+
+		// If the player has never completed any phase of this game.
+		if (lastPhaseCompleted == null) {
+			// Open the first phase of the map.
+			phases.get(0).setOpened(true);
+		}
+		// If the player has already completed at least one phase of this game.
+		else {
+			// Open all phases until the next phase.
+			for (int i = 0; i < phases.size(); i++) {
+				if (phases.get(i).getOrder() <= (lastPhaseCompleted.getPhase().getOrder() + 1)) {
+					phases.get(i).setOpened(true);
+				}
+			}
+		}
+		
+		return phases;
 	}
 	
 	public final Phase findByMapAndOrder(int mapId, int phaseOrder) {
@@ -113,5 +149,35 @@ public class PhaseServiceImpl implements IPhaseService {
 		}
 		
 		return ret;
+	}
+	
+	/**
+	 * Verify if the player has permission to access a specific phase.
+	 * Return true if the player has the permission.
+	 * 
+	 * @param phase
+	 * @return
+	 */
+	public boolean playerCanAccessThisPhase(Phase phase, Player player) {
+
+		// The first phase is always permitted.
+		if (phase.getOrder() == 1) {
+			return true;
+		}
+		
+		// Get the last phase that the player has done in a specific game.
+		Phase lastPhaseDone = this.findLastPhaseDoneByPlayerAndGame(player.getId(), phase.getMap().getGame().getId());
+		
+		// If the player is trying to access a phase but he never had finished a phase of this game.
+		if (lastPhaseDone == null) {
+			return false;
+		}
+		
+		// If the player is trying to access a phase that he had already done OR the next phase in the right sequence.
+		if (lastPhaseDone.getOrder() >= (phase.getOrder() - 1)) {
+			return true;
+		}
+		
+		return false;
 	}
 }

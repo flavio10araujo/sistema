@@ -19,6 +19,19 @@ import com.polifono.util.EmailUtil;
 public class HomeController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
+    
+    @RequestMapping(value = {"/"}, method = RequestMethod.GET)
+	public final String index(final Model model) {
+		
+		// If the player is not logged.
+		if (this.currentAuthenticatedUser() == null) {
+			model.addAttribute("player", new Player());
+			return "index";
+		}
+		else {
+			return "redirect:/games";
+		}
+	}
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
 	public final String index(final Model model, @RequestParam Optional<String> error) {

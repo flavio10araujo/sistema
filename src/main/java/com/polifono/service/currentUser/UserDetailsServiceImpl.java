@@ -9,16 +9,17 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.domain.CurrentUser;
 import com.polifono.domain.Player;
-import com.polifono.service.impl.PlayerServiceImpl;
+import com.polifono.service.IPlayerService;
 
 @Service
-public class CurrentUserDetailsService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CurrentUserDetailsService.class);
-    private final PlayerServiceImpl userService;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+    
+    private final IPlayerService userService;
+    
     @Autowired
-    public CurrentUserDetailsService(PlayerServiceImpl userService) {
+    public UserDetailsServiceImpl(IPlayerService userService) {
         this.userService = userService;
     }
 
@@ -26,6 +27,8 @@ public class CurrentUserDetailsService implements UserDetailsService {
     public CurrentUser loadUserByUsername(String email) throws UsernameNotFoundException {
         LOGGER.debug("Authenticating user with email={}", email.replaceFirst("@.*", "@***"));
         Player user = userService.findByEmailAndStatusForLogin(email, true).orElseThrow(() -> new UsernameNotFoundException(String.format("User with email=%s was not found", email)));
+        
+        System.out.println("DEPOIS do findByEmailAndStatusForLogin");
         
         return new CurrentUser(user);
     }
