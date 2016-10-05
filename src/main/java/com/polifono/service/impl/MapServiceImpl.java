@@ -2,6 +2,8 @@ package com.polifono.service.impl;
 
 import java.util.List;
 
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +22,12 @@ public class MapServiceImpl implements IMapService {
 	@Autowired
 	private IMapRepository repository;
 	
-	@Autowired
 	private IPhaseService phaseService;
+	
+	@Autowired
+	public MapServiceImpl(IPhaseService phaseService) {
+		this.phaseService = phaseService;
+	}
 	
 	public final Map save(Map map) {
 		return repository.save(map);
@@ -96,29 +102,33 @@ public class MapServiceImpl implements IMapService {
 
 		// The first map of the first level is always permitted.
 		if (map.getLevel().getOrder() == 1 && map.getOrder() == 1) {
+			System.out.println("IF 1");
 			return true;
-		}
+		}else {System.out.println("ELSE 1");}
 		
 		// Get the last phase that the player has done in a specific game.
 		Phase lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(player.getId(), map.getGame().getId());
 		
 		// If the player is trying to access a map different of the first map of the first level and he never had finished a phase of this game.
-		if (lastPhaseDone == null && (map.getLevel().getOrder() != 1 || map.getOrder() != 1)) {
+		if (lastPhaseDone == null) {
+			System.out.println("IF 2");
 			return false;
-		}
+		}else{System.out.println("ELSE 2");}
 		
-		// If the player is trying to access a map in a previous level than the lastPhaseDone's level. 
+		// If the player is trying to access a map in a previous level than the lastPhaseDone's level.
 		if (map.getLevel().getOrder() < lastPhaseDone.getMap().getLevel().getOrder()) {
+			System.out.println("IF 3");
 			return true;
-		}
+		}else {System.out.println("ELSE 3");}
 		
 		// If the player is trying to access a previous map (or the same map) at the same level of the lastPhaseDone.
 		if (
 			map.getLevel().getOrder() == lastPhaseDone.getMap().getLevel().getOrder()
 			&& map.getOrder() <= lastPhaseDone.getMap().getOrder()
 			) {
+			System.out.println("IF 4");
 			return true;
-		}
+		}else {System.out.println("ELSE 4");}
 		
 		// If you are here, it's because the player is trying to access a next map at the same level OR a map in one of the next levels.
 		
@@ -127,8 +137,9 @@ public class MapServiceImpl implements IMapService {
 		
 		// If the lastPhaseDone is not the lastPhaseOfTheLevel. Then the player can't access the next map or the next level.
 		if (lastPhaseDone.getId() != lastPhaseOfTheLevel.getId()) {
+			System.out.println("IF 5");
 			return false;
-		}
+		}else {System.out.println("ELSE 5");}
 		
 		// If the player is trying to access a map in the same level.
 		if (lastPhaseDone.getMap().getLevel().getOrder() == map.getLevel().getOrder()) {
@@ -162,21 +173,19 @@ public class MapServiceImpl implements IMapService {
 	 * @return
 	 */
 	public final Map findCurrentMap(Game game, PlayerPhase lastPhaseCompleted) {
-		Map map = null;
-
 		// If the player has never completed any phase of this game. 
 		if (lastPhaseCompleted == null) {
 			// Find the first map of the first level of this game.
-			map = this.findByGameAndLevel(game.getId(), 1);
+			return this.findByGameAndLevel(game.getId(), 1);
 		}
 		// If the player has already completed at least one phase of this game.
 		else {
-			// Looking for the next phase.
+			// Verifying is the next phase is in the same map than lastPhaseCompleted.
 			Phase nextPhase = phaseService.findNextPhaseInThisMap(lastPhaseCompleted.getPhase().getMap().getId(), lastPhaseCompleted.getPhase().getOrder() + 1);
 
-			// If the next phase is in the same map than the last phase completed by the player for this game.
+			// If the next phase is in the same map that the last phase completed by the player in this game.
 			if (nextPhase != null) {
-				map = lastPhaseCompleted.getPhase().getMap();
+				return lastPhaseCompleted.getPhase().getMap();
 			}
 			// If the next phase is in the next map or in the next level.
 			else {
@@ -185,7 +194,7 @@ public class MapServiceImpl implements IMapService {
 
 				// If the next map is in the same level.
 				if (nextMapSameLevel != null) {
-					map = nextMapSameLevel;
+					return nextMapSameLevel;
 				}
 				// If the next map is not in the same level. 
 				else {
@@ -194,19 +203,19 @@ public class MapServiceImpl implements IMapService {
 
 					// If it has found the first map of the next level.
 					if (firstMapNextLevel != null) {
-						map = firstMapNextLevel;
+						Map map = firstMapNextLevel;
 						map.setLevelCompleted(true);
+						return map;
 					}
 					// It doesn't exist a next map, because the player has already finished the last phase of the last level. 
 					else {
 						// Draw the last map of the last level.
-						map = lastPhaseCompleted.getPhase().getMap();
+						Map map = lastPhaseCompleted.getPhase().getMap();
 						map.setGameCompleted(true);
+						return map;
 					}
 				}
 			}
 		}
-
-		return map;
 	}
 }

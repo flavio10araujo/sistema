@@ -104,7 +104,7 @@ public class PhaseServiceImpl implements IPhaseService {
 		return repository.findNextPhaseInThisMap(mapId, phaseOrder);
 	}
 	
-	public final Phase findLastPhaseDoneByPlayerAndGame(int playerId, int gameId) {
+	public Phase findLastPhaseDoneByPlayerAndGame(int playerId, int gameId) {
 		List<Phase> list = repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId); 
 		
 		if (list == null || list.size() == 0) {

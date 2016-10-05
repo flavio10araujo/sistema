@@ -318,4 +318,28 @@ public class ClassPlayerServiceTest extends AbstractTest {
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     /* findClassPlayersByTeacherAndStudent - end */
+    
+    /* isMyStudent - begin */
+    @Test
+    public void isMyStudent_WhenItIsHisStudent_returnTrue() {
+    	Player teacher = new Player();
+    	teacher.setId(TEACHER_ID_EXISTENT);
+    	
+    	Player student = new Player();
+    	student.setId(PLAYER_ID_EXISTENT);
+    	
+    	Assert.assertTrue(service.isMyStudent(teacher, student));
+    }
+    
+    @Test
+    public void isMyStudent_WhenItIsnotHisStudent_returnFalse() {
+    	Player teacher = new Player();
+    	teacher.setId(TEACHER_ID_EXISTENT);
+    	
+    	Player student = new Player();
+    	student.setId(PLAYER_ID_INEXISTENT);
+    	
+    	Assert.assertFalse(service.isMyStudent(teacher, student));
+    }
+    /* isMyStudent - end */
 }
