@@ -144,10 +144,12 @@ public class MapServiceImpl implements IMapService {
 		// If the player is trying to access a map in the same level.
 		if (lastPhaseDone.getMap().getLevel().getOrder() == map.getLevel().getOrder()) {
 			// If it is the next map.
-			if (lastPhaseDone.getMap().getOrder() == (map.getOrder() + 1)) {
+			if ((lastPhaseDone.getMap().getOrder() + 1) == map.getOrder()) {
+				System.out.println("IF 6");
 				return true;
 			}
 			else {
+				System.out.println("ELSE 6");
 				return false;
 			}
 		}
@@ -155,14 +157,17 @@ public class MapServiceImpl implements IMapService {
 		// If the player is trying to access a map in the next level.
 		if ((lastPhaseDone.getMap().getLevel().getOrder() + 1) == map.getLevel().getOrder()) {
 			// If it is the first map.
-			if (lastPhaseDone.getMap().getOrder() == 1) {
+			if (map.getOrder() == 1) {
+				System.out.println("IF 7");
 				return true;
 			}
 			else {
+				System.out.println("ELSE 7");
 				return false;
 			}
 		}
 		
+		System.out.println("FIM passo 8");
 		return false;
 	}
 	

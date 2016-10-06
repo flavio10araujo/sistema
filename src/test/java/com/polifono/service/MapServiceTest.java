@@ -56,7 +56,7 @@ public class MapServiceTest extends AbstractTest {
         // Clean up after each test method.
     }
     
-    /* save - begin */
+    /* save - begin 
     @Test
     public void save_createMap() {
     	Game game = new Game();
@@ -86,9 +86,9 @@ public class MapServiceTest extends AbstractTest {
         // Changing all possible fields.
         // id - not possible to change.
         // game - it's possible to change, but it's hard to test because the system may have only one game.
-        /*Game newGame = new Game();
-        newGame.setId(GAME_ID_EXISTENT + 1);
-        entity.setGame(newGame);*/
+        //Game newGame = new Game();
+        //newGame.setId(GAME_ID_EXISTENT + 1);
+        //entity.setGame(newGame);
         Level newLevel = new Level();
         newLevel.setId(LEVEL_ID_EXISTENT + 1); // too risky, because I can't assure that this level really exists.
         entity.setLevel(newLevel);
@@ -109,9 +109,9 @@ public class MapServiceTest extends AbstractTest {
         Assert.assertEquals("failure - expected game attribute match", entity.getGame().getId(), updatedEntity.getGame().getId());
         Assert.assertEquals("failure - expected level attribute match", entity.getLevel().getId(), updatedEntity.getLevel().getId());
     }
-    /* save - end */
+     save - end */
     
-    /* delete - begin */
+    /* delete - begin 
     @Test
     public void delete_MapExistent_ReturnTrue() {
     	Assert.assertTrue("failure - expected return true", service.delete(MAP_ID_EXISTENT));
@@ -123,9 +123,9 @@ public class MapServiceTest extends AbstractTest {
     public void delete_MapInexistent_ReturnFalse() {
     	Assert.assertFalse("failure - expected return false", service.delete(MAP_ID_INEXISTENT));
     }
-    /* delete - end */
+     delete - end */
     
-    /* findOne - begin */
+    /* findOne - begin 
     @Test
     public void findOne_MapExistentButReturnNull_ExceptionThrown() {
         Integer id = new Integer(MAP_ID_EXISTENT);
@@ -146,18 +146,18 @@ public class MapServiceTest extends AbstractTest {
     	Map entity = service.findOne(id);
         Assert.assertNull("failure - expected null", entity);
     }
-    /* findOne - end */
+     findOne - end */
     
-    /* findAll - begin */
+    /* findAll - begin 
     @Test
     public void findAll_ListIsNullOrEmpty_ExceptionThrown() {
     	List<Map> list = service.findAll();
     	Assert.assertNotNull("failure - expected not null", list);
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
     }
-    /* findAll - end */
+     findAll - end */
     
-    /* findMapsByGame - begin */
+    /* findMapsByGame - begin 
     @Test
     public void findMapsByGame_SearchGameExistent_ReturnList() {
     	List<Map> list = service.findMapsByGame(GAME_ID_EXISTENT);
@@ -170,9 +170,9 @@ public class MapServiceTest extends AbstractTest {
     	List<Map> list = service.findMapsByGame(GAME_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
-    /* findMapsByGame - end */
+     findMapsByGame - end */
     
-    /* findMapsByGameAndLevel - begin */
+    /* findMapsByGameAndLevel - begin 
     @Test
     public void findMapsByGameAndLevel_SearchGameAndLevelExistents_ReturnList() {
     	List<Map> list = service.findMapsByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
@@ -197,9 +197,9 @@ public class MapServiceTest extends AbstractTest {
     	List<Map> list = service.findMapsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
-    /* findMapsByGameAndLevel - end */
+     findMapsByGameAndLevel - end */
     
-    /* findByGameAndLevel - begin */
+    /* findByGameAndLevel - begin 
     @Test
     public void findByGameAndLevel_SearchGameAndLevelExistents_ReturnItem() {
     	Map entity = service.findByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
@@ -211,9 +211,9 @@ public class MapServiceTest extends AbstractTest {
     	Map entity = service.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT);
         Assert.assertNull("failure - expected null", entity);
     }
-    /* findByGameAndLevel - end */
+     findByGameAndLevel - end */
     
-    /* findByGameLevelAndOrder - begin */
+    /* findByGameLevelAndOrder - begin 
     @Test
     public void findByGameLevelAndOrder_SearchGameLevelAndOrderExistents_ReturnItem() {
     	Map entity = service.findByGameLevelAndOrder(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT, 1);
@@ -225,9 +225,9 @@ public class MapServiceTest extends AbstractTest {
     	Map entity = service.findByGameLevelAndOrder(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT, 0);
         Assert.assertNull("failure - expected null", entity);
     }
-    /* findByGameLevelAndOrder - end */
+     findByGameLevelAndOrder - end */
     
-    /* findNextMapSameLevel - begin */
+    /* findNextMapSameLevel - begin 
     @Test
     public void findNextMapSameLevel_WhenNextMapExists_ReturnItem() {
     	Map mapCurrent = service.findOne(MAP_ID_EXISTENT);
@@ -244,16 +244,17 @@ public class MapServiceTest extends AbstractTest {
     	Assert.assertNotNull("failure - expected not null", entity);
     	Assert.assertEquals(nextMapSameLevel.getId(), entity.getId());
     }
-    /* findNextMapSameLevel - end */
+     findNextMapSameLevel - end */
     
     /* playerCanAccessThisMap - begin */
     @Test
     public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessTheFirstMapOfTheFirstLevel_returnTrue() {
-    	Map map = new Map();
     	Level level = new Level();
     	level.setOrder(1);
-    	map.setLevel(level);
+    	
+    	Map map = new Map(); // Map that the player is trying to access.
     	map.setOrder(1);
+    	map.setLevel(level);
     	
     	Player player = new Player();
     	
@@ -262,14 +263,16 @@ public class MapServiceTest extends AbstractTest {
 
     @Test
     public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessAMapDifferentOfTheFirstMapOfTheFirstLevelAndThePlayerHasNeverFinishedAPhaseOfThisGame_returnFalse() {
-		Map map = new Map();
     	Game game = new Game();
     	game.setId(1);
-    	map.setGame(game);
+    	
     	Level level = new Level();
     	level.setOrder(2);
-    	map.setLevel(level);
+    	
+    	Map map = new Map(); // Map that the player is trying to access.
     	map.setOrder(1);
+    	map.setGame(game);
+    	map.setLevel(level);
     	
     	Player player = new Player();
     	player.setId(1);
@@ -281,18 +284,19 @@ public class MapServiceTest extends AbstractTest {
     
     @Test
     public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessAMapInAPreviousLevelThanTheLastPhaseDonesLevel_returnTrue() {
-    	Map map = new Map();
     	Game game = new Game();
     	game.setId(1);
-    	map.setGame(game);
+    	
     	Level level = new Level();
     	level.setOrder(2);
-    	map.setLevel(level);
+    	
+    	Map map = new Map(); // Map that the player is trying to access.
     	map.setOrder(1);
+    	map.setGame(game);
+    	map.setLevel(level);
     	
     	Player player = new Player();
     	player.setId(1);
-    	
     	
     	Level levelLastPhaseDone = new Level();
     	levelLastPhaseDone.setOrder(3);
@@ -310,14 +314,16 @@ public class MapServiceTest extends AbstractTest {
     
     @Test
     public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessAPreviousMapAtTheSameLevelOfTheLastPhaseDone_returnTrue() {
-    	Map map = new Map();
     	Game game = new Game();
     	game.setId(1);
-    	map.setGame(game);
+    	
     	Level level = new Level();
     	level.setOrder(3);
-    	map.setLevel(level);
+    	
+    	Map map = new Map(); // Map that the player is trying to access.
     	map.setOrder(1);
+    	map.setGame(game);
+    	map.setLevel(level);
     	
     	Player player = new Player();
     	player.setId(1);
@@ -339,18 +345,19 @@ public class MapServiceTest extends AbstractTest {
 
     @Test
     public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapButTheLastPhaseDoneIsNotTheLastPhaseOfTheLevel_returnFalse() {
-    	Map map = new Map();
     	Game game = new Game();
     	game.setId(1);
-    	map.setGame(game);
+    	
     	Level level = new Level();
     	level.setOrder(3);
-    	map.setLevel(level);
+    	
+    	Map map = new Map(); // Map that the player is trying to access.
     	map.setOrder(1);
+    	map.setGame(game);
+    	map.setLevel(level);
     	
     	Player player = new Player();
     	player.setId(1);
-    	
     	
     	Level levelLastPhaseDone = new Level();
     	levelLastPhaseDone.setId(2);
@@ -378,48 +385,329 @@ public class MapServiceTest extends AbstractTest {
     	Assert.assertFalse(service.playerCanAccessThisMap(map, player));
     }
     
-    /*@Test
+    @Test
     public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapIsInTheSameLevelAndItIsTheNext_returnTrue() {
-    	//fazer um Mock para retornar Phase lastPhaseDone com uma fase no terceiro nível e primeiro mapa em phaseService.findLastPhaseDoneByPlayerAndGame(player.getId(), map.getGame().getId());
+    	Game game = new Game();
+    	game.setId(1);
     	
-    	Map map = new Map();
     	Level level = new Level();
     	level.setOrder(3);
-    	map.setLevel(level);
+    	
+    	Map map = new Map(); // Map that the player is trying to access.
     	map.setOrder(2);
-    }*/
+    	map.setGame(game);
+    	map.setLevel(level);
+    	
+    	Player player = new Player();
+    	player.setId(1);
+    	
+    	Level levelLastPhaseDone = new Level();
+    	levelLastPhaseDone.setId(3);
+    	levelLastPhaseDone.setOrder(3);
+    	
+    	Game gameLastPhaseDone = new Game();
+    	gameLastPhaseDone.setId(1);
+    	
+    	Map mapLastPhaseDone = new Map();
+    	mapLastPhaseDone.setOrder(1);
+    	mapLastPhaseDone.setLevel(levelLastPhaseDone);
+    	mapLastPhaseDone.setGame(gameLastPhaseDone);
+    	
+    	Phase lastPhaseDone = new Phase();
+    	lastPhaseDone.setId(60);
+    	lastPhaseDone.setMap(mapLastPhaseDone);
+    	
+    	when(phaseService.findLastPhaseDoneByPlayerAndGame(player.getId(), map.getGame().getId())).thenReturn(lastPhaseDone);
+    	
+    	Phase lastPhaseOfTheLevel = new Phase();
+    	lastPhaseOfTheLevel.setId(60);
+    	
+    	when(phaseService.findLastPhaseOfTheLevel(lastPhaseDone.getMap().getGame().getId(), lastPhaseDone.getMap().getLevel().getId())).thenReturn(lastPhaseOfTheLevel);
+    	
+    	Assert.assertTrue(service.playerCanAccessThisMap(map, player));
+    }
     
-    /*@Test
+    @Test
     public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapIsInTheSameLevelButItIsNotTheNext_returnFalse() {
-    	//fazer um Mock para retornar Phase lastPhaseDone com uma fase no terceiro nível e primeiro mapa em phaseService.findLastPhaseDoneByPlayerAndGame(player.getId(), map.getGame().getId());
+    	Game game = new Game();
+    	game.setId(1);
     	
-    	Map map = new Map();
     	Level level = new Level();
     	level.setOrder(3);
-    	map.setLevel(level);
+    	
+    	Map map = new Map(); // Map that the player is trying to access.
     	map.setOrder(3);
-    }*/
-    
-    /*@Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapIsTheFristOfTheNextLevel_returnTrue() {
-    	//fazer um Mock para retornar Phase lastPhaseDone com uma fase no terceiro nível e primeiro mapa em phaseService.findLastPhaseDoneByPlayerAndGame(player.getId(), map.getGame().getId());
+    	map.setGame(game);
+    	map.setLevel(level);
     	
-    	Map map = new Map();
+    	Player player = new Player();
+    	player.setId(1);
+    	
+    	Level levelLastPhaseDone = new Level();
+    	levelLastPhaseDone.setId(3);
+    	levelLastPhaseDone.setOrder(3);
+    	
+    	Game gameLastPhaseDone = new Game();
+    	gameLastPhaseDone.setId(1);
+    	
+    	Map mapLastPhaseDone = new Map();
+    	mapLastPhaseDone.setOrder(1);
+    	mapLastPhaseDone.setLevel(levelLastPhaseDone);
+    	mapLastPhaseDone.setGame(gameLastPhaseDone);
+    	
+    	Phase lastPhaseDone = new Phase();
+    	lastPhaseDone.setId(60);
+    	lastPhaseDone.setMap(mapLastPhaseDone);
+    	
+    	when(phaseService.findLastPhaseDoneByPlayerAndGame(player.getId(), map.getGame().getId())).thenReturn(lastPhaseDone);
+    	
+    	Phase lastPhaseOfTheLevel = new Phase();
+    	lastPhaseOfTheLevel.setId(60);
+    	
+    	when(phaseService.findLastPhaseOfTheLevel(lastPhaseDone.getMap().getGame().getId(), lastPhaseDone.getMap().getLevel().getId())).thenReturn(lastPhaseOfTheLevel);
+    	
+    	Assert.assertFalse(service.playerCanAccessThisMap(map, player));
+    }
+    
+    @Test
+    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapIsTheFirstOfTheNextLevel_returnTrue() {
+    	Game game = new Game();
+    	game.setId(1);
+    	
     	Level level = new Level();
     	level.setOrder(4);
-    	map.setLevel(level);
+    	
+    	Map map = new Map(); // Map that the player is trying to access.
     	map.setOrder(1);
-    }*/
-    
-    /*@Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapINotTheFristOfTheNextLevel_returnFalse() {
-    	//fazer um Mock para retornar Phase lastPhaseDone com uma fase no terceiro nível e primeiro mapa em phaseService.findLastPhaseDoneByPlayerAndGame(player.getId(), map.getGame().getId());
+    	map.setGame(game);
+    	map.setLevel(level);
     	
-    	Map map = new Map();
+    	Player player = new Player();
+    	player.setId(1);
+    	
+    	Level levelLastPhaseDone = new Level();
+    	levelLastPhaseDone.setId(3);
+    	levelLastPhaseDone.setOrder(3);
+    	
+    	Game gameLastPhaseDone = new Game();
+    	gameLastPhaseDone.setId(1);
+    	
+    	Map mapLastPhaseDone = new Map();
+    	mapLastPhaseDone.setOrder(1);
+    	mapLastPhaseDone.setLevel(levelLastPhaseDone);
+    	mapLastPhaseDone.setGame(gameLastPhaseDone);
+    	
+    	Phase lastPhaseDone = new Phase();
+    	lastPhaseDone.setId(60);
+    	lastPhaseDone.setMap(mapLastPhaseDone);
+    	
+    	when(phaseService.findLastPhaseDoneByPlayerAndGame(player.getId(), map.getGame().getId())).thenReturn(lastPhaseDone);
+    	
+    	Phase lastPhaseOfTheLevel = new Phase();
+    	lastPhaseOfTheLevel.setId(60);
+    	
+    	when(phaseService.findLastPhaseOfTheLevel(lastPhaseDone.getMap().getGame().getId(), lastPhaseDone.getMap().getLevel().getId())).thenReturn(lastPhaseOfTheLevel);
+    	
+    	Assert.assertTrue(service.playerCanAccessThisMap(map, player));
+    }
+    
+    @Test
+    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapINotTheFirstOfTheNextLevel_returnFalse() {
+    	Game game = new Game();
+    	game.setId(1);
+    	
     	Level level = new Level();
     	level.setOrder(4);
-    	map.setLevel(level);
+    	
+    	Map map = new Map(); // Map that the player is trying to access.
     	map.setOrder(2);
-    }*/
+    	map.setGame(game);
+    	map.setLevel(level);
+    	
+    	Player player = new Player();
+    	player.setId(1);
+    	
+    	Level levelLastPhaseDone = new Level();
+    	levelLastPhaseDone.setId(3);
+    	levelLastPhaseDone.setOrder(3);
+    	
+    	Game gameLastPhaseDone = new Game();
+    	gameLastPhaseDone.setId(1);
+    	
+    	Map mapLastPhaseDone = new Map();
+    	mapLastPhaseDone.setOrder(1);
+    	mapLastPhaseDone.setLevel(levelLastPhaseDone);
+    	mapLastPhaseDone.setGame(gameLastPhaseDone);
+    	
+    	Phase lastPhaseDone = new Phase();
+    	lastPhaseDone.setId(60);
+    	lastPhaseDone.setMap(mapLastPhaseDone);
+    	
+    	when(phaseService.findLastPhaseDoneByPlayerAndGame(player.getId(), map.getGame().getId())).thenReturn(lastPhaseDone);
+    	
+    	Phase lastPhaseOfTheLevel = new Phase();
+    	lastPhaseOfTheLevel.setId(60);
+    	
+    	when(phaseService.findLastPhaseOfTheLevel(lastPhaseDone.getMap().getGame().getId(), lastPhaseDone.getMap().getLevel().getId())).thenReturn(lastPhaseOfTheLevel);
+    	
+    	Assert.assertFalse(service.playerCanAccessThisMap(map, player));
+    }
+    
+    @Test
+    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessMapButTheLevelOfThisMapIsNotTheNextLevel_returnFalse() {
+    	Game game = new Game();
+    	game.setId(1);
+    	
+    	Level level = new Level();
+    	level.setOrder(5);
+    	
+    	Map map = new Map(); // Map that the player is trying to access.
+    	map.setOrder(1);
+    	map.setGame(game);
+    	map.setLevel(level);
+    	
+    	Player player = new Player();
+    	player.setId(1);
+    	
+    	Level levelLastPhaseDone = new Level();
+    	levelLastPhaseDone.setId(3);
+    	levelLastPhaseDone.setOrder(3);
+    	
+    	Game gameLastPhaseDone = new Game();
+    	gameLastPhaseDone.setId(1);
+    	
+    	Map mapLastPhaseDone = new Map();
+    	mapLastPhaseDone.setOrder(1);
+    	mapLastPhaseDone.setLevel(levelLastPhaseDone);
+    	mapLastPhaseDone.setGame(gameLastPhaseDone);
+    	
+    	Phase lastPhaseDone = new Phase();
+    	lastPhaseDone.setId(60);
+    	lastPhaseDone.setMap(mapLastPhaseDone);
+    	
+    	when(phaseService.findLastPhaseDoneByPlayerAndGame(player.getId(), map.getGame().getId())).thenReturn(lastPhaseDone);
+    	
+    	Phase lastPhaseOfTheLevel = new Phase();
+    	lastPhaseOfTheLevel.setId(60);
+    	
+    	when(phaseService.findLastPhaseOfTheLevel(lastPhaseDone.getMap().getGame().getId(), lastPhaseDone.getMap().getLevel().getId())).thenReturn(lastPhaseOfTheLevel);
+    	
+    	Assert.assertFalse(service.playerCanAccessThisMap(map, player));
+    }
     /* playerCanAccessThisMap - end */
+    
+    /* findCurrentMap - begin 
+    @Test
+    public void findCurrentMap_WhenPlayerHasNeverCompletedAnyPhaseOfTheGame_returnFirstMapOfTheFirstLevelOfTheGame() {
+    	Game game = new Game();
+    	game.setId(GAME_ID_EXISTENT);
+    	
+    	PlayerPhase lastPhaseCompleted = null;
+    	Map map = service.findCurrentMap(game, lastPhaseCompleted);
+    	
+    	Assert.assertEquals("failure - expected map order attribute match", 1, map.getOrder());
+    }
+    
+    @Test
+    public void findCurrentMap_WhenNextPhaseIsInTheSameMapThatTheLastPhaseCompleted_returnSameMapOfTheLastPhaseCompleted() {
+    	Game game = new Game();
+    	game.setId(GAME_ID_EXISTENT);
+    	
+    	PlayerPhase lastPhaseCompleted = new PlayerPhase();
+    	
+    	Map map = new Map();
+    	map.setId(MAP_ID_EXISTENT);
+    	
+    	Phase phase = new Phase();
+    	phase.setMap(map);
+    	
+    	lastPhaseCompleted.setPhase(phase);
+    	
+    	Map entity = service.findCurrentMap(game, lastPhaseCompleted);
+    	
+    	Assert.assertEquals(lastPhaseCompleted.getPhase().getMap().getOrder(), entity.getOrder());
+    }
+    
+    @Test
+    public void findCurrentMap_WhenNextPhaseIsInTheNextMapInTheSameLevel_returnMapWithNextOrderAndInTheSameLevel() {
+    	// mock: this.findNextMapSameLevel(lastPhaseCompleted.getPhase().getMap()) precisa retornar um map do mesmo level.
+    	
+    	Game game = new Game();
+    	game.setId(GAME_ID_EXISTENT);
+    	
+    	PlayerPhase lastPhaseCompleted = new PlayerPhase();
+    	
+    	Level level = new Level();
+    	level.setOrder(1);
+    	
+    	Map map = new Map();
+    	map.setId(MAP_ID_EXISTENT);
+    	map.setLevel(level);
+    	
+    	Phase phase = new Phase();
+    	phase.setMap(map);
+    	
+    	lastPhaseCompleted.setPhase(phase);
+    	
+    	Map entity = service.findCurrentMap(game, lastPhaseCompleted);
+    	
+    	Assert.assertEquals(lastPhaseCompleted.getPhase().getMap().getOrder() + 1, entity.getOrder());
+    	Assert.assertEquals(lastPhaseCompleted.getPhase().getMap().getLevel().getOrder(), entity.getLevel().getOrder());
+    }
+    
+    @Test
+    public void findCurrentMap_WhenNextPhaseIsInTheNextLevel_returnFirstMapOfNextLevelWithFlagLevelCompletedChecked() {
+    	// mock: this.findByGameAndLevel(game.getId(), lastPhaseCompleted.getPhase().getMap().getLevel().getId() + 1) precisa retornar o primeiro map do próximo level.
+    	
+    	Game game = new Game();
+    	game.setId(GAME_ID_EXISTENT);
+    	
+    	PlayerPhase lastPhaseCompleted = new PlayerPhase();
+    	
+    	Level level = new Level();
+    	level.setOrder(1);
+    	
+    	Map map = new Map();
+    	map.setId(MAP_ID_EXISTENT);
+    	map.setLevel(level);
+    	
+    	Phase phase = new Phase();
+    	phase.setMap(map);
+    	
+    	lastPhaseCompleted.setPhase(phase);
+    	
+    	Map entity = service.findCurrentMap(game, lastPhaseCompleted);
+    	
+    	Assert.assertEquals(1, entity.getOrder());
+    	Assert.assertEquals(lastPhaseCompleted.getPhase().getMap().getLevel().getOrder(), entity.getLevel().getOrder() + 1);
+    	Assert.assertTrue(entity.isLevelCompleted());
+    }
+    
+    @Test
+    public void findCurrentMap_WhenItDoesntExistNextMap_returnSameMapOfTheLastPhaseCompletedWithFlagGameCompletedChecked() {
+    	// mock: this.findByGameAndLevel(game.getId(), lastPhaseCompleted.getPhase().getMap().getLevel().getId() + 1) precisa retornar null.
+    	
+    	Game game = new Game();
+    	game.setId(GAME_ID_EXISTENT);
+    	
+    	PlayerPhase lastPhaseCompleted = new PlayerPhase();
+    	
+    	Level level = new Level();
+    	level.setOrder(1);
+    	
+    	Map map = new Map();
+    	map.setId(MAP_ID_EXISTENT);
+    	map.setLevel(level);
+    	
+    	Phase phase = new Phase();
+    	phase.setMap(map);
+    	
+    	lastPhaseCompleted.setPhase(phase);
+    	
+    	Map entity = service.findCurrentMap(game, lastPhaseCompleted);
+    	
+    	Assert.assertEquals(lastPhaseCompleted.getPhase().getMap().getOrder(), entity.getOrder());
+    	Assert.assertTrue(entity.isGameCompleted());
+    }
+     findCurrentMap - end */
 }
