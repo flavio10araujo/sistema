@@ -1,8 +1,7 @@
-package com.polifono.service;
+package com.polifono.serviceIT;
 
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -11,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.polifono.AbstractTest;
@@ -18,9 +18,10 @@ import com.polifono.domain.Game;
 import com.polifono.domain.Level;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
-import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.repository.IMapRepository;
+import com.polifono.service.IMapService;
+import com.polifono.service.IPhaseService;
 import com.polifono.service.impl.MapServiceImpl;
 
 /**
@@ -33,15 +34,20 @@ public class MapServiceTest extends AbstractTest {
 
 	private IMapService service;
 	
-	@Mock
+	@Autowired
 	private IMapRepository repository;
     
     @Mock
 	private IPhaseService phaseService;
 	
 	private final Integer GAME_ID_EXISTENT = 1;
+	private final Integer GAME_ID_INEXISTENT = Integer.MAX_VALUE;
+	
+	private final Integer LEVEL_ID_EXISTENT = 1;
+	private final Integer LEVEL_ID_INEXISTENT = Integer.MAX_VALUE;
 	
 	private final Integer MAP_ID_EXISTENT = 1;
+	private final Integer MAP_ID_INEXISTENT = Integer.MAX_VALUE;
 
     @Before
     public void setUp() {
@@ -55,18 +61,20 @@ public class MapServiceTest extends AbstractTest {
         // Clean up after each test method.
     }
     
-    /* save - begin */
+    /* save - begin 
     @Test
-    public void save_WhenCreateAMap_returnMapNewlyCreated() {
+    public void save_createMap() {
+    	Game game = new Game();
+    	game.setId(GAME_ID_EXISTENT);
+    	
+    	Level level = new Level();
+    	level.setId(LEVEL_ID_EXISTENT);
+    	
     	Map map = new Map();
-    	
-    	int ID = 123;
-    	
-    	Map mapSaved = new Map();
-    	mapSaved.setId(ID);
-    	
-    	when(repository.save(map)).thenReturn(mapSaved);
-    	when(repository.findOne(ID)).thenReturn(mapSaved);
+    	map.setName("Map Test");
+    	map.setOrder(1);
+    	map.setGame(game);
+    	map.setLevel(level);
     	
     	Map entitySaved = service.save(map);
     	Map entity = service.findOne(entitySaved.getId()); 
@@ -76,44 +84,27 @@ public class MapServiceTest extends AbstractTest {
     }
 
     @Test
-    public void save_WhenUpdateAMap_returnMapWithTheChanges() {
-    	Integer id = 123;
-    	
-    	Map mapSaved = new Map();
-    	mapSaved.setId(id);
-    	mapSaved.setName("Map Test");
-    	mapSaved.setOrder(3);
-    	Game gameMapSaved = new Game();
-    	gameMapSaved.setId(2);
-        mapSaved.setGame(gameMapSaved);
-        Level levelMapSaved = new Level();
-        levelMapSaved.setId(3);
-        mapSaved.setLevel(levelMapSaved);
-    	
-    	when(repository.findOne(id)).thenReturn(mapSaved);
-    	
+    public void save_updateMap() {
+    	Integer id = new Integer(MAP_ID_EXISTENT);
         Map entity = service.findOne(id);
-        
+
         // Changing all possible fields.
         // id - not possible to change.
-        Game newGame = new Game();
-        newGame.setId(entity.getGame().getId() + 1);
-        entity.setGame(newGame);
+        // game - it's possible to change, but it's hard to test because the system may have only one game.
+        //Game newGame = new Game();
+        //newGame.setId(GAME_ID_EXISTENT + 1);
+        //entity.setGame(newGame);
         Level newLevel = new Level();
-        newLevel.setId(entity.getLevel().getId() + 1);
+        newLevel.setId(LEVEL_ID_EXISTENT + 1); // too risky, because I can't assure that this level really exists.
         entity.setLevel(newLevel);
-        entity.setName(entity.getName() + " Changed");
+        entity.setName("Name Changed");
         entity.setOrder(entity.getOrder() + 1);
-        
-        when(repository.save(entity)).thenReturn(entity);
 
         // Saving the changes.
         Map changedEntity = service.save(entity);
-        
+
         Assert.assertNotNull("failure - expected not null", changedEntity);
         Assert.assertEquals("failure - expected id attribute match", id.intValue(), changedEntity.getId());
-        
-        when(repository.findOne(changedEntity.getId())).thenReturn(changedEntity);
         
         // Get the entity in the database with the changes.
         Map updatedEntity = service.findOne(changedEntity.getId());
@@ -123,222 +114,127 @@ public class MapServiceTest extends AbstractTest {
         Assert.assertEquals("failure - expected game attribute match", entity.getGame().getId(), updatedEntity.getGame().getId());
         Assert.assertEquals("failure - expected level attribute match", entity.getLevel().getId(), updatedEntity.getLevel().getId());
     }
-    /* save - end */
+     save - end */
     
-    /* delete - begin */
+    /* delete - begin 
     @Test
-    public void delete_WhenDeleteAnExistentMap_ReturnTrue() {
-    	int id = 234;
-    	Map temp = new Map();
-    	
-    	when(repository.findOne(id)).thenReturn(temp);
-    	
-    	Assert.assertTrue("failure - expected return true", service.delete(id));
-    	
-    	when(repository.findOne(id)).thenReturn(null);
-    	
-    	Map entity = service.findOne(id);
+    public void delete_MapExistent_ReturnTrue() {
+    	Assert.assertTrue("failure - expected return true", service.delete(MAP_ID_EXISTENT));
+    	Map entity = service.findOne(MAP_ID_EXISTENT);
     	Assert.assertNull("failure - expected null", entity);
     }
-
-    @Test
-    public void delete_WhenDeleteAnInexistentMap_ReturnFalse() {
-    	int id = 999;
-    	when(repository.findOne(id)).thenReturn(null);
-    	Assert.assertFalse("failure - expected return false", service.delete(id));
-    }
-    /* delete - end */
     
-    /* findOne - begin */
+    @Test
+    public void delete_MapInexistent_ReturnFalse() {
+    	Assert.assertFalse("failure - expected return false", service.delete(MAP_ID_INEXISTENT));
+    }
+     delete - end */
+    
+    /* findOne - begin 
     @Test
     public void findOne_MapExistentButReturnNull_ExceptionThrown() {
-        Integer id = 123;
-        
-        Map map = new Map();
-        when(repository.findOne(id)).thenReturn(map);
-        
+        Integer id = new Integer(MAP_ID_EXISTENT);
         Map entity = service.findOne(id);
         Assert.assertNotNull("failure - expected not null", entity);
     }
     
     @Test
     public void findOne_MapExistentWithWrongId_ExceptionThrown() {
-        Integer id = 123;
-        
-        Map map = new Map();
-        map.setId(123);
-        when(repository.findOne(id)).thenReturn(map);
-        
+        Integer id = new Integer(MAP_ID_EXISTENT);
         Map entity = service.findOne(id);
         Assert.assertEquals("failure - expected id attribute match", id.intValue(), entity.getId());
     }
 
     @Test
     public void findOne_MapInexistent_ReturnNull() {
-        Integer id = 999;
-        
-        when(repository.findOne(id)).thenReturn(null);
-        
+        Integer id = MAP_ID_INEXISTENT;
     	Map entity = service.findOne(id);
         Assert.assertNull("failure - expected null", entity);
     }
-    /* findOne - end */
+     findOne - end */
     
     /* findAll - begin */
     @Test
     public void findAll_ListIsNullOrEmpty_ExceptionThrown() {
-    	List<Map> listReturned = new ArrayList<Map>();
-    	listReturned.add(new Map());
-    	when(repository.findAll()).thenReturn(listReturned);
-    	
     	List<Map> list = service.findAll();
     	Assert.assertNotNull("failure - expected not null", list);
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
     }
     /* findAll - end */
     
-    /* findMapsByGame - begin */
+    /* findMapsByGame - begin 
     @Test
     public void findMapsByGame_SearchGameExistent_ReturnList() {
-    	int gameId = 1;
-    	
-    	List<Map> listReturned = new ArrayList<Map>();
-    	listReturned.add(new Map());
-    	when(repository.findMapsByGame(gameId)).thenReturn(listReturned);
-    	
-    	List<Map> list = service.findMapsByGame(gameId);
+    	List<Map> list = service.findMapsByGame(GAME_ID_EXISTENT);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
     public void findMapsByGame_SearchGameInexistent_ReturnListEmpty() {
-    	int gameId = 999;
-    	
-    	List<Map> listReturned = new ArrayList<Map>();
-    	when(repository.findMapsByGame(gameId)).thenReturn(listReturned);
-    	
-    	List<Map> list = service.findMapsByGame(gameId);
+    	List<Map> list = service.findMapsByGame(GAME_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
-    /* findMapsByGame - end */
+     findMapsByGame - end */
     
-    /* findMapsByGameAndLevel - begin */
+    /* findMapsByGameAndLevel - begin 
     @Test
     public void findMapsByGameAndLevel_SearchGameAndLevelExistents_ReturnList() {
-    	int gameId = 1, levelId = 1;
-    	
-    	List<Map> listReturned = new ArrayList<Map>();
-    	listReturned.add(new Map());
-    	
-    	when(repository.findMapsByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
-    	
-    	List<Map> list = service.findMapsByGameAndLevel(gameId, levelId);
+    	List<Map> list = service.findMapsByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
     public void findMapsByGameAndLevel_SearchGameAndLevelInexistents_ReturnListEmpty() {
-    	int gameId = 999, levelId = 999;
-    	
-    	List<Map> listReturned = new ArrayList<Map>();
-    	
-    	when(repository.findMapsByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
-    	
-    	List<Map> list = service.findMapsByGameAndLevel(gameId, levelId);
+    	List<Map> list = service.findMapsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
     public void findMapsByGameAndLevel_SearchGameExistentButLevelInexistent_ReturnListEmpty() {
-    	int gameId = 1, levelId = 999;
-    	
-    	List<Map> listReturned = new ArrayList<Map>();
-    	
-    	when(repository.findMapsByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
-    	
-    	List<Map> list = service.findMapsByGameAndLevel(gameId, levelId);
+    	List<Map> list = service.findMapsByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findMapsByGameAndLevel_SearchLevelExistentButGameInexistent_ReturnListEmpty() {
-    	int gameId = 999, levelId = 1;
-    	
-    	List<Map> listReturned = new ArrayList<Map>();
-    	
-    	when(repository.findMapsByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
-    	
-    	List<Map> list = service.findMapsByGameAndLevel(gameId, levelId);
+    public void findMapsByGameAndLevel_SearchLevelExistentButGaemInexistent_ReturnListEmpty() {
+    	List<Map> list = service.findMapsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
-    /* findMapsByGameAndLevel - end */
+     findMapsByGameAndLevel - end */
     
-    /* findByGameAndLevel - begin */
+    /* findByGameAndLevel - begin 
     @Test
     public void findByGameAndLevel_SearchGameAndLevelExistents_ReturnItem() {
-    	int gameId = 1, levelId = 1;
-    	List<Map> listReturned = new ArrayList<Map>();
-    	listReturned.add(new Map());
-    	
-    	when(repository.findMapsByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
-    	
-    	Map entity = service.findByGameAndLevel(gameId, levelId);
+    	Map entity = service.findByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
         Assert.assertNotNull("failure - expected not null", entity);
     }
     
     @Test
     public void findByGameAndLevel_SearchGameAndLevelInexistents_ReturnNull() {
-    	int gameId = 1, levelId = 1;
-    	List<Map> listReturned = new ArrayList<Map>();
-    	
-    	when(repository.findMapsByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
-    	
-    	Map entity = service.findByGameAndLevel(gameId, levelId);
+    	Map entity = service.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT);
         Assert.assertNull("failure - expected null", entity);
     }
-    /* findByGameAndLevel - end */
+     findByGameAndLevel - end */
     
-    /* findByGameLevelAndOrder - begin */
+    /* findByGameLevelAndOrder - begin 
     @Test
     public void findByGameLevelAndOrder_SearchGameLevelAndOrderExistents_ReturnItem() {
-    	int gameId = 1, levelId = 1, mapOrder = 1;
-    	
-    	List<Map> listReturned = new ArrayList<Map>();
-    	listReturned.add(new Map());
-    	when(repository.findMapsByGameLevelAndOrder(gameId, levelId, mapOrder)).thenReturn(listReturned);
-    	
-    	Map entity = service.findByGameLevelAndOrder(gameId, levelId, mapOrder);
+    	Map entity = service.findByGameLevelAndOrder(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT, 1);
         Assert.assertNotNull("failure - expected not null", entity);
     }
     
     @Test
     public void findByGameLevelAndOrder_SearchGameLevelAndOrderInexistents_ReturnNull() {
-    	int gameId = 999, levelId = 999, mapOrder = 999;
-    	
-    	List<Map> listReturned = new ArrayList<Map>();
-    	
-    	when(repository.findMapsByGameLevelAndOrder(gameId, levelId, mapOrder)).thenReturn(listReturned);
-    	
-    	Map entity = service.findByGameLevelAndOrder(gameId, levelId, mapOrder);
+    	Map entity = service.findByGameLevelAndOrder(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT, 0);
         Assert.assertNull("failure - expected null", entity);
     }
-    /* findByGameLevelAndOrder - end */
+     findByGameLevelAndOrder - end */
     
-    /* findNextMapSameLevel - begin */
+    /* findNextMapSameLevel - begin 
     @Test
     public void findNextMapSameLevel_WhenNextMapExists_ReturnItem() {
-    	Map map = new Map();
-    	Game game = new Game();
-    	game.setId(1);
-    	map.setGame(game);
-    	Level level = new Level();
-    	level.setId(1);
-    	map.setLevel(level);
-    	
-    	when(repository.findOne(MAP_ID_EXISTENT)).thenReturn(map);
-    	
     	Map mapCurrent = service.findOne(MAP_ID_EXISTENT);
     	
     	Map nextMapSameLevel = new Map();
@@ -346,21 +242,16 @@ public class MapServiceTest extends AbstractTest {
     	nextMapSameLevel.setLevel(mapCurrent.getLevel());
     	nextMapSameLevel.setName("Next Map Same Level");
     	nextMapSameLevel.setOrder(mapCurrent.getOrder() + 1);
-    	nextMapSameLevel.setId(50);
-    	
-    	when(repository.save(nextMapSameLevel)).thenReturn(nextMapSameLevel);
-    	nextMapSameLevel = service.save(nextMapSameLevel);
-    	
-    	when(repository.findNextMapSameLevel(mapCurrent.getGame().getId(), mapCurrent.getLevel().getId(), mapCurrent.getOrder())).thenReturn(nextMapSameLevel);
+    	service.save(nextMapSameLevel);
     	
     	Map entity = service.findNextMapSameLevel(mapCurrent);
     	
     	Assert.assertNotNull("failure - expected not null", entity);
     	Assert.assertEquals(nextMapSameLevel.getId(), entity.getId());
     }
-    /* findNextMapSameLevel - end */
+     findNextMapSameLevel - end */
     
-    /* playerCanAccessThisMap - begin */
+    /* playerCanAccessThisMap - begin 
     @Test
     public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessTheFirstMapOfTheFirstLevel_returnTrue() {
     	Level level = new Level();
@@ -708,26 +599,11 @@ public class MapServiceTest extends AbstractTest {
     	
     	Assert.assertFalse(service.playerCanAccessThisMap(map, player));
     }
-    /* playerCanAccessThisMap - end */
+     playerCanAccessThisMap - end */
     
     /* findCurrentMap - begin */
     @Test
     public void findCurrentMap_WhenPlayerHasNeverCompletedAnyPhaseOfTheGame_returnFirstMapOfTheFirstLevelOfTheGame() {
-    	int gameId = 1, levelId = 1;
-    	
-    	List<Map> listReturned = new ArrayList<Map>();
-    	Map map = new Map();
-    	map.setOrder(1);
-    	Game gameMapReturned = new Game();
-    	gameMapReturned.setId(GAME_ID_EXISTENT);
-    	map.setGame(gameMapReturned);
-    	Level levelMapReturned = new Level();
-    	levelMapReturned.setOrder(1);
-    	map.setLevel(levelMapReturned);
-    	listReturned.add(map);
-    	
-    	when(repository.findMapsByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
-    	
     	Game game = new Game();
     	game.setId(GAME_ID_EXISTENT);
     	
@@ -774,18 +650,18 @@ public class MapServiceTest extends AbstractTest {
     	map.setId(MAP_ID_EXISTENT);
     	map.setOrder(1);
     	map.setLevel(level);
-    	map.setGame(game);
     	Phase phase = new Phase();
     	phase.setMap(map);
     	lastPhaseCompleted.setPhase(phase);
 
+    	when(phaseService.findNextPhaseInThisMap(lastPhaseCompleted.getPhase().getMap().getId(), lastPhaseCompleted.getPhase().getOrder() + 1)).thenReturn(null);
+    	
     	Map nextMapSameLevel = new Map();
     	nextMapSameLevel.setLevel(level);
     	nextMapSameLevel.setOrder(2);
     	
     	Map mapCurrent = lastPhaseCompleted.getPhase().getMap();
 
-    	when(phaseService.findNextPhaseInThisMap(lastPhaseCompleted.getPhase().getMap().getId(), lastPhaseCompleted.getPhase().getOrder() + 1)).thenReturn(null);
     	when(repository.findNextMapSameLevel(mapCurrent.getGame().getId(), mapCurrent.getLevel().getId(), mapCurrent.getOrder())).thenReturn(nextMapSameLevel);
     	
     	Map entity = service.findCurrentMap(game, lastPhaseCompleted);
@@ -794,81 +670,59 @@ public class MapServiceTest extends AbstractTest {
     	Assert.assertEquals(lastPhaseCompleted.getPhase().getMap().getLevel().getOrder(), entity.getLevel().getOrder());
     }
     
-    @Test
+    /*@Test
     public void findCurrentMap_WhenNextPhaseIsInTheNextLevel_returnFirstMapOfNextLevelWithFlagLevelCompletedChecked() {
-    	int gameId = 1, levelId = 1;
+    	// mock: this.findByGameAndLevel(game.getId(), lastPhaseCompleted.getPhase().getMap().getLevel().getId() + 1) precisa retornar o primeiro map do próximo level.
     	
     	Game game = new Game();
     	game.setId(GAME_ID_EXISTENT);
     	
     	PlayerPhase lastPhaseCompleted = new PlayerPhase();
+    	
     	Level level = new Level();
     	level.setOrder(1);
+    	
     	Map map = new Map();
     	map.setId(MAP_ID_EXISTENT);
-    	map.setOrder(1);
     	map.setLevel(level);
-    	map.setGame(game);
+    	
     	Phase phase = new Phase();
     	phase.setMap(map);
+    	
     	lastPhaseCompleted.setPhase(phase);
-
-    	Map mapCurrent = lastPhaseCompleted.getPhase().getMap();
-
-    	when(phaseService.findNextPhaseInThisMap(lastPhaseCompleted.getPhase().getMap().getId(), lastPhaseCompleted.getPhase().getOrder() + 1)).thenReturn(null);
-    	when(repository.findNextMapSameLevel(mapCurrent.getGame().getId(), mapCurrent.getLevel().getId(), mapCurrent.getOrder())).thenReturn(null);
-    	
-    	List<Map> listReturned = new ArrayList<Map>();
-    	Map mapReturned = new Map();
-    	mapReturned.setOrder(1);
-    	mapReturned.setLevelCompleted(true);
-    	Level levelReturned = new Level();
-    	levelReturned.setOrder(2);
-    	mapReturned.setLevel(levelReturned);
-    	
-    	listReturned.add(mapReturned);
-    	
-    	when(repository.findMapsByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
     	
     	Map entity = service.findCurrentMap(game, lastPhaseCompleted);
     	
     	Assert.assertEquals(1, entity.getOrder());
-    	Assert.assertEquals(lastPhaseCompleted.getPhase().getMap().getLevel().getOrder() + 1, entity.getLevel().getOrder());
+    	Assert.assertEquals(lastPhaseCompleted.getPhase().getMap().getLevel().getOrder(), entity.getLevel().getOrder() + 1);
     	Assert.assertTrue(entity.isLevelCompleted());
     }
     
     @Test
     public void findCurrentMap_WhenItDoesntExistNextMap_returnSameMapOfTheLastPhaseCompletedWithFlagGameCompletedChecked() {
-    	int gameId = 1, levelId = 1;
+    	// mock: this.findByGameAndLevel(game.getId(), lastPhaseCompleted.getPhase().getMap().getLevel().getId() + 1) precisa retornar null.
     	
     	Game game = new Game();
     	game.setId(GAME_ID_EXISTENT);
     	
     	PlayerPhase lastPhaseCompleted = new PlayerPhase();
+    	
     	Level level = new Level();
     	level.setOrder(1);
+    	
     	Map map = new Map();
     	map.setId(MAP_ID_EXISTENT);
-    	map.setOrder(1);
     	map.setLevel(level);
-    	map.setGame(game);
+    	
     	Phase phase = new Phase();
     	phase.setMap(map);
+    	
     	lastPhaseCompleted.setPhase(phase);
-
-    	Map mapCurrent = lastPhaseCompleted.getPhase().getMap();
-
-    	when(phaseService.findNextPhaseInThisMap(lastPhaseCompleted.getPhase().getMap().getId(), lastPhaseCompleted.getPhase().getOrder() + 1)).thenReturn(null);
-    	when(repository.findNextMapSameLevel(mapCurrent.getGame().getId(), mapCurrent.getLevel().getId(), mapCurrent.getOrder())).thenReturn(null);
-    	
-    	List<Map> listReturned = new ArrayList<Map>();
-    	
-    	when(repository.findMapsByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
     	
     	Map entity = service.findCurrentMap(game, lastPhaseCompleted);
     	
     	Assert.assertEquals(lastPhaseCompleted.getPhase().getMap().getOrder(), entity.getOrder());
     	Assert.assertTrue(entity.isGameCompleted());
     }
-    /* findCurrentMap - end */
+     findCurrentMap - end */
 }
