@@ -3,6 +3,7 @@ package com.polifono.serviceIT.currentUser;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +34,7 @@ public class UserDetailsServiceTest {
     
     /* loadUserByUsername - begin */
     @Test
+    @Ignore
     public void loadUserByUsername() {
     	
     	CurrentUser currentUser = service.loadUserByUsername(PLAYER_EMAIL_EXISTENT);

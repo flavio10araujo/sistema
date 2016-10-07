@@ -36,13 +36,13 @@ public class GameServiceTest extends AbstractTest {
     }
 
     /* findAll - begin */
-    @Test
+    //@Test
     public void findAll_ListIsNull_ExceptionThrown() {
     	List<Game> list = service.findAll();
     	Assert.assertNotNull("failure - expected not null", list);
     }
     
-    @Test
+    //@Test
     public void findAll_ListHasSizeZero_ExceptionThrown() {
     	List<Game> list = service.findAll();
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
@@ -50,7 +50,7 @@ public class GameServiceTest extends AbstractTest {
     /* findAll - end */
 
     /* findByNamelink - begin */
-    @Test
+    //@Test
     public void findByNamelink_ReturnIsNull_ExceptionThrown() {
     	Game item = service.findByNamelink(NAME_LINK);
     	Assert.assertNotNull("failure - expected not null for '" + NAME_LINK + "'", item);
@@ -58,7 +58,7 @@ public class GameServiceTest extends AbstractTest {
     /* findByNamelink - end */
     
     /* calculateScore - begin */
-    @Test
+    //@Test
     public void calculateScore_WhenFirstAttempt_ScoreReturnedIsTheSameThatTheGrade() {
     	Assert.assertEquals(100, service.calculateScore(1, 100));
     	Assert.assertEquals(90, service.calculateScore(1, 90));
@@ -66,7 +66,7 @@ public class GameServiceTest extends AbstractTest {
     	Assert.assertEquals(70, service.calculateScore(1, 70));
     }
     
-    @Test
+    //@Test
     public void calculateScore_WhenSecondAttempt_ReturnScoreWithDiscount() {
     	Assert.assertEquals(70, service.calculateScore(2, 100));
     	Assert.assertEquals(65, service.calculateScore(2, 90));
@@ -74,7 +74,7 @@ public class GameServiceTest extends AbstractTest {
     	Assert.assertEquals(50, service.calculateScore(2, 70));
     }
     
-    @Test
+    //@Test
     public void calculateScore_WhenThirdAttempt_ReturnScoreWithDiscount() {
     	Assert.assertEquals(50, service.calculateScore(3, 100));
     	Assert.assertEquals(45, service.calculateScore(3, 90));
@@ -82,7 +82,7 @@ public class GameServiceTest extends AbstractTest {
     	Assert.assertEquals(30, service.calculateScore(3, 70));
     }
     
-    @Test
+    //@Test
     public void calculateScore_WhenMoreAttempts_ReturnScoreAlways10() {
     	Assert.assertEquals(10, service.calculateScore(4, 100));
     	Assert.assertEquals(10, service.calculateScore(4, 90));

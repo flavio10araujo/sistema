@@ -310,7 +310,7 @@ public class GameController extends BaseController {
 		if (phase == null) return REDIRECT_HOME;
 		
 		// If the player has already passed this test he can't see the test again.
-		if (playerPhaseService.phaseAlreadyCompletedByPlayer(phase, this.currentAuthenticatedUser().getUser())) return REDIRECT_GAMES + gameName;
+		if (playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase, this.currentAuthenticatedUser().getUser())) return REDIRECT_GAMES + gameName;
 		
 		// If the player doesn't have permission to access this phase.
 		if (!phaseService.playerCanAccessThisPhase(phase, this.currentAuthenticatedUser().getUser())) return REDIRECT_HOME;

@@ -47,7 +47,7 @@ public class PaymentController extends BaseController {
 	public final String buycredits(final Model model) {
 		
 		// If the player has not confirmed his e-mail yet.
-		if (!playerService.verifyEmailConfirmed(currentAuthenticatedUser().getUser())) {
+		if (!playerService.isEmailConfirmed(currentAuthenticatedUser().getUser())) {
 			model.addAttribute("player", new Player());
 			model.addAttribute("playerResend", new Player());
 			model.addAttribute("codRegister", 2);

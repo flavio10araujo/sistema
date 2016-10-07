@@ -7,12 +7,15 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.polifono.AbstractTest;
 import com.polifono.domain.Player;
 import com.polifono.domain.Role;
+import com.polifono.repository.IPlayerRepository;
+import com.polifono.service.impl.PlayerServiceImpl;
 
 /**
  * Unit test methods for the PlayerService.
@@ -21,8 +24,10 @@ import com.polifono.domain.Role;
 @Transactional
 public class PlayerServiceTest extends AbstractTest {
 
-	@Autowired
     private IPlayerService service;
+    
+	@Mock
+	private IPlayerRepository repository;
 	
 	private final Integer PLAYER_ID_EXISTENT = 1;
 	private final Integer PLAYER_ID_INEXISTENT = Integer.MAX_VALUE;
@@ -33,6 +38,8 @@ public class PlayerServiceTest extends AbstractTest {
     @Before
     public void setUp() {
         // Do something before each test method.
+    	MockitoAnnotations.initMocks(this);
+		service = new PlayerServiceImpl(repository);
     }
 
     @After
@@ -287,4 +294,130 @@ public class PlayerServiceTest extends AbstractTest {
     	
     }
     /* removeCreditsFromPlayer - end */
+    
+    /* removeOneCreditFromPlayer - begin */
+    /* removeOneCreditFromPlayer - end */
+    
+    /* playerHasCredits - begin */
+    /* playerHasCredits - end */
+    
+    /* verifyEmailConfirmed - begin */
+    /* verifyEmailConfirmed - end */
+    
+    /* validateCreatePlayer - begin */
+    @Test
+    public void validateCreatePlayer_WhenNoDataIsMissing_ReturnMsgEmpty() {
+    	Player player = new Player();
+    	player.setName("Name Completed");
+    	player.setEmail("email@test.com");
+    	player.setPassword("password123");
+    	
+    	Assert.assertEquals("failure - expected msg returned equals", "", service.validateCreatePlayer(player));
+    }
+    
+    @Test
+    public void validateCreatePlayer_WhenFieldNameIsMissing_ReturnMsgNameMissing() {
+    	Player player = new Player();
+    	player.setName(null);
+    	player.setEmail("email@test.com");
+    	player.setPassword("password123");
+    	
+    	Assert.assertEquals("failure - expected msg returned equals", "<br />O nome precisa ser informado.", service.validateCreatePlayer(player));
+    	
+    	player.setName("");
+    	player.setEmail("email@test.com");
+    	player.setPassword("password123");
+    	
+    	Assert.assertEquals("failure - expected msg returned equals", "<br />O nome precisa ser informado.", service.validateCreatePlayer(player));
+    }
+    
+    @Test
+    public void validateCreatePlayer_WhenFieldEmailIsMissing_ReturnMsgEmailMissing() {
+    	Player player = new Player();
+    	player.setName("Name Completed");
+    	player.setEmail(null);
+    	player.setPassword("password123");
+    	
+    	Assert.assertEquals("failure - expected msg returned equals", "<br />O e-mail precisa ser informado.", service.validateCreatePlayer(player));
+    	
+    	player.setName("Name Completed");
+    	player.setEmail("");
+    	player.setPassword("password123");
+    	
+    	Assert.assertEquals("failure - expected msg returned equals", "<br />O e-mail precisa ser informado.", service.validateCreatePlayer(player));
+    }
+    
+    @Test
+    public void validateCreatePlayer_WhenFieldEmailIsInvalid_ReturnMsgEmailInvalid() {
+    	Player player = new Player();
+    	player.setName("Name Completed");
+    	player.setEmail("invalid_email");
+    	player.setPassword("password123");
+    	
+    	Assert.assertEquals("failure - expected msg returned equals", "<br />O e-mail informado não é válido.", service.validateCreatePlayer(player));
+    }
+    
+    @Test
+    public void validateCreatePlayer_WhenFieldPasswordIsMissing_ReturnMsgPasswordMissing() {
+    	Player player = new Player();
+    	player.setName("Name Completed");
+    	player.setEmail("email@test.com");
+    	player.setPassword(null);
+    	
+    	Assert.assertEquals("failure - expected msg returned equals", "<br />A senha precisa ser informada.", service.validateCreatePlayer(player));
+    	
+    	player.setName("Name Completed");
+    	player.setEmail("email@test.com");
+    	player.setPassword("");
+    	
+    	Assert.assertEquals("failure - expected msg returned equals", "<br />A senha precisa ser informada.", service.validateCreatePlayer(player));
+    }
+    
+    @Test
+    public void validateCreatePlayer_WhenFieldPasswordIsInvalid_ReturnMsgPasswordInvalid() {
+    	Player player = new Player();
+    	player.setName("Name Completed");
+    	player.setEmail("email@test.com");
+    	player.setPassword("12345");
+    	
+    	Assert.assertEquals("failure - expected msg returned equals", "<br />A senha precisa possuir entre 6 e 20 caracteres.", service.validateCreatePlayer(player));
+    	
+    	player.setName("Name Completed");
+    	player.setEmail("email@test.com");
+    	player.setPassword("123456");
+    	
+    	Assert.assertEquals("failure - expected msg returned equals", "<br />A senha precisa possuir ao menos 1 número e ao menos 1 letra.", service.validateCreatePlayer(player));
+    }
+    
+    @Test
+    public void validateCreatePlayer_WhenMoreThanOneFielsIsMissing_ReturnMsgFieldsMissing() {
+    	Player player = new Player();
+    	player.setName("");
+    	player.setEmail("");
+    	player.setPassword("");
+    	
+    	String msg = "<br />O nome precisa ser informado.<br />O e-mail precisa ser informado.<br />A senha precisa ser informada.";
+    	
+    	Assert.assertEquals("failure - expected msg returned equals", msg, service.validateCreatePlayer(player));
+    }
+    /* validateCreatePlayer - end */
+    
+    /* validateUpdateProfile - begin */
+    @Test
+    public void validateUpdateProfile_WhenNoDataIsMissing_ReturnMsgEmpty() {
+    	Player player = new Player();
+    	player.setName("Name Completed");
+    	Assert.assertEquals("failure - expected msg returned equals", "", service.validateUpdateProfile(player));
+    }
+    
+    @Test
+    public void validateUpdateProfile_WhenFieldNameIsMissing_ReturnMsgNameMissing() {
+    	Player player = new Player();
+    	player.setName(null);
+    	Assert.assertEquals("failure - expected msg returned equals", "O nome precisa ser informado.<br />", service.validateUpdateProfile(player));
+    	
+    	player.setName("");
+    	Assert.assertEquals("failure - expected msg returned equals", "O nome precisa ser informado.<br />", service.validateUpdateProfile(player));
+    }
+    /* validateUpdateProfile - end */
 }

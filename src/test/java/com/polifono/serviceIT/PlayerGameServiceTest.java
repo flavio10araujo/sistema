@@ -34,7 +34,7 @@ public class PlayerGameServiceTest extends AbstractTest {
     }
     
     /* removeCreditsFromPlayer - begin */
-    @Test
+    //@Test
     public void removeCreditsFromPlayer_whenRemoveOneCredit_returnPlayer() {
     	PlayerGame playerGame = service.findOne(PLAYERGAME_ID_EXISTENT);
     	int creditsOld = playerGame.getCredit();

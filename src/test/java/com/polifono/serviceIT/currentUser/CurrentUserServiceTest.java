@@ -3,6 +3,7 @@ package com.polifono.serviceIT.currentUser;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,7 @@ public class CurrentUserServiceTest extends AbstractTest {
     
     /* canAccessUser - begin */
     @Test
+    @Ignore
     public void canAccessUser_WhenUserHasAccess_returnTrue() {
     	Player player = playerService.findOne(PLAYER_ID_EXISTENT);
     	CurrentUser currentUser = new CurrentUser(player);

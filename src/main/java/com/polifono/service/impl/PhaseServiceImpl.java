@@ -16,8 +16,12 @@ import com.polifono.service.IPhaseService;
 @Service
 public class PhaseServiceImpl implements IPhaseService {
 
-	@Autowired
 	private IPhaseRepository repository;
+	
+	@Autowired
+	public PhaseServiceImpl(IPhaseRepository repository) {
+		this.repository = repository;
+	}
 	
 	public final Phase save(Phase phase) {
 		return repository.save(phase);

@@ -19,8 +19,8 @@ public interface IPlayerPhaseService {
 	
 	public List<PlayerPhase> findForReportGeneral(ReportGeneralForm reportGeneralForm, int playerId);
 
-	public boolean phaseAlreadyCompletedByPlayer(Phase phase, Player user);
+	public boolean isPhaseAlreadyCompletedByPlayer(Phase phase, Player user);
 
-	public void setTestAttempt(Player user, Phase phase);
+	public PlayerPhase setTestAttempt(Player user, Phase phase);
 
 }

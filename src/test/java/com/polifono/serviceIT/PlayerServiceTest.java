@@ -42,7 +42,7 @@ public class PlayerServiceTest extends AbstractTest {
     }
     
     /* create - begin */
-    @Test
+    //@Test
     public void create_PlayerCreationWrong_ExceptionThrown() {
         Player entity = new Player();
         entity.setName("Name of New the Player");
@@ -76,7 +76,7 @@ public class PlayerServiceTest extends AbstractTest {
     /* create - end */
     
     /* save - begin */
-    @Test
+    //@Test
     public void save_UpdatePlayer() {
         Integer id = new Integer(PLAYER_ID_EXISTENT);
         Player entity = service.findOne(id);
@@ -128,21 +128,21 @@ public class PlayerServiceTest extends AbstractTest {
     /* save - end */
     
     /* findOne - begin */
-    @Test
+    //@Test
     public void findOne_PlayerExistentButReturnNull_ExceptionThrown() {
         Integer id = new Integer(PLAYER_ID_EXISTENT);
         Player entity = service.findOne(id);
         Assert.assertNotNull("failure - expected not null", entity);
     }
     
-    @Test
+    //@Test
     public void findOne_PlayerExistentWithWrongId_ExceptionThrown() {
         Integer id = new Integer(PLAYER_ID_EXISTENT);
         Player entity = service.findOne(id);
         Assert.assertEquals("failure - expected id attribute match", id.intValue(), entity.getId());
     }
 
-    @Test
+    //@Test
     public void findOne_PlayerInexistent_ReturnNull() {
         Integer id = PLAYER_ID_INEXISTENT;
     	Player entity = service.findOne(id);
@@ -151,13 +151,13 @@ public class PlayerServiceTest extends AbstractTest {
     /* findOne - end */
 
     /* findAll - begin */
-    @Test
+    //@Test
     public void findAll_ListIsNull_ExceptionThrown() {
     	List<Player> list = service.findAll();
     	Assert.assertNotNull("failure - expected not null", list);
     }
 
-    @Test
+    //@Test
     public void findAll_ListHasSizeZero_ExceptionThrown() {
     	List<Player> list = service.findAll();
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
@@ -165,7 +165,7 @@ public class PlayerServiceTest extends AbstractTest {
     /* findAll - end */
 
     /* findByEmail - begin */
-    @Test
+    //@Test
     public void findByEmail_SearchPlayerExistent() {
     	Player entity = service.findByEmail(PLAYER_EMAIL_EXISTENT);
         Assert.assertNotNull("failure - expected not null", entity);
@@ -183,7 +183,7 @@ public class PlayerServiceTest extends AbstractTest {
         Assert.assertNotNull("failure - expected sex not null", entity.getSex());
     }
 
-    @Test
+    //@Test
     public void findByEmail_SearchPlayerInexistent() {
     	Player entity = service.findByEmail(PLAYER_EMAIL_INEXISTENT);
     	Assert.assertNull("failure - expected null", entity);
@@ -191,7 +191,7 @@ public class PlayerServiceTest extends AbstractTest {
     /* findByEmail - end */
 
     /* findByEmailAndStatus - begin */
-    @Test
+    //@Test
     public void findByEmailAndStatus_SearchPlayerExistentActive_ReturnPlayer() {
     	Player entity = service.findByEmailAndStatus(PLAYER_EMAIL_EXISTENT, true);
         Assert.assertNotNull("failure - expected not null", entity);
@@ -209,13 +209,13 @@ public class PlayerServiceTest extends AbstractTest {
         Assert.assertNotNull("failure - expected sex not null", entity.getSex());
     }
     
-    @Test
+    //@Test
     public void findByEmailAndStatus_SearchPlayerExistentWrongStatus_ReturnNull() {
     	Player entity = service.findByEmailAndStatus(PLAYER_EMAIL_EXISTENT, false);
         Assert.assertNull("failure - expected null", entity);
     }
     
-    @Test
+    //@Test
     public void findByEmailAndStatus_SearchPlayerInexistent() {
     	Player entity = service.findByEmailAndStatus(PLAYER_EMAIL_INEXISTENT, true);
     	Assert.assertNull("failure - expected null", entity);
@@ -223,7 +223,7 @@ public class PlayerServiceTest extends AbstractTest {
     /* findByEmailAndStatus - end */
     
     /* findByEmailAndStatusForLogin - begin */
-    @Test
+    //@Test
     public void findByEmailAndStatusForLogin_SearchPlayerExistentActive_ReturnPlayer() {
     	Player entity = service.findByEmailAndStatusForLogin(PLAYER_EMAIL_EXISTENT, true).orElse(new Player());
     	
@@ -242,13 +242,13 @@ public class PlayerServiceTest extends AbstractTest {
         Assert.assertNotNull("failure - expected sex not null", entity.getSex());
     }
     
-    @Test
+    //@Test
     public void findByEmailAndStatusForLogin_SearchPlayerExistentWrongStatus_ReturnNull() {
     	Player entity = service.findByEmailAndStatusForLogin(PLAYER_EMAIL_EXISTENT, false).orElse(null);
         Assert.assertNull("failure - expected null", entity);
     }
     
-    @Test
+    //@Test
     public void findByEmailAndStatusForLogin_SearchPlayerInexistent() {
     	Player entity = service.findByEmailAndStatusForLogin(PLAYER_EMAIL_INEXISTENT, true).orElse(null);
     	Assert.assertNull("failure - expected null", entity);
@@ -256,7 +256,7 @@ public class PlayerServiceTest extends AbstractTest {
     /* findByEmailAndStatusForLogin - end */
     
     /* encryptPassword - begin */
-    @Test
+    //@Test
     public void encryptPassword() {
     	String rawPassword = "12345";
     	String ret = service.encryptPassword(rawPassword);
@@ -266,7 +266,7 @@ public class PlayerServiceTest extends AbstractTest {
     /* encryptPassword - end */
     
     /* addCreditsToPlayer - begin */
-    @Test
+    //@Test
     public void addCreditsToPlayer() {
     	Player entity = service.findOne(PLAYER_ID_EXISTENT);
     	int credits = entity.getCredit();
@@ -278,7 +278,7 @@ public class PlayerServiceTest extends AbstractTest {
     /* addCreditsToPlayer - end */
     
     /* removeCreditsFromPlayer - begin */
-    @Test
+    //@Test
     public void removeCreditsFromPlayer() {
     	Player entity = service.findOne(PLAYER_ID_EXISTENT);
     	int credits = entity.getCredit();

@@ -1,5 +1,8 @@
 package com.polifono.service;
 
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -7,6 +10,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +22,8 @@ import com.polifono.domain.Phasestatus;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.form.teacher.ReportGeneralForm;
+import com.polifono.repository.IPlayerPhaseRepository;
+import com.polifono.service.impl.PlayerPhaseServiceImpl;
 
 /**
  * Unit test methods for the PlayerPhaseService.
@@ -25,8 +32,10 @@ import com.polifono.form.teacher.ReportGeneralForm;
 @Transactional
 public class PlayerPhaseServiceTest extends AbstractTest {
 
-	@Autowired
     private IPlayerPhaseService service;
+    
+    @Mock
+    private IPlayerPhaseRepository repository;
 	
 	private final Integer PLAYER_ID_EXISTENT = 1;
 	private final Integer PLAYER_ID_INEXISTENT = Integer.MAX_VALUE;
@@ -43,6 +52,8 @@ public class PlayerPhaseServiceTest extends AbstractTest {
     @Before
     public void setUp() {
         // Do something before each test method.
+    	MockitoAnnotations.initMocks(this);
+		service = new PlayerPhaseServiceImpl(repository);
     }
 
     @After
@@ -70,6 +81,9 @@ public class PlayerPhaseServiceTest extends AbstractTest {
     	playerPhase.setDtTest(new Date());
     	playerPhase.setNumAttempts(1);
     	playerPhase.setScore(0);
+    	playerPhase.setId(1);
+    	
+    	when(repository.save(playerPhase)).thenReturn(playerPhase);
 
     	PlayerPhase entity = service.save(playerPhase);
     	
@@ -103,6 +117,9 @@ public class PlayerPhaseServiceTest extends AbstractTest {
     	playerPhase.setDtTest(new Date());
     	playerPhase.setNumAttempts(1);
     	playerPhase.setScore(50);
+    	playerPhase.setId(1);
+    	
+    	when(repository.save(playerPhase)).thenReturn(playerPhase);
 
     	PlayerPhase entity = service.save(playerPhase);
     	
@@ -144,6 +161,11 @@ public class PlayerPhaseServiceTest extends AbstractTest {
     /* findByPlayerPhaseAndStatus - begin */
     @Test
     public void findByPlayerPhaseAndStatus_whenPlayerPhaseExists_returnItem() {
+    	int playerId = PLAYER_ID_EXISTENT, phaseId = PHASE_ID_EXISTENT, phasestatusId = PHASESTATUS_CONCLUDED;
+    	PlayerPhase playerPhase = new PlayerPhase();
+    	playerPhase.setId(1);
+    	when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(playerPhase);
+    	
     	PlayerPhase entity = service.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASESTATUS_CONCLUDED);
     	Assert.assertNotNull("failure - expected not null", entity);
     	Assert.assertNotEquals("failure - expected id attribute bigger than 0", 0, entity.getId());
@@ -159,6 +181,11 @@ public class PlayerPhaseServiceTest extends AbstractTest {
     /* findPlayerPhasesByPlayer - begin */
     @Test
     public void findPlayerPhasesByPlayer_whenPlayerPhasesExist_returnList() {
+    	int playerId = PLAYER_ID_EXISTENT;
+    	List<PlayerPhase> listReturned = new ArrayList<PlayerPhase>();
+    	listReturned.add(new PlayerPhase());
+    	when(repository.findPlayerPhasesByPlayer(playerId)).thenReturn(listReturned);
+    	
     	List<PlayerPhase> list = service.findPlayerPhasesByPlayer(PLAYER_ID_EXISTENT);
     	Assert.assertNotNull("failure - expected not null", list);
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
@@ -186,4 +213,104 @@ public class PlayerPhaseServiceTest extends AbstractTest {
     	Assert.assertNotNull("failure - expected not null", list);
     }
     /* findForReportGeneral - end */
+    
+    /* isPhaseAlreadyCompletedByPlayer - begin */
+    @Test
+    public void isPhaseAlreadyCompletedByPlayer_WhenThePhaseIsAlreadyCompletedByThePlayer_returnTrue() {
+    	int playerId = PLAYER_ID_EXISTENT, phaseId = PHASE_ID_EXISTENT, phasestatusId = 3;
+    	
+    	Phase phase = new Phase();
+    	phase.setId(playerId);
+    	
+    	Player player = new Player();
+    	player.setId(phaseId);
+    	
+    	when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(new PlayerPhase());
+    	
+    	Assert.assertTrue(service.isPhaseAlreadyCompletedByPlayer(phase, player));
+    }
+    
+    @Test
+    public void isPhaseAlreadyCompletedByPlayer_WhenThePhaseIsNotCompletedByThePlayer_returnFalse() {
+    	int playerId = PLAYER_ID_EXISTENT, phaseId = PHASE_ID_EXISTENT, phasestatusId = 3;
+    	
+    	Phase phase = new Phase();
+    	phase.setId(playerId);
+    	
+    	Player player = new Player();
+    	player.setId(phaseId);
+    	
+    	when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(null);
+    	
+    	Assert.assertFalse(service.isPhaseAlreadyCompletedByPlayer(phase, player));
+    }
+    /* isPhaseAlreadyCompletedByPlayer - end */
+    
+    /* setTestAttempt - begin */
+    @Test
+    public void setTestAttempt_WhenItIsNotTheFirstAttemptToDoThisTest_returnPlayerPhaseWithMoreThanOneAttempt() {
+    	int playerId = PLAYER_ID_EXISTENT, phaseId = PHASE_ID_EXISTENT, phasestatusId = 2;
+    	
+    	Phase phase = new Phase();
+    	phase.setId(playerId);
+    	
+    	Player player = new Player();
+    	player.setId(phaseId);
+    	
+    	PlayerPhase playerPhase1 = new PlayerPhase();
+    	playerPhase1.setNumAttempts(1);
+    	playerPhase1.setPhase(phase);
+    	playerPhase1.setPlayer(player);
+    	Phasestatus phasestatus1 = new Phasestatus();
+    	phasestatus1.setId(phasestatusId);
+    	playerPhase1.setPhasestatus(phasestatus1);
+    	
+    	PlayerPhase playerPhase = new PlayerPhase();
+    	playerPhase.setNumAttempts(2);
+    	playerPhase.setPhase(phase);
+    	playerPhase.setPlayer(player);
+    	Phasestatus phasestatus = new Phasestatus();
+    	phasestatus.setId(phasestatusId);
+    	playerPhase.setPhasestatus(phasestatus);
+    	
+    	when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(playerPhase1);
+    	when(repository.save(playerPhase)).thenReturn(playerPhase);
+    	
+    	PlayerPhase entity = service.setTestAttempt(player, phase);
+    	
+    	Assert.assertTrue("failure expected numAttempts attribute bigger than 1", (entity.getNumAttempts() > 1));
+		Assert.assertEquals("failure match phase attribute", phase.getId(), entity.getPhase().getId());
+		Assert.assertEquals("failure match phaseStatus attribute", phasestatusId, entity.getPhasestatus().getId());
+		Assert.assertEquals("failure match player attribute", player.getId(), entity.getPlayer().getId());
+    }
+    
+    @Test
+    public void setTestAttempt_WhenItIsTheFirstAttemptToDoThisTest_returnPlayerPhaseWithOneAttempt() {
+    	int playerId = PLAYER_ID_EXISTENT, phaseId = PHASE_ID_EXISTENT, phasestatusId = 2;
+    	
+    	Phase phase = new Phase();
+    	phase.setId(playerId);
+    	
+    	Player player = new Player();
+    	player.setId(phaseId);
+    	
+    	PlayerPhase playerPhase = new PlayerPhase();
+    	playerPhase.setNumAttempts(1);
+    	playerPhase.setPhase(phase);
+    	playerPhase.setPlayer(player);
+    	Phasestatus phasestatus = new Phasestatus();
+    	phasestatus.setId(phasestatusId);
+    	playerPhase.setPhasestatus(phasestatus);
+    	
+    	when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(null);
+    	when(repository.save(playerPhase)).thenReturn(playerPhase);
+    	
+    	PlayerPhase entity = service.setTestAttempt(player, phase);
+    	
+    	Assert.assertEquals("failure match numAttempts attribute", 1, entity.getNumAttempts());
+		Assert.assertEquals("failure match phase attribute", phase.getId(), entity.getPhase().getId());
+		Assert.assertEquals("failure match phaseStatus attribute", phasestatusId, entity.getPhasestatus().getId());
+		Assert.assertEquals("failure match player attribute", player.getId(), entity.getPlayer().getId());
+    }
+    /* setTestAttempt - end */
 }

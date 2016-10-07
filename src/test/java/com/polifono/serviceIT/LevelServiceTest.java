@@ -35,29 +35,29 @@ public class LevelServiceTest extends AbstractTest {
         // Clean up after each test method.
     }
     
-    @Test
+    //@Test
     public void findAll_ListIsNull_ExceptionThrown() {
     	Assert.assertNotNull("failure - expected not null", service.findAll());
     }
     
-    @Test
+    //@Test
     public void findAll_ListHasSizeZero_ExceptionThrown() {
     	List<Level> list = service.findAll();
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
     }
 
-    @Test
+    //@Test
     public void findByGame_ListIsNullForValidGame_ExceptionThrown() {
     	Assert.assertNotNull("failure - not expected list size 0", service.findByGame(GAME_ID_EXISTENT));
     }
     
-    @Test
+    //@Test
     public void findByGame_ListHasSizeZeroForValidGame_ExceptionThrown() {
     	List<Level> list = service.findByGame(GAME_ID_EXISTENT);
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
     }
     
-    @Test
+    //@Test
     public void findByGame_ListHasValuesForInvalidGame_ExceptionThrown() {
     	List<Level> list = service.findByGame(0);
     	Assert.assertEquals("failure - expected list size 0", 0, list.size());

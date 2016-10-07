@@ -29,7 +29,6 @@ import com.polifono.util.RandomStringUtil;
 @Service
 public class PlayerServiceImpl implements IPlayerService {
 
-	@Autowired
 	private IPlayerRepository repository;
 	
 	@Autowired
@@ -41,6 +40,11 @@ public class PlayerServiceImpl implements IPlayerService {
 	
 	static {
 		 resourceBundle = ResourceBundle.getBundle("application", Locale.getDefault());
+	}
+	
+	@Autowired
+	public PlayerServiceImpl(IPlayerRepository repository) {
+		this.repository = repository;
 	}
 	
 	public final Player create(Player player) {
@@ -178,7 +182,7 @@ public class PlayerServiceImpl implements IPlayerService {
 	 * @param player
 	 * @return
 	 */
-	public boolean verifyEmailConfirmed(Player player) {
+	public boolean isEmailConfirmed(Player player) {
 		player = this.findOne(player.getId());
 		
 		if (player.isIndEmailConfirmed()) {

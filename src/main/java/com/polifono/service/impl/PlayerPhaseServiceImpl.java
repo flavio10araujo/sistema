@@ -17,8 +17,12 @@ import com.polifono.service.IPlayerPhaseService;
 @Service
 public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 
-	@Autowired
 	private IPlayerPhaseRepository repository;
+	
+	@Autowired
+	public PlayerPhaseServiceImpl(IPlayerPhaseRepository repository) {
+		this.repository = repository;
+	}
 	
 	public final PlayerPhase save(PlayerPhase playerPhase) {
 		return repository.save(playerPhase);
@@ -77,11 +81,11 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 	 * @param phase
 	 * @return
 	 */
-	public boolean phaseAlreadyCompletedByPlayer(Phase phase, Player player) {
+	public boolean isPhaseAlreadyCompletedByPlayer(Phase phase, Player player) {
 
 		PlayerPhase playerPhase = this.findByPlayerPhaseAndStatus(player.getId(), phase.getId(), 3);
 		
-		// This phase is already completed by this phase.
+		// The phase is already completed by this player.
 		if (playerPhase != null) {
 			return true;
 		}
@@ -94,7 +98,7 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 	 * 
 	 * @param phase
 	 */
-	public void setTestAttempt(Player player, Phase phase) {
+	public PlayerPhase setTestAttempt(Player player, Phase phase) {
 		PlayerPhase playerPhase = this.findByPlayerPhaseAndStatus(player.getId(), phase.getId(), 2);
 		
 		// If this is not the first attempt.
@@ -109,12 +113,9 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 			Phasestatus phasestatus = new Phasestatus();
 			phasestatus.setId(2);
 			playerPhase.setPhasestatus(phasestatus);
-			
-			//Player p = playerService.findOne(player.getId());
-			//playerPhase.setPlayer(p);
 			playerPhase.setPlayer(player);
 		}
 		
-		this.save(playerPhase);
+		return this.save(playerPhase);
 	}
 }

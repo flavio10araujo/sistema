@@ -35,7 +35,7 @@ public interface IPlayerService {
 
 	public boolean playerHasCredits(Player user, Phase phase);
 
-	public boolean verifyEmailConfirmed(Player user);
+	public boolean isEmailConfirmed(Player user);
 
 	public String validateCreatePlayer(Player player);
 
