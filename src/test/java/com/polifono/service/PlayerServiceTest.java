@@ -1,5 +1,8 @@
 package com.polifono.service;
 
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +15,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.polifono.AbstractTest;
+import com.polifono.domain.Game;
+import com.polifono.domain.Map;
+import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
+import com.polifono.domain.PlayerGame;
 import com.polifono.domain.Role;
 import com.polifono.repository.IPlayerRepository;
 import com.polifono.service.impl.PlayerServiceImpl;
@@ -29,6 +36,9 @@ public class PlayerServiceTest extends AbstractTest {
 	@Mock
 	private IPlayerRepository repository;
 	
+	@Mock
+	private IPlayerGameService playerGameService;
+	
 	private final Integer PLAYER_ID_EXISTENT = 1;
 	private final Integer PLAYER_ID_INEXISTENT = Integer.MAX_VALUE;
 	
@@ -39,7 +49,7 @@ public class PlayerServiceTest extends AbstractTest {
     public void setUp() {
         // Do something before each test method.
     	MockitoAnnotations.initMocks(this);
-		service = new PlayerServiceImpl(repository);
+		service = new PlayerServiceImpl(repository, playerGameService);
     }
 
     @After
@@ -296,13 +306,188 @@ public class PlayerServiceTest extends AbstractTest {
     /* removeCreditsFromPlayer - end */
     
     /* removeOneCreditFromPlayer - begin */
+    @Test
+    public void removeOneCreditFromPlayer_WhenThePlayerHasSpecificCreditsOfTheGame() {
+    	int id = PLAYER_ID_EXISTENT;
+    	
+    	Game game = new Game();
+    	game.setId(1);
+    	
+    	Player player = new Player();
+    	player.setId(id);
+    	player.setCredit(0);
+    	List<PlayerGame> playerGameList = new ArrayList<PlayerGame>();
+    	PlayerGame pg = new PlayerGame();
+    	pg.setCredit(20);
+    	pg.setGame(game);
+    	playerGameList.add(pg);
+    	player.setPlayerGameList(playerGameList);
+    	
+    	PlayerGame playerGame = new PlayerGame();
+    	when(playerGameService.removeCreditsFromPlayer(playerGame, 1)).thenReturn(null);
+    	
+    	Player playerReturned = new Player();
+    	playerReturned.setId(id);
+    	playerReturned.setCredit(0);
+    	List<PlayerGame> playerGameListReturned = new ArrayList<PlayerGame>();
+    	PlayerGame pgReturned = new PlayerGame();
+    	pgReturned.setCredit(19);
+    	pgReturned.setGame(game);
+    	playerGameListReturned.add(pg);
+    	playerReturned.setPlayerGameList(playerGameListReturned);
+    	
+    	when(repository.findOne(id)).thenReturn(playerReturned);
+    	
+    	Player entity = service.removeOneCreditFromPlayer(player, game);
+    	
+    	Assert.assertEquals(player.getCredit(), entity.getCredit());
+    	Assert.assertEquals(player.getPlayerGameList().get(0).getCredit() - 1, entity.getPlayerGameList().get(0).getCredit());
+    }
+    
+    @Test
+    public void removeOneCreditFromPlayer_WhenThePlayerDoesntHaveSpecificCreditsOfTheGame() {
+    	Player player = new Player();
+    	player.setId(1);
+    	player.setCredit(10);
+    	
+    	Game game = new Game();
+    	
+    	Player returned = new Player();
+    	returned.setCredit(9);
+    	
+    	when(repository.save(player)).thenReturn(returned);
+    	
+    	Player entity = service.removeOneCreditFromPlayer(player, game);
+    	
+    	Assert.assertEquals(player.getCredit() - 1, entity.getCredit());
+    }
     /* removeOneCreditFromPlayer - end */
     
     /* playerHasCredits - begin */
+    @Test
+    public void playerHasCredits_WhenPlayerHasGenericCredits_ReturnTrue() {
+    	int id = PLAYER_ID_EXISTENT;
+    	
+    	Player player = new Player();
+    	player.setId(id);
+    	player.setCredit(30);
+    	
+    	Phase phase = new Phase();
+
+    	when(repository.findOne(id)).thenReturn(player);
+    	
+    	Assert.assertTrue(service.playerHasCredits(player, phase));
+    }
+    
+    @Test
+    public void playerHasCredits_WhenPlayerHasSpecificCredits_ReturnTrue() {
+    	int id = PLAYER_ID_EXISTENT;
+    	
+    	Game game = new Game();
+    	game.setId(1);
+    	
+    	List<PlayerGame> playerGameList = new ArrayList<PlayerGame>();
+    	PlayerGame pg = new PlayerGame();
+    	pg.setGame(game);
+    	pg.setCredit(10);
+    	playerGameList.add(pg);
+    	
+    	Player player = new Player();
+    	player.setId(id);
+    	player.setCredit(0);
+    	player.setPlayerGameList(playerGameList);
+    	
+    	Phase phase = new Phase();
+    	Map map = new Map();
+    	map.setGame(game);
+    	
+    	when(repository.findOne(id)).thenReturn(player);
+    	
+    	Assert.assertTrue(service.playerHasCredits(player, phase));
+    }
+    
+    @Test
+    public void playerHasCredits_WhenPlayerHasGenericAndSpecificCredits_ReturnTrue() {
+    	int id = PLAYER_ID_EXISTENT;
+    	
+    	Game game = new Game();
+    	game.setId(1);
+    	
+    	List<PlayerGame> playerGameList = new ArrayList<PlayerGame>();
+    	PlayerGame pg = new PlayerGame();
+    	pg.setGame(game);
+    	pg.setCredit(10);
+    	playerGameList.add(pg);
+    	
+    	Player player = new Player();
+    	player.setId(id);
+    	player.setCredit(20);
+    	player.setPlayerGameList(playerGameList);
+    	
+    	Phase phase = new Phase();
+    	Map map = new Map();
+    	map.setGame(game);
+    	
+    	when(repository.findOne(id)).thenReturn(player);
+    	
+    	Assert.assertTrue(service.playerHasCredits(player, phase));
+    }
+    
+    @Test
+    public void playerHasCredits_WhenPlayerHasNotCredits_ReturnFalse() {
+    	int id = PLAYER_ID_EXISTENT;
+    	
+    	Game game = new Game();
+    	game.setId(1);
+    	
+    	List<PlayerGame> playerGameList = new ArrayList<PlayerGame>();
+    	PlayerGame pg = new PlayerGame();
+    	pg.setGame(game);
+    	pg.setCredit(0);
+    	playerGameList.add(pg);
+    	
+    	Player player = new Player();
+    	player.setId(id);
+    	player.setCredit(0);
+    	player.setPlayerGameList(playerGameList);
+    	
+    	Phase phase = new Phase();
+    	Map map = new Map();
+    	map.setGame(game);
+    	
+    	when(repository.findOne(id)).thenReturn(player);
+    	
+    	Assert.assertFalse(service.playerHasCredits(player, phase));
+    }
     /* playerHasCredits - end */
     
-    /* verifyEmailConfirmed - begin */
-    /* verifyEmailConfirmed - end */
+    /* isEmailConfirmed - begin */
+    @Test
+    public void isEmailConfirmed_WhenEmailIsConfirmed_ReturnTrue() {
+    	int id = PLAYER_ID_EXISTENT;
+    	
+    	Player player = new Player();
+    	player.setId(id);
+    	player.setIndEmailConfirmed(true);
+    	
+    	when(repository.findOne(id)).thenReturn(player);
+    	
+    	Assert.assertTrue(service.isEmailConfirmed(player));
+    }
+    
+    @Test
+    public void isEmailConfirmed_WhenEmailIsNotConfirmed_ReturnFalse() {
+    	int id = PLAYER_ID_EXISTENT;
+    	
+    	Player player = new Player();
+    	player.setId(id);
+    	player.setIndEmailConfirmed(false);
+    	
+    	when(repository.findOne(id)).thenReturn(player);
+    	
+    	Assert.assertTrue(service.isEmailConfirmed(player));
+    }
+    /* isEmailConfirmed - end */
     
     /* validateCreatePlayer - begin */
     @Test

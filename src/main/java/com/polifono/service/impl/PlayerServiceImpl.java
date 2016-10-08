@@ -31,7 +31,6 @@ public class PlayerServiceImpl implements IPlayerService {
 
 	private IPlayerRepository repository;
 	
-	@Autowired
     private IPlayerGameService playerGameService;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PlayerServiceImpl.class);
@@ -43,8 +42,9 @@ public class PlayerServiceImpl implements IPlayerService {
 	}
 	
 	@Autowired
-	public PlayerServiceImpl(IPlayerRepository repository) {
+	public PlayerServiceImpl(IPlayerRepository repository, IPlayerGameService playerGameService) {
 		this.repository = repository;
+		this.playerGameService = playerGameService;
 	}
 	
 	public final Player create(Player player) {
@@ -97,15 +97,15 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 	
 	public final Player addCreditsToPlayer(int playerId, int qtdCredits) {
-		Player player = findOne(playerId);
+		Player player = this.findOne(playerId);
 		player.setCredit(player.getCredit() + qtdCredits);
-		return repository.save(player);
+		return this.save(player);
 	}
 	
 	public final Player removeCreditsFromPlayer(int playerId, int qtdCredits) {
-		Player player = findOne(playerId);
+		Player player = this.findOne(playerId);
 		player.setCredit(player.getCredit() - qtdCredits);
-		return repository.save(player);
+		return this.save(player);
 	}
 	
 	/**
@@ -151,7 +151,6 @@ public class PlayerServiceImpl implements IPlayerService {
 	 * @return
 	 */
 	public boolean playerHasCredits(Player player, Phase phase) {
-		// If the player doesn't have credits anymore.
 		player = this.findOne(player.getId());
 		boolean hasCredits = false;
 		
