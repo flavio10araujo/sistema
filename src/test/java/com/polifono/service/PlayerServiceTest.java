@@ -284,7 +284,17 @@ public class PlayerServiceTest extends AbstractTest {
     /* addCreditsToPlayer - begin */
     @Test
     public void addCreditsToPlayer() {
-    	Player entity = service.findOne(PLAYER_ID_EXISTENT);
+    	int playerId = PLAYER_ID_EXISTENT;
+    	
+    	Player player = new Player();
+    	player.setCredit(10);
+    	
+    	Player entity = new Player();
+    	player.setCredit(22);
+    	
+    	when(service.findOne(playerId)).thenReturn(player);
+    	when(service.save(player)).thenReturn(entity);
+    	
     	int credits = entity.getCredit();
     	int qtdCredits = 12;
     	Player entityUpdated = service.addCreditsToPlayer(PLAYER_ID_EXISTENT, qtdCredits);
@@ -296,7 +306,17 @@ public class PlayerServiceTest extends AbstractTest {
     /* removeCreditsFromPlayer - begin */
     @Test
     public void removeCreditsFromPlayer() {
-    	Player entity = service.findOne(PLAYER_ID_EXISTENT);
+    	int playerId = PLAYER_ID_EXISTENT;
+    	
+    	Player player = new Player();
+    	player.setCredit(22);
+    	
+    	Player entity = new Player();
+    	player.setCredit(10);
+    	
+    	when(service.findOne(playerId)).thenReturn(player);
+    	when(service.save(player)).thenReturn(entity);
+    	
     	int credits = entity.getCredit();
     	int qtdCredits = 12;
     	Player entityUpdated = service.removeCreditsFromPlayer(PLAYER_ID_EXISTENT, qtdCredits);

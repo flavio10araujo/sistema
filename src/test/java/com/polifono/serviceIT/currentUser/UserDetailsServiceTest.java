@@ -5,9 +5,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.polifono.domain.CurrentUser;
+import com.polifono.repository.IPlayerRepository;
+import com.polifono.service.IPlayerGameService;
 import com.polifono.service.currentUser.UserDetailsServiceImpl;
 import com.polifono.service.impl.PlayerServiceImpl;
 
@@ -18,13 +21,20 @@ import com.polifono.service.impl.PlayerServiceImpl;
 @Transactional
 public class UserDetailsServiceTest {
 
-	private UserDetailsServiceImpl service = new UserDetailsServiceImpl(new PlayerServiceImpl());
+	private UserDetailsServiceImpl service;
+	
+	@Mock
+	private IPlayerGameService playerGameService;
+	
+	@Mock
+	private IPlayerRepository playerRepository;
 	
 	private final String PLAYER_EMAIL_EXISTENT = "flavio10araujo@yahoo.com.br";
 	
 	@Before
     public void setUp() {
         // Do something before each test method.
+		service = new UserDetailsServiceImpl(new PlayerServiceImpl(playerRepository, playerGameService));
     }
 
     @After

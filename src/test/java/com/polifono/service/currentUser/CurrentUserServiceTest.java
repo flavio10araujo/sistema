@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.polifono.AbstractTest;
 import com.polifono.domain.CurrentUser;
 import com.polifono.domain.Player;
-import com.polifono.service.IPlayerService;
+import com.polifono.domain.Role;
 
 /**
  * Unit test methods for the CurrentUserServiceImpl.
@@ -21,9 +21,6 @@ public class CurrentUserServiceTest extends AbstractTest {
 
 	@Autowired
 	private ICurrentUserService service;
-	
-	@Autowired
-    private IPlayerService playerService;
 	
 	private final Integer PLAYER_ID_EXISTENT = 1;
 	
@@ -39,10 +36,25 @@ public class CurrentUserServiceTest extends AbstractTest {
     
     /* canAccessUser - begin */
     @Test
-    public void canAccessUser_WhenUserHasAccess_returnTrue() {
-    	Player player = playerService.findOne(PLAYER_ID_EXISTENT);
+    public void canAccessUser_WhenCurrentUserIsNull_returnFalse() {
+    	CurrentUser currentUser = null;
+    	Assert.assertFalse(service.canAccessUser(currentUser, PLAYER_ID_EXISTENT.longValue()));
+    }
+    
+    @Test
+    public void canAccessUser_WhenRoleIsAdmin_returnTrue() {
+    	Player player = new Player();
+    	player.setRole(Role.ADMIN);
     	CurrentUser currentUser = new CurrentUser(player);
-    	Assert.assertTrue("failure - expected true", service.canAccessUser(currentUser, PLAYER_ID_EXISTENT.longValue()));
+    	Assert.assertTrue(service.canAccessUser(currentUser, PLAYER_ID_EXISTENT.longValue()));
+    }
+    
+    @Test
+    public void canAccessUser_WhenCurrentUserIdIsEqualsUserId_returnTrue() {
+    	Player player = new Player();
+    	player.setRole(Role.ADMIN);
+    	CurrentUser currentUser = new CurrentUser(player);
+    	Assert.assertTrue(service.canAccessUser(currentUser, PLAYER_ID_EXISTENT.longValue()));
     }
     /* canAccessUser - end */
 }
