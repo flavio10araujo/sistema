@@ -28,6 +28,9 @@ public abstract class AbstractControllerTest extends AbstractTest {
 	@Autowired
     protected WebApplicationContext webApplicationContext;
 	
+	protected final int HTTP_STATUS_OK = 200;
+	protected final int HTTP_STATUS_REDIRECT = 302;
+	
 	/**
      * Prepares the test class for execution of web tests. Builds a MockMvc instance.
      * Call this method from the concrete JUnit test class in the <code>@Before</code> setup method.

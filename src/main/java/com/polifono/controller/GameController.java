@@ -98,14 +98,15 @@ public class GameController extends BaseController {
 	@RequestMapping(value = {"/games/{gameName}"}, method = RequestMethod.GET)
 	public final String listLevelsOfTheGame(final Model model, @PathVariable("gameName") String gameName) {
 		Game game = gameService.findByNamelink(gameName);
-
+		
 		// If the game doesn't exist.
 		if (game == null) return REDIRECT_HOME;
 
 		int levelPermitted = 0;
 		
 		// Checking what is the last phase completed by this player in this game.
-		PlayerPhase lastPlayerPhaseCompleted = playerPhaseService.findLastPhaseCompleted(this.currentAuthenticatedUser().getUser().getId(), game.getId());
+		int playerId = this.currentAuthenticatedUser().getUser().getId();
+		PlayerPhase lastPlayerPhaseCompleted = playerPhaseService.findLastPhaseCompleted(playerId, game.getId());
 		
 		// If the player has never played any phase of this game.
 		if (lastPlayerPhaseCompleted == null) {
@@ -128,15 +129,7 @@ public class GameController extends BaseController {
 			}
 		}
 		
-		List<Level> levelsAux = levelService.findByGame(game.getId());
-		List<Level> levels = new ArrayList<Level>();
-		
-		for (Level level : levelsAux) {
-			if (level.getOrder() <= levelPermitted) {
-				level.setOpened(true);
-			}
-			levels.add(level);
-		}
+		List<Level> levels = levelService.flagLevelsToOpenedOrNot(game.getId(), levelPermitted);
 		
 		model.addAttribute("game", game);
 		model.addAttribute("levels", levels);
