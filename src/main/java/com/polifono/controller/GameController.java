@@ -128,6 +128,8 @@ public class GameController extends BaseController {
 			}
 		}
 		
+		System.out.println("levelPermitted = " + levelPermitted);
+		
 		List<Level> levels = levelService.flagLevelsToOpenedOrNot(game.getId(), levelPermitted);
 		
 		model.addAttribute("game", game);
