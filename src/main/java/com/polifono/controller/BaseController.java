@@ -27,8 +27,11 @@ public abstract class BaseController {
      */
     @Nullable
 	protected final CurrentUser currentAuthenticatedUser() {
+    	System.out.println("entrou no currentAuthenticatedUser");
     	CurrentUser currentUser = null;
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if(authentication==null){System.out.println("authentication is null");}else{System.out.println("authentication is not null");};
         
         if (authentication != null && authentication.getPrincipal() instanceof CurrentUser) {
             currentUser = (CurrentUser) authentication.getPrincipal();

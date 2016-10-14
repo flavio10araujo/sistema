@@ -105,8 +105,7 @@ public class GameController extends BaseController {
 		int levelPermitted = 0;
 		
 		// Checking what is the last phase completed by this player in this game.
-		int playerId = this.currentAuthenticatedUser().getUser().getId();
-		PlayerPhase lastPlayerPhaseCompleted = playerPhaseService.findLastPhaseCompleted(playerId, game.getId());
+		PlayerPhase lastPlayerPhaseCompleted = playerPhaseService.findLastPhaseCompleted(this.currentAuthenticatedUser().getUser().getId(), game.getId());
 		
 		// If the player has never played any phase of this game.
 		if (lastPlayerPhaseCompleted == null) {

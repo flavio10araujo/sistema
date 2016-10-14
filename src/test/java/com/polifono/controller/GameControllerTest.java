@@ -1,9 +1,5 @@
 package com.polifono.controller;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +7,19 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,18 +29,39 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import com.polifono.AbstractControllerTest;
+import com.polifono.domain.CurrentUser;
 import com.polifono.domain.Game;
+import com.polifono.domain.Level;
+import com.polifono.domain.Map;
+import com.polifono.domain.Phase;
+import com.polifono.domain.Player;
+import com.polifono.domain.PlayerPhase;
+import com.polifono.domain.Role;
 import com.polifono.service.IGameService;
+import com.polifono.service.ILevelService;
+import com.polifono.service.IPhaseService;
+import com.polifono.service.IPlayerPhaseService;
 
 /**
  * Unit tests for the GameController using Spring MVC Mocks.
  * 
  */
 @Transactional
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({SecurityContextHolder.class})
 public class GameControllerTest extends AbstractControllerTest {
 	
 	@Mock
 	private IGameService gameService;
+	
+	@Mock
+	private IPlayerPhaseService playerPhaseService;
+	
+	@Mock
+	private ILevelService levelService;
+	
+	@Mock
+	private IPhaseService phaseService;
 	
 	@InjectMocks
 	private GameController controller;
@@ -149,20 +176,264 @@ public class GameControllerTest extends AbstractControllerTest {
 		Game entity = getEntityStubData();
 		when(gameService.findByNamelink(gameName)).thenReturn(entity);
 		
-		//when(controller.currentAuthenticatedUser().getUser().getId()).thenReturn(1);
+		SecurityContext securityContextMock = mock(SecurityContext.class);
+		Authentication authenticationMock = mock(Authentication.class);
+		PowerMockito.mockStatic(SecurityContextHolder.class);
+		when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
+		when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+
+		Player player = new Player();
+		player.setId(25);
+		player.setEmail("logged-in@test.com");
+		player.setPassword("password1");
+		player.setRole(Role.USER);
+		CurrentUser currentUser = new CurrentUser(player);
+        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+        
+        when(playerPhaseService.findLastPhaseCompleted(25, 123)).thenReturn(null);
+        
+        List<Level> levels = new ArrayList<Level>();
+        Level l1 = new Level();
+        Level l2 = new Level();
+        Level l3 = new Level();
+        Level l4 = new Level();
+        Level l5 = new Level();
+        l1.setOrder(1);l1.setOpened(true);
+        l2.setOrder(2);
+        l3.setOrder(3);
+        l4.setOrder(4);
+        l5.setOrder(5);
+        levels.add(l1);
+        levels.add(l2);
+        levels.add(l3);
+        levels.add(l4);
+        levels.add(l5);
+        when(levelService.flagLevelsToOpenedOrNot(123, 1)).thenReturn(levels);
 		
-		MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri, gameName))
-				.andExpect(status().isOk())
-				.andReturn();
-		
-		int status = result.getResponse().getStatus();
-        Assert.assertEquals("failure - expected HTTP status", HTTP_STATUS_OK, status);
+		mvc.perform(MockMvcRequestBuilders.get(uri, gameName))
+	        .andExpect(status().isOk())
+	        .andExpect(view().name("games/level"))
+	        .andExpect(forwardedUrl("games/level"))
+	        .andExpect(model().attribute("game", hasProperty("id", is(123))))
+	        .andExpect(model().attribute("levels", hasSize(5)))
+	        .andExpect(model().attribute("levels", hasItem(
+	                allOf(
+	                        hasProperty("order", is(1)),
+	                        hasProperty("opened", is(true))
+	                )
+	        )))
+	        .andExpect(model().attribute("levels", hasItem(
+	                allOf(
+	                        hasProperty("order", is(2)),
+	                        hasProperty("opened", is(false))
+	                )
+	        )))
+	        .andExpect(model().attribute("levels", hasItem(
+	                allOf(
+	                        hasProperty("order", is(3)),
+	                        hasProperty("opened", is(false))
+	                )
+	        )))
+	        .andExpect(model().attribute("levels", hasItem(
+	                allOf(
+	                        hasProperty("order", is(4)),
+	                        hasProperty("opened", is(false))
+	                )
+	        )))
+	        .andExpect(model().attribute("levels", hasItem(
+	                allOf(
+	                        hasProperty("order", is(5)),
+	                        hasProperty("opened", is(false))
+	                )
+	        )));
 	}
 	
-	/*@Test
-	public void listLevelsOfTheGame_WhenThePlayerHasalreadyPlayedAtLeastOnePhaseOfTheGame_ListLevels() throws Exception {
+	@Test
+	public void listLevelsOfTheGame_WhenThePlayerHasAlreadyPlayedAtLeastOnePhaseOfTheGame_ListLevels() throws Exception {
+		String uri = "/games/{gameName}";
+		String gameName = "recorder";
 		
-	}*/
+		Game entity = getEntityStubData();
+		when(gameService.findByNamelink(gameName)).thenReturn(entity);
+		
+		SecurityContext securityContextMock = mock(SecurityContext.class);
+		Authentication authenticationMock = mock(Authentication.class);
+		PowerMockito.mockStatic(SecurityContextHolder.class);
+		when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
+		when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+
+		Player player = new Player();
+		player.setId(25);
+		player.setEmail("logged-in@test.com");
+		player.setPassword("password1");
+		player.setRole(Role.USER);
+		CurrentUser currentUser = new CurrentUser(player);
+        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+        
+        PlayerPhase lastPlayerPhaseCompleted = new PlayerPhase();
+        Level level = new Level();
+        level.setId(1);
+        level.setOrder(1);
+        Map map = new Map();
+        map.setLevel(level);
+        Phase phase = new Phase();
+        phase.setMap(map);
+        phase.setId(1);
+        lastPlayerPhaseCompleted.setPhase(phase);
+        when(playerPhaseService.findLastPhaseCompleted(25, 123)).thenReturn(lastPlayerPhaseCompleted);
+        
+        Phase lastPhaseOfTheLevel = new Phase();
+        lastPhaseOfTheLevel.setId(30);
+        when(phaseService.findLastPhaseOfTheLevel(123, 1)).thenReturn(lastPhaseOfTheLevel);
+        
+        List<Level> levels = new ArrayList<Level>();
+        Level l1 = new Level();
+        Level l2 = new Level();
+        Level l3 = new Level();
+        Level l4 = new Level();
+        Level l5 = new Level();
+        l1.setOrder(1);l1.setOpened(true);
+        l2.setOrder(2);l2.setOpened(true);
+        l3.setOrder(3);
+        l4.setOrder(4);
+        l5.setOrder(5);
+        levels.add(l1);
+        levels.add(l2);
+        levels.add(l3);
+        levels.add(l4);
+        levels.add(l5);
+        when(levelService.flagLevelsToOpenedOrNot(123, 1)).thenReturn(levels);
+		
+		mvc.perform(MockMvcRequestBuilders.get(uri, gameName))
+	        .andExpect(status().isOk())
+	        .andExpect(view().name("games/level"))
+	        .andExpect(forwardedUrl("games/level"))
+	        .andExpect(model().attribute("game", hasProperty("id", is(123))))
+	        .andExpect(model().attribute("levels", hasSize(5)))
+	        .andExpect(model().attribute("levels", hasItem(
+	                allOf(
+	                        hasProperty("order", is(1)),
+	                        hasProperty("opened", is(true))
+	                )
+	        )))
+	        .andExpect(model().attribute("levels", hasItem(
+	                allOf(
+	                        hasProperty("order", is(2)),
+	                        hasProperty("opened", is(true))
+	                )
+	        )))
+	        .andExpect(model().attribute("levels", hasItem(
+	                allOf(
+	                        hasProperty("order", is(3)),
+	                        hasProperty("opened", is(false))
+	                )
+	        )))
+	        .andExpect(model().attribute("levels", hasItem(
+	                allOf(
+	                        hasProperty("order", is(4)),
+	                        hasProperty("opened", is(false))
+	                )
+	        )))
+	        .andExpect(model().attribute("levels", hasItem(
+	                allOf(
+	                        hasProperty("order", is(5)),
+	                        hasProperty("opened", is(false))
+	                )
+	        )));
+	}
+	
+	@Test
+	public void listLevelsOfTheGame_WhenThePlayerHasPlayedTheLastPhaseOfTheALevel_ListLevels() throws Exception {
+		String uri = "/games/{gameName}";
+		String gameName = "recorder";
+		
+		Game entity = getEntityStubData();
+		when(gameService.findByNamelink(gameName)).thenReturn(entity);
+		
+		SecurityContext securityContextMock = mock(SecurityContext.class);
+		Authentication authenticationMock = mock(Authentication.class);
+		PowerMockito.mockStatic(SecurityContextHolder.class);
+		when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
+		when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+
+		Player player = new Player();
+		player.setId(25);
+		player.setEmail("logged-in@test.com");
+		player.setPassword("password1");
+		player.setRole(Role.USER);
+		CurrentUser currentUser = new CurrentUser(player);
+        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+        
+        PlayerPhase lastPlayerPhaseCompleted = new PlayerPhase();
+        Level level = new Level();
+        level.setId(1);
+        Map map = new Map();
+        map.setLevel(level);
+        Phase phase = new Phase();
+        phase.setMap(map);
+        phase.setId(30);
+        lastPlayerPhaseCompleted.setPhase(phase);
+        when(playerPhaseService.findLastPhaseCompleted(25, 123)).thenReturn(lastPlayerPhaseCompleted);
+        
+        Phase lastPhaseOfTheLevel = new Phase();
+        lastPhaseOfTheLevel.setId(30);
+        when(phaseService.findLastPhaseOfTheLevel(123, 1)).thenReturn(lastPhaseOfTheLevel);
+        
+        List<Level> levels = new ArrayList<Level>();
+        Level l1 = new Level();
+        Level l2 = new Level();
+        Level l3 = new Level();
+        Level l4 = new Level();
+        Level l5 = new Level();
+        l1.setOrder(1);l1.setOpened(true);
+        l2.setOrder(2);l2.setOpened(true);
+        l3.setOrder(3);
+        l4.setOrder(4);
+        l5.setOrder(5);
+        levels.add(l1);
+        levels.add(l2);
+        levels.add(l3);
+        levels.add(l4);
+        levels.add(l5);
+        when(levelService.flagLevelsToOpenedOrNot(123, 1)).thenReturn(levels);
+		
+		mvc.perform(MockMvcRequestBuilders.get(uri, gameName))
+	        .andExpect(status().isOk())
+	        .andExpect(view().name("games/level"))
+	        .andExpect(forwardedUrl("games/level"))
+	        .andExpect(model().attribute("game", hasProperty("id", is(123))))
+	        .andExpect(model().attribute("levels", hasSize(5)))
+	        .andExpect(model().attribute("levels", hasItem(
+	                allOf(
+	                        hasProperty("order", is(1)),
+	                        hasProperty("opened", is(true))
+	                )
+	        )))
+	        .andExpect(model().attribute("levels", hasItem(
+	                allOf(
+	                        hasProperty("order", is(2)),
+	                        hasProperty("opened", is(true))
+	                )
+	        )))
+	        .andExpect(model().attribute("levels", hasItem(
+	                allOf(
+	                        hasProperty("order", is(3)),
+	                        hasProperty("opened", is(false))
+	                )
+	        )))
+	        .andExpect(model().attribute("levels", hasItem(
+	                allOf(
+	                        hasProperty("order", is(4)),
+	                        hasProperty("opened", is(false))
+	                )
+	        )))
+	        .andExpect(model().attribute("levels", hasItem(
+	                allOf(
+	                        hasProperty("order", is(5)),
+	                        hasProperty("opened", is(false))
+	                )
+	        )));
+	}
 	/* listLevelsOfTheGame - end */
 	
 	//listPhasesOfTheMap
