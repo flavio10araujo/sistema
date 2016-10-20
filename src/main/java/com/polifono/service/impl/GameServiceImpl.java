@@ -5,15 +5,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.polifono.domain.Answer;
 import com.polifono.domain.Game;
+import com.polifono.domain.Phase;
+import com.polifono.domain.Question;
 import com.polifono.repository.IGameRepository;
 import com.polifono.service.IGameService;
+import com.polifono.service.IQuestionService;
 
 @Service
 public class GameServiceImpl implements IGameService {
 
 	@Autowired
 	private IGameRepository repository;
+	
+	@Autowired
+	private IQuestionService questionService;
 
 	public final List<Game> findAll() {
 		return (List<Game>) repository.findAll();
@@ -86,5 +93,58 @@ public class GameServiceImpl implements IGameService {
 		}
 		
 		return 10;
+	}
+	
+	/**
+	 * Calculate the user's grade in a test.
+	 * questionsId is an array with the IDs of the questions answered.
+	 * playerAnswers are the answers of the player.
+	 * This method returns the percentage of right answers given by the player.
+	 * 
+	 * @param questionsId
+	 * @param playerAnswers
+	 * @return
+	 */
+	public int calculateGrade(List<Integer> questionsId, java.util.Map<String, String> playerAnswers) {
+		Question questionAux = null;
+		int countQuestionsRight = 0, phaseOrder = 0;
+		String playerAnswer = null;
+		
+		// For each question submitted:
+		for (Integer questionId : questionsId) {
+			// Get the question from the database by your ID.
+			questionAux = questionService.findOne(questionId);
+			
+			if (questionAux.getContent().getPhase().getOrder() > phaseOrder) {
+				phaseOrder = questionAux.getContent().getPhase().getOrder();
+			}
+			
+			playerAnswer = playerAnswers.get(questionId.toString());
+			
+			// If playerAnswer is null, it is because the player hasn't answered this question.
+			if (playerAnswer != null) {
+				for (Answer answer : questionAux.getAnswers()) {
+					// If the player has chosen the right answer.
+					if ((answer.getId() == Integer.parseInt(playerAnswer)) && answer.isRight()) {
+						countQuestionsRight++;
+						continue;
+					}
+				}
+			}
+		}
+		
+		return (countQuestionsRight * 100) / questionsId.size();
+	}
+	
+	/**
+	 * Get the phase of a test based on the ID of the last question of the test.
+	 * 
+	 * @param questionsId
+	 * @return
+	 */
+	public final Phase getPhaseOfTheTest(List<Integer> questionsId) {
+		Integer questionId = questionsId.get(questionsId.size() - 1);
+		Question questionAux = questionService.findOne(questionId);
+		return questionAux.getContent().getPhase();
 	}
 }

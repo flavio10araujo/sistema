@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.polifono.domain.Answer;
 import com.polifono.domain.Content;
 import com.polifono.domain.Game;
 import com.polifono.domain.Level;
@@ -356,33 +355,9 @@ public class GameController extends BaseController {
 		
 		if (questionsId == null || questionsId.size() == 0) return REDIRECT_HOME;
 		
-		Phase currentPhase = null;
-		Question questionAux = null;
-		int countQuestionsRight = 0, phaseOrder = 0;
-		String playerAnswer = null;
+		int grade = gameService.calculateGrade(questionsId, playerAnswers);
 		
-		// TODO - Verificar melhor esse código e colocar comentários sobre sua utilização.
-		for (Integer questionId : questionsId) {
-			questionAux = questionService.findOne(questionId);
-			
-			if (questionAux.getContent().getPhase().getOrder() > phaseOrder) {
-				phaseOrder = questionAux.getContent().getPhase().getOrder();
-				currentPhase = questionAux.getContent().getPhase();
-			}
-			
-			playerAnswer = playerAnswers.get(questionId.toString());
-			
-			if (playerAnswer != null) {
-				for (Answer answer : questionAux.getAnswers()) {
-					if ((answer.getId() == Integer.parseInt(playerAnswer)) && answer.isRight()) {
-						countQuestionsRight++;
-						continue;
-					}
-				}
-			}
-		}
-		
-		int grade = (countQuestionsRight * 100) / questionsId.size();
+		Phase currentPhase = gameService.getPhaseOfTheTest(questionsId);
 		
 		model.addAttribute("grade", grade);
 		
