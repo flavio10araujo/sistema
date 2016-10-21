@@ -217,10 +217,13 @@ public class GameControllerTest extends AbstractControllerTest {
     	
     	Map map = new Map();
     	map.setId(MAP_ID_EXISTENT);
+    	
     	p1.setMap(map);
     	p1.setId(1);
+    	p1.setOpened(true);
     	
     	p2.setId(2);
+    	p2.setOpened(true);
     	
     	phases.add(p1);
     	phases.add(p2);
@@ -322,7 +325,7 @@ public class GameControllerTest extends AbstractControllerTest {
     	return questionsId;
     }
     
-    private java.util.Map<String, String> getPlayerAnswersStubData() {
+    /*private java.util.Map<String, String> getPlayerAnswersStubData() {
     	java.util.Map<String, String> playerAnswers = new HashMap<String, String>();
     	playerAnswers.put("101", "201");
     	playerAnswers.put("102", "202");
@@ -330,15 +333,22 @@ public class GameControllerTest extends AbstractControllerTest {
     	playerAnswers.put("104", "204");
     	playerAnswers.put("105", "205");
     	return playerAnswers;
-    }
+    }*/
     
     private Phase getPhaseOfTheTestStubData() {
+    	Game game = new Game();
+    	game.setId(GAME_ID_EXISTENT);
+    	Map map = new Map();
+    	map.setGame(game);
+    	
     	Phase phaseOfTheTest = new Phase();
     	phaseOfTheTest.setId(40);
+    	phaseOfTheTest.setMap(map);
+    	
         return phaseOfTheTest;
     }
-	
-	/* listGames - begin */
+    
+    /* listGames - begin */
 	@Test
 	public void listGames() throws Exception {
 		// Create some test data.
@@ -1605,38 +1615,190 @@ public class GameControllerTest extends AbstractControllerTest {
 		String uri = "/games/result";
 		
 		List<Integer> questionsId = getQuestionsIdStubData();
-		java.util.Map<String, String> playerAnswers = getPlayerAnswersStubData();
+		java.util.Map<String, String> playerAnswers = new HashMap<String, String>(); //getPlayerAnswersStubData();
 		
 		when(gameService.calculateGrade(questionsId, playerAnswers)).thenReturn(50);
 		
-		when(gameService.getPhaseOfTheTest(questionsId)).thenReturn(getPhaseOfTheTestStubData());
+		Phase currentPhase = getPhaseOfTheTestStubData();
+		when(gameService.getPhaseOfTheTest(questionsId)).thenReturn(currentPhase);
 		
 		mvc.perform(
 			MockMvcRequestBuilders.post(uri)
 			.sessionAttr("questionsId", questionsId)
-			//.param("playerAnswers", playerAnswers)
+			//.param("playerAnswers", mapToJson(playerAnswers))
 		)
-    	.andExpect(status().is3xxRedirection())
-    	.andExpect(view().name("redirect:/"));
+    	.andExpect(status().isOk())
+    	.andExpect(view().name("games/resultTest"))
+    	.andExpect(model().attribute("grade", 50))
+    	.andExpect(model().attribute("phase", currentPhase));
 	}
 	
 	@Test
-	public void showResultTest_WhenGradeIsEnoughAndThePlayerHasJustFinishedTheLastPhaseOfTheLastMapOfTheLevel_OpenEndoflevelPage() {
+	public void showResultTest_WhenGradeIsEnoughAndThePlayerHasJustFinishedTheLastPhaseOfTheLastMapOfTheLevel_OpenEndoflevelPage() throws Exception {
+		String uri = "/games/result";
 		
+		List<Integer> questionsId = getQuestionsIdStubData();
+		java.util.Map<String, String> playerAnswers = new HashMap<String, String>(); //getPlayerAnswersStubData();
+		
+		int grade = 80;
+		when(gameService.calculateGrade(questionsId, playerAnswers)).thenReturn(grade);
+		
+		Phase currentPhase = getPhaseOfTheTestStubData();
+		when(gameService.getPhaseOfTheTest(questionsId)).thenReturn(currentPhase);
+		
+		// Emulating a logged in user.
+		SecurityContext securityContextMock = mock(SecurityContext.class);
+		Authentication authenticationMock = mock(Authentication.class);
+		PowerMockito.mockStatic(SecurityContextHolder.class);
+		
+		when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
+		when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+		CurrentUser currentUser = getCurrentUserStubData();
+        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+        Player player = currentUser.getUser();
+        player.setScore(100);
+		
+        PlayerPhase playerPhase = new PlayerPhase();
+        playerPhase.setNumAttempts(2);
+        when(playerPhaseService.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, currentPhase.getId(), 2)).thenReturn(playerPhase);
+        
+        when(gameService.calculateScore(playerPhase.getNumAttempts(), grade)).thenReturn(65);
+        
+        when(playerService.findOne(PLAYER_ID_EXISTENT)).thenReturn(player);
+        
+        when(playerService.removeOneCreditFromPlayer(player, currentPhase.getMap().getGame())).thenReturn(player);
+        
+        when(playerPhaseService.save(playerPhase)).thenReturn(playerPhase);
+        
+        Map map = new Map();
+        map.setLevelCompleted(true);
+        when(mapService.findCurrentMap(currentPhase.getMap().getGame(), playerPhase)).thenReturn(map);
+        
+        ResourceBundle applicationResourceBundle = ResourceBundle.getBundle("application", Locale.getDefault());
+        when(playerService.addCreditsToPlayer(PLAYER_ID_EXISTENT, Integer.parseInt(applicationResourceBundle.getString("credits.levelCompleted")))).thenReturn(player);
+
+		mvc.perform(
+			MockMvcRequestBuilders.post(uri)
+			.sessionAttr("questionsId", questionsId)
+			//.param("playerAnswers", mapToJson(playerAnswers))
+		)
+    	.andExpect(status().isOk())
+    	.andExpect(view().name("games/endoflevel"))
+    	.andExpect(model().attribute("grade", grade));
 	}
 	
 	@Test
-	public void showResultTest_WhenGradeIsEnoughAndThePlayerHasJustFinishedTheLastPhaseOfTheLastMapOfTheLastLevelOfTheGame_OpenEndofgamePage() {
+	public void showResultTest_WhenGradeIsEnoughAndThePlayerHasJustFinishedTheLastPhaseOfTheLastMapOfTheLastLevelOfTheGame_OpenEndofgamePage() throws Exception {
+		String uri = "/games/result";
 		
+		List<Integer> questionsId = getQuestionsIdStubData();
+		java.util.Map<String, String> playerAnswers = new HashMap<String, String>(); //getPlayerAnswersStubData();
+		
+		int grade = 80;
+		when(gameService.calculateGrade(questionsId, playerAnswers)).thenReturn(grade);
+		
+		Phase currentPhase = getPhaseOfTheTestStubData();
+		when(gameService.getPhaseOfTheTest(questionsId)).thenReturn(currentPhase);
+		
+		// Emulating a logged in user.
+		SecurityContext securityContextMock = mock(SecurityContext.class);
+		Authentication authenticationMock = mock(Authentication.class);
+		PowerMockito.mockStatic(SecurityContextHolder.class);
+		
+		when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
+		when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+		CurrentUser currentUser = getCurrentUserStubData();
+        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+        Player player = currentUser.getUser();
+        player.setScore(100);
+		
+        PlayerPhase playerPhase = new PlayerPhase();
+        playerPhase.setNumAttempts(2);
+        when(playerPhaseService.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, currentPhase.getId(), 2)).thenReturn(playerPhase);
+        
+        when(gameService.calculateScore(playerPhase.getNumAttempts(), grade)).thenReturn(65);
+        
+        when(playerService.findOne(PLAYER_ID_EXISTENT)).thenReturn(player);
+        
+        when(playerService.removeOneCreditFromPlayer(player, currentPhase.getMap().getGame())).thenReturn(player);
+        
+        when(playerPhaseService.save(playerPhase)).thenReturn(playerPhase);
+        
+        Map map = new Map();
+        map.setLevelCompleted(false);
+        map.setGameCompleted(true);
+        when(mapService.findCurrentMap(currentPhase.getMap().getGame(), playerPhase)).thenReturn(map);
+        
+        ResourceBundle applicationResourceBundle = ResourceBundle.getBundle("application", Locale.getDefault());
+        when(playerService.addCreditsToPlayer(PLAYER_ID_EXISTENT, Integer.parseInt(applicationResourceBundle.getString("credits.gameCompleted")))).thenReturn(player);
+
+		mvc.perform(
+			MockMvcRequestBuilders.post(uri)
+			.sessionAttr("questionsId", questionsId)
+			//.param("playerAnswers", mapToJson(playerAnswers))
+		)
+    	.andExpect(status().isOk())
+    	.andExpect(view().name("games/endofgame"))
+    	.andExpect(model().attribute("grade", grade));
 	}
 	
 	@Test
-	public void showResultTest_WhenGradeIsEnough_OpenResultTestPage() {
+	public void showResultTest_WhenGradeIsEnough_OpenResultTestPage() throws Exception {
+		String uri = "/games/result";
 		
+		List<Integer> questionsId = getQuestionsIdStubData();
+		java.util.Map<String, String> playerAnswers = new HashMap<String, String>(); //getPlayerAnswersStubData();
+		
+		int grade = 80;
+		when(gameService.calculateGrade(questionsId, playerAnswers)).thenReturn(grade);
+		
+		Phase currentPhase = getPhaseOfTheTestStubData();
+		when(gameService.getPhaseOfTheTest(questionsId)).thenReturn(currentPhase);
+		
+		// Emulating a logged in user.
+		SecurityContext securityContextMock = mock(SecurityContext.class);
+		Authentication authenticationMock = mock(Authentication.class);
+		PowerMockito.mockStatic(SecurityContextHolder.class);
+		
+		when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
+		when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+		CurrentUser currentUser = getCurrentUserStubData();
+        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+        Player player = currentUser.getUser();
+        player.setScore(100);
+		
+        PlayerPhase playerPhase = new PlayerPhase();
+        playerPhase.setNumAttempts(2);
+        when(playerPhaseService.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, currentPhase.getId(), 2)).thenReturn(playerPhase);
+        
+        when(gameService.calculateScore(playerPhase.getNumAttempts(), grade)).thenReturn(65);
+        
+        when(playerService.findOne(PLAYER_ID_EXISTENT)).thenReturn(player);
+        
+        when(playerService.removeOneCreditFromPlayer(player, currentPhase.getMap().getGame())).thenReturn(player);
+        
+        when(playerPhaseService.save(playerPhase)).thenReturn(playerPhase);
+        
+        Map map = new Map();
+        map.setLevelCompleted(false);
+        map.setGameCompleted(false);
+        when(mapService.findCurrentMap(currentPhase.getMap().getGame(), playerPhase)).thenReturn(map);
+        
+        when(phaseService.findPhasesCheckedByMap(map, playerPhase)).thenReturn(getPhasesCheckedByMapStubData());
+
+		mvc.perform(
+			MockMvcRequestBuilders.post(uri)
+			.sessionAttr("questionsId", questionsId)
+			//.param("playerAnswers", mapToJson(playerAnswers))
+		)
+    	.andExpect(status().isOk())
+    	.andExpect(view().name("games/resultTest"))
+    	.andExpect(model().attribute("grade", grade))
+    	.andExpect(model().attribute("phase", hasProperty("id", is(2))));
 	}
 	/* showResultTest - end */
 	
-	//calculateGrade
+	//calculatePlayerScoreAfterPassTheTest
 	
-	//getPhaseOfTheTest
+	//setNextPhase
 }

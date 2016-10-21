@@ -346,9 +346,10 @@ public class GameController extends BaseController {
 
 	@RequestMapping(value = {"/games/result"}, method = RequestMethod.POST)
 	public final String showResultTest(
-			HttpSession session, 
-			final Model model, 
-			@RequestParam java.util.Map<String, String> playerAnswers) {
+			HttpSession session,
+			final Model model,
+			@RequestParam java.util.Map<String, String> playerAnswers // playerAnswers is all the parameters passed, not only the player's answers.
+			) {
 		
 		@SuppressWarnings("unchecked")
 		List<Integer> questionsId = (List<Integer>) session.getAttribute("questionsId");
@@ -372,7 +373,7 @@ public class GameController extends BaseController {
 			playerPhase.setScore(gameService.calculateScore(playerPhase.getNumAttempts(), grade));
 			
 			Player player = playerService.findOne(this.currentAuthenticatedUser().getUser().getId());
-			player.setScore(player.getScore() + playerPhase.getScore());
+			player.setScore(this.calculatePlayerScoreAfterPassTheTest(player.getScore(), playerPhase.getScore()));
 			
 			player = playerService.removeOneCreditFromPlayer(player, currentPhase.getMap().getGame());
 			
@@ -403,18 +404,7 @@ public class GameController extends BaseController {
 			// Looking for the phases of the map.
 			List<Phase> phases = phaseService.findPhasesCheckedByMap(map, playerPhase);
 			
-			Phase nextPhase = null;
-			
-			label: {
-				for (Phase p : phases) {
-					if (p.isOpened()) {
-						nextPhase = p;
-					}
-					else {
-						break label;
-					}
-				}
-			}
+			Phase nextPhase = setNextPhase(phases);
 			
 			model.addAttribute("phase", nextPhase);
 		}
@@ -423,5 +413,34 @@ public class GameController extends BaseController {
 		}
 		
 		return URL_GAMES_RESULTTEST;
+	}
+	
+	public final int calculatePlayerScoreAfterPassTheTest(int playerScore, int testScore) {
+		return playerScore + testScore;
+	}
+	
+	/**
+	 * Return the nextPhase that the player has to do.
+	 * phases is a list of phases of a map with the flag opened equals true if the phase was already done by the player.
+	 * Besides from the phases already done, the next phase is also with the opened flag with the value true. 
+	 * 
+	 * @param phases
+	 * @return
+	 */
+	public final Phase setNextPhase(List<Phase> phases) {
+		Phase nextPhase = null;
+		
+		label: {
+			for (Phase p : phases) {
+				if (p.isOpened()) {
+					nextPhase = p;
+				}
+				else {
+					break label;
+				}
+			}
+		}
+		
+		return nextPhase;
 	}
 }

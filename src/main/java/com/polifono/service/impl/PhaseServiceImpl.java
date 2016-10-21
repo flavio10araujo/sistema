@@ -67,6 +67,7 @@ public class PhaseServiceImpl implements IPhaseService {
 	/**
 	 * Get the phases of the map.
 	 * Check which phases are opened.
+	 * The phases opened are: all the phase that the player has already done + next phase.
 	 * 
 	 * @param map
 	 * @return

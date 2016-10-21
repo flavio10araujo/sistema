@@ -160,58 +160,50 @@ public class MapServiceImpl implements IMapService {
 
 	/**
 	 * Get the current map based on the last phase completed by the player in a specific game.
+	 * If the map is the last map of the level, it returns with the flag levelCompleted true.
+	 * If the map is the last map of the last level, it returns with the flag gameCompleted true.
 	 * 
 	 * @param lastPhaseCompleted
 	 * @return
 	 */
 	public final Map findCurrentMap(Game game, PlayerPhase lastPhaseCompleted) {
 		
-		System.out.println("entrou no findCurrentMap");
-		
 		// If the player has never completed any phase of this game. 
 		if (lastPhaseCompleted == null) {
 			// Find the first map of the first level of this game.
-			System.out.println("IF 1");
 			return this.findByGameAndLevel(game.getId(), 1);
 		}
 		// If the player has already completed at least one phase of this game.
 		else {
-			System.out.println("ELSE 1");
 			// Verifying is the next phase is in the same map than lastPhaseCompleted.
 			Phase nextPhase = phaseService.findNextPhaseInThisMap(lastPhaseCompleted.getPhase().getMap().getId(), lastPhaseCompleted.getPhase().getOrder() + 1);
 
 			// If the next phase is in the same map that the last phase completed by the player in this game.
 			if (nextPhase != null) {
-				System.out.println("IF 2");
 				return lastPhaseCompleted.getPhase().getMap();
 			}
 			// If the next phase is in the next map or in the next level.
 			else {
-				System.out.println("ELSE 2");
 				// Checking if the next map is in the same level.
 				Map nextMapSameLevel = this.findNextMapSameLevel(lastPhaseCompleted.getPhase().getMap());
 
 				// If the next map is in the same level.
 				if (nextMapSameLevel != null) {
-					System.out.println("IF 3");
 					return nextMapSameLevel;
 				}
 				// If the next map is not in the same level. 
 				else {
-					System.out.println("ELSE 3");
 					// Find the first map of the next level.
 					Map firstMapNextLevel = this.findByGameAndLevel(game.getId(), lastPhaseCompleted.getPhase().getMap().getLevel().getId() + 1);
 
 					// If it has found the first map of the next level.
 					if (firstMapNextLevel != null) {
-						System.out.println("IF 4");
 						Map map = firstMapNextLevel;
 						map.setLevelCompleted(true);
 						return map;
 					}
 					// It doesn't exist a next map, because the player has already finished the last phase of the last level. 
 					else {
-						System.out.println("ELSE 4");
 						// Draw the last map of the last level.
 						Map map = lastPhaseCompleted.getPhase().getMap();
 						map.setGameCompleted(true);
