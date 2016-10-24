@@ -36,21 +36,16 @@ public class GameServiceTest extends AbstractTest {
 
     /* findAll - begin */
     @Test
-    public void findAll_ListIsNull_ExceptionThrown() {
+    public void findAll_WhenListAllGames_ReturnList() {
     	List<Game> list = service.findAll();
     	Assert.assertNotNull("failure - expected not null", list);
-    }
-    
-    @Test
-    public void findAll_ListHasSizeZero_ExceptionThrown() {
-    	List<Game> list = service.findAll();
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
     }
     /* findAll - end */
 
     /* findByNamelink - begin */
     @Test
-    public void findByNamelink_ReturnIsNull_ExceptionThrown() {
+    public void findByNamelink_WhenSearchByNamelinkExistent_ReturnGame() {
     	Game item = service.findByNamelink(NAME_LINK);
     	Assert.assertNotNull("failure - expected not null for '" + NAME_LINK + "'", item);
     }
@@ -82,7 +77,7 @@ public class GameServiceTest extends AbstractTest {
     }
     
     @Test
-    public void calculateScore_WhenMoreAttempts_ReturnScoreAlways10() {
+    public void calculateScore_WhenMoreThanThreeAttempts_ReturnScoreAlways10() {
     	Assert.assertEquals(10, service.calculateScore(4, 100));
     	Assert.assertEquals(10, service.calculateScore(4, 90));
     	Assert.assertEquals(10, service.calculateScore(4, 80));

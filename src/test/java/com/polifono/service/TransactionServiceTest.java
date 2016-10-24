@@ -44,7 +44,7 @@ public class TransactionServiceTest extends AbstractTest {
     
     /* save - begin */
     @Test
-    public void save() {
+    public void save_WhenSaveTransaction_ReturnTransactionSaved() {
     	Player player = new Player();
     	player.setId(PLAYER_ID_EXISTENT);
     	
@@ -107,20 +107,14 @@ public class TransactionServiceTest extends AbstractTest {
     
     /* findOne - begin */
     @Test
-    public void findOne_TransactionExistentButReturnNull_ExceptionThrown() {
+    public void findOne_WhenTransactionIsExistent_ReturnTransaction() {
     	Transaction entity = service.findOne(TRANSACTION_ID_EXISTENT);
         Assert.assertNotNull("failure - expected not null", entity);
+        Assert.assertEquals("failure - expected id attribute match", TRANSACTION_ID_EXISTENT.intValue(), entity.getId());
     }
 
     @Test
-    public void findOne_TransactionExistentWithWrongId_ExceptionThrown() {
-        Integer id = new Integer(TRANSACTION_ID_EXISTENT);
-        Transaction entity = service.findOne(id);
-        Assert.assertEquals("failure - expected id attribute match", id.intValue(), entity.getId());
-    }
-
-    @Test
-    public void findOne_TransactionInexistent_ReturnNull() {
+    public void findOne_WhenTransactionIsInexistent_ReturnNull() {
     	Transaction entity = service.findOne(TRANSACTION_ID_INEXISTENT);
         Assert.assertNull("failure - expected null", entity);
     }
@@ -128,14 +122,14 @@ public class TransactionServiceTest extends AbstractTest {
     
     /* findTransactionsByCode - begin */
     @Test
-    public void findTransactionsByCode_SearchCodeExistent_ReturnList() {
+    public void findTransactionsByCode_WhenSearchByCodeExistent_ReturnList() {
     	List<Transaction> list = service.findTransactionsByCode(CODE_EXISTENT);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
-    public void findTransactionsByCode_SearchCodeInexistent_ReturnListEmpty() {
+    public void findTransactionsByCode_WhenSearchByCodeInexistent_ReturnEmptyList() {
     	List<Transaction> list = service.findTransactionsByCode(CODE_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }

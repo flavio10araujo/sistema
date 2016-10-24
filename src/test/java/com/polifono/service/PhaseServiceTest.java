@@ -22,8 +22,6 @@ import com.polifono.domain.PlayerPhase;
 import com.polifono.repository.IPhaseRepository;
 import com.polifono.service.impl.PhaseServiceImpl;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
-
 /**
  * Unit test methods for the PhaseService.
  * 
@@ -67,25 +65,7 @@ public class PhaseServiceTest extends AbstractTest {
     
     /* save - begin */
     @Test
-    public void save_createPhase() {
-    	Map map = new Map();
-    	map.setId(MAP_ID_EXISTENT);
-    	
-    	Phase phase = new Phase();
-    	phase.setName("Phase Test");
-    	phase.setOrder(1);
-    	phase.setMap(map);
-    	phase.setId(123);
-    	
-    	when(repository.save(phase)).thenReturn(phase);
-    	
-    	Phase entity = service.save(phase);
-    	Assert.assertNotNull("failure - expected not null", entity);
-    	Assert.assertNotEquals("failure - expected id attribute bigger not 0", 0, entity.getId());
-    }
-
-    @Test
-    public void save_updatePhase() {
+    public void save_WhenSavePhase_ReturnPhaseSaved() {
     	Integer id = new Integer(PHASE_ID_EXISTENT);
     	
     	Phase phaseSaved = new Phase();
@@ -129,7 +109,7 @@ public class PhaseServiceTest extends AbstractTest {
     
     /* delete - begin */
     @Test
-    public void delete_PhaseExistent_ReturnTrue() {
+    public void delete_WhenPhaseIsExistent_ReturnTrue() {
     	Phase temp = new Phase();
     	
     	when(repository.findOne(PHASE_ID_EXISTENT)).thenReturn(temp);
@@ -143,7 +123,7 @@ public class PhaseServiceTest extends AbstractTest {
     }
     
     @Test
-    public void delete_PhaseInexistent_ReturnFalse() {
+    public void delete_WhenPhaseIsInexistent_ReturnFalse() {
     	when(repository.findOne(PHASE_ID_INEXISTENT)).thenReturn(null);
     	Assert.assertFalse("failure - expected return false", service.delete(PHASE_ID_INEXISTENT));
     }
@@ -151,18 +131,7 @@ public class PhaseServiceTest extends AbstractTest {
     
     /* findOne - begin */
     @Test
-    public void findOne_PhaseExistentButReturnNull_ExceptionThrown() {
-        Integer id = new Integer(PHASE_ID_EXISTENT);
-        
-        Phase phase = new Phase();
-        when(repository.findOne(id)).thenReturn(phase);
-        
-        Phase entity = service.findOne(id);
-        Assert.assertNotNull("failure - expected not null", entity);
-    }
-    
-    @Test
-    public void findOne_PhaseExistentWithWrongId_ExceptionThrown() {
+    public void findOne_WhenPhaseIsExistent_ReturnPhase() {
         Integer id = new Integer(PHASE_ID_EXISTENT);
         
         Phase phase = new Phase();
@@ -170,11 +139,12 @@ public class PhaseServiceTest extends AbstractTest {
         when(repository.findOne(id)).thenReturn(phase);
         
         Phase entity = service.findOne(id);
+        Assert.assertNotNull("failure - expected not null", entity);
         Assert.assertEquals("failure - expected id attribute match", id.intValue(), entity.getId());
     }
-
+    
     @Test
-    public void findOne_PhaseInexistent_ReturnNull() {
+    public void findOne_WhenPhaseIsInexistent_ReturnNull() {
         Integer id = PHASE_ID_INEXISTENT;
         
         when(repository.findOne(id)).thenReturn(null);
@@ -186,29 +156,20 @@ public class PhaseServiceTest extends AbstractTest {
     
     /* findAll - begin */
     @Test
-    public void findAll_ListIsNull_ExceptionThrown() {
+    public void findAll_WhenListAllPhases_ReturnList() {
     	List<Phase> listReturned = new ArrayList<Phase>();
     	listReturned.add(new Phase());
     	when(repository.findAll()).thenReturn(listReturned);
     	
     	List<Phase> list = service.findAll();
     	Assert.assertNotNull("failure - expected not null", list);
-    }
-
-    @Test
-    public void findAll_ListHasSizeZero_ExceptionThrown() {
-    	List<Phase> listReturned = new ArrayList<Phase>();
-    	listReturned.add(new Phase());
-    	when(repository.findAll()).thenReturn(listReturned);
-    	
-    	List<Phase> list = service.findAll();
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
     }
     /* findAll - end */
     
     /* findPhasesByGame - begin */
     @Test
-    public void findPhasesByGame_SearchGameExistent_ReturnList() {
+    public void findPhasesByGame_WhenSearchByGameExistent_ReturnList() {
     	int gameId = GAME_ID_EXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
     	listReturned.add(new Phase());
@@ -220,7 +181,7 @@ public class PhaseServiceTest extends AbstractTest {
     }
 
     @Test
-    public void findPhasesByGame_SearchGameInexistent_ReturnListEmpty() {
+    public void findPhasesByGame_WhenSearchByGameInexistent_ReturnEmptyList() {
     	int gameId = GAME_ID_INEXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
     	when(repository.findPhasesByGame(gameId)).thenReturn(listReturned);
@@ -232,7 +193,7 @@ public class PhaseServiceTest extends AbstractTest {
     
     /* findPhasesByGameAndLevel - begin */
     @Test
-    public void findPhasesByGameAndLevel_SearchGameAndLevelExistents_ReturnList() {
+    public void findPhasesByGameAndLevel_WhenSearchByGameAndLevelExistents_ReturnList() {
     	int gameId = GAME_ID_EXISTENT, levelId = LEVEL_ID_EXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
     	listReturned.add(new Phase());
@@ -244,7 +205,7 @@ public class PhaseServiceTest extends AbstractTest {
     }
 
     @Test
-    public void findPhasesByGameAndLevel_SearchGameAndLevelInexistents_ReturnListEmpty() {
+    public void findPhasesByGameAndLevel_WhenSearchByGameAndLevelInexistents_ReturnEmptyList() {
     	int gameId = GAME_ID_INEXISTENT, levelId = LEVEL_ID_INEXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
     	when(repository.findPhasesByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
@@ -254,7 +215,7 @@ public class PhaseServiceTest extends AbstractTest {
     }
     
     @Test
-    public void findPhasesByGameAndLevel_SearchGameExistentButLevelInexistent_ReturnListEmpty() {
+    public void findPhasesByGameAndLevel_WhenSearchByGameExistentButLevelInexistent_ReturnEmptyList() {
     	int gameId = GAME_ID_EXISTENT, levelId = LEVEL_ID_INEXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
     	when(repository.findPhasesByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
@@ -264,7 +225,7 @@ public class PhaseServiceTest extends AbstractTest {
     }
     
     @Test
-    public void findPhasesByGameAndLevel_SearchLevelExistentButGaemInexistent_ReturnListEmpty() {
+    public void findPhasesByGameAndLevel_WhenSearchByLevelExistentButGameInexistent_ReturnEmptyList() {
     	int gameId = GAME_ID_INEXISTENT, levelId = LEVEL_ID_EXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
     	when(repository.findPhasesByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
@@ -276,7 +237,7 @@ public class PhaseServiceTest extends AbstractTest {
     
     /* findPhasesByMap - begin */
     @Test
-    public void findPhasesByMap_SearchMapExistent_ReturnList() {
+    public void findPhasesByMap_WhenSearchByMapExistent_ReturnList() {
     	int mapId = MAP_ID_EXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
     	listReturned.add(new Phase());
@@ -288,7 +249,7 @@ public class PhaseServiceTest extends AbstractTest {
     }
 
     @Test
-    public void findPhasesByMap_SearchMapInexistent_ReturnListEmpty() {
+    public void findPhasesByMap_WhenSearchByMapInexistent_ReturnEmptyList() {
     	int mapId = MAP_ID_INEXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
     	when(repository.findPhasesByMap(mapId)).thenReturn(listReturned);
@@ -367,7 +328,7 @@ public class PhaseServiceTest extends AbstractTest {
     
     /* findByMapAndOrder - begin */
     @Test
-    public void findByMapAndOrder_SearchMapAndOrderExistents_ReturnList() {
+    public void findByMapAndOrder_WhenSearchByMapAndOrderExistents_ReturnList() {
     	int mapId = MAP_ID_EXISTENT, phaseOrder = ORDER_EXISTENT;
     	Phase entityReturned = new Phase();
     	when(repository.findPhaseByMapAndOrder(mapId, phaseOrder)).thenReturn(entityReturned);
@@ -377,7 +338,7 @@ public class PhaseServiceTest extends AbstractTest {
     }
 
     @Test
-    public void findByMapAndOrder_SearchMapAndOrderInexistents_ReturnListEmpty() {
+    public void findByMapAndOrder_WhenSearchByMapAndOrderInexistents_ReturnEmptyList() {
     	int mapId = MAP_ID_INEXISTENT, phaseOrder = ORDER_INEXISTENT;
     	when(repository.findPhaseByMapAndOrder(mapId, phaseOrder)).thenReturn(null);
     	
@@ -388,7 +349,7 @@ public class PhaseServiceTest extends AbstractTest {
     
     /* findNextPhaseInThisMap - begin */
     @Test
-    public void findNextPhaseInThisMap_WhensNextPhaseExist_ReturnItem() {
+    public void findNextPhaseInThisMap_WhenNextPhaseInThisMapIsExistent_ReturnNextPhase() {
     	int mapId = MAP_ID_EXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
     	Phase item = new Phase();
@@ -415,7 +376,7 @@ public class PhaseServiceTest extends AbstractTest {
     }
     
     @Test
-    public void findNextPhaseInThisMap_WhensNextPhaseInexist_ReturnNull() {
+    public void findNextPhaseInThisMap_WhenNextPhaseInThisMapIsInexistent_ReturnNull() {
     	int mapId = MAP_ID_EXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
     	Phase item = new Phase();
@@ -441,7 +402,7 @@ public class PhaseServiceTest extends AbstractTest {
     
     /* findLastPhaseDoneByPlayerAndGame - begin */
     @Test
-    public void findLastPhaseDoneByPlayerAndGame_WhenPlayerAlreadyFinishedAtLeastOnePhase_ReturnItem() {
+    public void findLastPhaseDoneByPlayerAndGame_WhenPlayerHasAlreadyFinishedAtLeastOnePhase_ReturnLastPhaseDone() {
     	int playerId = PLAYER_ID_EXISTENT, gameId = GAME_ID_EXISTENT;
     	
     	List<Phase> listReturned = new ArrayList<Phase>();
@@ -458,7 +419,7 @@ public class PhaseServiceTest extends AbstractTest {
     
     /* findLastPhaseOfTheLevel - begin */
     @Test
-    public void findLastPhaseOfTheLevel() {
+    public void findLastPhaseOfTheLevel_WhenEveryThingIsOK_ReturnLastPhaseOfTheLevel() {
     	int gameId = GAME_ID_EXISTENT, levelId = LEVEL_ID_EXISTENT;
     	Phase itemReturned = new Phase();
     	itemReturned.setId(123);
@@ -474,6 +435,7 @@ public class PhaseServiceTest extends AbstractTest {
     	Assert.assertNotNull("failure - expected not null", entity);
     	Assert.assertNotEquals("failure - expected id attribute bigger than 0", 0, entity.getId());
     	
+    	// The only way to be sure that entity is the last phase of the level is if when we use findNextPhaseInThisMap the return is null. 
     	int mapId = entity.getMap().getId(), phaseOrder = (entity.getOrder() + 1);
     	when(repository.findNextPhaseInThisMap(mapId, phaseOrder)).thenReturn(null);
     	
@@ -484,7 +446,7 @@ public class PhaseServiceTest extends AbstractTest {
     
     /* findGamesForProfile - begin */
     @Test
-    public void findGamesForProfile() {
+    public void findGamesForProfile_WhenPlayerIsExistent_ReturnList() {
     	int playerId = PLAYER_ID_EXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
     	Phase item = new Phase();
@@ -503,7 +465,7 @@ public class PhaseServiceTest extends AbstractTest {
     
     /* playerCanAccessThisPhase - begin */
     @Test
-    public void playerCanAccessThisPhase_WhenAccessingFirstPhase_returnTrue() {
+    public void playerCanAccessThisPhase_WhenAccessingFirstPhase_ReturnTrue() {
     	Phase phase = new Phase();
     	phase.setOrder(1);
     	
@@ -513,7 +475,7 @@ public class PhaseServiceTest extends AbstractTest {
     }
     
     @Test
-    public void playerCanAccessThisPhase_WhenThePlayerIsTryingToAccessAPhaseButHeNeverHadFinishedAPhaseOfThisGame_returnFalse() {
+    public void playerCanAccessThisPhase_WhenThePlayerIsTryingToAccessAPhaseButHeHadNeverFinishedAPhaseOfThisGame_ReturnFalse() {
     	int playerId = 1, gameId = 1;
     	
     	Phase phase = new Phase();
@@ -533,7 +495,7 @@ public class PhaseServiceTest extends AbstractTest {
     }
     
     @Test
-    public void playerCanAccessThisPhase_WhenThePlayerIsTryingToAccessAPhaseThatHeHadAlreadyDone_returnTrue() {
+    public void playerCanAccessThisPhase_WhenThePlayerIsTryingToAccessAPhaseThatHeHadAlreadyDone_ReturnTrue() {
     	int playerId = 1, gameId = 1;
     	
     	Phase phase = new Phase();
@@ -558,7 +520,7 @@ public class PhaseServiceTest extends AbstractTest {
     }
     
     @Test
-    public void playerCanAccessThisPhase_WhenThePlayerIsTryingToAccessTheNextPhaseInTheRightSequence_returnTrue() {
+    public void playerCanAccessThisPhase_WhenThePlayerIsTryingToAccessTheNextPhaseInTheRightSequence_ReturnTrue() {
     	int playerId = 1, gameId = 1;
     	
     	Phase phase = new Phase();
@@ -583,7 +545,7 @@ public class PhaseServiceTest extends AbstractTest {
     }
     
     @Test
-    public void playerCanAccessThisPhase_WhenThePlayerIsTryingToAccessAFuturePhaseButItIsNotTheNextPhase_returnFalse() {
+    public void playerCanAccessThisPhase_WhenThePlayerIsTryingToAccessAFuturePhaseButItIsNotTheNextPhase_ReturnFalse() {
     	int playerId = 1, gameId = 1;
     	
     	Phase phase = new Phase();

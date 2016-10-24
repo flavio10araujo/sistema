@@ -34,33 +34,29 @@ public class LevelServiceTest extends AbstractTest {
         // Clean up after each test method.
     }
     
+    /* findAll - begin */
     @Test
-    public void findAll_ListIsNull_ExceptionThrown() {
-    	Assert.assertNotNull("failure - expected not null", service.findAll());
-    }
-    
-    @Test
-    public void findAll_ListHasSizeZero_ExceptionThrown() {
+    public void findAll_WhenListAllLevels_ReturnList() {
     	List<Level> list = service.findAll();
+    	Assert.assertNotNull("failure - expected not null", list);
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
     }
-
-    @Test
-    public void findByGame_ListIsNullForValidGame_ExceptionThrown() {
-    	Assert.assertNotNull("failure - not expected list size 0", service.findByGame(GAME_ID_EXISTENT));
-    }
+    /* findAll - end */
     
+    /* findByGame - begin */
     @Test
-    public void findByGame_ListHasSizeZeroForValidGame_ExceptionThrown() {
+    public void findByGame_WhenSearchByGameExistent_ReturnLevel() {
     	List<Level> list = service.findByGame(GAME_ID_EXISTENT);
+    	Assert.assertNotNull("failure - expected not null", list);
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
     }
     
     @Test
-    public void findByGame_ListHasValuesForInvalidGame_ExceptionThrown() {
+    public void findByGame_WhenSearchByGameInexistent_ReturnEmptyList() {
     	List<Level> list = service.findByGame(0);
     	Assert.assertEquals("failure - expected list size 0", 0, list.size());
     	list = service.findByGame(-1);
     	Assert.assertEquals("failure - expected list size 0", 0, list.size());
     }
+    /* findByGame - end */
 }

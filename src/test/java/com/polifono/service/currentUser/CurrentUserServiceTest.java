@@ -36,13 +36,13 @@ public class CurrentUserServiceTest extends AbstractTest {
     
     /* canAccessUser - begin */
     @Test
-    public void canAccessUser_WhenCurrentUserIsNull_returnFalse() {
+    public void canAccessUser_WhenCurrentUserIsNull_ReturnFalse() {
     	CurrentUser currentUser = null;
     	Assert.assertFalse(service.canAccessUser(currentUser, PLAYER_ID_EXISTENT.longValue()));
     }
     
     @Test
-    public void canAccessUser_WhenRoleIsAdmin_returnTrue() {
+    public void canAccessUser_WhenRoleIsAdmin_ReturnTrue() {
     	Player player = new Player();
     	player.setRole(Role.ADMIN);
     	CurrentUser currentUser = new CurrentUser(player);
@@ -50,7 +50,7 @@ public class CurrentUserServiceTest extends AbstractTest {
     }
     
     @Test
-    public void canAccessUser_WhenCurrentUserIdIsEqualsUserId_returnTrue() {
+    public void canAccessUser_WhenCurrentUserIdIsEqualsUserId_ReturnTrue() {
     	Player player = new Player();
     	player.setRole(Role.ADMIN);
     	CurrentUser currentUser = new CurrentUser(player);

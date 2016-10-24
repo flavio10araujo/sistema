@@ -54,7 +54,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
     
     /* create - begin */
     @Test
-    public void create_ClassPlayerCreationWrong_ExceptionThrown() {
+    public void create_WhenCreateClassPlayer_ReturnClassPlayerCreated() {
     	
     	com.polifono.domain.Class clazz = new com.polifono.domain.Class();
     	clazz.setId(CLASS_ID_EXISTENT);
@@ -84,7 +84,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
     
     /* save - begin */
     @Test
-    public void save() {
+    public void save_WhenSaveClassPlayer_ReturnClassPlayerSaved() {
     	ClassPlayer entity = service.findOne(CLASSPLAYER_ID_EXISTENT); 
 
     	Assert.assertNotNull("failure - expected not null", entity);
@@ -107,34 +107,28 @@ public class ClassPlayerServiceTest extends AbstractTest {
     
     /* delete - begin */
     @Test
-    public void delete_ClassPlayerExistent_ReturnTrue() {
+    public void delete_WhenClassPlayerIsExistent_ReturnTrue() {
     	Assert.assertTrue("failure - expected return true", service.delete(CLASSPLAYER_ID_EXISTENT));
     	ClassPlayer entity = service.findOne(CLASSPLAYER_ID_EXISTENT);
     	Assert.assertEquals("failure - expected status attribute match", STATUS_DISABLED.intValue(), entity.getStatus());
     }
 
     @Test
-    public void delete_ClassPlayerInexistent_ReturnFalse() {
+    public void delete_WhenClassPlayerIsInexistent_ReturnFalse() {
     	Assert.assertFalse("failure - expected return false", service.delete(CLASSPLAYER_ID_INEXISTENT));
     }
     /* delete - end */
     
     /* findOne - begin */
     @Test
-    public void findOne_ClassPlayerExistentButReturnNull_ExceptionThrown() {
+    public void findOne_WhenClassPlayerIsExistent_ReturnClassPlayer() {
     	ClassPlayer entity = service.findOne(CLASSPLAYER_ID_EXISTENT);
         Assert.assertNotNull("failure - expected not null", entity);
+        Assert.assertEquals("failure - expected id attribute match", CLASSPLAYER_ID_EXISTENT.intValue(), entity.getId());
     }
 
     @Test
-    public void findOne_ClassPlayerExistentWithWrongId_ExceptionThrown() {
-        Integer id = new Integer(CLASSPLAYER_ID_EXISTENT);
-        ClassPlayer entity = service.findOne(id);
-        Assert.assertEquals("failure - expected id attribute match", id.intValue(), entity.getId());
-    }
-
-    @Test
-    public void findOne_ClassPlayerInexistent_ReturnNull() {
+    public void findOne_WhenClassPlayerIsInexistent_ReturnNull() {
     	ClassPlayer entity = service.findOne(CLASSPLAYER_ID_INEXISTENT);
         Assert.assertNull("failure - expected null", entity);
     }
@@ -142,7 +136,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
     
     /* findAll - begin */
     @Test
-    public void findAll_ListIsNullOrEmpty_ExceptionThrown() {
+    public void findAll_WhenListAllClassPlayers_ReturnList() {
     	List<ClassPlayer> list = service.findAll();
     	Assert.assertNotNull("failure - expected not null", list);
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
@@ -151,7 +145,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
 
     /* changeStatus - begin */
     @Test
-    public void changeStatus_ClassPlayerExistent_ReturnTrue() {
+    public void changeStatus_WhenClassPlayerIsExistent_ReturnTrue() {
     	Assert.assertTrue("failure - expected true", service.changeStatus(CLASSPLAYER_ID_EXISTENT.intValue(), STATUS_CONFIRMED));
 
     	ClassPlayer entity = service.findOne(CLASSPLAYER_ID_EXISTENT);
@@ -164,21 +158,21 @@ public class ClassPlayerServiceTest extends AbstractTest {
     }
 
     @Test
-    public void changeStatus_ClassPlayerInexistent_ReturnFalse() {
+    public void changeStatus_WhenClassPlayerIsInexistent_ReturnFalse() {
     	Assert.assertFalse("failure - expected false", service.changeStatus(CLASSPLAYER_ID_INEXISTENT.intValue(), STATUS_CONFIRMED));
     }
     /* changeStatus - end */
     
     /* findClassPlayersByTeacher - begin */
     @Test
-    public void findClassPlayersByTeacher_SearchTeacherExistent_ReturnList() {
+    public void findClassPlayersByTeacher_WhenSearchByTeacherExistent_ReturnList() {
     	List<ClassPlayer> list = service.findClassPlayersByTeacher(TEACHER_ID_EXISTENT);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
-    public void findClassPlayersByTeacher_SearchTeacherInexistent_ReturnListEmpty() {
+    public void findClassPlayersByTeacher_WhenSearchByTeacherInexistent_ReturnEmptyList() {
     	List<ClassPlayer> list = service.findClassPlayersByTeacher(TEACHER_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
@@ -186,26 +180,26 @@ public class ClassPlayerServiceTest extends AbstractTest {
     
     /* findClassPlayersByTeacherAndClass - begin */
     @Test
-    public void findClassPlayersByTeacherAndClass_SearchTeacherAndClassExistents_ReturnList() {
+    public void findClassPlayersByTeacherAndClass_WhenSearchByTeacherAndClassExistents_ReturnList() {
     	List<ClassPlayer> list = service.findClassPlayersByTeacherAndClass(TEACHER_ID_EXISTENT, CLASS_ID_EXISTENT);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
-    public void findClassPlayersByTeacherAndClass_SearchTeacherAndClassInexistents_ReturnListEmpty() {
+    public void findClassPlayersByTeacherAndClass_WhenSearchByTeacherAndClassInexistents_ReturnEmptyList() {
     	List<ClassPlayer> list = service.findClassPlayersByTeacherAndClass(TEACHER_ID_INEXISTENT, CLASS_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findClassPlayersByTeacherAndClass_SearchTeacherExistentButClassInexistent_ReturnListEmpty() {
+    public void findClassPlayersByTeacherAndClass_WhenSearchByTeacherExistentButClassInexistent_ReturnEmptyList() {
     	List<ClassPlayer> list = service.findClassPlayersByTeacherAndClass(TEACHER_ID_EXISTENT, CLASS_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findClassPlayersByTeacherAndClass_SearchClassExistentButTeacherInexistent_ReturnListEmpty() {
+    public void findClassPlayersByTeacherAndClass_WhenSearchByClassExistentButTeacherInexistent_ReturnEmptyList() {
     	List<ClassPlayer> list = service.findClassPlayersByTeacherAndClass(TEACHER_ID_INEXISTENT, CLASS_ID_EXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
@@ -213,26 +207,26 @@ public class ClassPlayerServiceTest extends AbstractTest {
     
     /* findClassPlayersByClassAndStatus - begin */
     @Test
-    public void findClassPlayersByClassAndStatus_SearchClassAndStatusExistents_ReturnList() {
+    public void findClassPlayersByClassAndStatus_WhenSearchByClassAndStatusExistents_ReturnList() {
     	List<ClassPlayer> list = service.findClassPlayersByClassAndStatus(CLASS_ID_EXISTENT, STATUS_CONFIRMED);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
-    public void findClassPlayersByClassAndStatus_SearchClassAndStatusInexistents_ReturnListEmpty() {
+    public void findClassPlayersByClassAndStatus_WhenSearchByClassAndStatusInexistents_ReturnEmptyList() {
     	List<ClassPlayer> list = service.findClassPlayersByClassAndStatus(CLASS_ID_INEXISTENT, 0);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findClassPlayersByClassAndStatus_SearchClassExistentButStatusInexistent_ReturnListEmpty() {
+    public void findClassPlayersByClassAndStatus_WhenSearchByClassExistentButStatusInexistent_ReturnEmptyList() {
     	List<ClassPlayer> list = service.findClassPlayersByClassAndStatus(CLASS_ID_EXISTENT, 0);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findClassPlayersByClassAndStatus_SearchStatusExistentButClassInexistent_ReturnListEmpty() {
+    public void findClassPlayersByClassAndStatus_WhenSearchByStatusExistentButClassInexistent_ReturnEmptyList() {
     	List<ClassPlayer> list = service.findClassPlayersByClassAndStatus(CLASS_ID_INEXISTENT, STATUS_CONFIRMED);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
@@ -240,26 +234,26 @@ public class ClassPlayerServiceTest extends AbstractTest {
     
     /* findClassPlayersByClassAndPlayer - begin */
     @Test
-    public void findClassPlayersByClassAndPlayer_SearchClassAndPlayerExistents_ReturnList() {
+    public void findClassPlayersByClassAndPlayer_WhenSearchByClassAndPlayerExistents_ReturnList() {
     	List<ClassPlayer> list = service.findClassPlayersByClassAndPlayer(CLASS_ID_EXISTENT, PLAYER_ID_EXISTENT);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
-    public void findClassPlayersByClassAndPlayer_SearchClassAndPlayerInexistents_ReturnListEmpty() {
+    public void findClassPlayersByClassAndPlayer_WhenSearchByClassAndPlayerInexistents_ReturnEmptyList() {
     	List<ClassPlayer> list = service.findClassPlayersByClassAndPlayer(CLASS_ID_INEXISTENT, PLAYER_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findClassPlayersByClassAndPlayer_SearchClassExistentButPlayerInexistent_ReturnListEmpty() {
+    public void findClassPlayersByClassAndPlayer_WhenSearchByClassExistentButPlayerInexistent_ReturnEmptyList() {
     	List<ClassPlayer> list = service.findClassPlayersByClassAndPlayer(CLASS_ID_EXISTENT, PLAYER_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findClassPlayersByClassAndPlayer_SearchPlayerExistentButClassInexistent_ReturnListEmpty() {
+    public void findClassPlayersByClassAndPlayer_WhenSearchByPlayerExistentButClassInexistent_ReturnEmptyList() {
     	List<ClassPlayer> list = service.findClassPlayersByClassAndPlayer(CLASS_ID_INEXISTENT, PLAYER_ID_EXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
@@ -267,26 +261,26 @@ public class ClassPlayerServiceTest extends AbstractTest {
     
     /* findClassPlayersByPlayerAndStatus - begin */
     @Test
-    public void findClassPlayersByPlayerAndStatus_SearchPlayerAndStatusExistents_ReturnList() {
+    public void findClassPlayersByPlayerAndStatus_WhenSearchByPlayerAndStatusExistents_ReturnList() {
     	List<ClassPlayer> list = service.findClassPlayersByPlayerAndStatus(PLAYER_ID_EXISTENT, STATUS_CONFIRMED);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
-    public void findClassPlayersByPlayerAndStatus_SearchPlayerAndStatusInexistents_ReturnListEmpty() {
+    public void findClassPlayersByPlayerAndStatus_WhenSearchByPlayerAndStatusInexistents_ReturnEmptyList() {
     	List<ClassPlayer> list = service.findClassPlayersByPlayerAndStatus(PLAYER_ID_INEXISTENT, 0);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findClassPlayersByPlayerAndStatus_SearchPlayerExistentButStatusInexistent_ReturnListEmpty() {
+    public void findClassPlayersByPlayerAndStatus_WhenSearchByPlayerExistentButStatusInexistent_ReturnEmptyList() {
     	List<ClassPlayer> list = service.findClassPlayersByPlayerAndStatus(PLAYER_ID_EXISTENT, 0);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findClassPlayersByPlayerAndStatus_SearchStatusExistentButPlayerInexistent_ReturnListEmpty() {
+    public void findClassPlayersByPlayerAndStatus_WhenSearchByStatusExistentButPlayerInexistent_ReturnEmptyList() {
     	List<ClassPlayer> list = service.findClassPlayersByPlayerAndStatus(PLAYER_ID_INEXISTENT, STATUS_CONFIRMED);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
@@ -294,26 +288,26 @@ public class ClassPlayerServiceTest extends AbstractTest {
     
     /* findClassPlayersByTeacherAndStudent - begin */
     @Test
-    public void findClassPlayersByTeacherAndStudent_SearchTeacherAndStudentExistents_ReturnList() {
+    public void findClassPlayersByTeacherAndStudent_WhenSearchByTeacherAndStudentExistents_ReturnList() {
     	List<ClassPlayer> list = service.findClassPlayersByTeacherAndStudent(TEACHER_ID_EXISTENT, STUDENT_ID_EXISTENT);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
-    public void findClassPlayersByTeacherAndStudent_SearchTeacherAndStudentInexistents_ReturnListEmpty() {
+    public void findClassPlayersByTeacherAndStudent_WhenSearchByTeacherAndStudentInexistents_ReturnEmptyList() {
     	List<ClassPlayer> list = service.findClassPlayersByTeacherAndStudent(TEACHER_ID_INEXISTENT, STUDENT_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findClassPlayersByTeacherAndStudent_SearchTeacherExistentButStudentInexistent_ReturnListEmpty() {
+    public void findClassPlayersByTeacherAndStudent_WhenSearchByTeacherExistentButStudentInexistent_ReturnEmptyList() {
     	List<ClassPlayer> list = service.findClassPlayersByTeacherAndStudent(TEACHER_ID_EXISTENT, STUDENT_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findClassPlayersByTeacherAndStudent_SearchStudentExistentButTeacherInexistent_ReturnListEmpty() {
+    public void findClassPlayersByTeacherAndStudent_WhenSearchByStudentExistentButTeacherInexistent_ReturnEmptyList() {
     	List<ClassPlayer> list = service.findClassPlayersByTeacherAndStudent(TEACHER_ID_INEXISTENT, STUDENT_ID_EXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
@@ -321,7 +315,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
     
     /* isMyStudent - begin */
     @Test
-    public void isMyStudent_WhenItIsHisStudent_returnTrue() {
+    public void isMyStudent_WhenItIsHisStudent_ReturnTrue() {
     	Player teacher = new Player();
     	teacher.setId(TEACHER_ID_EXISTENT);
     	
@@ -332,7 +326,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
     }
     
     @Test
-    public void isMyStudent_WhenItIsnotHisStudent_returnFalse() {
+    public void isMyStudent_WhenItIsNotHisStudent_ReturnFalse() {
     	Player teacher = new Player();
     	teacher.setId(TEACHER_ID_EXISTENT);
     	

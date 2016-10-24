@@ -52,7 +52,7 @@ import com.polifono.service.IQuestionService;
  */
 @Transactional
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({SecurityContextHolder.class})
+@PrepareForTest({SecurityContextHolder.class}) // For emulating a logged in user.
 public class GameControllerTest extends AbstractControllerTest {
 	
 	@Mock
@@ -80,7 +80,7 @@ public class GameControllerTest extends AbstractControllerTest {
 	private IQuestionService questionService;
 	
 	@InjectMocks
-	private GameController controller;
+	private GameController controller; // All the Mock object are inserted in the InjectMock object.
 	
 	private final Integer GAME_ID_EXISTENT = 123;
 	private final Integer GAME_ORDER_EXISTENT = 3;
@@ -96,6 +96,7 @@ public class GameControllerTest extends AbstractControllerTest {
         super.setUp(controller);
 	}
 	
+	/* stubs - begin */
 	private List<Game> getEntityListStubData() {
         List<Game> list = new ArrayList<Game>();
         
@@ -347,10 +348,11 @@ public class GameControllerTest extends AbstractControllerTest {
     	
         return phaseOfTheTest;
     }
+    /* stubs - end */
     
     /* listGames - begin */
 	@Test
-	public void listGames() throws Exception {
+	public void listGames_WhenListAllGames_OpenGamesPageAndListAllGames() throws Exception {
 		// Create some test data.
         List<Game> list = getEntityListStubData();
 
@@ -414,7 +416,7 @@ public class GameControllerTest extends AbstractControllerTest {
 	}
 	
 	@Test
-	public void listLevelsOfTheGame_WhenThePlayerHasNeverPlayedAnyPhaseOfTheGame_ListLevels() throws Exception {
+	public void listLevelsOfTheGame_WhenThePlayerHasNeverPlayedAnyPhaseOfTheGame_OpenLevelPageAndListLevelsWithOnlyTheFirstOneOpened() throws Exception {
 		String uri = "/games/{gameName}";
 		String gameName = GAME_NAME_EXISTENT;
 		
@@ -473,7 +475,7 @@ public class GameControllerTest extends AbstractControllerTest {
 	}
 	
 	@Test
-	public void listLevelsOfTheGame_WhenThePlayerHasAlreadyPlayedAtLeastOnePhaseOfTheGame_ListLevels() throws Exception {
+	public void listLevelsOfTheGame_WhenThePlayerHasAlreadyPlayedAtLeastOnePhaseOfTheGame_OpenLevelsPageListLevelsAndShowFirstLevelAsOpened() throws Exception {
 		String uri = "/games/{gameName}";
 		String gameName = GAME_NAME_EXISTENT;
 		
@@ -534,7 +536,7 @@ public class GameControllerTest extends AbstractControllerTest {
 	}
 	
 	@Test
-	public void listLevelsOfTheGame_WhenThePlayerHasPlayedTheLastPhaseOfTheALevel_ListLevels() throws Exception {
+	public void listLevelsOfTheGame_WhenThePlayerHasPlayedTheLastPhaseOfTheALevel_OpenLevelsPageListLevelsAndShowTheNextLevelAsOpened() throws Exception {
 		String uri = "/games/{gameName}";
 		String gameName = GAME_NAME_EXISTENT;
 		
@@ -943,7 +945,7 @@ public class GameControllerTest extends AbstractControllerTest {
 	}
 	
 	@Test
-	public void initPhase_WhenThePlayerDoesntHaveCreditsAndHeIsNotTryingToAccessAPhaseThatHeHasAlreadyFinished_RedirectToBuyCreditsPage() throws Exception {
+	public void initPhase_WhenThePlayerDoesntHaveCreditsAndHeIsNotTryingToAccessAPhaseThatHeHasAlreadyFinished_OpenBuyCreditsPageAndShowMessage() throws Exception {
 		String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}";
 		String gameName = GAME_NAME_EXISTENT;
 		Integer levelOrder = 1;
@@ -1295,7 +1297,7 @@ public class GameControllerTest extends AbstractControllerTest {
 	}
 	
 	@Test
-	public void initTest_WhenThePlayerDoesntHaveCreditsAndHeIsNotTryingToAccessAPhaseThatHeHasAlreadyFinished_RedirectToBuyCreditsPage() throws Exception {
+	public void initTest_WhenThePlayerDoesntHaveCreditsAndHeIsNotTryingToAccessAPhaseThatHeHasAlreadyFinished_OpenBuyCreditsPageAndShowMessage() throws Exception {
 		String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}/test";
 		String gameName = GAME_NAME_EXISTENT;
 		Integer levelOrder = 1;
@@ -1611,7 +1613,7 @@ public class GameControllerTest extends AbstractControllerTest {
 	}
 	
 	@Test
-	public void showResultTest_WhenGradeLessThanMinimumRequired_OpenResultTestPage() throws Exception {
+	public void showResultTest_WhenGradeLessThanMinimumRequired_OpenResultTestPageAndShowPlayersGrade() throws Exception {
 		String uri = "/games/result";
 		
 		List<Integer> questionsId = getQuestionsIdStubData();
@@ -1634,7 +1636,7 @@ public class GameControllerTest extends AbstractControllerTest {
 	}
 	
 	@Test
-	public void showResultTest_WhenGradeIsEnoughAndThePlayerHasJustFinishedTheLastPhaseOfTheLastMapOfTheLevel_OpenEndoflevelPage() throws Exception {
+	public void showResultTest_WhenGradeIsEnoughAndThePlayerHasJustFinishedTheLastPhaseOfTheLastMapOfTheLevel_OpenEndoflevelPageAndShowPlayersGrade() throws Exception {
 		String uri = "/games/result";
 		
 		List<Integer> questionsId = getQuestionsIdStubData();
@@ -1688,7 +1690,7 @@ public class GameControllerTest extends AbstractControllerTest {
 	}
 	
 	@Test
-	public void showResultTest_WhenGradeIsEnoughAndThePlayerHasJustFinishedTheLastPhaseOfTheLastMapOfTheLastLevelOfTheGame_OpenEndofgamePage() throws Exception {
+	public void showResultTest_WhenGradeIsEnoughAndThePlayerHasJustFinishedTheLastPhaseOfTheLastMapOfTheLastLevelOfTheGame_OpenEndofgamePageAndShowPlayersGrade() throws Exception {
 		String uri = "/games/result";
 		
 		List<Integer> questionsId = getQuestionsIdStubData();
@@ -1743,7 +1745,7 @@ public class GameControllerTest extends AbstractControllerTest {
 	}
 	
 	@Test
-	public void showResultTest_WhenGradeIsEnough_OpenResultTestPage() throws Exception {
+	public void showResultTest_WhenGradeIsEnough_OpenResultTestPageAndShowPlayersGrade() throws Exception {
 		String uri = "/games/result";
 		
 		List<Integer> questionsId = getQuestionsIdStubData();

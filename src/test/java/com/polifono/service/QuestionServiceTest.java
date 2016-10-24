@@ -53,7 +53,7 @@ public class QuestionServiceTest extends AbstractTest {
     
     /* save - begin */
     @Test
-    public void save() {
+    public void save_WhenSaveQuestion_ReturnQuestionSaved() {
     	Content content = new Content();
     	content.setId(CONTENT_ID_EXISTENT);
     	
@@ -90,34 +90,28 @@ public class QuestionServiceTest extends AbstractTest {
     
     /* delete - begin */
     @Test
-    public void delete_QuestionExistent_ReturnTrue() {
+    public void delete_WhenQuestionIsExistent_ReturnTrue() {
     	Assert.assertTrue("failure - expected return true", service.delete(QUESTION_ID_EXISTENT));
     	Question entity = service.findOne(QUESTION_ID_EXISTENT);
     	Assert.assertNull("failure - expected null", entity);
     }
     
     @Test
-    public void delete_QuestionInexistent_ReturnFalse() {
+    public void delete_WhenQuestionIsInexistent_ReturnFalse() {
     	Assert.assertFalse("failure - expected return false", service.delete(QUESTION_ID_INEXISTENT));
     }
     /* delete - end */
     
     /* findOne - begin */
     @Test
-    public void findOne_QuestionExistentButReturnNull_ExceptionThrown() {
+    public void findOne_WhenQuestionIsExistent_ReturnQuestion() {
         Question entity = service.findOne(QUESTION_ID_EXISTENT);
         Assert.assertNotNull("failure - expected not null", entity);
+        Assert.assertEquals("failure - expected id attribute match", QUESTION_ID_EXISTENT.intValue(), entity.getId());
     }
 
     @Test
-    public void findOne_QuestionExistentWithWrongId_ExceptionThrown() {
-        Integer id = new Integer(QUESTION_ID_EXISTENT);
-        Question entity = service.findOne(id);
-        Assert.assertEquals("failure - expected id attribute match", id.intValue(), entity.getId());
-    }
-
-    @Test
-    public void findOne_QuestionInexistent_ReturnNull() {
+    public void findOne_WhenQuestionIsInexistent_ReturnNull() {
         Question entity = service.findOne(QUESTION_ID_INEXISTENT);
         Assert.assertNull("failure - expected null", entity);
     }
@@ -125,7 +119,7 @@ public class QuestionServiceTest extends AbstractTest {
     
     /* findAll - begin */
     @Test
-    public void findAll_ListIsNullOrEmpty_ExceptionThrown() {
+    public void findAll_WhenListAllQuestions_ReturnList() {
     	List<Question> list = service.findAll();
     	Assert.assertNotNull("failure - expected not null", list);
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
@@ -134,14 +128,14 @@ public class QuestionServiceTest extends AbstractTest {
     
     /* findQuestionsByGame - begin */
     @Test
-    public void findQuestionsByGame_SearchGameExistent_ReturnList() {
+    public void findQuestionsByGame_WhenSearchByGameExistent_ReturnList() {
     	List<Question> list = service.findQuestionsByGame(GAME_ID_EXISTENT);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
-    public void findQuestionsByGame_SearchGameInexistent_ReturnListEmpty() {
+    public void findQuestionsByGame_WhenSearchByGameInexistent_ReturnEmptyList() {
     	List<Question> list = service.findQuestionsByGame(GAME_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
@@ -149,26 +143,26 @@ public class QuestionServiceTest extends AbstractTest {
     
     /* findQuestionsByGameAndLevel - begin */
     @Test
-    public void findQuestionsByGameAndLevel_SearchGameAndLevelExistents_ReturnList() {
+    public void findQuestionsByGameAndLevel_WhenSearchByGameAndLevelExistents_ReturnList() {
     	List<Question> list = service.findQuestionsByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
-    public void findQuestionsByGameAndLevel_SearchGameAndLevelInexistents_ReturnListEmpty() {
+    public void findQuestionsByGameAndLevel_WhenSearchByGameAndLevelInexistents_ReturnEmptyList() {
     	List<Question> list = service.findQuestionsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findQuestionsByGameAndLevel_SearchGameExistentButLevelInexistent_ReturnListEmpty() {
+    public void findQuestionsByGameAndLevel_WhenSearchByGameExistentButLevelInexistent_ReturnEmptyList() {
     	List<Question> list = service.findQuestionsByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findQuestionsByGameAndLevel_SearchLevelExistentButGameInexistent_ReturnListEmpty() {
+    public void findQuestionsByGameAndLevel_WhenSearchByLevelExistentButGameInexistent_ReturnEmptyList() {
     	List<Question> list = service.findQuestionsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
@@ -176,14 +170,14 @@ public class QuestionServiceTest extends AbstractTest {
     
     /* findQuestionsByMap - begin */
     @Test
-    public void findQuestionsByMap_SearchMapExistent_ReturnList() {
+    public void findQuestionsByMap_WhenSearchByMapExistent_ReturnList() {
     	List<Question> list = service.findQuestionsByMap(MAP_ID_EXISTENT);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
-    public void findQuestionsByMap_SearchMapInexistent_ReturnListEmpty() {
+    public void findQuestionsByMap_WhenSearchByMapInexistent_ReturnEmptyList() {
     	List<Question> list = service.findQuestionsByMap(MAP_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
@@ -191,14 +185,14 @@ public class QuestionServiceTest extends AbstractTest {
     
     /* findQuestionsByPhase - begin */
     @Test
-    public void findQuestionsByPhase_SearchPhaseExistent_ReturnList() {
+    public void findQuestionsByPhase_WhenSearchByPhaseExistent_ReturnList() {
     	List<Question> list = service.findQuestionsByPhase(PHASE_ID_EXISTENT);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
-    public void findQuestionsByPhase_SearchPhaseInexistent_ReturnListEmpty() {
+    public void findQuestionsByPhase_WhenSearchByPhaseInexistent_ReturnEmptyList() {
     	List<Question> list = service.findQuestionsByPhase(PHASE_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
@@ -206,14 +200,14 @@ public class QuestionServiceTest extends AbstractTest {
     
     /* findQuestionsByContent - begin */
     @Test
-    public void findQuestionsByContent_SearchContentExistent_ReturnList() {
+    public void findQuestionsByContent_WhenSearchByContentExistent_ReturnList() {
     	List<Question> list = service.findQuestionsByContent(CONTENT_ID_EXISTENT);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
-    public void findQuestionsByContent_SearchContentInexistent_ReturnListEmpty() {
+    public void findQuestionsByContent_WhenSearchByContentInexistent_ReturnEmptyList() {
     	List<Question> list = service.findQuestionsByContent(CONTENT_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }

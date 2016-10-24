@@ -54,7 +54,7 @@ public class ContentServiceTest extends AbstractTest {
     
     /* save - begin */
     @Test
-    public void save() {
+    public void save_WhenSaveContent_ReturnContentSaved() {
     	Phase phase = new Phase();
     	phase.setId(PHASE_ID_EXISTENT);
     	
@@ -96,34 +96,28 @@ public class ContentServiceTest extends AbstractTest {
     
     /* delete - begin */
     @Test
-    public void delete_ContentExistent_ReturnTrue() {
+    public void delete_WhenContentIsExistent_ReturnTrue() {
     	Assert.assertTrue("failure - expected return true", service.delete(CONTENT_ID_EXISTENT));
     	Content entity = service.findOne(CONTENT_ID_EXISTENT);
     	Assert.assertNull("failure - expected null", entity);
     }
     
     @Test
-    public void delete_ContentInexistent_ReturnFalse() {
+    public void delete_WhenContentIsInexistent_ReturnFalse() {
     	Assert.assertFalse("failure - expected return false", service.delete(CONTENT_ID_INEXISTENT));
     }
     /* delete - end */
     
     /* findOne - begin */
     @Test
-    public void findOne_ContentExistentButReturnNull_ExceptionThrown() {
+    public void findOne_WhenContentIsExistent_ReturnContent() {
         Content entity = service.findOne(CONTENT_ID_EXISTENT);
         Assert.assertNotNull("failure - expected not null", entity);
+        Assert.assertEquals("failure - expected id attribute match", CONTENT_ID_EXISTENT.intValue(), entity.getId());
     }
 
     @Test
-    public void findOne_ContentExistentWithWrongId_ExceptionThrown() {
-        Integer id = new Integer(CONTENT_ID_EXISTENT);
-        Content entity = service.findOne(id);
-        Assert.assertEquals("failure - expected id attribute match", id.intValue(), entity.getId());
-    }
-
-    @Test
-    public void findOne_ContentInexistent_ReturnNull() {
+    public void findOne_WhenContentIsInexistent_ReturnNull() {
         Integer id = CONTENT_ID_INEXISTENT;
     	Content entity = service.findOne(id);
         Assert.assertNull("failure - expected null", entity);
@@ -132,7 +126,7 @@ public class ContentServiceTest extends AbstractTest {
     
     /* findAll - begin */
     @Test
-    public void findAll_ListIsNullOrEmpty_ExceptionThrown() {
+    public void findAll_WhenListAllContent_ReturnList() {
     	List<Content> list = service.findAll();
     	Assert.assertNotNull("failure - expected not null", list);
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
@@ -141,7 +135,7 @@ public class ContentServiceTest extends AbstractTest {
     
     /* findAllText - begin */
     @Test
-    public void findAllText() {
+    public void findAllText_WhenListAllContentOfTypeText_ReturnList() {
     	List<Content> list = service.findAllText();
     	
     	Assert.assertNotNull("failure - expected not null", list);
@@ -155,7 +149,7 @@ public class ContentServiceTest extends AbstractTest {
     
     /* findContentsTextByGame - begin */
     @Test
-    public void findContentsTextByGame() {
+    public void findContentsTextByGame_WhenSearchByGameExistent_ReturnList() {
     	List<Content> list = service.findContentsTextByGame(GAME_ID_EXISTENT);
     	
     	Assert.assertNotNull("failure - expected not null", list);
@@ -170,7 +164,7 @@ public class ContentServiceTest extends AbstractTest {
     
     /* findContentsTextByGameAndLevel - begin */
     @Test
-    public void findContentsTextByGameAndLevel() {
+    public void findContentsTextByGameAndLevel_WhenSearchByGameAndLevelExistents_ReturnList() {
     	List<Content> list = service.findContentsTextByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
     	
     	Assert.assertNotNull("failure - expected not null", list);
@@ -186,7 +180,7 @@ public class ContentServiceTest extends AbstractTest {
     
     /* findContentsTextByMap - begin */
     @Test
-    public void findContentsTextByMap() {
+    public void findContentsTextByMap_WhenSearchByMapExistent_ReturnList() {
     	List<Content> list = service.findContentsTextByMap(MAP_ID_EXISTENT);
     	
     	Assert.assertNotNull("failure - expected not null", list);
@@ -201,7 +195,7 @@ public class ContentServiceTest extends AbstractTest {
     
     /* findContentsTextByPhase - begin */
     @Test
-    public void findContentsTextByPhase() {
+    public void findContentsTextByPhase_WhenSearchByPhaseExistent_ReturnList() {
     	List<Content> list = service.findContentsTextByPhase(PHASE_ID_EXISTENT);
     	
     	Assert.assertNotNull("failure - expected not null", list);
@@ -216,7 +210,7 @@ public class ContentServiceTest extends AbstractTest {
     
     /* findAllTest - begin */
     @Test 
-    public void findAllTest() {
+    public void findAllTest_WhenListAllContentOfTypeTest_ReturnList() {
     	List<Content> list = service.findAllTest();
     	
     	Assert.assertNotNull("failure - expected not null", list);
@@ -230,7 +224,7 @@ public class ContentServiceTest extends AbstractTest {
     
     /* findContentsTestByGame - begin */
     @Test
-    public void findContentsTestByGame() {
+    public void findContentsTestByGame_WhenSearchByGameExistent_ReturnList() {
     	List<Content> list = service.findContentsTestByGame(GAME_ID_EXISTENT);
     	
     	Assert.assertNotNull("failure - expected not null", list);
@@ -245,7 +239,7 @@ public class ContentServiceTest extends AbstractTest {
     
     /* findContentsTestByGameAndLevel - begin */
     @Test
-    public void findContentsTestByGameAndLevel() {
+    public void findContentsTestByGameAndLevel_WhenSearchByGameAndLevelExistents_ReturnList() {
     	List<Content> list = service.findContentsTestByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
     	
     	Assert.assertNotNull("failure - expected not null", list);
@@ -261,7 +255,7 @@ public class ContentServiceTest extends AbstractTest {
     
     /* findContentsTestByMap - begin */
     @Test
-    public void findContentsTestByMap() {
+    public void findContentsTestByMap_WhenSearchByMapExistent_ReturnList() {
     	List<Content> list = service.findContentsTestByMap(MAP_ID_EXISTENT);
     	
     	Assert.assertNotNull("failure - expected not null", list);
@@ -276,7 +270,7 @@ public class ContentServiceTest extends AbstractTest {
     
     /* findContentsTestByPhase - begin */
     @Test
-    public void findContentsTestByPhase() {
+    public void findContentsTestByPhase_WhenSearchByPhaseExistent_ReturnList() {
     	List<Content> list = service.findContentsTestByPhase(PHASE_ID_EXISTENT);
     	
     	Assert.assertNotNull("failure - expected not null", list);
@@ -291,7 +285,7 @@ public class ContentServiceTest extends AbstractTest {
     
     /* findByPhaseAndOrder - begin */
     @Test
-    public void findByPhaseAndOrder() {
+    public void findByPhaseAndOrder_WhenSearchByPhaseAndOrderExistents_ReturnList() {
     	Content entity = service.findByPhaseAndOrder(PHASE_ID_EXISTENT, 1);
     	Assert.assertNotNull("failure - expected not null", entity);
     	Assert.assertEquals("expected phase type attribute match", PHASE_ID_EXISTENT.intValue(), entity.getPhase().getId());

@@ -40,7 +40,7 @@ public class ClassServiceTest extends AbstractTest {
     
     /* create - begin */
     @Test
-    public void create_ClassCreationWrong_ExceptionThrown() {
+    public void create_WhenCreateClass_ReturnClassCreated() {
     	Player player = new Player();
         player.setId(TEACHER_ID_EXISTENT);
     	
@@ -65,7 +65,7 @@ public class ClassServiceTest extends AbstractTest {
     
     /* save - begin */
     @Test
-    public void save() {
+    public void save_WhenSaveClass_ReturnClassSaved() {
     	com.polifono.domain.Class entity = service.findOne(CLASS_ID_EXISTENT);
 
     	Assert.assertNotNull("failure - expected not null", entity);
@@ -90,34 +90,28 @@ public class ClassServiceTest extends AbstractTest {
     
     /* delete - begin */
     @Test
-    public void delete_ClassExistent_ReturnTrue() {
+    public void delete_WhenClassIsExistent_ReturnTrue() {
     	Assert.assertTrue("failure - expected return true", service.delete(CLASS_ID_EXISTENT));
     	com.polifono.domain.Class entity = service.findOne(CLASS_ID_EXISTENT);
     	Assert.assertEquals("failure - expected active attribute match", false, entity.isActive());
     }
 
     @Test
-    public void delete_ClassInexistent_ReturnFalse() {
+    public void delete_WhenClassIsInexistent_ReturnFalse() {
     	Assert.assertFalse("failure - expected return false", service.delete(CLASS_ID_INEXISTENT));
     }
     /* delete - end */
     
     /* findOne - begin */
     @Test
-    public void findOne_ClassExistentButReturnNull_ExceptionThrown() {
+    public void findOne_WhenClassIsExistent_ReturnClass() {
     	com.polifono.domain.Class entity = service.findOne(CLASS_ID_EXISTENT);
         Assert.assertNotNull("failure - expected not null", entity);
+        Assert.assertEquals("failure - expected id attribute match", CLASS_ID_EXISTENT.intValue(), entity.getId());
     }
 
     @Test
-    public void findOne_ClassExistentWithWrongId_ExceptionThrown() {
-        Integer id = new Integer(CLASS_ID_EXISTENT);
-        com.polifono.domain.Class entity = service.findOne(id);
-        Assert.assertEquals("failure - expected id attribute match", id.intValue(), entity.getId());
-    }
-
-    @Test
-    public void findOne_ClassInexistent_ReturnNull() {
+    public void findOne_WhenClassIsInexistent_ReturnNull() {
     	com.polifono.domain.Class entity = service.findOne(CLASS_ID_INEXISTENT);
         Assert.assertNull("failure - expected null", entity);
     }
@@ -125,7 +119,7 @@ public class ClassServiceTest extends AbstractTest {
     
     /* findAll - begin */
     @Test
-    public void findAll_ListIsNullOrEmpty_ExceptionThrown() {
+    public void findAll_WhenListAllClasses_ReturnList() {
     	List<com.polifono.domain.Class> list = service.findAll();
     	Assert.assertNotNull("failure - expected not null", list);
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
@@ -134,26 +128,26 @@ public class ClassServiceTest extends AbstractTest {
     
     /* findClassesByTeacherAndStatus - begin */
     @Test
-    public void findClassesByTeacherAndStatus_SearchTeacherAndStatusExistents_ReturnList() {
+    public void findClassesByTeacherAndStatus_WhenSearchByTeacherAndStatusExistents_ReturnList() {
     	List<com.polifono.domain.Class> list = service.findClassesByTeacherAndStatus(TEACHER_ID_EXISTENT, true);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
-    public void findClassesByTeacherAndStatus_SearchTeacherAndStatusInexistents_ReturnListEmpty() {
+    public void findClassesByTeacherAndStatus_WhenSearchByTeacherAndStatusInexistents_ReturnEmptyList() {
     	List<com.polifono.domain.Class> list = service.findClassesByTeacherAndStatus(TEACHER_ID_INEXISTENT, false);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findClassesByTeacherAndStatus_SearchTeacherExistentButStatusInexistent_ReturnListEmpty() {
+    public void findClassesByTeacherAndStatus_WhenSearchByTeacherExistentButStatusInexistent_ReturnEmptyList() {
     	List<com.polifono.domain.Class> list = service.findClassesByTeacherAndStatus(TEACHER_ID_EXISTENT, false);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findClassesByTeacherAndStatus_SearchStatusExistentButTeacherInexistent_ReturnListEmpty() {
+    public void findClassesByTeacherAndStatus_WhenSearchStatusExistentButTeacherInexistent_ReturnEmptyList() {
     	List<com.polifono.domain.Class> list = service.findClassesByTeacherAndStatus(TEACHER_ID_INEXISTENT, true);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }

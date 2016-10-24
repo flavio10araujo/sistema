@@ -27,7 +27,7 @@ public class CustomErrorControllerTest extends AbstractControllerTest {
 	}
 	
 	@Test
-	public void error() throws Exception {
+	public void error_WhenGenericErrorOccurs_RedirectToHomePage() throws Exception {
 		String uri = "/error";
 		
 		/*MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri)).andReturn();
@@ -40,7 +40,7 @@ public class CustomErrorControllerTest extends AbstractControllerTest {
 	}
 	
 	@Test
-	public void error404() throws Exception {
+	public void error404_WhenErro404Occurs_OpenError404Page() throws Exception {
 		String uri = "/error404";
 		
 		/*MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri)).andReturn();
@@ -60,7 +60,7 @@ public class CustomErrorControllerTest extends AbstractControllerTest {
 	}
 	
 	@Test
-	public void error500() throws Exception {
+	public void error500_WhenError500Occurs_OpenError500Page() throws Exception {
 		String uri = "/error500";
 		
 		/*MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri)).andReturn();

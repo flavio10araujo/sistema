@@ -57,7 +57,7 @@ public class UserDetailsServiceTest {
     
     /* loadUserByUsername - begin */
     @Test(expected=UsernameNotFoundException.class)
-    public void loadUserByUsername_WhenUserNotFoundByEmailAndStatus_throwUsernameNotFoundException() {
+    public void loadUserByUsername_WhenUserNotFoundByEmailAndStatus_ThrowUsernameNotFoundException() {
     	String email = PLAYER_EMAIL_INEXISTENT;
     	boolean status = true;
     	when(userService.findByEmailAndStatusForLogin(email, true)).thenReturn(null);
@@ -67,7 +67,7 @@ public class UserDetailsServiceTest {
     }
     
     @Test
-    public void loadUserByUsername_WhenUserIsFoundByEmailAnsStatus_returnUser() {
+    public void loadUserByUsername_WhenUserIsFoundByEmailAndStatus_ReturnUser() {
     	String email = PLAYER_EMAIL_EXISTENT;
     	
     	Player player = new Player();

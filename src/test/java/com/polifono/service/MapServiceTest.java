@@ -57,26 +57,7 @@ public class MapServiceTest extends AbstractTest {
     
     /* save - begin */
     @Test
-    public void save_WhenCreateAMap_returnMapNewlyCreated() {
-    	Map map = new Map();
-    	
-    	int ID = 123;
-    	
-    	Map mapSaved = new Map();
-    	mapSaved.setId(ID);
-    	
-    	when(repository.save(map)).thenReturn(mapSaved);
-    	when(repository.findOne(ID)).thenReturn(mapSaved);
-    	
-    	Map entitySaved = service.save(map);
-    	Map entity = service.findOne(entitySaved.getId()); 
-
-    	Assert.assertNotNull("failure - expected not null", entity);
-    	Assert.assertNotEquals("failure - expected id attribute bigger than 0", 0, entity.getId());
-    }
-
-    @Test
-    public void save_WhenUpdateAMap_returnMapWithTheChanges() {
+    public void save_WhenSaveMap_ReturnMapSaved() {
     	Integer id = 123;
     	
     	Map mapSaved = new Map();
@@ -127,7 +108,7 @@ public class MapServiceTest extends AbstractTest {
     
     /* delete - begin */
     @Test
-    public void delete_WhenDeleteAnExistentMap_ReturnTrue() {
+    public void delete_WhenMapIsExistent_ReturnTrue() {
     	int id = 234;
     	Map temp = new Map();
     	
@@ -142,7 +123,7 @@ public class MapServiceTest extends AbstractTest {
     }
 
     @Test
-    public void delete_WhenDeleteAnInexistentMap_ReturnFalse() {
+    public void delete_WhenMapIsInexistent_ReturnFalse() {
     	int id = 999;
     	when(repository.findOne(id)).thenReturn(null);
     	Assert.assertFalse("failure - expected return false", service.delete(id));
@@ -151,18 +132,7 @@ public class MapServiceTest extends AbstractTest {
     
     /* findOne - begin */
     @Test
-    public void findOne_MapExistentButReturnNull_ExceptionThrown() {
-        Integer id = 123;
-        
-        Map map = new Map();
-        when(repository.findOne(id)).thenReturn(map);
-        
-        Map entity = service.findOne(id);
-        Assert.assertNotNull("failure - expected not null", entity);
-    }
-    
-    @Test
-    public void findOne_MapExistentWithWrongId_ExceptionThrown() {
+    public void findOne_WhenMapIsExistent_ReturnMap() {
         Integer id = 123;
         
         Map map = new Map();
@@ -170,11 +140,12 @@ public class MapServiceTest extends AbstractTest {
         when(repository.findOne(id)).thenReturn(map);
         
         Map entity = service.findOne(id);
+        Assert.assertNotNull("failure - expected not null", entity);
         Assert.assertEquals("failure - expected id attribute match", id.intValue(), entity.getId());
     }
-
+    
     @Test
-    public void findOne_MapInexistent_ReturnNull() {
+    public void findOne_WhenMapIsInexistent_ReturnNull() {
         Integer id = 999;
         
         when(repository.findOne(id)).thenReturn(null);
@@ -186,7 +157,7 @@ public class MapServiceTest extends AbstractTest {
     
     /* findAll - begin */
     @Test
-    public void findAll_ListIsNullOrEmpty_ExceptionThrown() {
+    public void findAll_WhenListAllMaps_ReturnList() {
     	List<Map> listReturned = new ArrayList<Map>();
     	listReturned.add(new Map());
     	when(repository.findAll()).thenReturn(listReturned);
@@ -199,7 +170,7 @@ public class MapServiceTest extends AbstractTest {
     
     /* findMapsByGame - begin */
     @Test
-    public void findMapsByGame_SearchGameExistent_ReturnList() {
+    public void findMapsByGame_WhenSearchByGameExistent_ReturnList() {
     	int gameId = 1;
     	
     	List<Map> listReturned = new ArrayList<Map>();
@@ -212,7 +183,7 @@ public class MapServiceTest extends AbstractTest {
     }
 
     @Test
-    public void findMapsByGame_SearchGameInexistent_ReturnListEmpty() {
+    public void findMapsByGame_WhenSearchByGameInexistent_ReturnEmptyList() {
     	int gameId = 999;
     	
     	List<Map> listReturned = new ArrayList<Map>();
@@ -225,7 +196,7 @@ public class MapServiceTest extends AbstractTest {
     
     /* findMapsByGameAndLevel - begin */
     @Test
-    public void findMapsByGameAndLevel_SearchGameAndLevelExistents_ReturnList() {
+    public void findMapsByGameAndLevel_WhenSearchByGameAndLevelExistents_ReturnList() {
     	int gameId = 1, levelId = 1;
     	
     	List<Map> listReturned = new ArrayList<Map>();
@@ -239,7 +210,7 @@ public class MapServiceTest extends AbstractTest {
     }
 
     @Test
-    public void findMapsByGameAndLevel_SearchGameAndLevelInexistents_ReturnListEmpty() {
+    public void findMapsByGameAndLevel_WhenSearchByGameAndLevelInexistents_ReturnEmptyList() {
     	int gameId = 999, levelId = 999;
     	
     	List<Map> listReturned = new ArrayList<Map>();
@@ -251,7 +222,7 @@ public class MapServiceTest extends AbstractTest {
     }
     
     @Test
-    public void findMapsByGameAndLevel_SearchGameExistentButLevelInexistent_ReturnListEmpty() {
+    public void findMapsByGameAndLevel_WhenSearchByGameExistentButLevelInexistent_ReturnEmptyList() {
     	int gameId = 1, levelId = 999;
     	
     	List<Map> listReturned = new ArrayList<Map>();
@@ -263,7 +234,7 @@ public class MapServiceTest extends AbstractTest {
     }
     
     @Test
-    public void findMapsByGameAndLevel_SearchLevelExistentButGameInexistent_ReturnListEmpty() {
+    public void findMapsByGameAndLevel_WhenSearchByLevelExistentButGameInexistent_ReturnEmptyList() {
     	int gameId = 999, levelId = 1;
     	
     	List<Map> listReturned = new ArrayList<Map>();
@@ -277,7 +248,7 @@ public class MapServiceTest extends AbstractTest {
     
     /* findByGameAndLevel - begin */
     @Test
-    public void findByGameAndLevel_SearchGameAndLevelExistents_ReturnItem() {
+    public void findByGameAndLevel_WhenSearchByGameAndLevelExistents_ReturnMap() {
     	int gameId = 1, levelId = 1;
     	List<Map> listReturned = new ArrayList<Map>();
     	listReturned.add(new Map());
@@ -289,7 +260,7 @@ public class MapServiceTest extends AbstractTest {
     }
     
     @Test
-    public void findByGameAndLevel_SearchGameAndLevelInexistents_ReturnNull() {
+    public void findByGameAndLevel_WhenSearchByGameAndLevelInexistents_ReturnNull() {
     	int gameId = 1, levelId = 1;
     	List<Map> listReturned = new ArrayList<Map>();
     	
@@ -302,7 +273,7 @@ public class MapServiceTest extends AbstractTest {
     
     /* findByGameLevelAndOrder - begin */
     @Test
-    public void findByGameLevelAndOrder_SearchGameLevelAndOrderExistents_ReturnItem() {
+    public void findByGameLevelAndOrder_WhenSearchByGameLevelAndOrderExistents_ReturnMap() {
     	int gameId = 1, levelId = 1, mapOrder = 1;
     	
     	List<Map> listReturned = new ArrayList<Map>();
@@ -314,7 +285,7 @@ public class MapServiceTest extends AbstractTest {
     }
     
     @Test
-    public void findByGameLevelAndOrder_SearchGameLevelAndOrderInexistents_ReturnNull() {
+    public void findByGameLevelAndOrder_WhenSearchByGameLevelAndOrderInexistents_ReturnNull() {
     	int gameId = 999, levelId = 999, mapOrder = 999;
     	
     	List<Map> listReturned = new ArrayList<Map>();
@@ -328,7 +299,7 @@ public class MapServiceTest extends AbstractTest {
     
     /* findNextMapSameLevel - begin */
     @Test
-    public void findNextMapSameLevel_WhenNextMapExists_ReturnItem() {
+    public void findNextMapSameLevel_WhenNextMapExists_ReturnNextMap() {
     	Map map = new Map();
     	Game game = new Game();
     	game.setId(1);
@@ -362,7 +333,7 @@ public class MapServiceTest extends AbstractTest {
     
     /* playerCanAccessThisMap - begin */
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessTheFirstMapOfTheFirstLevel_returnTrue() {
+    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessTheFirstMapOfTheFirstLevel_ReturnTrue() {
     	Level level = new Level();
     	level.setOrder(1);
     	
@@ -376,7 +347,7 @@ public class MapServiceTest extends AbstractTest {
     }
 
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessAMapDifferentOfTheFirstMapOfTheFirstLevelAndThePlayerHasNeverFinishedAPhaseOfThisGame_returnFalse() {
+    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessAMapDifferentOfTheFirstMapOfTheFirstLevelAndThePlayerHasNeverFinishedAPhaseOfThisGame_ReturnFalse() {
     	Game game = new Game();
     	game.setId(1);
     	
@@ -397,7 +368,7 @@ public class MapServiceTest extends AbstractTest {
     }
     
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessAMapInAPreviousLevelThanTheLastPhaseDonesLevel_returnTrue() {
+    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessAMapInAPreviousLevelThanTheLastPhaseDonesLevel_ReturnTrue() {
     	Game game = new Game();
     	game.setId(1);
     	
@@ -427,7 +398,7 @@ public class MapServiceTest extends AbstractTest {
     }
     
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessAPreviousMapAtTheSameLevelOfTheLastPhaseDone_returnTrue() {
+    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessAPreviousMapAtTheSameLevelOfTheLastPhaseDone_ReturnTrue() {
     	Game game = new Game();
     	game.setId(1);
     	
@@ -458,7 +429,7 @@ public class MapServiceTest extends AbstractTest {
     }
 
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapButTheLastPhaseDoneIsNotTheLastPhaseOfTheLevel_returnFalse() {
+    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapButTheLastPhaseDoneIsNotTheLastPhaseOfTheLevel_ReturnFalse() {
     	Game game = new Game();
     	game.setId(1);
     	
@@ -500,7 +471,7 @@ public class MapServiceTest extends AbstractTest {
     }
     
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapIsInTheSameLevelAndItIsTheNext_returnTrue() {
+    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapIsInTheSameLevelAndItIsTheNext_ReturnTrue() {
     	Game game = new Game();
     	game.setId(1);
     	
@@ -542,7 +513,7 @@ public class MapServiceTest extends AbstractTest {
     }
     
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapIsInTheSameLevelButItIsNotTheNext_returnFalse() {
+    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapIsInTheSameLevelButItIsNotTheNext_ReturnFalse() {
     	Game game = new Game();
     	game.setId(1);
     	
@@ -584,7 +555,7 @@ public class MapServiceTest extends AbstractTest {
     }
     
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapIsTheFirstOfTheNextLevel_returnTrue() {
+    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapIsTheFirstOfTheNextLevel_ReturnTrue() {
     	Game game = new Game();
     	game.setId(1);
     	
@@ -626,7 +597,7 @@ public class MapServiceTest extends AbstractTest {
     }
     
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapINotTheFirstOfTheNextLevel_returnFalse() {
+    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapINotTheFirstOfTheNextLevel_ReturnFalse() {
     	Game game = new Game();
     	game.setId(1);
     	
@@ -668,7 +639,7 @@ public class MapServiceTest extends AbstractTest {
     }
     
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessMapButTheLevelOfThisMapIsNotTheNextLevel_returnFalse() {
+    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessMapButTheLevelOfThisMapIsNotTheNextLevel_ReturnFalse() {
     	Game game = new Game();
     	game.setId(1);
     	
@@ -712,7 +683,7 @@ public class MapServiceTest extends AbstractTest {
     
     /* findCurrentMap - begin */
     @Test
-    public void findCurrentMap_WhenPlayerHasNeverCompletedAnyPhaseOfTheGame_returnFirstMapOfTheFirstLevelOfTheGame() {
+    public void findCurrentMap_WhenPlayerHasNeverCompletedAnyPhaseOfTheGame_ReturnFirstMapOfTheFirstLevelOfTheGame() {
     	int gameId = 1, levelId = 1;
     	
     	List<Map> listReturned = new ArrayList<Map>();
@@ -740,7 +711,7 @@ public class MapServiceTest extends AbstractTest {
     }
     
     @Test
-    public void findCurrentMap_WhenNextPhaseIsInTheSameMapThatTheLastPhaseCompleted_returnSameMapOfTheLastPhaseCompleted() {
+    public void findCurrentMap_WhenNextPhaseIsInTheSameMapThatTheLastPhaseCompleted_ReturnSameMapOfTheLastPhaseCompleted() {
     	Game game = new Game();
     	game.setId(GAME_ID_EXISTENT);
     	
@@ -763,7 +734,7 @@ public class MapServiceTest extends AbstractTest {
     }
     
     @Test
-    public void findCurrentMap_WhenNextPhaseIsInTheNextMapInTheSameLevel_returnMapWithNextOrderAndInTheSameLevel() {
+    public void findCurrentMap_WhenNextPhaseIsInTheNextMapInTheSameLevel_ReturnMapWithNextOrderAndInTheSameLevel() {
     	Game game = new Game();
     	game.setId(GAME_ID_EXISTENT);
     	
@@ -795,7 +766,7 @@ public class MapServiceTest extends AbstractTest {
     }
     
     @Test
-    public void findCurrentMap_WhenNextPhaseIsInTheNextLevel_returnFirstMapOfNextLevelWithFlagLevelCompletedChecked() {
+    public void findCurrentMap_WhenNextPhaseIsInTheNextLevel_ReturnFirstMapOfNextLevelWithFlagLevelCompletedChecked() {
     	int gameId = 1, levelId = 1;
     	
     	Game game = new Game();
@@ -838,7 +809,7 @@ public class MapServiceTest extends AbstractTest {
     }
     
     @Test
-    public void findCurrentMap_WhenItDoesntExistNextMap_returnSameMapOfTheLastPhaseCompletedWithFlagGameCompletedChecked() {
+    public void findCurrentMap_WhenItDoesntExistNextMap_ReturnSameMapOfTheLastPhaseCompletedWithFlagGameCompletedChecked() {
     	int gameId = 1, levelId = 1;
     	
     	Game game = new Game();
