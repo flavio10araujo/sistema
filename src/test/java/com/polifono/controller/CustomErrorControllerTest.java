@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.polifono.AbstractControllerTest;
@@ -18,7 +17,6 @@ import com.polifono.AbstractControllerTest;
  * Also, these tests ensure that the request and response bodies are serialized as expected.
  * 
  */
-@Transactional
 public class CustomErrorControllerTest extends AbstractControllerTest {
 	
 	@Before

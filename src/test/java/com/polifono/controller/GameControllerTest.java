@@ -19,7 +19,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.*;
@@ -50,7 +49,6 @@ import com.polifono.service.IQuestionService;
  * Unit tests for the GameController using Spring MVC Mocks.
  * 
  */
-@Transactional
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({SecurityContextHolder.class}) // For emulating a logged in user.
 public class GameControllerTest extends AbstractControllerTest {
@@ -80,7 +78,7 @@ public class GameControllerTest extends AbstractControllerTest {
 	private IQuestionService questionService;
 	
 	@InjectMocks
-	private GameController controller; // All the Mock object are inserted in the InjectMock object.
+	private GameController controller; // All the Mock object are injected in the InjectMocks object.
 	
 	private final Integer GAME_ID_EXISTENT = 123;
 	private final Integer GAME_ORDER_EXISTENT = 3;

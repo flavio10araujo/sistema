@@ -30,8 +30,8 @@ import com.polifono.service.impl.MapServiceImpl;
  */
 @Transactional
 public class MapServiceTest extends AbstractTest {
-
-	private IMapService service;
+	
+	private MapServiceImpl service;
 	
 	@Mock
 	private IMapRepository repository;

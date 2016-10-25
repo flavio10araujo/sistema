@@ -36,7 +36,7 @@ public abstract class AbstractControllerTest extends AbstractTest {
      * Call this method from the concrete JUnit test class in the <code>@Before</code> setup method.
      */
     protected void setUp() {
-        mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build(); // webAppContextSetup method is used when we have already created a fully initialized WebApplicationContext object.
     }
     
     /**
@@ -45,7 +45,7 @@ public abstract class AbstractControllerTest extends AbstractTest {
      * @param controller A controller object to be tested.
      */
     protected void setUp(BaseController controller) {
-        mvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mvc = MockMvcBuilders.standaloneSetup(controller).build(); // standaloneSetup method is used when we want to configure the tested controller and the required MVC components manually.
     }
     
     /**

@@ -12,8 +12,12 @@ import com.polifono.service.IAnswerService;
 @Service
 public class AnswerServiceImpl implements IAnswerService {
 
-	@Autowired
 	private IAnswerRepository repository;
+	
+	@Autowired
+	public AnswerServiceImpl(IAnswerRepository repository) {
+		this.repository = repository;
+	}
 	
 	public final Answer save(Answer answer) {
 		return repository.save(answer);
