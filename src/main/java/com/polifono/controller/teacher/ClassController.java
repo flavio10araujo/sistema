@@ -41,7 +41,8 @@ public class ClassController extends BaseController {
 	public String save(@ModelAttribute("class") com.polifono.domain.Class clazz, final RedirectAttributes redirectAttributes) {
 
 		try {
-			classService.create(clazz, this.currentAuthenticatedUser().getUser());
+			clazz.setPlayer(this.currentAuthenticatedUser().getUser());
+			classService.save(classService.prepareClassForCreation(clazz));
 			redirectAttributes.addFlashAttribute("save", "success");
 		}
 		catch(Exception e) {

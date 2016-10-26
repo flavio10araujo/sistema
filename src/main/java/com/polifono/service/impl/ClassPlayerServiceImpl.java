@@ -14,14 +14,11 @@ import com.polifono.service.IClassPlayerService;
 @Service
 public class ClassPlayerServiceImpl implements IClassPlayerService {
 
-	@Autowired
 	private IClassPlayerRepository repository;
 	
-	public final ClassPlayer create(ClassPlayer classPlayer) {
-		classPlayer.setDtInc(new Date());
-		classPlayer.setActive(true);
-		classPlayer.setStatus(1);
-		return save(classPlayer);
+	@Autowired
+	public ClassPlayerServiceImpl(IClassPlayerRepository repository) {
+		this.repository = repository;
 	}
 	
 	public final ClassPlayer save(ClassPlayer classPlayer) {
@@ -33,8 +30,7 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
 		
 		if (temp != null) {
 			try {
-				temp.setStatus(3);
-				repository.save(temp);
+				repository.save(prepareClassPlayerToChangeStatus(temp, 3));
 			}
 			catch (Exception e) {
 				return false;
@@ -54,13 +50,19 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
 		return (List<ClassPlayer>) repository.findAll();
 	}
 	
-	public Boolean changeStatus(int id, int status) {
+	public final ClassPlayer prepareClassPlayerForCreation(ClassPlayer classPlayer) {
+		classPlayer.setDtInc(new Date());
+		classPlayer.setActive(true);
+		classPlayer.setStatus(1);
+		return classPlayer;
+	}
+	
+	public final Boolean changeStatus(int id, int status) {
 		ClassPlayer temp = repository.findOne(id);
 		
 		if (temp != null) {
 			try {
-				temp.setStatus(status);
-				repository.save(temp);
+				repository.save(prepareClassPlayerToChangeStatus(temp, status));
 			}
 			catch (Exception e) {
 				return false;
@@ -70,6 +72,11 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
 		}
 		
 		return false;
+	}
+	
+	public final ClassPlayer prepareClassPlayerToChangeStatus(ClassPlayer classPlayer, int status) {
+		classPlayer.setStatus(status);
+		return classPlayer;
 	}
 	
 	/**

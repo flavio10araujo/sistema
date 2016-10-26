@@ -6,8 +6,6 @@ import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
 
 public interface IClassPlayerService {
-
-	public ClassPlayer create(ClassPlayer classPlayer);
 	
 	public ClassPlayer save(ClassPlayer classPlayer);
 	
@@ -17,7 +15,11 @@ public interface IClassPlayerService {
 
 	public List<ClassPlayer> findAll();
 	
+	public ClassPlayer prepareClassPlayerForCreation(ClassPlayer classPlayer);
+	
 	public Boolean changeStatus(int id, int status);
+	
+	public ClassPlayer prepareClassPlayerToChangeStatus(ClassPlayer classPlayer, int status);
 	
 	public List<ClassPlayer> findClassPlayersByTeacher(int playerId);
 	

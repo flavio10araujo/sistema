@@ -106,7 +106,8 @@ public class StudentController extends BaseController {
 				return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
 			}
 
-			classPlayerService.create(classPlayer);
+			
+			classPlayerService.save(classPlayerService.prepareClassPlayerForCreation(classPlayer));
 			
 			EmailSendUtil.sendEmailInvitationToClass(currentAuthenticatedUser().getUser(), classPlayer);
 			

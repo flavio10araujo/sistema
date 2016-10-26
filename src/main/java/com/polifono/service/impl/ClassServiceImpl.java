@@ -6,21 +6,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Player;
 import com.polifono.repository.IClassRepository;
 import com.polifono.service.IClassService;
 
 @Service
 public class ClassServiceImpl implements IClassService {
 
-	@Autowired
 	private IClassRepository repository;
 	
-	public final com.polifono.domain.Class create(com.polifono.domain.Class clazz, Player player) {
-		clazz.setPlayer(player);
-		clazz.setDtInc(new Date());
-		clazz.setActive(true);
-		return save(clazz);
+	@Autowired
+	public ClassServiceImpl(IClassRepository repository) {
+		this.repository = repository;
 	}
 	
 	public final com.polifono.domain.Class save(com.polifono.domain.Class clazz) {
@@ -32,8 +28,7 @@ public class ClassServiceImpl implements IClassService {
 		
 		if (temp != null) {
 			try {
-				temp.setActive(false);
-				repository.save(temp);
+				repository.save(prepareClassForChangingStatus(temp, false));
 			}
 			catch (Exception e) {
 				return false;
@@ -51,6 +46,17 @@ public class ClassServiceImpl implements IClassService {
 
 	public final List<com.polifono.domain.Class> findAll() {
 		return (List<com.polifono.domain.Class>) repository.findAll();
+	}
+	
+	public final com.polifono.domain.Class prepareClassForCreation(com.polifono.domain.Class clazz) {
+		clazz.setDtInc(new Date());
+		clazz.setActive(true);
+		return clazz;
+	}
+	
+	public final com.polifono.domain.Class prepareClassForChangingStatus(com.polifono.domain.Class clazz, boolean status) {
+		clazz.setActive(status);
+		return clazz;
 	}
 	
 	public final List<com.polifono.domain.Class> findClassesByTeacherAndStatus(int playerId, boolean status) {

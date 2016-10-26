@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.polifono.AbstractTest;
 import com.polifono.domain.Answer;
@@ -23,7 +22,6 @@ import static org.mockito.Mockito.*;
  * Unit test methods for the AnswerService.
  * 
  */
-@Transactional
 public class AnswerServiceTest extends AbstractTest {
 	
     private IAnswerService service;

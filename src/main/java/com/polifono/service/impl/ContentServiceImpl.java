@@ -12,8 +12,12 @@ import com.polifono.service.IContentService;
 @Service
 public class ContentServiceImpl implements IContentService {
 
-	@Autowired
 	private IContentRepository repository;
+	
+	@Autowired
+	public ContentServiceImpl(IContentRepository repository) {
+		this.repository = repository;
+	}
 	
 	public final Content save(Content content) {
 		return repository.save(content);
