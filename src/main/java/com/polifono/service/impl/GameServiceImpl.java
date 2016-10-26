@@ -16,11 +16,15 @@ import com.polifono.service.IQuestionService;
 @Service
 public class GameServiceImpl implements IGameService {
 
-	@Autowired
 	private IGameRepository repository;
 	
 	@Autowired
 	private IQuestionService questionService;
+	
+	@Autowired
+	public GameServiceImpl(IGameRepository repository) {
+		this.repository = repository;
+	}
 
 	public final List<Game> findAll() {
 		return (List<Game>) repository.findAll();

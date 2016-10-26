@@ -1,53 +1,99 @@
 package com.polifono.service;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.polifono.AbstractTest;
 import com.polifono.domain.Game;
+import com.polifono.repository.IGameRepository;
+import com.polifono.service.impl.GameServiceImpl;
 
 /**
  * Unit test methods for the GameService.
  * 
  */
-@Transactional
 public class GameServiceTest extends AbstractTest {
 
 	@Autowired
     private IGameService service;
+	
+	@Mock
+	private IGameRepository repository;
 	
 	private final String NAME_LINK = "recorder";
 
     @Before
     public void setUp() {
         // Do something before each test method.
+    	MockitoAnnotations.initMocks(this);
+    	service = new GameServiceImpl(repository);
     }
 
     @After
     public void tearDown() {
         // Clean up after each test method.
     }
+    
+    /* stubs - begin */
+    public Game getEntityStubData() {
+    	Game game = new Game();
+    	return game;
+    }
+    
+    private List<Game> getEntityListStubData() {
+    	List<Game> list = new ArrayList<Game>();
+    	
+    	Game entity1 = getEntityStubData();
+    	Game entity2 = getEntityStubData();
+    	
+    	list.add(entity1);
+    	list.add(entity2);
+    	
+    	return list;
+    }
+    /* stubs - end */
 
     /* findAll - begin */
     @Test
     public void findAll_WhenListAllGames_ReturnList() {
-    	List<Game> list = service.findAll();
-    	Assert.assertNotNull("failure - expected not null", list);
-    	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
+    	List<Game> list = getEntityListStubData();
+    	
+    	when(repository.findAll()).thenReturn(list);
+    	
+    	List<Game> listReturned = service.findAll();
+    	Assert.assertNotNull("failure - expected not null", listReturned);
+    	Assert.assertNotEquals("failure - not expected list size 0", 0, listReturned.size());
+    	
+    	verify(repository, times(1)).findAll();
+    	verifyNoMoreInteractions(repository);
     }
     /* findAll - end */
 
     /* findByNamelink - begin */
     @Test
     public void findByNamelink_WhenSearchByNamelinkExistent_ReturnGame() {
-    	Game item = service.findByNamelink(NAME_LINK);
-    	Assert.assertNotNull("failure - expected not null for '" + NAME_LINK + "'", item);
+    	Game entity = getEntityStubData();
+    	
+    	when(repository.findByNamelink(NAME_LINK)).thenReturn(entity);
+    	
+    	Game entityReturned = service.findByNamelink(NAME_LINK);
+    	Assert.assertNotNull("failure - expected not null for '" + NAME_LINK + "'", entityReturned);
+    	
+    	verify(repository, times(1)).findByNamelink(NAME_LINK);
+    	verifyNoMoreInteractions(repository);
     }
     /* findByNamelink - end */
     
@@ -88,4 +134,10 @@ public class GameServiceTest extends AbstractTest {
     	Assert.assertEquals(10, service.calculateScore(5, 70));
     }
     /* calculateScore - end */
+    
+    /* calculateGrade - begin */
+    /* calculateGrade - end */
+    
+    /* getPhaseOfTheTest - begin */
+    /* getPhaseOfTheTest - end */
 }

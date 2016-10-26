@@ -14,17 +14,25 @@ import com.polifono.service.ILoginService;
 @Service
 public class LoginServiceImpl implements ILoginService {
 
-	@Autowired
 	private ILoginRepository repository;
 	
-	public final Login registerLogin(Player player) {
+	@Autowired
+	public LoginServiceImpl(ILoginRepository repository) {
+		this.repository = repository;
+	}
+	
+	public Login registerLogin(Player player) {
+		return repository.save(prepareForRegisterLogin(player));
+	}
+	
+	public Login prepareForRegisterLogin(Player player) {
 		Login login = new Login();
 		login.setPlayer(player);
 		login.setDtLogin(new Date());
-		return repository.save(login);
+		return login;
 	}
 	
-	public final List<Login> findByPlayer(int playerId) {
+	public List<Login> findByPlayer(int playerId) {
 		List<Login> list = repository.findByPlayer(playerId); 
 		
 		if (list == null || list.size() == 0) {

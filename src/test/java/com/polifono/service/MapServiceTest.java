@@ -1,5 +1,9 @@
 package com.polifono.service;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -11,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.polifono.AbstractTest;
 import com.polifono.domain.Game;
@@ -28,7 +31,6 @@ import com.polifono.service.impl.MapServiceImpl;
  * Unit test methods for the MapService.
  * 
  */
-@Transactional
 public class MapServiceTest extends AbstractTest {
 	
 	private MapServiceImpl service;
@@ -40,8 +42,13 @@ public class MapServiceTest extends AbstractTest {
 	private IPhaseService phaseService;
 	
 	private final Integer GAME_ID_EXISTENT = 1;
+	private final Integer GAME_ID_INEXISTENT = Integer.MAX_VALUE;
 	
 	private final Integer MAP_ID_EXISTENT = 1;
+	private final Integer MAP_ID_INEXISTENT = Integer.MAX_VALUE;
+	
+	private final Integer LEVEL_ID_EXISTENT = 3;
+	private final Integer LEVEL_ID_INEXISTENT = Integer.MAX_VALUE;
 
     @Before
     public void setUp() {
@@ -55,194 +62,208 @@ public class MapServiceTest extends AbstractTest {
         // Clean up after each test method.
     }
     
+    /* stubs - begin */
+    private Map getEntityStubData() {
+    	Game game = new Game();
+    	game.setId(GAME_ID_EXISTENT);
+    	
+    	Level level = new Level();
+        level.setId(LEVEL_ID_EXISTENT);
+    	
+    	Map map = new Map();
+    	map.setId(MAP_ID_EXISTENT);
+    	map.setName("Map Test");
+    	map.setOrder(3);
+    	map.setGame(game);
+    	map.setLevel(level);
+    	
+    	return map;
+    }
+    
+    private List<Map> getEntityListStubData() {
+    	List<Map> list = new ArrayList<Map>();
+    	
+    	Map entity1 = getEntityStubData();
+    	Map entity2 = getEntityStubData();
+    	
+    	list.add(entity1);
+    	list.add(entity2);
+    	
+    	return list;
+    }
+    /* stubs - end */
+    
     /* save - begin */
     @Test
     public void save_WhenSaveMap_ReturnMapSaved() {
-    	Integer id = 123;
+    	Map entity = getEntityStubData();
     	
-    	Map mapSaved = new Map();
-    	mapSaved.setId(id);
-    	mapSaved.setName("Map Test");
-    	mapSaved.setOrder(3);
-    	Game gameMapSaved = new Game();
-    	gameMapSaved.setId(2);
-        mapSaved.setGame(gameMapSaved);
-        Level levelMapSaved = new Level();
-        levelMapSaved.setId(3);
-        mapSaved.setLevel(levelMapSaved);
-    	
-    	when(repository.findOne(id)).thenReturn(mapSaved);
-    	
-        Map entity = service.findOne(id);
-        
-        // Changing all possible fields.
-        // id - not possible to change.
-        Game newGame = new Game();
-        newGame.setId(entity.getGame().getId() + 1);
-        entity.setGame(newGame);
-        Level newLevel = new Level();
-        newLevel.setId(entity.getLevel().getId() + 1);
-        entity.setLevel(newLevel);
-        entity.setName(entity.getName() + " Changed");
-        entity.setOrder(entity.getOrder() + 1);
-        
-        when(repository.save(entity)).thenReturn(entity);
+    	when(repository.save(entity)).thenReturn(entity);
 
         // Saving the changes.
-        Map changedEntity = service.save(entity);
+        Map entityReturned = service.save(entity);
         
-        Assert.assertNotNull("failure - expected not null", changedEntity);
-        Assert.assertEquals("failure - expected id attribute match", id.intValue(), changedEntity.getId());
+        Assert.assertEquals("failure - expected name attribute match", entity.getName(), entityReturned.getName());
+        Assert.assertEquals("failure - expected order attribute match", entity.getOrder(), entityReturned.getOrder());
+        Assert.assertEquals("failure - expected game attribute match", entity.getGame().getId(), entityReturned.getGame().getId());
+        Assert.assertEquals("failure - expected level attribute match", entity.getLevel().getId(), entityReturned.getLevel().getId());
         
-        when(repository.findOne(changedEntity.getId())).thenReturn(changedEntity);
-        
-        // Get the entity in the database with the changes.
-        Map updatedEntity = service.findOne(changedEntity.getId());
-        
-        Assert.assertEquals("failure - expected name attribute match", entity.getName(), updatedEntity.getName());
-        Assert.assertEquals("failure - expected order attribute match", entity.getOrder(), updatedEntity.getOrder());
-        Assert.assertEquals("failure - expected game attribute match", entity.getGame().getId(), updatedEntity.getGame().getId());
-        Assert.assertEquals("failure - expected level attribute match", entity.getLevel().getId(), updatedEntity.getLevel().getId());
+        verify(repository, times(1)).save(entity);
+        verifyNoMoreInteractions(repository);
     }
     /* save - end */
     
     /* delete - begin */
     @Test
     public void delete_WhenMapIsExistent_ReturnTrue() {
-    	int id = 234;
-    	Map temp = new Map();
+    	Map entity = getEntityStubData();
     	
-    	when(repository.findOne(id)).thenReturn(temp);
+    	when(repository.findOne(MAP_ID_EXISTENT)).thenReturn(entity);
+    	doNothing().when(repository).delete(entity);
     	
-    	Assert.assertTrue("failure - expected return true", service.delete(id));
+    	Assert.assertTrue("failure - expected return true", service.delete(MAP_ID_EXISTENT));
     	
-    	when(repository.findOne(id)).thenReturn(null);
-    	
-    	Map entity = service.findOne(id);
-    	Assert.assertNull("failure - expected null", entity);
+    	verify(repository, times(1)).findOne(MAP_ID_EXISTENT);
+    	verify(repository, times(1)).delete(MAP_ID_EXISTENT);
+        verifyNoMoreInteractions(repository);
     }
 
     @Test
     public void delete_WhenMapIsInexistent_ReturnFalse() {
-    	int id = 999;
-    	when(repository.findOne(id)).thenReturn(null);
-    	Assert.assertFalse("failure - expected return false", service.delete(id));
+    	when(repository.findOne(MAP_ID_EXISTENT)).thenReturn(null);
+    	
+    	Assert.assertFalse("failure - expected return false", service.delete(MAP_ID_EXISTENT));
+    	
+    	verify(repository, times(1)).findOne(MAP_ID_EXISTENT);
+        verifyNoMoreInteractions(repository);
     }
     /* delete - end */
     
     /* findOne - begin */
     @Test
     public void findOne_WhenMapIsExistent_ReturnMap() {
-        Integer id = 123;
+    	Map entity = getEntityStubData();
+    	
+    	when(repository.findOne(MAP_ID_EXISTENT)).thenReturn(entity);
+    	
+    	Map entityReturned = service.findOne(MAP_ID_EXISTENT);
+    	
+        Assert.assertNotNull("failure - expected not null", entityReturned);
+        Assert.assertEquals("failure - expected id attribute match", MAP_ID_EXISTENT.intValue(), entityReturned.getId());
         
-        Map map = new Map();
-        map.setId(123);
-        when(repository.findOne(id)).thenReturn(map);
-        
-        Map entity = service.findOne(id);
-        Assert.assertNotNull("failure - expected not null", entity);
-        Assert.assertEquals("failure - expected id attribute match", id.intValue(), entity.getId());
+        verify(repository, times(1)).findOne(MAP_ID_EXISTENT);
+        verifyNoMoreInteractions(repository);
     }
     
     @Test
     public void findOne_WhenMapIsInexistent_ReturnNull() {
-        Integer id = 999;
+    	when(repository.findOne(MAP_ID_INEXISTENT)).thenReturn(null);
         
-        when(repository.findOne(id)).thenReturn(null);
-        
-    	Map entity = service.findOne(id);
+    	Map entity = service.findOne(MAP_ID_INEXISTENT);
         Assert.assertNull("failure - expected null", entity);
+        
+        verify(repository, times(1)).findOne(MAP_ID_INEXISTENT);
+        verifyNoMoreInteractions(repository);
     }
     /* findOne - end */
     
     /* findAll - begin */
     @Test
     public void findAll_WhenListAllMaps_ReturnList() {
-    	List<Map> listReturned = new ArrayList<Map>();
-    	listReturned.add(new Map());
-    	when(repository.findAll()).thenReturn(listReturned);
+    	List<Map> list = getEntityListStubData();
     	
-    	List<Map> list = service.findAll();
-    	Assert.assertNotNull("failure - expected not null", list);
-    	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
+    	when(repository.findAll()).thenReturn(list);
+    	
+    	List<Map> listReturned = service.findAll();
+    	Assert.assertNotNull("failure - expected not null", listReturned);
+    	Assert.assertNotEquals("failure - not expected list size 0", 0, listReturned.size());
+    	
+    	verify(repository, times(1)).findAll();
+        verifyNoMoreInteractions(repository);
     }
     /* findAll - end */
     
     /* findMapsByGame - begin */
     @Test
     public void findMapsByGame_WhenSearchByGameExistent_ReturnList() {
-    	int gameId = 1;
+    	List<Map> list = getEntityListStubData();
     	
-    	List<Map> listReturned = new ArrayList<Map>();
-    	listReturned.add(new Map());
-    	when(repository.findMapsByGame(gameId)).thenReturn(listReturned);
+    	when(repository.findMapsByGame(GAME_ID_EXISTENT)).thenReturn(list);
     	
-    	List<Map> list = service.findMapsByGame(gameId);
-        Assert.assertNotNull("failure - not expected null", list);
-        Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
+    	List<Map> listReturned = service.findMapsByGame(GAME_ID_EXISTENT);
+        Assert.assertNotNull("failure - not expected null", listReturned);
+        Assert.assertNotEquals("failure - list size not expected 0", 0, listReturned.size());
+        
+        verify(repository, times(1)).findMapsByGame(GAME_ID_EXISTENT);
+        verifyNoMoreInteractions(repository);
     }
 
     @Test
     public void findMapsByGame_WhenSearchByGameInexistent_ReturnEmptyList() {
-    	int gameId = 999;
+    	List<Map> list = getEntityListStubData();
     	
-    	List<Map> listReturned = new ArrayList<Map>();
-    	when(repository.findMapsByGame(gameId)).thenReturn(listReturned);
+    	when(repository.findMapsByGame(GAME_ID_INEXISTENT)).thenReturn(list);
     	
-    	List<Map> list = service.findMapsByGame(gameId);
-    	Assert.assertEquals("failure - expected empty list", 0, list.size());
+    	List<Map> listReturned = service.findMapsByGame(GAME_ID_INEXISTENT);
+    	Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+    	
+    	verify(repository, times(1)).findMapsByGame(GAME_ID_INEXISTENT);
+        verifyNoMoreInteractions(repository);
     }
     /* findMapsByGame - end */
     
     /* findMapsByGameAndLevel - begin */
     @Test
     public void findMapsByGameAndLevel_WhenSearchByGameAndLevelExistents_ReturnList() {
-    	int gameId = 1, levelId = 1;
+    	List<Map> list = getEntityListStubData();
     	
-    	List<Map> listReturned = new ArrayList<Map>();
-    	listReturned.add(new Map());
+    	when(repository.findMapsByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT)).thenReturn(list);
     	
-    	when(repository.findMapsByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
-    	
-    	List<Map> list = service.findMapsByGameAndLevel(gameId, levelId);
-        Assert.assertNotNull("failure - not expected null", list);
-        Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
+    	List<Map> listReturned = service.findMapsByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
+        Assert.assertNotNull("failure - not expected null", listReturned);
+        Assert.assertNotEquals("failure - list size not expected 0", 0, listReturned.size());
+        
+        verify(repository, times(1)).findMapsByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
+        verifyNoMoreInteractions(repository);
     }
 
     @Test
     public void findMapsByGameAndLevel_WhenSearchByGameAndLevelInexistents_ReturnEmptyList() {
-    	int gameId = 999, levelId = 999;
+    	List<Map> list = getEntityListStubData();
     	
-    	List<Map> listReturned = new ArrayList<Map>();
+    	when(repository.findMapsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT)).thenReturn(list);
     	
-    	when(repository.findMapsByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
+    	List<Map> listReturned = service.findMapsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT);
+    	Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
     	
-    	List<Map> list = service.findMapsByGameAndLevel(gameId, levelId);
-    	Assert.assertEquals("failure - expected empty list", 0, list.size());
+    	verify(repository, times(1)).findMapsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT);
+        verifyNoMoreInteractions(repository);
     }
     
     @Test
     public void findMapsByGameAndLevel_WhenSearchByGameExistentButLevelInexistent_ReturnEmptyList() {
-    	int gameId = 1, levelId = 999;
+    	List<Map> list = getEntityListStubData();
     	
-    	List<Map> listReturned = new ArrayList<Map>();
+    	when(repository.findMapsByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT)).thenReturn(list);
     	
-    	when(repository.findMapsByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
+    	List<Map> listReturned = service.findMapsByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT);
+    	Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
     	
-    	List<Map> list = service.findMapsByGameAndLevel(gameId, levelId);
-    	Assert.assertEquals("failure - expected empty list", 0, list.size());
+    	verify(repository, times(1)).findMapsByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT);
+        verifyNoMoreInteractions(repository);
     }
     
     @Test
     public void findMapsByGameAndLevel_WhenSearchByLevelExistentButGameInexistent_ReturnEmptyList() {
-    	int gameId = 999, levelId = 1;
+    	List<Map> list = getEntityListStubData();
     	
-    	List<Map> listReturned = new ArrayList<Map>();
+    	when(repository.findMapsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT)).thenReturn(list);
     	
-    	when(repository.findMapsByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
+    	List<Map> listReturned = service.findMapsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT);
+    	Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
     	
-    	List<Map> list = service.findMapsByGameAndLevel(gameId, levelId);
-    	Assert.assertEquals("failure - expected empty list", 0, list.size());
+    	verify(repository, times(1)).findMapsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT);
+        verifyNoMoreInteractions(repository);
     }
     /* findMapsByGameAndLevel - end */
     

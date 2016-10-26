@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.polifono.AbstractTest;
 import com.polifono.domain.Game;
@@ -28,7 +27,6 @@ import com.polifono.service.impl.PlayerServiceImpl;
  * Unit test methods for the PlayerService.
  * 
  */
-@Transactional
 public class PlayerServiceTest extends AbstractTest {
 
     private IPlayerService service;
@@ -57,37 +55,42 @@ public class PlayerServiceTest extends AbstractTest {
         // Clean up after each test method.
     }
     
+    /* stubs - begin */
+    private Player getEntityStubData() {
+    	Player entity = new Player();
+        entity.setName("Name of the Player");
+        entity.setEmail("teste@email.com");
+        entity.setPassword("password");
+        
+        return entity;
+    }
+    /* stubs - end */
+    
     /* create - begin */
     @Test
     public void create_WhenCreatePlayer_ReturnPlayerCreated() {
-        Player entity = new Player();
-        entity.setName("Name of New the Player");
-        entity.setEmail("new@email.com");
-        entity.setPassword("password");
-
-        Player createdEntity = service.create(entity);
-
-        Assert.assertNotNull("failure - expected not null", createdEntity);
-        Assert.assertNotEquals("failure - expected id attribute bigger than 0", 0, createdEntity.getId());
+        Player entity = getEntityStubData();
         
-        Player newEntity = service.findOne(createdEntity.getId());
-        
-        Assert.assertEquals("failure - expected name attribute match", entity.getName(), newEntity.getName());
-        Assert.assertEquals("failure - expected email attribute match", entity.getEmail(), newEntity.getEmail());
+        when(repository.save(entity)).thenReturn(entity);
+
+        Player entityReturned = service.create(entity);
+
+        Assert.assertEquals("failure - expected name attribute match", entity.getName(), entityReturned.getName());
+        Assert.assertEquals("failure - expected email attribute match", entity.getEmail(), entityReturned.getEmail());
         //Assert.assertEquals("failure - expected password attribute match", service.encryptPassword(entity.getPassword()), newEntity.getPassword());
         
-        Assert.assertEquals("failure - expected dtInc attribute match", 0, newEntity.getDtInc().compareTo(createdEntity.getDtInc()));
-        Assert.assertEquals("failure - expected active attribute match", true, newEntity.isActive());
-        Assert.assertEquals("failure - expected credit attribute match", 30, newEntity.getCredit());
-        Assert.assertEquals("failure - expected role attribute match", Role.USER, newEntity.getRole());
+        Assert.assertEquals("failure - expected dtInc attribute match", 0, entity.getDtInc().compareTo(entityReturned.getDtInc()));
+        Assert.assertEquals("failure - expected active attribute match", true, entityReturned.isActive());
+        Assert.assertEquals("failure - expected credit attribute match", 30, entityReturned.getCredit());
+        Assert.assertEquals("failure - expected role attribute match", Role.USER, entityReturned.getRole());
         
-        Assert.assertEquals("failure - expected score attribute match", 0, newEntity.getScore());
-        Assert.assertEquals("failure - expected indEmailConfirmed attribute match", false, newEntity.isIndEmailConfirmed());
-        Assert.assertNotNull("failure - expected emailConfirmed attribute not null", newEntity.getEmailConfirmed());
-        Assert.assertNull("failure - expected passwordReset attribute null", newEntity.getPasswordReset());
-        Assert.assertNull("failure - expected phone attribute null", newEntity.getPhone());
-        Assert.assertEquals("failure - expected sex attribute match", 0, newEntity.getSex());
-        Assert.assertNull("failure - expected address attribute null", newEntity.getAddress());
+        Assert.assertEquals("failure - expected score attribute match", 0, entityReturned.getScore());
+        Assert.assertEquals("failure - expected indEmailConfirmed attribute match", false, entityReturned.isIndEmailConfirmed());
+        Assert.assertNotNull("failure - expected emailConfirmed attribute not null", entityReturned.getEmailConfirmed());
+        Assert.assertNull("failure - expected passwordReset attribute null", entityReturned.getPasswordReset());
+        Assert.assertNull("failure - expected phone attribute null", entityReturned.getPhone());
+        Assert.assertEquals("failure - expected sex attribute match", 0, entityReturned.getSex());
+        Assert.assertNull("failure - expected address attribute null", entityReturned.getAddress());
     }
     /* create - end */
     

@@ -13,8 +13,12 @@ import com.polifono.service.ILevelService;
 @Service
 public class LevelServiceImpl implements ILevelService {
 
-	@Autowired
 	private ILevelRepository repository;
+	
+	@Autowired
+	public LevelServiceImpl(ILevelRepository repository) {
+		this.repository = repository;
+	}
 	
 	public final List<Level> findAll() {
 		return (List<Level>) repository.findAll();
