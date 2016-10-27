@@ -89,9 +89,6 @@ public class PlayerServiceImpl implements IPlayerService {
 	 */
 	public Optional<Player> findByEmailAndStatusForLogin(String email, boolean status) {
         LOGGER.debug("Getting user by email={}", email.replaceFirst("@.*", "@***"));
-        
-        System.out.println("EMAIL2: " + email + " status: " + status);
-        
         return repository.findByEmailAndStatusForLogin(email, status);
     }
 	
@@ -102,14 +99,22 @@ public class PlayerServiceImpl implements IPlayerService {
 	
 	public final Player addCreditsToPlayer(int playerId, int qtdCredits) {
 		Player player = this.findOne(playerId);
+		return this.save(preparePlayerForAddingCredits(player, qtdCredits));
+	}
+	
+	public Player preparePlayerForAddingCredits(Player player, int qtdCredits) {
 		player.setCredit(player.getCredit() + qtdCredits);
-		return this.save(player);
+		return player;
 	}
 	
 	public final Player removeCreditsFromPlayer(int playerId, int qtdCredits) {
 		Player player = this.findOne(playerId);
+		return this.save(prepareForRemovingCredits(player, qtdCredits));
+	}
+	
+	public Player prepareForRemovingCredits(Player player, int qtdCredits) {
 		player.setCredit(player.getCredit() - qtdCredits);
-		return this.save(player);
+		return player;
 	}
 	
 	/**
