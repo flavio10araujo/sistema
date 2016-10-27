@@ -124,7 +124,7 @@ public class MapServiceTest extends AbstractTest {
     	Assert.assertTrue("failure - expected return true", service.delete(MAP_ID_EXISTENT));
     	
     	verify(repository, times(1)).findOne(MAP_ID_EXISTENT);
-    	verify(repository, times(1)).delete(MAP_ID_EXISTENT);
+    	verify(repository, times(1)).delete(entity);
         verifyNoMoreInteractions(repository);
     }
 

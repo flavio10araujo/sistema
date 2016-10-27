@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.polifono.AbstractTest;
 import com.polifono.domain.CurrentUser;
@@ -16,7 +15,6 @@ import com.polifono.domain.Role;
  * Unit test methods for the CurrentUserServiceImpl.
  * 
  */
-@Transactional
 public class CurrentUserServiceTest extends AbstractTest {
 
 	@Autowired
@@ -45,6 +43,8 @@ public class CurrentUserServiceTest extends AbstractTest {
     public void canAccessUser_WhenRoleIsAdmin_ReturnTrue() {
     	Player player = new Player();
     	player.setRole(Role.ADMIN);
+    	player.setEmail("test@email.com");
+    	player.setPassword("T12345");
     	CurrentUser currentUser = new CurrentUser(player);
     	Assert.assertTrue(service.canAccessUser(currentUser, PLAYER_ID_EXISTENT.longValue()));
     }
@@ -53,6 +53,8 @@ public class CurrentUserServiceTest extends AbstractTest {
     public void canAccessUser_WhenCurrentUserIdIsEqualsUserId_ReturnTrue() {
     	Player player = new Player();
     	player.setRole(Role.ADMIN);
+    	player.setEmail("test@email.com");
+    	player.setPassword("T12345");
     	CurrentUser currentUser = new CurrentUser(player);
     	Assert.assertTrue(service.canAccessUser(currentUser, PLAYER_ID_EXISTENT.longValue()));
     }

@@ -59,10 +59,7 @@ public class UserDetailsServiceTest {
     @Test(expected=UsernameNotFoundException.class)
     public void loadUserByUsername_WhenUserNotFoundByEmailAndStatus_ThrowUsernameNotFoundException() {
     	String email = PLAYER_EMAIL_INEXISTENT;
-    	boolean status = true;
-    	when(userService.findByEmailAndStatusForLogin(email, true)).thenReturn(null);
-    	//when(userService.findByEmailAndStatusForLogin(email, true).orElseThrow(() -> new UsernameNotFoundException(String.format("User with email=%s was not found", email)))).thenReturn(null);
-    	//when(playerRepository.findByEmailAndStatusForLogin(email, status)).thenReturn(null);
+    	when(userService.findByEmailAndStatusForLogin(email, true)).thenReturn(Optional.empty());
     	service.loadUserByUsername(PLAYER_EMAIL_INEXISTENT);
     }
     
@@ -73,6 +70,8 @@ public class UserDetailsServiceTest {
     	Player player = new Player();
     	player.setId(123);
     	player.setRole(Role.USER);
+    	player.setEmail("test@email.com");
+    	player.setPassword("T12345");
     	Optional<Player> returned = Optional.of(player);
     	
     	when(userService.findByEmailAndStatusForLogin(email, true)).thenReturn(returned);
