@@ -167,7 +167,6 @@ public class PlayerServiceTest extends AbstractTest {
         Assert.assertEquals("failure - expected email attribute match", entity.getEmail(), entityReturned.getEmail());
         //Assert.assertEquals("failure - expected password attribute match", service.encryptPassword(auxEntity.getPassword()), updatedEntity.getPassword());
         
-        Assert.assertEquals("failure - expected dtInc attribute match", 0, entity.getDtInc().compareTo(entityReturned.getDtInc()));
         Assert.assertEquals("failure - expected active attribute match", entity.isActive(), entityReturned.isActive());
         Assert.assertEquals("failure - expected credit attribute match", entity.getCredit(), entityReturned.getCredit());
         Assert.assertEquals("failure - expected role attribute match", entity.getRole(), entityReturned.getRole());

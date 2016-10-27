@@ -12,8 +12,12 @@ import com.polifono.service.IQuestionService;
 @Service
 public class QuestionServiceImpl implements IQuestionService {
 
-	@Autowired
 	private IQuestionRepository repository;
+	
+	@Autowired
+	public QuestionServiceImpl(IQuestionRepository repository) {
+		this.repository = repository;
+	}
 	
 	public final Question save(Question question) {
 		return repository.save(question);
