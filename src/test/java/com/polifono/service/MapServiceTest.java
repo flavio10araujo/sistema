@@ -200,9 +200,7 @@ public class MapServiceTest extends AbstractTest {
 
     @Test
     public void findMapsByGame_WhenSearchByGameInexistent_ReturnEmptyList() {
-    	List<Map> list = getEntityListStubData();
-    	
-    	when(repository.findMapsByGame(GAME_ID_INEXISTENT)).thenReturn(list);
+    	when(repository.findMapsByGame(GAME_ID_INEXISTENT)).thenReturn(new ArrayList<Map>());
     	
     	List<Map> listReturned = service.findMapsByGame(GAME_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
@@ -229,9 +227,7 @@ public class MapServiceTest extends AbstractTest {
 
     @Test
     public void findMapsByGameAndLevel_WhenSearchByGameAndLevelInexistents_ReturnEmptyList() {
-    	List<Map> list = getEntityListStubData();
-    	
-    	when(repository.findMapsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT)).thenReturn(list);
+    	when(repository.findMapsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT)).thenReturn(new ArrayList<Map>());
     	
     	List<Map> listReturned = service.findMapsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
@@ -242,9 +238,7 @@ public class MapServiceTest extends AbstractTest {
     
     @Test
     public void findMapsByGameAndLevel_WhenSearchByGameExistentButLevelInexistent_ReturnEmptyList() {
-    	List<Map> list = getEntityListStubData();
-    	
-    	when(repository.findMapsByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT)).thenReturn(list);
+    	when(repository.findMapsByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT)).thenReturn(new ArrayList<Map>());
     	
     	List<Map> listReturned = service.findMapsByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
@@ -255,9 +249,7 @@ public class MapServiceTest extends AbstractTest {
     
     @Test
     public void findMapsByGameAndLevel_WhenSearchByLevelExistentButGameInexistent_ReturnEmptyList() {
-    	List<Map> list = getEntityListStubData();
-    	
-    	when(repository.findMapsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT)).thenReturn(list);
+    	when(repository.findMapsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT)).thenReturn(new ArrayList<Map>());
     	
     	List<Map> listReturned = service.findMapsByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, listReturned.size());

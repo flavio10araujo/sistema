@@ -1,6 +1,10 @@
 package com.polifono.service;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import org.mockito.Matchers;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,6 +63,27 @@ public class PlayerPhaseServiceTest extends AbstractTest {
     public void tearDown() {
         // Clean up after each test method.
     }
+    
+    /* stubs - begin */
+    private PlayerPhase getEntityStubData() {
+    	Phase phase = new Phase();
+    	phase.setId(PLAYER_ID_EXISTENT);
+    	
+    	Player player = new Player();
+    	player.setId(PHASE_ID_EXISTENT);
+    	
+    	Phasestatus phasestatus = new Phasestatus();
+    	phasestatus.setId(PHASESTATUS_ONGOING);
+    	
+    	PlayerPhase entity = new PlayerPhase();
+    	entity.setNumAttempts(1);
+    	entity.setPhase(phase);
+    	entity.setPlayer(player);
+    	entity.setPhasestatus(phasestatus);
+    	
+    	return entity;
+    }
+    /* stubs - end */
     
     /* save - begin */
     @Test
@@ -248,68 +273,52 @@ public class PlayerPhaseServiceTest extends AbstractTest {
     /* setTestAttempt - begin */
     @Test
     public void setTestAttempt_WhenItIsNotTheFirstAttemptToDoThisTest_ReturnPlayerPhaseWithMoreThanOneAttempt() {
-    	int playerId = PLAYER_ID_EXISTENT, phaseId = PHASE_ID_EXISTENT, phasestatusId = 2;
+    	PlayerPhase entity = getEntityStubData();
+    	entity.setNumAttempts(2);
     	
-    	Phase phase = new Phase();
-    	phase.setId(playerId);
+    	when(repository.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASESTATUS_ONGOING)).thenReturn(entity);
+    	when(repository.save(entity)).thenReturn(entity);
     	
     	Player player = new Player();
-    	player.setId(phaseId);
+    	player.setId(PHASE_ID_EXISTENT);
     	
-    	PlayerPhase playerPhase1 = new PlayerPhase();
-    	playerPhase1.setNumAttempts(1);
-    	playerPhase1.setPhase(phase);
-    	playerPhase1.setPlayer(player);
-    	Phasestatus phasestatus1 = new Phasestatus();
-    	phasestatus1.setId(phasestatusId);
-    	playerPhase1.setPhasestatus(phasestatus1);
+    	Phase phase = new Phase();
+    	phase.setId(PLAYER_ID_EXISTENT);
     	
-    	PlayerPhase playerPhase = new PlayerPhase();
-    	playerPhase.setNumAttempts(2);
-    	playerPhase.setPhase(phase);
-    	playerPhase.setPlayer(player);
-    	Phasestatus phasestatus = new Phasestatus();
-    	phasestatus.setId(phasestatusId);
-    	playerPhase.setPhasestatus(phasestatus);
+    	PlayerPhase entityReturned = service.setTestAttempt(player, phase);
     	
-    	when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(playerPhase1);
-    	when(repository.save(playerPhase)).thenReturn(playerPhase);
-    	
-    	PlayerPhase entity = service.setTestAttempt(player, phase);
-    	
-    	Assert.assertTrue("failure expected numAttempts attribute bigger than 1", (entity.getNumAttempts() > 1));
-		Assert.assertEquals("failure match phase attribute", phase.getId(), entity.getPhase().getId());
-		Assert.assertEquals("failure match phaseStatus attribute", phasestatusId, entity.getPhasestatus().getId());
-		Assert.assertEquals("failure match player attribute", player.getId(), entity.getPlayer().getId());
+    	Assert.assertNotNull("failute expected no null", entityReturned);
+    	Assert.assertEquals("failure match phase attribute", entity.getPhase().getId(), entityReturned.getPhase().getId());
+    	Assert.assertTrue("failure expected numAttempts attribute bigger than 1", (entityReturned.getNumAttempts() > 1));
+		
+    	verify(repository, times(1)).findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASESTATUS_ONGOING);
+    	verify(repository, times(1)).save(entity);
+        verifyNoMoreInteractions(repository);
     }
     
     @Test
     public void setTestAttempt_WhenItIsTheFirstAttemptToDoThisTest_ReturnPlayerPhaseWithOneAttempt() {
-    	int playerId = PLAYER_ID_EXISTENT, phaseId = PHASE_ID_EXISTENT, phasestatusId = 2;
+    	PlayerPhase entity = getEntityStubData();
+    	entity.setNumAttempts(1);
     	
-    	Phase phase = new Phase();
-    	phase.setId(playerId);
+    	when(repository.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASESTATUS_ONGOING)).thenReturn(null);
+    	when(repository.save(Matchers.any(PlayerPhase.class))).thenReturn(entity);
     	
     	Player player = new Player();
-    	player.setId(phaseId);
+    	player.setId(PHASE_ID_EXISTENT);
     	
-    	PlayerPhase playerPhase = new PlayerPhase();
-    	playerPhase.setNumAttempts(1);
-    	playerPhase.setPhase(phase);
-    	playerPhase.setPlayer(player);
-    	Phasestatus phasestatus = new Phasestatus();
-    	phasestatus.setId(phasestatusId);
-    	playerPhase.setPhasestatus(phasestatus);
+    	Phase phase = new Phase();
+    	phase.setId(PLAYER_ID_EXISTENT);
     	
-    	when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(null);
-    	when(repository.save(playerPhase)).thenReturn(playerPhase);
+    	PlayerPhase entityReturned = service.setTestAttempt(player, phase);
     	
-    	PlayerPhase entity = service.setTestAttempt(player, phase);
-    	
+    	Assert.assertNotNull("failute expected not null", entityReturned);
+    	Assert.assertEquals("failure match phase attribute", entity.getPhase().getId(), entityReturned.getPhase().getId());
     	Assert.assertEquals("failure match numAttempts attribute", 1, entity.getNumAttempts());
-		Assert.assertEquals("failure match phase attribute", phase.getId(), entity.getPhase().getId());
-		Assert.assertEquals("failure match phaseStatus attribute", phasestatusId, entity.getPhasestatus().getId());
-		Assert.assertEquals("failure match player attribute", player.getId(), entity.getPlayer().getId());
+		
+    	verify(repository, times(1)).findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASESTATUS_ONGOING);
+    	verify(repository, times(1)).save(Matchers.any(PlayerPhase.class));
+        verifyNoMoreInteractions(repository);
     }
     /* setTestAttempt - end */
 }

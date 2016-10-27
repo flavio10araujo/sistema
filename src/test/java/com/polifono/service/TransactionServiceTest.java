@@ -1,5 +1,11 @@
 package com.polifono.service;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -7,22 +13,25 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import com.polifono.AbstractTest;
 import com.polifono.domain.Player;
 import com.polifono.domain.Transaction;
+import com.polifono.repository.ITransactionRepository;
+import com.polifono.service.impl.TransactionServiceImpl;
 
 /**
  * Unit test methods for the TransactionService.
  * 
  */
-@Transactional
 public class TransactionServiceTest extends AbstractTest {
 
-	@Autowired
     private ITransactionService service;
+    
+    @Mock
+    private ITransactionRepository repository;
 	
 	private final Integer PLAYER_ID_EXISTENT = 1;
 	
@@ -35,6 +44,8 @@ public class TransactionServiceTest extends AbstractTest {
     @Before
     public void setUp() {
         // Do something before each test method.
+    	MockitoAnnotations.initMocks(this);
+    	service = new TransactionServiceImpl(repository);
     }
 
     @After
@@ -42,96 +53,102 @@ public class TransactionServiceTest extends AbstractTest {
         // Clean up after each test method.
     }
     
-    /* save - begin */
-    @Test
-    public void save_WhenSaveTransaction_ReturnTransactionSaved() {
+    /* stubs - begin */
+    private Transaction getEntityStubData() {
     	Player player = new Player();
     	player.setId(PLAYER_ID_EXISTENT);
     	
-    	Transaction transaction = new Transaction();
-    	transaction.setPlayer(player);
-    	transaction.setQuantity(27);
-    	transaction.setDtInc(new Date());
-    	transaction.setClosed(false);
-
-    	Transaction entitySaved = service.save(transaction);
+    	Transaction entity = new Transaction();
+    	entity.setId(TRANSACTION_ID_EXISTENT);
+    	entity.setPlayer(player);
+    	entity.setQuantity(27);
+    	entity.setDtInc(new Date());
+    	entity.setClosed(false);
     	
-    	Assert.assertNotNull("failure - expected not null", entitySaved);
-    	Assert.assertNotEquals("failure - expected id attribute bigger than 0", 0, entitySaved.getId());
+    	return entity;
+    }
+    
+    private List<Transaction> getEntityListStubData() {
+    	List<Transaction> list = new ArrayList<Transaction>();
     	
-    	Transaction entity = service.findOne(entitySaved.getId());
-
-    	Assert.assertNotNull("failure - expected not null", entity);
-    	Assert.assertNotEquals("failure - expected id attribute bigger than 0", 0, entity.getId());
+    	Transaction entity1 = getEntityStubData();
+    	Transaction entity2 = getEntityStubData();
     	
-    	/*
-    	// Changing all possible fields.
-    	//content.setId(content.getId() + 1);
-    	entity.setContent(content);
-    	entity.setName(entity.getName() + " CHANGED");
-    	entity.setOrder(entity.getOrder() + 1);
+    	list.add(entity1);
+    	list.add(entity2);
     	
-    	transaction.setPlayer(player);
-    	transaction.setQuantity(27);
-    	transaction.setDtInc(new Date());
-    	transaction.setClosed(false);
-    	transaction.setCode("12345");
-    	transaction.setReference("10");
-    	transaction.setDate(new Date());
-    	transaction.setLastEventDate(new Date());
-    	transaction.setType(1);
-    	transaction.setStatus(1);
-    	transaction.setPaymentMethodType(1);
-    	transaction.setPaymentMethodCode(1);
-    	transaction.setGrossAmount(100);
-    	transaction.setDiscountAmount(10);
-    	transaction.setFeeAmount(15);
-    	transaction.setNetAmount(90);
-    	transaction.setExtraAmount(10);
-    	transaction.setInstallmentCount(2);
-    	transaction.setItemCount(1);
-    	transaction.setEscrowEndDate(new Date());
-    	transaction.setCancellationSource("");
-    	transaction.setPaymentLink("");
-
-    	Transaction updatedEntity = service.save(entity);
-
-    	Assert.assertNotNull("failure - expected not null", updatedEntity);
-    	Assert.assertEquals("failure - expected id attribute match", entity.getId(), updatedEntity.getId());
-    	Assert.assertEquals("failure - expected content attribute match", entity.getContent().getId(), updatedEntity.getContent().getId());
-    	Assert.assertEquals("failure - expected name attribute match", entity.getName(), updatedEntity.getName());
-    	Assert.assertEquals("failure - expected order attribute match", entity.getOrder(), updatedEntity.getOrder());
-    	*/
+    	return list;
+    }
+    /* stubs - end */
+    
+    /* save - begin */
+    @Test
+    public void save_WhenSaveTransaction_ReturnTransactionSaved() {
+    	Transaction entity = getEntityStubData();
+    	
+    	when(repository.save(entity)).thenReturn(entity);
+    	
+    	Transaction entityReturned = service.save(entity);
+    	
+    	Assert.assertNotNull("failure - expected not null", entityReturned);
+    	Assert.assertNotEquals("failure - expected id attribute bigger than 0", 0, entityReturned.getId());
+    	
+    	verify(repository, times(1)).save(entity);
+        verifyNoMoreInteractions(repository);
     }
     /* save - end */
     
     /* findOne - begin */
     @Test
     public void findOne_WhenTransactionIsExistent_ReturnTransaction() {
-    	Transaction entity = service.findOne(TRANSACTION_ID_EXISTENT);
-        Assert.assertNotNull("failure - expected not null", entity);
-        Assert.assertEquals("failure - expected id attribute match", TRANSACTION_ID_EXISTENT.intValue(), entity.getId());
+    	Transaction entity = getEntityStubData();
+    	
+    	when(repository.findOne(TRANSACTION_ID_EXISTENT)).thenReturn(entity);
+    	
+    	Transaction entityReturned = service.findOne(TRANSACTION_ID_EXISTENT);
+        Assert.assertNotNull("failure - expected not null", entityReturned);
+        Assert.assertEquals("failure - expected id attribute match", TRANSACTION_ID_EXISTENT.intValue(), entityReturned.getId());
+        
+        verify(repository, times(1)).findOne(TRANSACTION_ID_EXISTENT);
+        verifyNoMoreInteractions(repository);
     }
 
     @Test
     public void findOne_WhenTransactionIsInexistent_ReturnNull() {
-    	Transaction entity = service.findOne(TRANSACTION_ID_INEXISTENT);
-        Assert.assertNull("failure - expected null", entity);
+    	when(repository.findOne(TRANSACTION_ID_INEXISTENT)).thenReturn(null);
+    	
+    	Transaction entityReturned = service.findOne(TRANSACTION_ID_INEXISTENT);
+        Assert.assertNull("failure - expected null", entityReturned);
+        
+        verify(repository, times(1)).findOne(TRANSACTION_ID_INEXISTENT);
+        verifyNoMoreInteractions(repository);
     }
     /* findOne - end */
     
     /* findTransactionsByCode - begin */
     @Test
     public void findTransactionsByCode_WhenSearchByCodeExistent_ReturnList() {
-    	List<Transaction> list = service.findTransactionsByCode(CODE_EXISTENT);
-        Assert.assertNotNull("failure - not expected null", list);
-        Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
+    	List<Transaction> list = getEntityListStubData();
+    	
+    	when(repository.findTransactionsByCode(CODE_EXISTENT)).thenReturn(list);
+    	
+    	List<Transaction> listReturned = service.findTransactionsByCode(CODE_EXISTENT);
+        Assert.assertNotNull("failure - not expected null", listReturned);
+        Assert.assertNotEquals("failure - list size not expected 0", 0, listReturned.size());
+        
+        verify(repository, times(1)).findTransactionsByCode(CODE_EXISTENT);
+        verifyNoMoreInteractions(repository);
     }
 
     @Test
     public void findTransactionsByCode_WhenSearchByCodeInexistent_ReturnEmptyList() {
-    	List<Transaction> list = service.findTransactionsByCode(CODE_INEXISTENT);
-    	Assert.assertEquals("failure - expected empty list", 0, list.size());
+    	when(repository.findTransactionsByCode(CODE_INEXISTENT)).thenReturn(new ArrayList<Transaction>());
+    	
+    	List<Transaction> listReturned = service.findTransactionsByCode(CODE_INEXISTENT);
+    	Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+    	
+    	verify(repository, times(1)).findTransactionsByCode(CODE_INEXISTENT);
+        verifyNoMoreInteractions(repository);
     }
     /* findTransactionsByCode - end */
 }

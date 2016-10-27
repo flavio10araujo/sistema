@@ -22,20 +22,20 @@ import com.polifono.service.currentUser.UserDetailsServiceTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
-	PlayerServiceTest.class, 
-	LoginServiceTest.class,
+	AnswerServiceTest.class,
+	ClassPlayerServiceTest.class,
+	ClassServiceTest.class,
+	ContentServiceTest.class,
 	GameServiceTest.class,
 	LevelServiceTest.class,
+	LoginServiceTest.class,
 	MapServiceTest.class,
 	PhaseServiceTest.class,
-	PlayerPhaseServiceTest.class,
-	ContentServiceTest.class,
-	QuestionServiceTest.class,
-	AnswerServiceTest.class,
-	TransactionServiceTest.class,
-	ClassServiceTest.class,
-	ClassPlayerServiceTest.class,
 	PlayerGameServiceTest.class,
+	PlayerPhaseServiceTest.class,
+	PlayerServiceTest.class, 
+	QuestionServiceTest.class,
+	TransactionServiceTest.class,
 	CurrentUserServiceTest.class,
 	UserDetailsServiceTest.class
 })
