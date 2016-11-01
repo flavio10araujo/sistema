@@ -10,6 +10,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -81,6 +83,13 @@ public class Player {
 	
 	@OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
 	private List<PlayerGame> playerGameList;
+	
+	@ManyToOne
+	@JoinColumn(name = "c001_id_creator")
+	private Player creator;
+	
+	@Column(name = "c001_login")
+	private String login;
 	
 	public int getId() {
 		return id;
@@ -232,6 +241,22 @@ public class Player {
 		this.playerGameList = playerGameList;
 	}
 	
+	public Player getCreator() {
+		return creator;
+	}
+
+	public void setCreator(Player creator) {
+		this.creator = creator;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
 	/**
 	 * Return the total quantity of credits: credit + specificCredit.
 	 * 

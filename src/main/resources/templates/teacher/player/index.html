@@ -1,0 +1,70 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+
+<head></head>
+
+<body>
+
+	<div layout:fragment="content">
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<div th:if="${codRegister} == 1" class="alert alert-success">
+	  				<strong th:text="#{success_}"></strong> <label th:text="#{msg.register.ok}"></label><br />
+	  				<label tx:text="#{msg.welcome}"></label> 
+				</div>
+	    		<div th:if="${codRegister} == 2" class="alert alert-warning">
+	  				<strong th:text="#{attention_}"></strong> <label th:utext="${msgRegister}"></label>
+				</div>
+				
+				<div th:if="${error} != null" class="alert alert-warning">
+	  				<strong th:text="#{attention_}"></strong> <label th:text="#{msg.login.nOk}"></label>
+				</div>
+				
+				<div class="panel panel-success">
+					<div class="panel-heading">
+  						<h3 class="panel-title" th:text="#{crud.add.student}"></h3>
+					</div>
+   					<div class="panel-body">
+    					<form th:object="${player}" th:action="@{/teacher/player/create}" action="#" method="post">
+       						
+       						<div class="form-group">
+	    						<input type="text" th:field="*{name}" class="form-control" required="true" th:placeholder="#{app.full_name}" />
+	  						</div>
+	  						
+	  						<div class="form-group">
+	    						<input type="text" th:field="*{login}" class="form-control" required="true" th:placeholder="#{app.login}" />
+			  				</div>
+			  				
+			  				<div class="form-group">
+			    				<input type="password" th:field="*{password}" th:id="create_password" class="form-control" required="true" th:placeholder="#{app.password}" data-toggle="tooltip" th:title="#{msg.rule.password}" />
+			  				</div>
+			  				
+			  				<div class="checkbox">
+		  						<label><input type="checkbox" value="1" id="create_show_password" />Mostrar senha</label>
+							</div>
+       						
+       						<input type="submit" class="btn btn-default" th:value="#{sign_in2}" />
+
+ 						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			$('#create_show_password').click(function(){
+				if($('#create_show_password').prop('checked')) {
+					$('#create_password').attr('type', 'text');
+				} else {
+					$('#create_password').attr('type', 'password');
+				}
+			});
+			/*]]>*/
+		</script>
+
+	</div>
+
+</body>
+</html>

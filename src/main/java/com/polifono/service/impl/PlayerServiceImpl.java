@@ -236,6 +236,43 @@ public class PlayerServiceImpl implements IPlayerService {
 	}
 	
 	/**
+	 * Verify if the player has all the attributes mandatories when the teacher are creating a new player.
+	 * If everything is OK, return an empty string.
+	 * Otherwise, return one string with the message of the error.
+	 * 
+	 * The difference between this method and the validateCreatePlayer is that here the player has a login and doesn't have an e-mail.
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public String validateCreatePlayerByTeacher(Player player) {
+		String msg = "";
+		
+		if (player.getName() == null || player.getName().equals("")) {
+			msg = msg + "<br />O nome precisa ser informado.";
+		}
+		
+		if (player.getLogin() == null || player.getLogin().equals("")) {
+			msg = msg + "<br />O login precisa ser informado.";
+		}
+		/*else if (!EmailUtil.validateLogin(player.getLogin())) {
+			msg = msg + "<br />O login informado não é válido.";
+		}*/
+		
+		if (player.getPassword() == null || player.getPassword().equals("")) {
+			msg = msg + "<br />A senha precisa ser informada.";
+		}
+		else if (player.getPassword().length() < 6 || player.getPassword().length() > 20) {
+			msg = msg + "<br />A senha precisa possuir entre 6 e 20 caracteres.";
+		}
+		else if (!EmailUtil.validatePassword(player.getPassword())) {
+			msg = msg + "<br />A senha precisa possuir ao menos 1 número e ao menos 1 letra.";
+		}
+		
+		return msg;
+	}
+	
+	/**
 	 * Verify if the player has all the attributes mandatories when we are updating a player.
 	 * 
 	 * @param player
@@ -250,4 +287,8 @@ public class PlayerServiceImpl implements IPlayerService {
 		
 		return msg;
 	}
+	
+	public Player findByLogin(String login) {
+        return repository.findByLogin(login);
+    }
 }

@@ -38,7 +38,11 @@ public interface IPlayerService {
 	public boolean isEmailConfirmed(Player user);
 
 	public String validateCreatePlayer(Player player);
+	
+	public String validateCreatePlayerByTeacher(Player player);
 
 	public String validateUpdateProfile(Player edit);
+	
+	public Player findByLogin(String login);
 
 }
