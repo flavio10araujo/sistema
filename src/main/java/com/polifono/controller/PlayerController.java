@@ -194,23 +194,39 @@ public class PlayerController extends BaseController {
 		
 		// Verify if there is a player with this email.
 		Player playerOld = playerService.findByEmail(playerResend.getEmail());
+		boolean byLogin = false;
 		
 		// If there is not exist a player with this email.
+		if (playerOld == null) {
+			playerOld = playerService.findByLogin(playerResend.getEmail());
+			byLogin = true;
+		}
+		
+		// If there is not exist a player with this email/login.
 		if (playerOld == null) {
 			model.addAttribute("codRegister", 2);
 			model.addAttribute("playerResend", playerResend);
 			// TODO - pegar msg do messages.
-			model.addAttribute("msgRegister", "<br />O email " + playerResend.getEmail() + " não está cadastrado no sistema.");
+			model.addAttribute("msgRegister", "<br />O login " + playerResend.getEmail() + " não está cadastrado no sistema.");
 		}
 		else {
 			playerOld.setPasswordReset(new RandomStringUtil(10).nextString());
 			playerService.save(playerOld);
-			EmailSendUtil.sendEmailPasswordReset(playerOld);
+			
+			if (!byLogin) {
+				model.addAttribute("msgRegister", "<br />O e-mail com o código para alterar a senha foi enviado para " + playerOld.getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
+				EmailSendUtil.sendEmailPasswordReset(playerOld);
+			}
+			else {
+				Player teacher = playerOld.getCreator();
+				teacher.setName(playerOld.getName());
+				teacher.setPasswordReset(playerOld.getPasswordReset());
+				EmailSendUtil.sendEmailPasswordReset(teacher);
+				model.addAttribute("msgRegister", "<br />O e-mail com o código para alterar a senha foi enviado para " + teacher.getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
+			}
 				
 			model.addAttribute("codRegister", 1);
 			model.addAttribute("playerResend", new Player());
-			// TODO - pegar msg do messages.
-			model.addAttribute("msgRegister", "<br />O e-mail com o código para alterar a senha foi enviado para " + playerOld.getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
 		}
 		
 		return URL_PASSWORDRESET;
@@ -227,13 +243,20 @@ public class PlayerController extends BaseController {
 		
 		// Verify if there is a player with this email.
 		Player playerOld = playerService.findByEmail(player.getEmail());
+		boolean byLogin = false;
 		
 		// If there is not exist a player with this email.
+		if (playerOld == null) {
+			playerOld = playerService.findByLogin(player.getEmail());
+			byLogin = true;
+		}
+		
+		// If there is not exist a player with this email/login.
 		if (playerOld == null) {
 			model.addAttribute("codRegister", 2);
 			model.addAttribute("player", player);
 			// TODO - pegar msg do messages.
-			model.addAttribute("msgRegister", "<br />O email " + player.getEmail() + " não está cadastrado no sistema.");
+			model.addAttribute("msgRegister", "<br />O login " + player.getEmail() + " não está cadastrado no sistema.");
 		}
 		else {
 			// If the code informed is not correct.
@@ -245,7 +268,14 @@ public class PlayerController extends BaseController {
 			}
 			else {
 				playerOld.setPassword(player.getPassword());
-				String msg = playerService.validateCreatePlayer(playerOld);
+				String msg = null;
+				
+				if (!byLogin) {
+					msg = playerService.validateCreatePlayer(playerOld);
+				}
+				else {
+					msg = playerService.validateCreatePlayerByTeacher(playerOld);
+				}
 				
 				// If there is not errors.
 				if (msg.equals("")) {
@@ -256,7 +286,7 @@ public class PlayerController extends BaseController {
 					model.addAttribute("codRegister", 1);
 					model.addAttribute("player", new Player());
 					// TODO - pegar msg do messages.
-					model.addAttribute("msgRegister", "<br />A senha de acesso para o e-mail " + playerOld.getEmail() + " foi alterada com sucesso!");
+					model.addAttribute("msgRegister", "<br />A senha de acesso para o login " + playerOld.getEmail() + " foi alterada com sucesso!");
 				}
 				else {
 					model.addAttribute("codRegister", 2);

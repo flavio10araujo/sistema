@@ -60,7 +60,6 @@ public class TeacherPlayerController extends BaseController {
 				player.setCreator(teacher);
 				model.addAttribute("player", playerService.create(player));
 				model.addAttribute("codRegister", 1);
-				EmailSendUtil.sendEmailConfirmRegister(teacher);
 			}
 			// If there are errors.
 			else {
