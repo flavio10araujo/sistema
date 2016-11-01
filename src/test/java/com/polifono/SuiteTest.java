@@ -3,6 +3,8 @@ package com.polifono;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import com.polifono.controller.CustomErrorControllerTest;
+import com.polifono.controller.GameControllerTest;
 import com.polifono.service.AnswerServiceTest;
 import com.polifono.service.ClassPlayerServiceTest;
 import com.polifono.service.ClassServiceTest;
@@ -22,6 +24,10 @@ import com.polifono.service.currentUser.UserDetailsServiceTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
+	// Controllers
+	CustomErrorControllerTest.class,
+	GameControllerTest.class,
+	// Services
 	AnswerServiceTest.class,
 	ClassPlayerServiceTest.class,
 	ClassServiceTest.class,
