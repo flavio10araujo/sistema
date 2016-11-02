@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.polifono.controller.BaseController;
 import com.polifono.domain.Player;
 import com.polifono.service.IPlayerService;
-import com.polifono.util.EmailSendUtil;
 
 @Controller
 @RequestMapping("/teacher")

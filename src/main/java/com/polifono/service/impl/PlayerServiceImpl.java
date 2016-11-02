@@ -83,13 +83,25 @@ public class PlayerServiceImpl implements IPlayerService {
 	
 	/**
 	 * This method is used to login.
+	 * This method was changed to permit that an user without email could access the system.
 	 * 
 	 * @param email
 	 * @return
 	 */
 	public Optional<Player> findByEmailAndStatusForLogin(String email, boolean status) {
         LOGGER.debug("Getting user by email={}", email.replaceFirst("@.*", "@***"));
-        return repository.findByEmailAndStatusForLogin(email, status);
+        
+        Optional<Player> byEmail = repository.findByEmailAndStatusForLogin(email, status);
+        
+        if (byEmail.isPresent()) {
+        	return byEmail;
+        }
+        else {
+        	// In this case:
+        	// - Or the email doesn't exist;
+        	// - Or the player is trying to access the system with his login.
+        	return repository.findByLoginAndStatusForLogin(email, status);
+        }
     }
 	
 	public String encryptPassword(@Nonnull final String rawPassword) {
@@ -255,9 +267,12 @@ public class PlayerServiceImpl implements IPlayerService {
 		if (player.getLogin() == null || player.getLogin().equals("")) {
 			msg = msg + "<br />O login precisa ser informado.";
 		}
-		/*else if (!EmailUtil.validateLogin(player.getLogin())) {
-			msg = msg + "<br />O login informado não é válido.";
-		}*/
+		else if (player.getLogin().length() < 6 || player.getLogin().length() > 20) {
+			msg = msg + "<br />O login precisa possuir entre 6 e 20 caracteres.";
+		}
+		else if (!EmailUtil.validateLogin(player.getLogin())) {
+			msg = msg + "<br />O login só deve possuir letras e números. Não deve possuir espaços, acentos ou demais caracteres especiais.";
+		}
 		
 		if (player.getPassword() == null || player.getPassword().equals("")) {
 			msg = msg + "<br />A senha precisa ser informada.";

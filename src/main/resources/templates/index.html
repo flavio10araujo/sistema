@@ -29,7 +29,7 @@
 	    		
 	    		<div th:if="${codRegister} == 1" class="alert alert-success">
 	  				<strong th:text="#{success_}"></strong> <label th:text="#{msg.register.ok}"></label><br />
-	  				<label tx:text="#{msg.welcome}"></label> 
+	  				<label th:text="#{msg.welcome}"></label> 
 				</div>
 	    		<div th:if="${codRegister} == 2" class="alert alert-warning">
 	  				<strong th:text="#{attention_}"></strong> <label th:utext="${msgRegister}"></label>

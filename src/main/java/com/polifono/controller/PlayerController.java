@@ -214,7 +214,7 @@ public class PlayerController extends BaseController {
 			playerService.save(playerOld);
 			
 			if (!byLogin) {
-				model.addAttribute("msgRegister", "<br />O e-mail com o código para alterar a senha foi enviado para " + playerOld.getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
+				model.addAttribute("msgRegister", "<br />O o código para alterar a senha foi enviado para " + playerOld.getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
 				EmailSendUtil.sendEmailPasswordReset(playerOld);
 			}
 			else {
@@ -222,9 +222,9 @@ public class PlayerController extends BaseController {
 				teacher.setName(playerOld.getName());
 				teacher.setPasswordReset(playerOld.getPasswordReset());
 				EmailSendUtil.sendEmailPasswordReset(teacher);
-				model.addAttribute("msgRegister", "<br />O e-mail com o código para alterar a senha foi enviado para " + teacher.getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
+				model.addAttribute("msgRegister", "<br />O código para alterar a senha foi enviado para " + teacher.getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
 			}
-				
+
 			model.addAttribute("codRegister", 1);
 			model.addAttribute("playerResend", new Player());
 		}
@@ -286,7 +286,12 @@ public class PlayerController extends BaseController {
 					model.addAttribute("codRegister", 1);
 					model.addAttribute("player", new Player());
 					// TODO - pegar msg do messages.
-					model.addAttribute("msgRegister", "<br />A senha de acesso para o login " + playerOld.getEmail() + " foi alterada com sucesso!");
+					if (!byLogin) {
+						model.addAttribute("msgRegister", "<br />A senha de acesso para o login " + playerOld.getEmail() + " foi alterada com sucesso!");
+					}
+					else {
+						model.addAttribute("msgRegister", "<br />A senha de acesso para o login " + playerOld.getLogin() + " foi alterada com sucesso!");
+					}
 				}
 				else {
 					model.addAttribute("codRegister", 2);
