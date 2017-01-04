@@ -29,4 +29,9 @@ public class DiplomaServiceImpl implements IDiplomaService {
 		
 		return list;
 	}
+	
+	@Override
+	public Diploma findByCode(String code) {
+		return repository.findByCode(code);
+	}
 }

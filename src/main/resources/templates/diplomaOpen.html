@@ -21,11 +21,25 @@
 	    		<br />
 	    		
 	    		<div th:if="${message eq 'success'}" class="alert alert-success alert-dismissible" role="alert">
- 					<strong th:text="#{success_}">Success!</strong> <span th:text="#{msg.emailSent}"></span>
+ 					<strong th:text="#{success_}">Success!</strong> <span>Diploma encontrado com sucesso. Clique no código para vê-lo na íntegra.</span>
+ 					<table>
+        				<tr>
+							<td>Data</td>
+							<td th:text="${diploma.dt}"></td>
+						</tr>
+						<tr>
+							<td>Game</td>
+							<td th:text="${diploma.game.name}"></td>
+						</tr>
+						<tr>
+							<td>Level</td>
+							<td th:text="${diploma.level.name}"></td>
+						</tr>
+					</table>
 				</div>
 				
 				<div th:if="${message eq 'error'}" class="alert alert-danger alert-dismissible" role="alert">
-  					<strong th:text="#{error_}">Error!</strong> <span th:utext="${messageContent}"></span>
+  					<strong th:text="#{error_}">Error!</strong> <span>O diploma informado não existe.</span>
 				</div>
 	    	</div>
 	  	</div>

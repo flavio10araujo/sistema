@@ -33,6 +33,9 @@ public class Diploma {
 	@ManyToOne
 	@JoinColumn(name = "c003_id")
 	private Level level;
+	
+	@Column(name = "c017_code")
+	private String code;
 
 	public int getId() {
 		return id;
@@ -72,5 +75,13 @@ public class Diploma {
 
 	public void setLevel(Level level) {
 		this.level = level;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 }

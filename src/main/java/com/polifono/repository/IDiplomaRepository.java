@@ -12,4 +12,7 @@ public interface IDiplomaRepository extends CrudRepository<Diploma, Integer> {
 
 	@Query("SELECT diploma FROM Diploma diploma WHERE diploma.player.id = :playerId ORDER BY diploma.dt DESC")
 	public List<Diploma> findByPlayer(@Param("playerId") int playerId);
+	
+	@Query("SELECT diploma FROM Diploma diploma WHERE diploma.code = :code")
+	public Diploma findByCode(@Param("code") String code);
 }
