@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.polifono.domain.Diploma;
 import com.polifono.domain.Login;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.service.IClassPlayerService;
+import com.polifono.service.IDiplomaService;
 import com.polifono.service.ILoginService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
@@ -42,6 +44,9 @@ public class ProfileController extends BaseController {
 	
 	@Autowired
 	private ILoginService loginService;
+	
+	@Autowired
+	private IDiplomaService diplomaService;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileController.class);
 	
@@ -97,9 +102,16 @@ public class ProfileController extends BaseController {
 			playerPhases = new ArrayList<PlayerPhase>();
 		}
 		
+		List<Diploma> diplomas = diplomaService.findByPlayer(player.getId());
+		
+		if (diplomas == null) {
+			diplomas = new ArrayList<Diploma>();
+		}
+		
 		model.addAttribute("player", player);
 		model.addAttribute("phases", phases);
 		model.addAttribute("playerPhases", playerPhases);
+		model.addAttribute("diplomas", diplomas);
 		
 		return URL_PROFILE_PROFILEPLAYER;
 	}

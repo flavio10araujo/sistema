@@ -110,6 +110,27 @@
                   					</table>
            						</div>
                 			</div>
+                			<div class="row">
+                				<div align="center">
+                					Diplomas:
+                					<div th:each="diploma : ${diplomas}">
+                    					<table>
+	                    					<tr>
+	          									<td>Data</td>
+	          									<td th:text="${diploma.dt}"></td>
+	          								</tr>
+	          								<tr>
+	          									<td>Game</td>
+	          									<td th:text="${diploma.game.name}"></td>
+	          								</tr>
+	          								<tr>
+	          									<td>Level</td>
+	          									<td th:text="${diploma.level.name}"></td>
+	          								</tr>
+	          							</table>
+         							</div>
+                				</div>
+                			</div>
             			</div>
                  
                  		<div class="panel-footer">

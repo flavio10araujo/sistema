@@ -42,8 +42,8 @@
 	     			</li>
 	   			</ul>
 		    	<ul class="nav navbar-nav navbar-right">
-		    		<!--<li data-toggle="tooltip" data-placement="bottom" th:title="#{app.profile}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}|}" sec:authentication="principal.user.name"></a></li>-->
-		    		<li><a sec:authentication="principal.user.name"></a></li>
+		    		<li data-toggle="tooltip" data-placement="bottom" th:title="#{app.profile}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}|}" sec:authentication="principal.user.name"></a></li>
+		    		<!--<li><a sec:authentication="principal.user.name"></a></li>-->
 		    		<!--<li data-toggle="tooltip" data-placement="bottom" th:title="#{msg.toseemygrades}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}/score|}"><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>-->
 		    		<li><a><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>
 		    		<!--<li data-toggle="tooltip" data-placement="bottom" th:title="#{msg.buymorecredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>: <span sec:authentication="principal.user.totalCredit"></span></a></li>-->

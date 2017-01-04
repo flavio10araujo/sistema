@@ -391,6 +391,8 @@ public class GameController extends BaseController {
 			if (map.isLevelCompleted()) {
 				// When the player finishes the last phase of the level, he gains n credits.
 				this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(), Integer.parseInt(applicationResourceBundle.getString("credits.levelCompleted"))));
+				// When the player finishes the last phase of the level, he gets a diploma.
+				
 				return URL_GAMES_ENDOFLEVEL;
 			}
 			
