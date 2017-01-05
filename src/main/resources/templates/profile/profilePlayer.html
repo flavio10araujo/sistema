@@ -116,6 +116,10 @@
                 					<div th:each="diploma : ${diplomas}">
                     					<table>
 	                    					<tr>
+												<td>Código</td>
+												<td><a th:href="@{'/diploma/'+${diploma.code}}" th:text="${diploma.code}"></a></td>
+											</tr>
+	                    					<tr>
 	          									<td>Data</td>
 	          									<td th:text="${diploma.dt}"></td>
 	          								</tr>

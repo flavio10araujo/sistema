@@ -1,5 +1,5 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutLogin">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
 
 <head></head>
 
@@ -24,6 +24,10 @@
  					<strong th:text="#{success_}">Success!</strong> <span>Diploma encontrado com sucesso. Clique no código para vê-lo na íntegra.</span>
  					<table>
         				<tr>
+							<td>Código</td>
+							<td><a th:href="@{'/diploma/'+${diploma.code}}" th:text="${diploma.code}"></a></td>
+						</tr>
+        				<tr>
 							<td>Data</td>
 							<td th:text="${diploma.dt}"></td>
 						</tr>
@@ -42,9 +46,6 @@
   					<strong th:text="#{error_}">Error!</strong> <span>O diploma informado não existe.</span>
 				</div>
 	    	</div>
-	  	</div>
-	  	<div class="row">
-	  		<br /><br /><br /><br /><br />
 	  	</div>
 	</div>
 </body>

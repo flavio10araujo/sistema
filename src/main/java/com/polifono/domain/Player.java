@@ -91,6 +91,18 @@ public class Player {
 	@Column(name = "c001_login")
 	private String login;
 	
+	@Column(name = "c001_nationality")
+	private String nationality;
+	
+	@Column(name = "c001_city_of_birth")
+	private String cityOfBirth;
+	
+	@Column(name = "c001_doc_01")
+	private String rg;
+	
+	@Column(name = "c001_doc_01_exp")
+	private String rgOrgExp;
+	
 	public int getId() {
 		return id;
 	}
@@ -293,5 +305,37 @@ public class Player {
 		}
 		
 		return specificCredit;
+	}
+
+	public String getNationality() {
+		return nationality;
+	}
+
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
+	}
+
+	public String getCityOfBirth() {
+		return cityOfBirth;
+	}
+
+	public void setCityOfBirth(String cityOfBirth) {
+		this.cityOfBirth = cityOfBirth;
+	}
+
+	public String getRg() {
+		return rg;
+	}
+
+	public void setRg(String rg) {
+		this.rg = rg;
+	}
+
+	public String getRgOrgExp() {
+		return rgOrgExp;
+	}
+
+	public void setRgOrgExp(String rgOrgExp) {
+		this.rgOrgExp = rgOrgExp;
 	}
 }

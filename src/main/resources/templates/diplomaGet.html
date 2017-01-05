@@ -1,0 +1,67 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+
+<head></head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="row">
+    		<div th:if="${message eq 'error'}" class="alert alert-danger alert-dismissible" role="alert">
+ 					<strong th:text="#{error_}">Error!</strong> <span>O diploma informado não existe.</span>
+			</div>
+    		
+    		<div th:if="${message eq 'success'}" class="alert alert-success alert-dismissible" role="alert">
+				<table border="1">
+       				<tr>
+						<td  colspan="2" align="center">
+							República Federativa do Brasil<br />
+							Polifono.com
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							Diploma de Músico
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							A equipe da Polifono, o maior site de ensino de música online, no uso de suas atribuições, e tendo em vista a 
+							conclusão do módulo <span th:text="${diploma.level.name}"></span> do curso de <span th:text="${diploma.game.name}"></span>, em <span th:text="${diploma.dt}"></span>,
+							confere o título de aprendiz de músico a<br />
+							<span th:text="${diploma.player.name}"></span><br />
+							de nacionalidade "<span th:text="${diploma.player.nationality}"></span>"
+							natural do estado X,
+							nascido em <span th:text="${diploma.player.dtBirth}"></span>,
+							portador da carteira de identificação <span th:text="${diploma.player.rg}"></span>
+							expedida pelo <span th:text="${diploma.player.rgOrgExp}"></span>,
+							e outorga-lhe o presente Diploma, a fim de que possa gozar de todos os direitos e prerrogativas legais.
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							Brasil, <span th:text="${diploma.dt}"></span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span th:text="${diploma.player.name}"></span>
+							________________________________________________
+							                 Diplomado
+						</td>
+						<td>
+							Flávio Moisés de Araújo
+							________________________________________________
+							                 Polifono.com
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			
+	  	</div>
+	  	<div class="row">
+	  		<br /><br /><br /><br /><br />
+	  	</div>
+	</div>
+</body>
+</html>
