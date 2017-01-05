@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.domain.Content;
+import com.polifono.domain.Diploma;
 import com.polifono.domain.Game;
 import com.polifono.domain.Level;
 import com.polifono.domain.Map;
@@ -25,6 +26,7 @@ import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.domain.Question;
 import com.polifono.service.IContentService;
+import com.polifono.service.IDiplomaService;
 import com.polifono.service.IGameService;
 import com.polifono.service.ILevelService;
 import com.polifono.service.IMapService;
@@ -32,6 +34,7 @@ import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.IQuestionService;
+import com.polifono.util.RandomStringUtil;
 
 @Controller
 public class GameController extends BaseController {
@@ -60,6 +63,9 @@ public class GameController extends BaseController {
 	
 	@Autowired
 	private IPlayerPhaseService playerPhaseService;
+	
+	@Autowired
+	private IDiplomaService diplomaService;
 	
 	public static final String URL_GAMES_INDEX = "games/index";
 	public static final String URL_GAMES_LEVEL = "games/level";
@@ -389,17 +395,28 @@ public class GameController extends BaseController {
 			
 			// The attribute levelCompleted will be true if the player has just finished the last phase of the last map of the level.
 			if (map.isLevelCompleted()) {
+				
+				// When the player finishes the last phase of the level, he gets a diploma.
+				Diploma diploma = setDiploma(player, currentPhase.getMap().getGame(), currentPhase.getMap().getLevel());
+				diplomaService.save(diploma);
+				model.addAttribute("diploma", diploma);
+				
 				// When the player finishes the last phase of the level, he gains n credits.
 				this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(), Integer.parseInt(applicationResourceBundle.getString("credits.levelCompleted"))));
-				// When the player finishes the last phase of the level, he gets a diploma.
 				
 				return URL_GAMES_ENDOFLEVEL;
 			}
 			
 			// The attribute gameCompleted will be true if the player has just finished the last phase of the last map of the last level of the game.
 			if (map.isGameCompleted()) {
+				// When the player finishes the last phase of the last level of the game, he gets a diploma.
+				Diploma diploma = setDiploma(player, currentPhase.getMap().getGame(), currentPhase.getMap().getLevel());
+				diplomaService.save(diploma);
+				model.addAttribute("diploma", diploma);
+				
 				// When the player finishes the last phase of the last level of the game, he gains n credits.
 				this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(), Integer.parseInt(applicationResourceBundle.getString("credits.gameCompleted"))));
+				
 				return URL_GAMES_ENDOFGAME;
 			}
 
@@ -444,5 +461,26 @@ public class GameController extends BaseController {
 		}
 		
 		return nextPhase;
+	}
+	
+	/**
+	 * Return a diploma to be saved.
+	 * 
+	 * @param player
+	 * @param game
+	 * @param level
+	 * @return
+	 */
+	public final Diploma setDiploma(Player player, Game game, Level level) {
+		Diploma diploma = new Diploma();
+		
+		diploma.setPlayer(player);
+		diploma.setGame(game);
+		diploma.setLevel(level);
+		
+		diploma.setDt(new Date());
+		diploma.setCode(player.getId()+"-"+game.getId()+"-"+level.getId()+"-"+new RandomStringUtil(10).nextString());
+		
+		return diploma;
 	}
 }

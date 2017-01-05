@@ -18,6 +18,10 @@ public class DiplomaServiceImpl implements IDiplomaService {
 	public DiplomaServiceImpl(IDiplomaRepository repository) {
 		this.repository = repository;
 	}
+	
+	public final Diploma save(Diploma diploma) {
+		return repository.save(diploma);
+	}
 
 	@Override
 	public List<Diploma> findByPlayer(int playerId) {
