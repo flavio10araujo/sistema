@@ -22,7 +22,7 @@ public class HomeController extends BaseController {
     
     public static final String URL_INDEX = "index";
     public static final String URL_CONTACT = "contact";
-    public static final String URL_CONTACTOPEN = "contactOpen";
+    public static final String URL_CONTACTOPEN = "index";
     public static final String REDIRECT_GAMES = "redirect:/games/";
     
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
@@ -31,6 +31,7 @@ public class HomeController extends BaseController {
 		// If the player is not logged.
 		if (this.currentAuthenticatedUser() == null) {
 			model.addAttribute("player", new Player());
+			model.addAttribute("playerResend", new Player());
 			return URL_INDEX;
 		}
 		else {
@@ -42,6 +43,7 @@ public class HomeController extends BaseController {
 	public final String index(final Model model, @RequestParam Optional<String> error) {
     	LOGGER.debug("Getting login page, error={}", error);
     	model.addAttribute("player", new Player());
+    	model.addAttribute("playerResend", new Player());
     	model.addAttribute("error", error);
     	return URL_INDEX;
 	}
@@ -77,30 +79,42 @@ public class HomeController extends BaseController {
     		model.addAttribute("message", "error");
 			model.addAttribute("messageContent", msg);
 			
-			if (logged) return URL_CONTACT;
-			else return URL_CONTACTOPEN;
+			if (logged) {
+				return URL_CONTACT;
+			}
+			else {
+				model.addAttribute("player", new Player());
+				model.addAttribute("playerResend", new Player());
+				return URL_CONTACTOPEN;
+			}
     	}
 
     	EmailSendUtil.sendEmailContact(email, message);
     	
     	model.addAttribute("message", "success");
     	
-    	if (logged) return URL_CONTACT;
-		else return URL_CONTACTOPEN;
+    	if (logged) {
+			return URL_CONTACT;
+		}
+		else {
+			model.addAttribute("player", new Player());
+			model.addAttribute("playerResend", new Player());
+			return URL_CONTACTOPEN;
+		}
     }
 
     public String validateContact(String email, String message) {
 		String msg = "";
 		
 		if (email == null || email.equals("")) {
-			msg = msg + "<br />O e-mail precisa ser informado.";
+			msg = msg + "O e-mail precisa ser informado.";
 		}
 		else if (!EmailUtil.validateEmail(email)) {
-			msg = msg + "<br />O e-mail informado não é válido.";
+			msg = msg + "O e-mail informado não é válido.";
 		}
 		
 		if (message == null || message.equals("")) {
-			msg = msg + "<br />A mensagem precisa ser informada.";
+			msg = ("".equals(msg)) ? "A mensagem precisa ser informada." : msg + "<br />A mensagem precisa ser informada.";
 		}
 		
 		return msg;

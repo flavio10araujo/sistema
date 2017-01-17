@@ -45,7 +45,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe();*/
     	
     	
-    	http.authorizeRequests().antMatchers("/vendors/**", "/", "/player/create", "/emailconfirmation", "/emailconfirmationresend", "/passwordreset", "/passwordresetresend", "/pagseguronotification", "/contact", "/diploma", "/diploma/**").permitAll(); // It's not necessary to be logged in to see this pages.
+    	http.authorizeRequests().antMatchers("/static/**", "/vendors/**", "/", "/player/create", "/emailconfirmation", "/emailconfirmationresend", "/passwordreset", "/passwordresetresend", "/pagseguronotification", "/contact", "/diploma", "/diploma/**").permitAll(); // It's not necessary to be logged in to see this pages.
     	
     	http.authorizeRequests().antMatchers("/admin/**").hasAuthority("ADMIN"); // It's necessary to have the ADMIN role to see this pages.
     	

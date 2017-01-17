@@ -2,6 +2,9 @@ package com.polifono.controller;
 
 import java.util.List;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +43,10 @@ public class PlayerController extends BaseController {
 	public static final String REDIRECT_CLASSINVITATION = "redirect:/classinvitation";
 	
 	@RequestMapping(value = {"/player/create"}, method = RequestMethod.POST)
-	public final String createPlayer(final Model model, @ModelAttribute("player") Player player) {
+	public final String createPlayer(HttpServletRequest request, final Model model, @ModelAttribute("player") Player player) {
+		
+		model.addAttribute("playerResend", new Player());
+		
 		if (player == null) {
 			LOGGER.debug("/player/create POST player is null");
 			model.addAttribute("player", new Player());
@@ -61,9 +67,21 @@ public class PlayerController extends BaseController {
 			
 			// If there is not errors.
 			if (msg.equals("")) {
+				String password = player.getPassword();
+				
 				model.addAttribute("player", playerService.create(player));
 				model.addAttribute("codRegister", 1);
 				EmailSendUtil.sendEmailConfirmRegister(player);
+				
+				try {
+					request.login(player.getEmail(), password);
+				}
+				catch (ServletException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				return REDIRECT_HOME;
 			}
 			else {
 				model.addAttribute("player", player);
@@ -214,7 +232,7 @@ public class PlayerController extends BaseController {
 			playerService.save(playerOld);
 			
 			if (!byLogin) {
-				model.addAttribute("msgRegister", "<br />O o código para alterar a senha foi enviado para " + playerOld.getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
+				model.addAttribute("msgRegister", "<br />O código para alterar a senha foi enviado para " + playerOld.getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
 				EmailSendUtil.sendEmailPasswordReset(playerOld);
 			}
 			else {
