@@ -986,6 +986,11 @@ body.modal-open {
   position: relative;
   top: -2px;
 }
+.promo .social .fb-share-button {
+  display: inline-block;
+  position: relative;
+  top: -2px;
+}
 /* ======= Press Section ======= */
 .press {
   background: #f5f5f5;

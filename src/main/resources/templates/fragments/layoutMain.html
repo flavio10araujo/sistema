@@ -24,33 +24,45 @@
 	<body>
 		<nav class="navbar navbar-inverse">
 			<div class="container-fluid">
-				<div class="navbar-header">
-					<a class="navbar-brand" th:href="@{/}" th:text="#{company}"></a>
-		    	</div>
-		    	<ul class="nav navbar-nav" sec:authorize="hasAuthority('ADMIN')">
-	     			<li><a href="/admin" th:text="#{menu.admin.home}"></a></li>
-	   			</ul>
-		    	<ul class="nav navbar-nav" sec:authorize="hasAuthority('TEACHER')">
-	     			<li class="dropdown">
-	       				<a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{app.teacher}"><span class="caret"></span></a>
-	       				<ul class="dropdown-menu">
-	         				<li><a th:href="@{/teacher/class}" th:text="#{menu.teacher.class}"></a></li>
-	         				<li><a th:href="@{/teacher/student}" th:text="#{menu.teacher.student}"></a></li>
-	         				<li><a th:href="@{/teacher/report}" th:text="#{menu.teacher.report}"></a></li>
-	         				<li><a th:href="@{/teacher/player/create}" th:text="#{menu.teacher.player.create}"></a></li>
-	       				</ul>
-	     			</li>
-	   			</ul>
-		    	<ul class="nav navbar-nav navbar-right">
-		    		<li data-toggle="tooltip" data-placement="bottom" th:title="#{app.profile}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}|}" sec:authentication="principal.user.name"></a></li>
-		    		<!--<li><a sec:authentication="principal.user.name"></a></li>-->
-		    		<!--<li data-toggle="tooltip" data-placement="bottom" th:title="#{msg.toseemygrades}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}/score|}"><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>-->
-		    		<li><a><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>
-		    		<!--<li data-toggle="tooltip" data-placement="bottom" th:title="#{msg.buymorecredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>: <span sec:authentication="principal.user.totalCredit"></span></a></li>-->
-		    		<li><a><span th:text="#{app.credits}"></span>: <span sec:authentication="principal.user.totalCredit"></span></a></li>
-	     			<!--<li data-toggle="tooltip" data-placement="bottom" th:title="#{msg.contact}"><a th:href="@{/contact}"><span class="glyphicon glyphicon-envelope" th:text="' '+#{app.contact}"></span></a></li>-->
-	     			<li data-toggle="tooltip" data-placement="bottom" th:title="#{log_out}"><a href="javascript:logout()"><span class="glyphicon glyphicon-log-out" th:text="' '+#{log_out}"></span></a></li>
-		    	</ul>
+				<h1 class="logo pull-left" style="margin:0 0 0 0;padding:0 0 0 0">
+                    <a class="navbar-left" style="color:#829D9D" th:href="@{/}" th:text="#{company}"></a>
+                </h1>
+                
+		    	<div class="navbar-header">
+                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button><!--//nav-toggle-->
+                </div><!--//navbar-header-->
+		    	
+		    	<div class="navbar-collapse collapse" id="navbar-collapse">
+			    	<ul class="nav navbar-nav" sec:authorize="hasAuthority('ADMIN')">
+		     			<li><a href="/admin" th:text="#{menu.admin.home}"></a></li>
+		   			</ul>
+			    	<ul class="nav navbar-nav" sec:authorize="hasAuthority('TEACHER')">
+		     			<li class="dropdown">
+		       				<a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{app.teacher}"><span class="caret"></span></a>
+		       				<ul class="dropdown-menu">
+		         				<li><a th:href="@{/teacher/class}" th:text="#{menu.teacher.class}"></a></li>
+		         				<li><a th:href="@{/teacher/student}" th:text="#{menu.teacher.student}"></a></li>
+		         				<li><a th:href="@{/teacher/report}" th:text="#{menu.teacher.report}"></a></li>
+		         				<li><a th:href="@{/teacher/player/create}" th:text="#{menu.teacher.player.create}"></a></li>
+		       				</ul>
+		     			</li>
+		   			</ul>
+			    	<ul class="nav navbar-nav navbar-right">
+			    		<!--<li data-toggle="tooltip" data-placement="bottom" th:title="#{app.profile}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}|}" sec:authentication="principal.user.name"></a></li>-->
+			    		<li><a sec:authentication="principal.user.name"></a></li>
+			    		<!--<li data-toggle="tooltip" data-placement="bottom" th:title="#{msg.toseemygrades}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}/score|}"><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>-->
+			    		<li><a><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>
+			    		<!--<li data-toggle="tooltip" data-placement="bottom" th:title="#{msg.buymorecredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>: <span sec:authentication="principal.user.totalCredit"></span></a></li>-->
+			    		<li><a><span th:text="#{app.credits}"></span>: <span sec:authentication="principal.user.totalCredit"></span></a></li>
+		     			<!--<li data-toggle="tooltip" data-placement="bottom" th:title="#{msg.contact}"><a th:href="@{/contact}"><span class="glyphicon glyphicon-envelope" th:text="' '+#{app.contact}"></span></a></li>-->
+		     			<li data-toggle="tooltip" data-placement="bottom" th:title="#{log_out}"><a href="javascript:logout()"><span class="glyphicon glyphicon-log-out" th:text="' '+#{log_out}"></span></a></li>
+			    	</ul>
+			    </div><!--//navabr-collapse-->
 		  	</div>
 		</nav>
 		

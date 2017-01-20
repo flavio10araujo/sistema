@@ -23,7 +23,7 @@
 		.bs-wizard > .bs-wizard-step {padding:0;position:relative}
 		.bs-wizard > .bs-wizard-step + .bs-wizard-step {}
 		.bs-wizard > .bs-wizard-step .bs-wizard-stepnum {color:#595959;font-size:16px;margin-bottom:5px}
-		.bs-wizard > .bs-wizard-step .bs-wizard-info {color:#999;font-size:14px}
+		.bs-wizard > .bs-wizard-step .bs-wizard-info {color:#999;font-size:10px}
 		.bs-wizard > .bs-wizard-step > .bs-wizard-dot {position:absolute;width:30px;height:30px;display:block;background:#fbe8aa;top:45px;left:50%;margin-top:-15px;margin-left:-15px;border-radius:50%} 
 		.bs-wizard > .bs-wizard-step > .bs-wizard-dot:after {content:' ';width:14px;height:14px;background:#fbbd19;border-radius:50px;position:absolute;top:8px;left:8px}
 		.bs-wizard > .bs-wizard-step > .progress {position:relative;border-radius:0px;height:8px;box-shadow: none; margin:20px 0}
@@ -52,7 +52,7 @@
 
 		  	<!-- LISTAS DAS FASES V2: http://bootsnipp.com/snippets/featured/form-process-steps -->
            	<div class="row bs-wizard" style="border-bottom:0">
-                <div th:each="phase : ${phases}" th:class="((${phase.opened}) ? 'col-xs-3 bs-wizard-step complete' : 'col-xs-3 bs-wizard-step disabled')">
+                <div th:each="phase : ${phases}" th:class="((${phase.opened}) ? 'col-xs-6 col-sm-3 col-md-3 bs-wizard-step complete' : 'col-xs-6 col-sm-3 col-md-3 bs-wizard-step disabled')">
 					<div class="text-center bs-wizard-stepnum" th:text="${phase.order}"></div>
                   	<div class="progress"><div class="progress-bar"></div></div>
                   	<a th:href="@{((${phase.opened}) ? '/games/'+${game.namelink}+'/'+${map.level.order}+'/'+${map.order}+'/'+${phase.order} : '#')}" class="bs-wizard-dot"></a>
