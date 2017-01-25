@@ -7,10 +7,15 @@
 	<div layout:fragment="content">
 		<div class="row">
 	    	<div class="col-sm-6 bg">
-	    		<h1 th:text="#{app.diploma}">Diploma</h1>
+	    		<h1 th:text="#{app.certificado}">Certificado</h1>
+	    		
+	    		<div th:if="${message eq 'error'}" class="alert alert-danger alert-dismissible" role="alert">
+  					O certificado informado não existe.
+				</div>
+	    		
 	      		<form th:action="@{/diploma}" method="post">
 	  				<div class="form-group">
-						<label for="code">Informe o código do diploma buscado:</label>
+						<label for="code">Informe o código do certificado buscado:</label>
 					  	<input type="text" th:name="code" th:id="code" class="form-control" required="true" />
 					</div>
 	  				
@@ -21,30 +26,15 @@
 	    		<br />
 	    		
 	    		<div th:if="${message eq 'success'}" class="alert alert-success alert-dismissible" role="alert">
- 					<strong th:text="#{success_}">Success!</strong> <span>Diploma encontrado com sucesso. Clique no código para vê-lo na íntegra.</span>
- 					<table>
-        				<tr>
-							<td>Código</td>
-							<td><a th:href="@{'/diploma/'+${diploma.code}}" th:text="${diploma.code}"></a></td>
-						</tr>
-        				<tr>
-							<td>Data</td>
-							<td th:text="${diploma.dt}"></td>
-						</tr>
-						<tr>
-							<td>Game</td>
-							<td th:text="${diploma.game.name}"></td>
-						</tr>
-						<tr>
-							<td>Level</td>
-							<td th:text="${diploma.level.name}"></td>
-						</tr>
-					</table>
+ 					Certificamos que <b><span th:text="${diploma.player.name}"></span></b>
+					concluiu o módulo "<b><span th:text="${diploma.level.name}"></span></b>" do curso de "<b><span th:text="${diploma.game.name}"></span></b>"
+					ministrado pela <span th:text="#{diploma.company}"></span>.<br />
+					Carga horária: <span th:text="${diploma.qtdHours}"></span> horas<br />
+					Data de conclusão: <span th:text="${diploma.dtStr}"></span><br /><br />
+					Clique no link para baixar o certificado: <br /> <a th:href="@{'/diploma/'+${diploma.code}}" th:text="${diploma.code}"></a>
 				</div>
 				
-				<div th:if="${message eq 'error'}" class="alert alert-danger alert-dismissible" role="alert">
-  					<strong th:text="#{error_}">Error!</strong> <span>O diploma informado não existe.</span>
-				</div>
+				
 	    	</div>
 	  	</div>
 	</div>

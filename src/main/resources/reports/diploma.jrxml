@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="diploma" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7f768099-e431-444f-953a-af4aa4b6fe96">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="company" class="java.lang.String"/>
+	<parameter name="url" class="java.lang.String"/>
+	<parameter name="img_selo" class="java.lang.String"/>
+	<parameter name="img_logo" class="java.lang.String"/>
+	<parameter name="img_assinatura" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="code" class="java.lang.String"/>
+	<field name="player.name" class="java.lang.String"/>
+	<field name="level.name" class="java.lang.String"/>
+	<field name="game.name" class="java.lang.String"/>
+	<field name="qtdHours" class="java.lang.String"/>
+	<field name="dtStr" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="555" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-3" y="0" width="802" height="555" backcolor="#F1F1F1" uuid="0b2b735b-d20f-48cd-bb58-03b4581a3152"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="198" y="0" width="519" height="71" uuid="6152911b-9047-45bb-b47c-712fc357ba9c"/>
+				<textElement textAlignment="Center">
+					<font fontName="Adobe Arabic" size="50" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CERTIFICADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="198" y="71" width="519" height="25" uuid="d1efa448-3342-4d13-a583-a795abb5f77c"/>
+				<textElement textAlignment="Center">
+					<font fontName="Adobe Arabic" size="15"/>
+				</textElement>
+				<text><![CDATA[CERTIFICAMOS QUE]]></text>
+			</staticText>
+			<line>
+				<reportElement x="197" y="169" width="520" height="2" uuid="8e79bcac-1cfe-4b1c-9090-3d2b85744614"/>
+			</line>
+			<textField>
+				<reportElement x="198" y="109" width="519" height="59" uuid="1e00d14d-1e1f-495f-9901-916fa2d2fa22"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="30"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{player.name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="224" y="197" width="493" height="40" uuid="6c36e1df-e8a8-420b-a850-94e10c25c078"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Concluiu o módulo " + $F{level.name} + " do curso de " + $F{game.name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="224" y="237" width="493" height="40" forecolor="#000000" backcolor="#FFFFFF" uuid="2966049c-6ac9-4c32-b112-6dcc6da78956"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="15" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ministrado pela " + $P{company}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="224" y="290" width="493" height="39" forecolor="#000000" backcolor="#FFFFFF" uuid="7a2f8198-4360-4a04-919c-db80af2dc74a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="15" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Carga horária: " + $F{qtdHours} + " horas"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="224" y="329" width="493" height="40" forecolor="#000000" backcolor="#FFFFFF" uuid="71f51d8d-494e-4f3c-b347-b079fd28a305"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="15" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Data de conclusão: " + $F{dtStr}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="315" y="406" width="270" height="2" uuid="3d9e688e-de24-4a9b-b51b-43872b1b17db"/>
+			</line>
+			<staticText>
+				<reportElement x="372" y="410" width="157" height="20" uuid="28d96caf-541d-4cf6-8c0c-6933b7b253f7"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Flávio Moisés de Araújo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="368" y="430" width="165" height="20" uuid="0f4514a5-ad55-4d9d-8544-7ab350337bb7"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Presidente da Polifono.Com]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="557" y="487" width="160" height="66" uuid="e34662ce-b5bb-4e31-ac50-e98db3aab42f"/>
+				<textElement textAlignment="Right" markup="none"/>
+				<textFieldExpression><![CDATA["Para confirmar a autenticidade deste certificado, acesse " + $P{url} + " e digite o código " + $F{code}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape">
+				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="20" y="410" width="188" height="143" forecolor="#F1F1F1" backcolor="#F1F1F1" uuid="123df417-f4ea-4b5d-993b-5ed38cb5db02"/>
+				<imageExpression><![CDATA[$P{img_logo}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="10" y="6" width="186" height="285" uuid="b7b0fa01-883e-4026-9ccc-6d1d86c6b0e0"/>
+				<imageExpression><![CDATA[$P{img_selo}]]></imageExpression>
+			</image>
+			<rectangle>
+				<reportElement x="731" y="0" width="56" height="555" forecolor="#FF3333" backcolor="#FF3333" uuid="e20faba1-683d-4fd5-a7fc-800dc656871d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="771" y="0" width="16" height="555" forecolor="#DFC971" backcolor="#DFC971" uuid="beacc19d-a66d-4964-ab16-6894f31b07de"/>
+			</rectangle>
+			<image>
+				<reportElement x="300" y="367" width="305" height="63" uuid="a45c5c1b-660d-46f7-9cf3-7a2312d276e4"/>
+				<imageExpression><![CDATA[$P{img_assinatura}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>
