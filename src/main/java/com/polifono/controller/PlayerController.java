@@ -36,7 +36,7 @@ public class PlayerController extends BaseController {
 	
 	public static final String URL_INDEX = "index";
 	public static final String URL_EMAILCONFIRMATION = "emailconfirmation";
-	public static final String URL_PASSWORDRESET = "passwordreset";
+	public static final String URL_PASSWORDRESET = "index";
 	public static final String URL_CLASSINVITATION = "classinvitation";
 	
 	public static final String REDIRECT_HOME = "redirect:/";

@@ -104,19 +104,19 @@ public class Diploma {
 			}
 			else if (this.getLevel().getOrder() == 2) {
 				// 60 classes
-				return 30;
+				return 15;
 			}
 			else if (this.getLevel().getOrder() == 3) {
 				// 90 classes
-				return 45;
+				return 15;
 			}
 			else if (this.getLevel().getOrder() == 4) {
 				// 120 classes
-				return 60;
+				return 15;
 			}
 			else if (this.getLevel().getOrder() == 5) {
 				// 150 classes
-				return 75;
+				return 15;
 			}
 			else {
 				return 0;

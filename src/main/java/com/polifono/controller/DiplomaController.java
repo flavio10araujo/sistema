@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.domain.Diploma;
+import com.polifono.domain.Player;
 import com.polifono.service.IDiplomaService;
 
 import net.sf.jasperreports.engine.JRException;
@@ -44,12 +45,14 @@ public class DiplomaController extends BaseController {
     public static final String URL_DIPLOMAOPEN_SEARCH = "diplomaSearchOpen";
 
 	@RequestMapping(value = {"/diploma"}, method = RequestMethod.GET)
-    public final String diplomaSearch() {
+    public final String diplomaSearch(final Model model) {
     	// If the user is logged in.
     	if (this.currentAuthenticatedUser() != null) {
     		return URL_DIPLOMA_SEARCH;
 		}
 		else {
+			model.addAttribute("player", new Player());
+			model.addAttribute("playerResend", new Player());
 			return URL_DIPLOMAOPEN_SEARCH;
 		}
     }
@@ -60,7 +63,11 @@ public class DiplomaController extends BaseController {
 		if (code == null || "".equals(code)) {
 			// If the user is logged in, get his email.
 	    	if (currentAuthenticatedUser() != null) return URL_DIPLOMA_SEARCH;
-			else return URL_DIPLOMAOPEN_SEARCH;
+			else {
+				model.addAttribute("player", new Player());
+				model.addAttribute("playerResend", new Player());
+				return URL_DIPLOMAOPEN_SEARCH;
+			}
 		}
 
 		Diploma diploma = diplomaService.findByCode(code);
@@ -75,7 +82,11 @@ public class DiplomaController extends BaseController {
     	
     	// If the user is logged in, get his email.
     	if (currentAuthenticatedUser() != null) return URL_DIPLOMA_SEARCH;
-		else return URL_DIPLOMAOPEN_SEARCH;
+		else {
+			model.addAttribute("player", new Player());
+			model.addAttribute("playerResend", new Player());
+			return URL_DIPLOMAOPEN_SEARCH;
+		}
     }
 	
 	@RequestMapping(value = {"/diploma/{code}"}, method = RequestMethod.GET)
@@ -83,7 +94,11 @@ public class DiplomaController extends BaseController {
 		if (code == null || "".equals(code)) {
 			// If the user is logged in, get his email.
 	    	if (currentAuthenticatedUser() != null) return URL_DIPLOMA_SEARCH;
-			else return URL_DIPLOMAOPEN_SEARCH;
+			else {
+				model.addAttribute("player", new Player());
+				model.addAttribute("playerResend", new Player());
+				return URL_DIPLOMAOPEN_SEARCH;
+			}
 		}
 		
 		Diploma diploma = diplomaService.findByCode(code);
@@ -93,7 +108,11 @@ public class DiplomaController extends BaseController {
 			
 			// If the user is logged in, get his email.
 	    	if (currentAuthenticatedUser() != null) return URL_DIPLOMA_SEARCH;
-			else return URL_DIPLOMAOPEN_SEARCH;
+			else {
+				model.addAttribute("player", new Player());
+				model.addAttribute("playerResend", new Player());
+				return URL_DIPLOMAOPEN_SEARCH;
+			}
 		}
 		
 		// Generate diploma.

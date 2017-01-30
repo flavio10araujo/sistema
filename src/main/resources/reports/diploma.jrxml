@@ -28,14 +28,14 @@
 			<staticText>
 				<reportElement x="198" y="0" width="519" height="71" uuid="6152911b-9047-45bb-b47c-712fc357ba9c"/>
 				<textElement textAlignment="Center">
-					<font fontName="Adobe Arabic" size="50" isBold="true"/>
+					<font fontName="SansSerif" size="50" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CERTIFICADO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="198" y="71" width="519" height="25" uuid="d1efa448-3342-4d13-a583-a795abb5f77c"/>
 				<textElement textAlignment="Center">
-					<font fontName="Adobe Arabic" size="15"/>
+					<font fontName="SansSerif" size="15"/>
 				</textElement>
 				<text><![CDATA[CERTIFICAMOS QUE]]></text>
 			</staticText>
