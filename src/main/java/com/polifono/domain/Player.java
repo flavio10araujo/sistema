@@ -103,6 +103,9 @@ public class Player {
 	@Column(name = "c001_doc_01_exp")
 	private String rgOrgExp;
 	
+	@Column(name = "c001_about")
+	private String about;
+	
 	public int getId() {
 		return id;
 	}
@@ -337,5 +340,13 @@ public class Player {
 
 	public void setRgOrgExp(String rgOrgExp) {
 		this.rgOrgExp = rgOrgExp;
+	}
+
+	public String getAbout() {
+		return about;
+	}
+
+	public void setAbout(String about) {
+		this.about = about;
 	}
 }
