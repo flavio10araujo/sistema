@@ -121,7 +121,7 @@ public class PaymentController extends BaseController {
 		checkout.setShippingCost(new BigDecimal("0.00"));
 
         checkout.setSender(
-        	player.getName() + " " + player.getLastName(), // Client's name.
+        	player.getFullName(), // Client's name.
         	//"c42247508001355723309@sandbox.pagseguro.com.br" // Client's e-mail. player.getEmail()
         	//"c123123"+t.getId()+"@sandbox.pagseguro.com.br"
         	player.getEmail()

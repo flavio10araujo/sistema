@@ -46,6 +46,12 @@ public class Player {
 	@Column(name = "c001_name")
 	private String name;
 	
+	@Column(name = "c001_last_name")
+	private String lastName;
+	
+	@Transient
+	private String fullName;
+	
 	@Column(name = "c001_score")
 	private int score;
 	
@@ -115,9 +121,6 @@ public class Player {
 	
 	@Column(name="c001_about", columnDefinition="TEXT")
 	private String about;
-	
-	@Column(name = "c001_last_name")
-	private String lastName;
 	
 	public int getId() {
 		return id;
@@ -411,5 +414,9 @@ public class Player {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public String getFullName() {
+		return this.getName() + " " + this.getLastName();
 	}
 }

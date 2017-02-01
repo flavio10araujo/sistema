@@ -12,7 +12,7 @@
 		<![CDATA[]]>
 	</queryString>
 	<field name="code" class="java.lang.String"/>
-	<field name="player.name" class="java.lang.String"/>
+	<field name="player.fullName" class="java.lang.String"/>
 	<field name="level.name" class="java.lang.String"/>
 	<field name="game.name" class="java.lang.String"/>
 	<field name="qtdHours" class="java.lang.String"/>
@@ -47,7 +47,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="30"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{player.name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{player.fullName}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="224" y="197" width="493" height="40" uuid="6c36e1df-e8a8-420b-a850-94e10c25c078"/>
