@@ -230,11 +230,19 @@ public class ProfileController extends BaseController {
 		Player player = playerService.findOne(edit.getId());
 		
 		try  {
-			player.setName(edit.getName());
+			player.setName(edit.getName().trim());
+			player.setLastName(edit.getLastName().trim());
 			player.setPhone(edit.getPhone());
 			player.setSex(edit.getSex());
 			player.setDtBirth(edit.getDtBirth());
 			player.setAddress(edit.getAddress());
+			
+			if (edit.getAbout() != null && edit.getAbout().length() > 500) {
+				player.setAbout(edit.getAbout().substring(0, 499));
+			}
+			else {
+				player.setAbout(edit.getAbout());
+			}
 			
 			playerService.save(player);
 			redirectAttributes.addFlashAttribute("edit", "success");

@@ -91,29 +91,7 @@
 	                </div>
 	                <div class="col-md-4" style="margin-bottom:50px;">
 		                
-		                <!--
-						<div th:if="${codRegister} == 1" class="alert alert-success">
-			  				<label th:utext="${msgRegister}"></label><br />
-						</div>
-						
-		                <div th:if="${codRegister} == 2" class="alert alert-danger">
-			  				<label th:utext="${msgRegister}"></label>
-						</div>
-						
-						<div th:if="${error} != null" class="alert alert-danger">
-			  				<label>O login ou senha informado é inválido.<br />Tente novamente.</label>
-						</div>
-						
-						<div th:if="${message eq 'success'}" class="alert alert-success alert-dismissible" role="alert">
-		 					<span th:text="#{msg.emailSent}"></span>
-						</div>
-						
-						<div th:if="${message eq 'error'}" class="alert alert-danger alert-dismissible" role="alert">
-		  					<span th:utext="${messageContent}"></span>
-						</div>
-						-->
-						
-						<input type="hidden" th:value="${codRegister}" id="alertCodRegister" />
+		                <input type="hidden" th:value="${codRegister}" id="alertCodRegister" />
 						<input type="hidden" th:value="${msgRegister}" id="alertMsgRegister" />
 						<input type="hidden" th:value="${error}" id="alertError" />
 						<input type="hidden" th:value="${message}" id="alertMessage" />

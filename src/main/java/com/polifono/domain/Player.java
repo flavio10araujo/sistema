@@ -1,5 +1,6 @@
 package com.polifono.domain;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -78,6 +79,15 @@ public class Player {
 	@Transient
 	private String dtBirthStr;
 	
+	@Transient
+	private int dtBirthDay;
+	
+	@Transient
+	private int dtBirthMonth;
+	
+	@Transient
+	private int dtBirthYear;
+	
 	@Column(name = "c001_address")
 	private String address;
 	
@@ -103,8 +113,11 @@ public class Player {
 	@Column(name = "c001_doc_01_exp")
 	private String rgOrgExp;
 	
-	@Column(name = "c001_about")
+	@Column(name="c001_about", columnDefinition="TEXT")
 	private String about;
+	
+	@Column(name = "c001_last_name")
+	private String lastName;
 	
 	public int getId() {
 		return id;
@@ -214,6 +227,48 @@ public class Player {
 		catch (Exception e) {
 			this.dtBirth = null;
 		}
+	}
+
+	public int getDtBirthDay() {
+		if (this.dtBirth == null) {
+			return -1;
+		}
+		
+		Calendar cal = Calendar.getInstance();
+	    cal.setTime(this.dtBirth);
+	    return cal.get(Calendar.DAY_OF_MONTH);
+	}
+
+	public void setDtBirthDay(int dtBirthDay) {
+		this.dtBirthDay = dtBirthDay;
+	}
+
+	public int getDtBirthMonth() {
+		if (this.dtBirth == null) {
+			return -1;
+		}
+		
+		Calendar cal = Calendar.getInstance();
+	    cal.setTime(this.dtBirth);
+	    return cal.get(Calendar.MONTH);
+	}
+
+	public void setDtBirthMonth(int dtBirthMonth) {
+		this.dtBirthMonth = dtBirthMonth;
+	}
+
+	public int getDtBirthYear() {
+		if (this.dtBirth == null) {
+			return -1;
+		}
+		
+		Calendar cal = Calendar.getInstance();
+	    cal.setTime(this.dtBirth);
+	    return cal.get(Calendar.YEAR);
+	}
+
+	public void setDtBirthYear(int dtBirthYear) {
+		this.dtBirthYear = dtBirthYear;
 	}
 
 	public String getAddress() {
@@ -348,5 +403,13 @@ public class Player {
 
 	public void setAbout(String about) {
 		this.about = about;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 }

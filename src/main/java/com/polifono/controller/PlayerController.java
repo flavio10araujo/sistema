@@ -69,6 +69,15 @@ public class PlayerController extends BaseController {
 			if (msg.equals("")) {
 				String password = player.getPassword();
 				
+				String name = player.getName().trim();
+				name = name.substring(0, name.indexOf(" "));
+				
+				String lastName = player.getName().trim();
+				lastName = lastName.substring(lastName.indexOf(" ") + 1).trim();
+				
+				player.setLastName(lastName);
+				player.setName(name);
+				
 				model.addAttribute("player", playerService.create(player));
 				model.addAttribute("codRegister", 1);
 				EmailSendUtil.sendEmailConfirmRegister(player);

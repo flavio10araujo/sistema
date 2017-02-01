@@ -26,7 +26,7 @@
                             <hr />
                             <h3><strong>Eu</strong></h3>
                             
-                           <p th:if="${player.about == null} AND ${editAvailable == true}">
+                           <p th:if="${player.about == null} OR ${player.about == ''}">
          						<span th:text="#{msg.infoNotFound}"></span>
        						</p>
        						<p th:if="${player.about != null}">
@@ -36,7 +36,7 @@
                             <hr />
                             <h3><strong>Cidade</strong></h3>
                             
-                            <p th:if="${player.address == null} AND ${editAvailable == true}">
+                            <p th:if="${player.address == null} OR ${player.address == ''}">
          						<span th:text="#{msg.infoNotFound}"></span>
        						</p>
        						<p th:if="${player.address != null}">
@@ -46,7 +46,7 @@
                             <hr />
                             <h3><strong>Nascimento</strong></h3>
                             
-                            <p th:if="${player.dtBirth == null} AND ${editAvailable == true}">
+                            <p th:if="${player.dtBirth == null}">
          						<span th:text="#{msg.infoNotFound}"></span>
        						</p>
        						<p th:if="${player.dtBirth != null}">
@@ -56,7 +56,7 @@
                             <hr />
                             <h3><strong>Sexo</strong></h3>
                             
-                            <p th:if="${player.sex == 0} AND ${editAvailable == true}">
+                            <p th:if="${player.sex == 0}">
          						<span th:text="#{msg.infoNotFound}"></span>
        						</p>
        						<p th:if="${player.sex > 0}">
@@ -80,7 +80,7 @@
                 <div class="panel-body">
                 
                     
-                    <h1 class="panel-title pull-left" style="font-size:30px;" th:text="${player.name}">Name</h1> 
+                    <h1 class="panel-title pull-left" style="font-size:30px;" th:text="${player.name}+' '+${player.lastName}">Name</h1> 
                     
                     <div class="dropdown pull-right" th:if="${editAvailable == true}">
                         <a th:href="@{'/profile/player/edit/'+${player.id}}" class="btn btn-success dropdown-toggle" th:title="#{app.edit}">Editar</a>
@@ -88,12 +88,12 @@
                     
                     <br /><br />
                     
-                    <h4 th:text="${player.email}">example@polifono.com</h4>
+                    <h4 th:text="${player.email}" th:if="${editAvailable == true}">example@polifono.com</h4>
                     
                     <hr />
                     
                     <span class="pull-left">
-                        <a href="#" class="btn btn-link" style="text-decoration:none;">Pontuação <span class="badge" th:text="${player.score}">1</span></a>
+                        <a href="#" class="btn btn-link" style="text-decoration:none">Pontuação <span class="badge" th:text="${player.score}">1</span></a>
                     </span>
                 </div>
             </div>
@@ -111,6 +111,10 @@
                     <h4><a href="#" style="text-decoration:none;margin-right:8px; margin-top:-5px;"><strong>Instrumentos</strong></a></h4>
                     
                     <hr />
+                    
+                    <div class="post-content" th:if="${#lists.isEmpty(phases)}">
+                    	<p>Nenhum instrumento estudado até o momento.</p>
+					</div>
                     
                     <div class="post-content" th:each="phase : ${phases}">
                     	<ul>
@@ -142,6 +146,10 @@
                     
                     <hr />
                     
+                    <div class="post-content" th:if="${#lists.isEmpty(diplomas)}">
+                    	<p>Nenhum certificado obtido até o momento.</p>
+					</div>
+                    
                     <div class="post-content" th:each="diploma : ${diplomas}">
 						<ul>
 							<li>
@@ -160,6 +168,24 @@
             </div>
             
         </div>
+        
+        <input type="hidden" th:value="${edit}" id="alertEdit" />
+        <input type="hidden" th:value="#{crud.msg.editedSuccessfully}" id="alertEditSuccess" />
+        <input type="hidden" th:value="#{crud.msg.notEdited}" id="alertEditError" />
+
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			
+			if (document.getElementById("alertEdit").value == 'success') {
+				bootbox.alert(document.getElementById("alertEditSuccess").value);
+			}
+			
+			if (document.getElementById("alertEdit").value == 'unsuccess') {
+				bootbox.alert(document.getElementById("alertEditError").value);
+			}
+			
+			/*]]>*/
+		</script>
         
     </div>
 

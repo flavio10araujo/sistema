@@ -226,6 +226,9 @@ public class PlayerServiceImpl implements IPlayerService {
 		if (player.getName() == null || player.getName().equals("")) {
 			msg = msg + "<br />O nome precisa ser informado.";
 		}
+		else if (!player.getName().trim().contains(" ")) {
+			msg = msg + "<br />Por favor, informe o nome e o sobrenome.";
+		}
 		
 		if (player.getEmail() == null || player.getEmail().equals("")) {
 			msg = msg + "<br />O e-mail precisa ser informado.";
@@ -296,8 +299,12 @@ public class PlayerServiceImpl implements IPlayerService {
 	public String validateUpdateProfile(Player player) {
 		String msg = "";
 		
-		if (player.getName() == null || "".equals(player.getName())) {
+		if (player.getName() == null || "".equals(player.getName().trim())) {
 			msg = "O nome precisa ser informado.<br />";
+		}
+		
+		if (player.getLastName() == null || "".equals(player.getLastName().trim())) {
+			msg = "O sobrenome precisa ser informado.<br />";
 		}
 		
 		return msg;
