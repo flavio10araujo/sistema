@@ -89,7 +89,7 @@
 									<label for="clazzId">Nome da sala</label>
 								  	<select class="form-control" th:field="*{clazz.id}" th:id="clazzId" required="true">
 								    	<option value="0"></option>
-	  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.name}"></option>
+	  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.school} + ' - ' + ${clazz.name}"></option>
 								  	</select>
 								</div>
 	       						
@@ -127,7 +127,7 @@
 								<label for="clazzIdFilter">Nome da sala</label>
 							  	<select class="form-control" th:field="*{id}" th:id="clazzIdFilter" required="true" data-toggle="tooltip" title="Caso tenha mais de uma sala de aula, utilize esse campo para mostrar apenas os alunos de uma determinada sala.">
 							    	<option value="0"></option>
-  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.name}"></option>
+  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.school} + ' - ' + ${clazz.name}"></option>
 							  	</select>
 							</div>
 							<input type="submit" class="btn btn-default pull-right" th:value="#{app.filter}" />
@@ -143,7 +143,7 @@
 							<table class="table table-bordered">
 								<thead>
 									<tr class="btn-primary">
-										<th>Sala</th>
+										<th>Escola - Sala</th>
 										<th th:text="#{app.student}"></th>
 										<th></th>
 									</tr>
@@ -153,7 +153,7 @@
 										<td colspan="3" align="center" th:text="#{crud.list.empty}"></td> 
 									</tr>
 									<tr th:each="item : ${classPlayers}">
-										<td th:text="${item.clazz.name}"></td>
+										<td th:text="${item.clazz.school} + ' - ' + ${item.clazz.name}"></td>
 										<td th:text="${item.player.fullName}"></td>
 										<td align="left">
 											<a data-toggle="tooltip" title="Reenviar e-mail para o aluno" th:if="${item.status==1}" th:href="@{/teacher/student/resendemail/{id}(id=${item.id})}" style="margin-right:10%"><span class="glyphicon glyphicon-repeat"></span></a>

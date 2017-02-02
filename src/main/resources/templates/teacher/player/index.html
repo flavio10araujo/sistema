@@ -32,13 +32,14 @@
                     </div>
                     <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                         <div class="panel-body">
-                            <small>A tela Gerenciar Salas é utilizada para o gerenciamento (cadastro, edição, exclusão) de salas de aula. 
-                            Caso você possua alunos em salas de aulas diferentes, é aqui que você deve cadastrar essas salas.
-                            Para uma melhor organização, recomendamos que a sala de aula seja cadastrada relacionada a um ano ou semestre escolar.<br />
-                            Por exemplo: <br />
-                            Nome da escola: Escola Ricardo Hoffmann<br />
-                            Nome da sala de aula: 2017/01 - 5º ano A.<br />
-                            Onde 2017 é o ano, 01 é o semestre, 5º ano A é referente a turma do quinto ano.
+                            <small>A tela Cadastrar Alunos é utilizada para o cadastro de alunos que não possuem um e-mail. 
+                            Se o aluno possui um e-mail, por favor, cadastre-o pela tela inicial do sistema.
+                            Os alunos cadastrados sem e-mail ficarão vinculados ao login do professor.
+                            O login do aluno pode ser qualquer palavra entre 6 e 20 caracteres, mas não deve possuir espaços, acentos e outros caracteres especiais.
+                            <br />Exemplo:
+                            <br />Se o nome do aluno que não possui um e-mail é João da Silva, o seu nome de login poderá ser joaosilva, ou joao10silva, etc. Mas não
+                            poderá ser "joão silva" (com espaço), nem joãosilva (com acento).
+                            <br />É com esse login que o aluno acessará o sistema para fazer as aulas.
                             Para mais informações, verifique o <a href="#">Manual do Professor</a>.</small>
                         </div>
                     </div>
@@ -86,7 +87,7 @@
                             <form id="f_player_register" th:object="${player}" th:action="@{/teacher/player/create}" action="#" method="post">
        						
 	       						<div class="form-group">
-	       							<label for="name" th:text="#{app.full_name}">Nome da sala</label>
+	       							<label for="name" th:text="#{app.full_name}"></label>
 	       							<input type="text" th:field="*{name}" th:id="name" class="form-control" required="true" />
 	       						</div>
 	       						

@@ -55,6 +55,15 @@ public class TeacherPlayerController extends BaseController {
 			
 			// If there are not errors.
 			if (msg.equals("")) {
+				String name = player.getName().trim();
+				name = name.substring(0, name.indexOf(" "));
+				
+				String lastName = player.getName().trim();
+				lastName = lastName.substring(lastName.indexOf(" ") + 1).trim();
+				
+				player.setLastName(lastName);
+				player.setName(name);
+				
 				Player teacher = this.currentAuthenticatedUser().getUser();
 				player.setCreator(teacher);
 				model.addAttribute("player", playerService.create(player));

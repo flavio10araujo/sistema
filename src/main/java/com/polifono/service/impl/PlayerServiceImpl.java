@@ -266,6 +266,9 @@ public class PlayerServiceImpl implements IPlayerService {
 		if (player.getName() == null || player.getName().equals("")) {
 			msg = msg + "<br />O nome precisa ser informado.";
 		}
+		else if (!player.getName().trim().contains(" ")) {
+			msg = msg + "<br />Por favor, informe o nome e o sobrenome.";
+		}
 		
 		if (player.getLogin() == null || player.getLogin().equals("")) {
 			msg = msg + "<br />O login precisa ser informado.";

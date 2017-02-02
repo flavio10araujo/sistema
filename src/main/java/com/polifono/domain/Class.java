@@ -34,6 +34,9 @@ public class Class {
 	
 	@Column(name = "c014_description")
 	private String description;
+	
+	@Column(name = "c014_school")
+	private String school;
 
 	public int getId() {
 		return id;
@@ -81,5 +84,13 @@ public class Class {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getSchool() {
+		return school;
+	}
+
+	public void setSchool(String school) {
+		this.school = school;
 	}
 }

@@ -99,7 +99,7 @@
 									<label for="clazzId">Nome da sala</label>
 								  	<select class="form-control" th:field="*{clazz.id}" th:id="clazzId" required="true">
 								    	<option value="0"></option>
-	  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.name}"></option>
+	  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.school} + ' - ' + ${clazz.name}"></option>
 								  	</select>
 								</div>
 								
@@ -177,7 +177,7 @@
         </div>
         
         <input type="hidden" th:value="${message}" id="alertMessage" />
-        <input type="hidden" th:value="#{msg.emailSent}" id="alertMessageContent" />
+        <input type="hidden" th:value="${messageContent}" id="alertMessageContent" />
         
         <script th:inline="javascript">
 			/*<![CDATA[*/
