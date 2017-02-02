@@ -237,7 +237,7 @@
 			                    <input type="hidden" th:field="*{dtBirthStr}" th:id="dtBirthStr" class="form-control" placeholder="DD/MM/AAAA" maxlength="10" />
 			                    
 			                    <a th:href="'javascript:cancelEdit(\'/profile/player/' + ${player.id} + '\')'" class="btn btn-default"><i class="fa fa-fw fa-times" aria-hidden="true"></i> Cancelar</a>
-			                	<button onclick="javascript:submitForm()" class="btn btn-primary"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Salvar</button>
+			                	<button onclick="javascript:submitForm()" class="btn btn-primary pull-right"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Salvar</button>
 		                    
 		                	</div>
 		                
@@ -257,51 +257,51 @@
 		<script th:inline="javascript">
 			/*<![CDATA[*/
 			
-				
-			function cancelEdit(url){if(confirm("Tem certeza que deseja cancelar as alterações?")){location.href=url;}}
+				if (document.getElementById("alertMessage").value == 'error') {
+					bootbox.alert(document.getElementById("alertMessageContent").value);
+				}
 			
-			if (document.getElementById("alertMessage").value == 'error') {
-				bootbox.alert(document.getElementById("alertMessageContent").value);
-			}
+				function cancelEdit(url){if(confirm("Tem certeza que deseja cancelar as alterações?")){location.href=url;}}
+				
+				function submitForm() {
+					var dtBirthDay = document.getElementById("dtBirthDay").value;
+					var dtBirthMonth = document.getElementById("dtBirthMonth").value;
+					var dtBirthYear = document.getElementById("dtBirthYear").value;
+					
+					if (!validateDate(dtBirthDay, dtBirthMonth, dtBirthYear)){
+						alert("A data de nascimento informada é inválida.");
+						return;
+					}
+					else {
+						dtBirthMonth = parseInt(dtBirthMonth) + 1;
+						document.getElementById("dtBirthStr").value = dtBirthDay + "/" + dtBirthMonth + "/" + dtBirthYear;
+					}
+					
+					form=document.getElementById("f_edit");
+					form.submit();
+				}
 			
-			function submitForm() {
-				var dtBirthDay = document.getElementById("dtBirthDay").value;
-				var dtBirthMonth = document.getElementById("dtBirthMonth").value;
-				var dtBirthYear = document.getElementById("dtBirthYear").value;
-				
-				if (!validateDate(dtBirthDay, dtBirthMonth, dtBirthYear)){
-					alert("A data de nascimento informada é inválida.");
-					return;
-				}
-				else {
-					dtBirthMonth = parseInt(dtBirthMonth) + 1;
-					document.getElementById("dtBirthStr").value = dtBirthDay + "/" + dtBirthMonth + "/" + dtBirthYear;
-				}
-				
-				form=document.getElementById("f_edit");
-				form.submit();
-			}
-			
-			function validateDate(day, month, year) {
-				
-				if (month == 1) {
-					if (day < 1 || day > 29) {
-						return false;
+				function validateDate(day, month, year) {
+					
+					if (month == 1) {
+						if (day < 1 || day > 29) {
+							return false;
+						}
 					}
-				}
-				else if (month == 3 || month == 5 || month == 8 || month == 10) {
-					if (day < 1 || day > 30) {
-						return false;
+					else if (month == 3 || month == 5 || month == 8 || month == 10) {
+						if (day < 1 || day > 30) {
+							return false;
+						}
 					}
-				}
-				else if (month == 0 || month == 2 || month == 4 || month == 6 || month == 7 || month == 9 || month == 11) {
-					if (day < 1 || day > 31) {
-						return false;
+					else if (month == 0 || month == 2 || month == 4 || month == 6 || month == 7 || month == 9 || month == 11) {
+						if (day < 1 || day > 31) {
+							return false;
+						}
 					}
+	
+					return true;
 				}
-
-				return true;
-			}
+				
 			/*]]>*/
 		</script>
 		

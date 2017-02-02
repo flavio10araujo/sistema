@@ -1,159 +1,260 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
 
-<head></head>
+<head>
+	<style type="text/css">
+        .mainbody{background:#f0f0f0}
+	</style>
+</head>
 
 <body>
 
 	<div layout:fragment="content">
-		<div class="row">
-			<div class="col-md-offset-2 col-md-8">
-				<!-- Save Alert Messages -->
-				<div th:if="${save eq 'unsuccess'}">
-          			<div class="alert alert-danger alert-dismissible" role="alert">
-  						<strong th:text="#{error_}">Error!</strong> <span th:text="#{crud.msg.notSaved}">Data Not Saved.</span>
-					</div>
-       			</div>
-       			<div th:if="${save eq 'success'}">
-          			<div class="alert alert-success alert-dismissible" role="alert">
-  						<strong th:text="#{success_}">Success!</strong> <span th:text="#{crud.msg.savedSuccessfully}">Data Saved Successfully.</span>
-					</div>
-       			</div>
 
-				<!-- Deletion Alert Messages -->
-        		<div th:if="${deletion eq 'unsuccess'}">
-          			<div class="alert alert-danger alert-dismissible" role="alert">
-  						<strong th:text="#{error_}">Error!</strong> <span th:text="#{crud.msg.notDeleted}">Data Not Deleted.</span>
-					</div>
-       			</div>
-       			<div th:if="${deletion eq 'success'}">
-          			<div class="alert alert-success alert-dismissible" role="alert">
-  						<strong th:text="#{success_}">Success!</strong> <span th:text="#{crud.msg.deletedSuccessfully}">Data Deleted Successfully.</span>
-					</div>
-       			</div>
-
-				<!-- Edit Alert Message -->
-    			<div th:if="${status eq 'notfound'}">
-          			<div class="alert alert-danger alert-dismissible" role="alert">
-  						<strong th:text="#{error_}">Error!</strong> <span th:text="#{crud.msg.invalidItem}">Invalid item.</span>
-					</div>
-       			</div>
-       			<div th:if="${edit eq 'unsuccess'}">
-          			<div class="alert alert-danger alert-dismissible" role="alert">
-  						<strong th:text="#{error_}">Error!</strong> <span th:text="#{crud.msg.notEdited}">Data Not Edited.</span>
-					</div>
-       			</div>
-       			<div th:if="${edit eq 'success'}">
-          			<div class="alert alert-success alert-dismissible" role="alert">
-  						<strong th:text="#{success_}">Success!</strong> <span th:text="#{crud.msg.editedSuccessfully}">Data Edited Successfully.</span>
-					</div>
-       			</div>
-       			
-       			<!-- Other messages -->
-       			<div th:if="${message eq 'studentNotFound'}">
-          			<div class="alert alert-danger alert-dismissible" role="alert">
-  						<strong th:text="#{error_}">Error!</strong> <span>O e-mail informado não está cadastrado no sistema.</span>
-					</div>
-       			</div>
-       			<div th:if="${message eq 'studentAlreadyRegistered'}">
-          			<div class="alert alert-danger alert-dismissible" role="alert">
-  						<strong th:text="#{error_}">Error!</strong> <span>O estudante buscado já está cadastrado nessa sala de aula.</span>
-					</div>
-       			</div>
-       			<div th:if="${message eq 'studentNotPending'}">
-          			<div class="alert alert-danger alert-dismissible" role="alert">
-  						<strong th:text="#{error_}">Error!</strong> <span>Somente é possível enviar o e-mail para estudantes Pendentes de Confirmação.</span>
-					</div>
-       			</div>
-       			<div th:if="${message eq 'emailSent'}">
-          			<div class="alert alert-success alert-dismissible" role="alert">
-  						<strong th:text="#{success_}">Success!</strong> <span th:text="#{msg.emailSent}">The e-mail was sent successfully.</span>
-					</div>
-       			</div>
-
-				<div class="panel panel-success">
-					<div class="panel-heading">
-  						<h3 class="panel-title" th:text="#{crud.add.student}"></h3>
-					</div>
-   					<div class="panel-body">
-    					<form th:object="${classPlayer}" th:action="@{/teacher/student/save}" action="#" method="post">
+        <div class="col-lg-3 col-md-3">
+            
+            <div class="list-group">
+                <a class="list-group-item" th:href="@{/teacher/class}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>  Gerenciar Salas <span class="pull-right"></span></a>
+                <a class="list-group-item active" href="#"><i class="fa fa-users fa-fw" aria-hidden="true"></i>  Gerenciar Alunos</a>
+                <a class="list-group-item" th:href="@{/teacher/report}"><i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>  Relatórios</a>
+                <a class="list-group-item" th:href="@{/teacher/player/create}"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>  Cadastrar Alunos</a>
+            </div>
+            
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingThree">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="text-decoration:none;">
+                            <h4 class="panel-title">
+                                <i class="fa fa-caret-right fa-fw" aria-hidden="true"></i>  Ajuda?
+                            </h4>
+                        </a>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                        <div class="panel-body">
+                            <small>
+                            A tela Gerenciar Alunos é utilizada para o gerenciamento dos alunos (cadastro, exclusão) nas salas de aula. 
+                            Ou seja, é nessa tela que você vai buscar um aluno já cadastrado no sistema e incluí-lo em uma de suas salas de aula.
+                            É nessa tela também que você pode verificar o histórico de notas e de frequência de cada um de seus alunos.
+                            Os alunos que foram cadastrados com um e-mail receberão um e-mail avisando que eles foram cadastrados em sua sala de aula.
+                            Eles somente começarão a fazer parte de sua sala de aula a partir momento que eles aceitarem o convite para entrar em sua sala de aula.
+                            Para mais informações, verifique o <a href="#">Manual do Professor</a>.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingSix">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseThree" style="text-decoration:none;">
+                            <h4 class="panel-title">
+                                <i class="fa fa-caret-right fa-fw" aria-hidden="true"></i>  Encontrou um erro?
+                            </h4>
+                        </a>
+                    </div>
+                    <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix" style="text-decoration:none;">
+                        <div class="panel-body">
+                            <small>Caso tenha encontrado algum erro no sistema, por favor, avise-nos através do e-mail polifono@polifono.com.</small>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="panel panel-footer">
+                    <small><a href="#">Manual do Professor</a></small><br />
+                    <small><a href="#">Vídeo tutorial</a></small><br />
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+            
+            <div class="panel panel-default">
+                
+                <div class="panel-body">
+                    
+                    <div class="pull-left">
+                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-users fa-fw" aria-hidden="true"></i></a>
+                    </div>
+                    
+                    <h4><a href="#" style="text-decoration:none;"><strong>Gerenciar Alunos</strong></a> – <small><small><a href="#" style="text-decoration:none; color:grey;"><i><i class="fa fa-plus-square-o" aria-hidden="true"></i> cadastrar aluno em uma sala de aula</i></a></small></small></h4>
+                    
+                    <hr />
+                    
+                    <div class="media">
+                        <div class="media-body">
+                            <form id="f_student" th:object="${classPlayer}" th:action="@{/teacher/student/save}" action="#" method="post">
        						
-       						<div class="form-group">
-								<label for="clazzId" th:text="#{app.class}">Class</label>
-							  	<select class="form-control" th:field="*{clazz.id}" th:id="clazzId" required="true">
-							    	<option value="0"></option>
-  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.name}"></option>
-							  	</select>
-							</div>
-       						
-       						<div class="form-group">
-       							<label for="email" th:text="#{app.email}"></label>
-       							<input type="email" th:field="*{player.email}" th:id="player.email" class="form-control" required="true" />
-       						</div>
-       						
-       						<input type="submit" class="btn btn-danger pull-right" th:value="#{app.save}" />
-							
- 						</form>
-					</div>
+	       						<div class="form-group">
+									<label for="clazzId">Nome da sala</label>
+								  	<select class="form-control" th:field="*{clazz.id}" th:id="clazzId" required="true">
+								    	<option value="0"></option>
+	  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.name}"></option>
+								  	</select>
+								</div>
+	       						
+	       						<div class="form-group">
+	       							<label for="email">E-mail/login do aluno</label>
+	       							<input type="email" th:field="*{player.email}" th:id="player.email" class="form-control" required="true" />
+	       						</div>
+	       						
+	       						<button onclick="javascript:submitForm()" class="btn btn-primary pull-right"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Salvar</button>
+								
+	 						</form>
+                        </div>
+                    </div>
+                    
 				</div>
+			
 			</div>
-		</div>
-
-		<div class="row" style="margin-bottom:50px;">
-			<div class="col-md-offset-2 col-md-8">
-				<div class="panel panel-success">
-					<div class="panel-heading">
-						<h3 class="panel-title" th:text="#{crud.list.student}"></h3>
-					</div>
-					<div class="panel-body">
-    					<form th:object="${classFilter}" th:action="@{/teacher/student}" method="post">
+			
+			<div class="panel panel-default">
+                
+                <div class="panel-body">
+                
+                	<div class="pull-left">
+                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-users fa-fw" aria-hidden="true"></i></a>
+                    </div>
+                    
+                    <h4><a href="#" style="text-decoration:none;"><strong>Gerenciar Alunos</strong></a> – <small><small><a href="#" style="text-decoration:none; color:grey;"><i><i class="fa fa-pencil-square-o" aria-hidden="true"></i> editar alunos da sala de aula</i></a></small></small></h4>
+                    
+                    <hr />
+                    
+                    <div class="media">
+                        <div class="media-body">
+                        <form th:object="${classFilter}" th:action="@{/teacher/student}" method="post">
        						<div class="form-group">
-								<label for="clazzIdFilter" th:text="#{app.class}">Class</label>
-							  	<select class="form-control" th:field="*{id}" th:id="clazzIdFilter" required="true">
+								<label for="clazzIdFilter">Nome da sala</label>
+							  	<select class="form-control" th:field="*{id}" th:id="clazzIdFilter" required="true" data-toggle="tooltip" title="Caso tenha mais de uma sala de aula, utilize esse campo para mostrar apenas os alunos de uma determinada sala.">
 							    	<option value="0"></option>
   									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.name}"></option>
 							  	</select>
 							</div>
 							<input type="submit" class="btn btn-default pull-right" th:value="#{app.filter}" />
 						</form>
+                        
+                        </div>
 					</div>
-					<div class="panel-body">
-						<table class="table table-bordered">
-							<thead>
-								<tr class="btn-success">
-									<th th:text="#{app.class}"></th>
-									<th th:text="#{app.student}"></th>
-									<th th:text="#{app.email}"></th>
-									<th th:text="#{app.operation}"></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr th:if="${#lists.isEmpty(classPlayers)}" class="btn-warning">
-									<td colspan="4" align="center" th:text="#{crud.list.empty}"></td> 
-								</tr>
-								<tr th:each="item : ${classPlayers}">
-									<td th:text="${item.clazz.name}"></td>
-									<td th:text="${item.player.name}"></td>
-									<td th:text="${item.player.email}"></td>
-									<td align="left">
-										<a th:if="${item.status==1}" th:href="@{/teacher/student/resendemail/{id}(id=${item.id})}" style="margin-right:10%"><span class="glyphicon glyphicon-repeat"></span></a>
-										<a th:if="${item.status==2}" th:href="@{/profile/player/{id}/score(id=${item.player.id})}" style="margin-right:10%"><span class="glyphicon glyphicon-stats"></span></a>
-										<a th:if="${item.status==2}" th:href="@{/profile/player/{id}/attendance(id=${item.player.id})}" style="margin-right:10%"><span class="glyphicon glyphicon-list-alt"></span></a>
-										<a th:href="'javascript:deleteItem(\'/teacher/student/delete/' + ${item.id} + '\')'"><span class="glyphicon glyphicon-trash"></span></a>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<script>
-			function deleteItem(url){if(confirm("Você tem certeza que deseja deletar esse item?")){location.href=url;}}
-		</script>
-	</div>
+                    
+                    
+                    <div class="media">
+                        <div class="media-body">
+                            
+							<table class="table table-bordered">
+								<thead>
+									<tr class="btn-primary">
+										<th>Sala</th>
+										<th th:text="#{app.student}"></th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:if="${#lists.isEmpty(classPlayers)}">
+										<td colspan="3" align="center" th:text="#{crud.list.empty}"></td> 
+									</tr>
+									<tr th:each="item : ${classPlayers}">
+										<td th:text="${item.clazz.name}"></td>
+										<td th:text="${item.player.fullName}"></td>
+										<td align="left">
+											<a data-toggle="tooltip" title="Reenviar e-mail para o aluno" th:if="${item.status==1}" th:href="@{/teacher/student/resendemail/{id}(id=${item.id})}" style="margin-right:10%"><span class="glyphicon glyphicon-repeat"></span></a>
+											<a data-toggle="tooltip" title="Notas" th:if="${item.status==2}" th:href="@{/profile/player/{id}/score(id=${item.player.id})}" style="margin-right:10%"><span class="glyphicon glyphicon-stats"></span></a>
+											<a data-toggle="tooltip" title="Frequência" th:if="${item.status==2}" th:href="@{/profile/player/{id}/attendance(id=${item.player.id})}" style="margin-right:10%"><span class="glyphicon glyphicon-list-alt"></span></a>
+											<a data-toggle="tooltip" th:title="#{app.delete}" th:href="'javascript:deleteItem(\'/teacher/student/delete/' + ${item.id} + '\')'"><span class="glyphicon glyphicon-trash"></span></a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+        </div>
+        
+        <input type="hidden" th:value="${save}" id="alertSave" />
+        <input type="hidden" th:value="#{crud.msg.notSaved}" id="alertSaveUnsuccess" />
+        <input type="hidden" th:value="#{crud.msg.savedSuccessfully}" id="alertSaveSuccess" />
+        
+        <input type="hidden" th:value="${deletion}" id="alertDeletion" />
+        <input type="hidden" th:value="#{crud.msg.notDeleted}" id="alertDeletionUnsuccess" />
+        <input type="hidden" th:value="#{crud.msg.deletedSuccessfully}" id="alertDeletionSuccess" />
+        
+        <input type="hidden" th:value="${edit}" id="alertEdit" />
+        <input type="hidden" th:value="#{crud.msg.notEdited}" id="alertEditUnsuccess" />
+        <input type="hidden" th:value="#{crud.msg.editedSuccessfully}" id="alertEditSuccess" />
+        
+        <input type="hidden" th:value="${status}" id="alertStatus" />
+        <input type="hidden" th:value="#{crud.msg.invalidItem}" id="alertStatusContent" />
+        
+        <input type="hidden" th:value="${message}" id="alertMessage" />
+        <input type="hidden" th:value="#{msg.emailSent}" id="alertMessageEmailSent" />
+        
+        <script th:inline="javascript">
+			/*<![CDATA[*/
+				
+				if (document.getElementById("alertSave").value == 'unsuccess') {
+					bootbox.alert(document.getElementById("alertSaveUnsuccess").value);
+				}
+			
+				if (document.getElementById("alertSave").value == 'success') {
+					bootbox.alert(document.getElementById("alertSaveSuccess").value);
+				}
+				
+				if (document.getElementById("alertDeletion").value == 'unsuccess') {
+					bootbox.alert(document.getElementById("alertDeletionUnsuccess").value);
+				}
+			
+				if (document.getElementById("alertDeletion").value == 'success') {
+					bootbox.alert(document.getElementById("alertDeletionSuccess").value);
+				}
+				
+				if (document.getElementById("alertEdit").value == 'unsuccess') {
+					bootbox.alert(document.getElementById("alertEditUnsuccess").value);
+				}
+			
+				if (document.getElementById("alertEdit").value == 'success') {
+					bootbox.alert(document.getElementById("alertEditSuccess").value);
+				}
+			
+				if (document.getElementById("alertStatus").value == 'notfound') {
+					bootbox.alert(document.getElementById("alertStatusContent").value);
+				}
+				
+				if (document.getElementById("alertMessage").value == 'studentNotFound') {
+					bootbox.alert("O e-mail informado não está cadastrado no sistema.");
+				}
+				
+				if (document.getElementById("alertMessage").value == 'studentAlreadyRegistered') {
+					bootbox.alert("O estudante buscado já está cadastrado nessa sala de aula.");
+				}
+				
+				if (document.getElementById("alertMessage").value == 'studentNotPending') {
+					bootbox.alert("Somente é possível enviar o e-mail para estudantes Pendentes de Confirmação.");
+				}
+				
+				if (document.getElementById("alertMessage").value == 'emailSent') {
+					bootbox.alert(document.getElementById("alertMessageEmailSent").value);
+				}
+				
+				function deleteItem(url){if(confirm("Você tem certeza que deseja deletar esse item?")){location.href=url;}}
+				
+				function submitForm() {
+					
+					if (document.getElementById("clazzId").value == 0) {
+						bootbox.alert("Por favor, selecione uma opção no campo [Nome da sala].");
+						return false;
+					}
+					
+					if (document.getElementById("player.email").value == "") {
+						bootbox.alert("Por favor, informe um valor no campo [E-mail/login do aluno].");
+						return false;
+					}
+				}
+				
+			/*]]>*/
+		</script>
+        
+    </div>
+    
 </body>
 </html>
