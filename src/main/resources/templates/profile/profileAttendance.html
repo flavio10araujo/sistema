@@ -1,52 +1,148 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
 
-<head></head>
+<head>
+	<style type="text/css">
+        .mainbody{background:#f0f0f0}
+	</style>
+</head>
 
 <body>
+
 	<div layout:fragment="content">
-		
-		<style>
-			.table-user-information > tbody > tr{border-top:1px solid rgb(221,221,221)}
-			.table-user-information > tbody > tr:first-child{border-top:0}
-			.table-user-information > tbody > tr > td{border-top:0}
-			.toppad{margin-top:20px}
-		</style>
-		
-		<div class="container">
-			<div class="row">
-			
-				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 toppad">
-          			<div class="panel panel-info">
-            			<div class="panel-heading">
-              				<h3 class="panel-title">Histórico de login</h3>
-            			</div>
-            			<div class="panel-body">
-              				<div class="row">
-                				<div class="col-md-3 col-lg-3" align="center">
-                					<img alt="Image" th:src="@{'https://www.gravatar.com/avatar/'+${player.emailMD5}+'.jpg?s=200'}" class="img-circle img-responsive" />
-                				</div>
-                				<div class="col-md-9 col-lg-9">
-                  					<table class="table table-user-information">
-                    					<tbody>
-                    						<div th:each="login : ${logins}">
-                      							<tr>
-	           										<td>Data do login:</td>
-	           										<td th:text="${login.dtLogin}"></td>
-	           									</tr>
-           									</div>
-                    					</tbody>
-                  					</table>
-           						</div>
-                			</div>
-            			</div>
-                    	
+
+        <div class="col-lg-3 col-md-3">
+            
+            <div class="list-group">
+                <a class="list-group-item" th:href="@{/teacher/class}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>  Gerenciar Salas <span class="pull-right"></span></a>
+                <a class="list-group-item active" href="#"><i class="fa fa-users fa-fw" aria-hidden="true"></i>  Gerenciar Alunos</a>
+                <a class="list-group-item" th:href="@{/teacher/report}"><i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>  Relatórios</a>
+                <a class="list-group-item" th:href="@{/teacher/player/create}"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>  Cadastrar Alunos</a>
+            </div>
+            
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingThree">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="text-decoration:none;">
+                            <h4 class="panel-title">
+                                <i class="fa fa-caret-right fa-fw" aria-hidden="true"></i>  Ajuda?
+                            </h4>
+                        </a>
                     </div>
-        		</div>
-      		</div>
-    	</div>
+                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                        <div class="panel-body">
+                            <small>
+                            A tela Frequência de acessos mostra as últimas 30 vezes que o aluno acessou o sistema. 
+                            Caso ele tenha acessado mais de uma vez no mesmo dia, o sistema mostrará esse dia apenas uma vez.
+                            Portanto, a lista mostra os últimos 30 dias que o aluno acessou o sistema, desconsiderando o número de vezes por dia.
+                            O fato do aluno ter acessado o sistema não significa que ele tenha estudado! Portanto, essa tela é apenas para
+                            que o professor possa consultar se o aluno está acessando o sistema com a frequência desejada.
+                            Para mais informações, verifique o <a href="#">Manual do Professor</a>.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingSix">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseThree" style="text-decoration:none;">
+                            <h4 class="panel-title">
+                                <i class="fa fa-caret-right fa-fw" aria-hidden="true"></i>  Encontrou um erro?
+                            </h4>
+                        </a>
+                    </div>
+                    <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix" style="text-decoration:none;">
+                        <div class="panel-body">
+                            <small>Caso tenha encontrado algum erro no sistema, por favor, avise-nos através do e-mail polifono@polifono.com.</small>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="panel panel-footer">
+                    <small><a href="#">Manual do Professor</a></small><br />
+                    <small><a href="#">Vídeo tutorial</a></small><br />
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+            
+            <div class="panel panel-default">
+                
+                <div class="panel-body">
+                    
+                    <div class="pull-left">
+                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="glyphicon glyphicon-list-alt" aria-hidden="true"></i></a>
+                    </div>
+                    
+                    <h4><a href="#" style="text-decoration:none;"><strong>Frequência de acessos</strong></a> – <small><small><a href="#" style="text-decoration:none; color:grey;"><i><i class="fa fa-info-circle" aria-hidden="true"></i> últimas vezes que esse aluno acessou o sistema</i></a></small></small></h4>
+                    
+                    <hr />
+                    
+                    <div class="media">
+                        
+                        <div class="col-lg-3 col-md-3">
+                            <img class="thumbnail img-responsive" th:src="@{'https://www.gravatar.com/avatar/'+${player.emailMD5}+'.jpg?s=200'}" width="150px" height="150px" />
+                        </div>
+                        
+                        <div class="col-lg-9 col-md-9">
+                            <h5><strong>Nome</strong></h5>
+                            
+                           	<p><span th:text="${player.fullName}"></span></p>
+                            
+                            <hr />
+                            <h5><strong>E-mail</strong></h5>
+                            
+                            <p><span th:text="${player.email}"></span></p>
+                            
+                            <hr />
+                            <h5><strong>Desde</strong></h5>
+                            
+                            <p><span th:text="${#calendars.format(player.dtInc,'dd/MM/yyyy')}"></span></p>
+                        </div>
+                        
+                        <div class="media-body">
+                        	<a th:href="@{/teacher/student}" class="btn btn-primary"><i class="fa fa-backward" aria-hidden="true"></i> Voltar</a>
+                        </div>
+                    </div>
+                    
+				</div>
+			
+			</div>
+			
+			<div class="panel panel-default">
+                
+                <div class="panel-body">
+                    
+                    <div class="media">
+                        <div class="media-body">
+                            <table class="table table-striped">
+             					<thead>
+									<tr>
+        								<th>Data do acesso</th>
+      								</tr>
+    							</thead>
+             					<tbody>
+           							<tr th:each="login : ${logins}">
+ 										<td th:text="${#calendars.format(login.dtLogin,'dd/MM/yyyy')}"></td>
+ 									</tr>
+ 									<tr th:if="${#lists.isEmpty(logins)}">
+ 										<p>Nenhum acesso registrado até o momento.</p>
+ 									</tr>
+             					</tbody>
+           					</table>
+                        </div>
+                    </div>
+                    
+				</div>
+			
+			</div>
 
-  	</div>
-
+        </div>
+        
+    </div>
+    
 </body>
 </html>

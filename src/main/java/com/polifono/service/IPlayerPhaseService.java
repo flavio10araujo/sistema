@@ -2,6 +2,7 @@ package com.polifono.service;
 
 import java.util.List;
 
+import com.polifono.domain.Game;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
@@ -22,5 +23,7 @@ public interface IPlayerPhaseService {
 	public boolean isPhaseAlreadyCompletedByPlayer(Phase phase, Player user);
 
 	public PlayerPhase setTestAttempt(Player user, Phase phase);
+	
+	public List<Game> filterPlayerPhasesListByGame(List<PlayerPhase> list);
 
 }

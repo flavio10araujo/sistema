@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.domain.Diploma;
+import com.polifono.domain.Game;
 import com.polifono.domain.Login;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IDiplomaService;
+import com.polifono.service.ILevelService;
 import com.polifono.service.ILoginService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
@@ -47,6 +49,9 @@ public class ProfileController extends BaseController {
 	
 	@Autowired
 	private IDiplomaService diplomaService;
+	
+	@Autowired
+	private ILevelService levelService;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileController.class);
 	
@@ -142,13 +147,19 @@ public class ProfileController extends BaseController {
 		}
 		
 		List<PlayerPhase> playerPhases = playerPhaseService.findPlayerPhasesByPlayer(player.getId());
+		List<Game> playerPhasesGames = new ArrayList<Game>();
 		
 		if (playerPhases == null) {
 			playerPhases = new ArrayList<PlayerPhase>();
 		}
+		else {
+			playerPhasesGames = playerPhaseService.filterPlayerPhasesListByGame(playerPhases);
+		}
 		
 		model.addAttribute("player", player);
 		model.addAttribute("playerPhases", playerPhases);
+		model.addAttribute("playerPhasesGames", playerPhasesGames);
+		model.addAttribute("levels", levelService.findAll());
 		
 		return URL_PROFILE_PROFILESCORE;
 	}

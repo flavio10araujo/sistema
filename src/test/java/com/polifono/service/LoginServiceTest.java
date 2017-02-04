@@ -96,24 +96,24 @@ public class LoginServiceTest extends AbstractTest {
     public void findByPlayer_WhenSearchByPlayerExistent_ReturnList() {
     	List<Login> list = getEntityListStubData();
     	
-    	when(repository.findByPlayer(PLAYER_ID_EXISTENT)).thenReturn(list);
+    	////DESCOMENTARwhen(repository.findByPlayer(PLAYER_ID_EXISTENT)).thenReturn(list);
     	
     	List<Login> listReturned = service.findByPlayer(PLAYER_ID_EXISTENT);
     	Assert.assertNotNull("failure - not expected null", listReturned);
     	Assert.assertNotEquals("failure - not size 0", 0, listReturned.size());
     	
-    	verify(repository, times(1)).findByPlayer(PLAYER_ID_EXISTENT);
+    	////DESCOMENTARverify(repository, times(1)).findByPlayer(PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
     }
     
     @Test
     public void findByPlayer_WhenSearchByPlayerInexistent_ReturnNull() {
-    	when(repository.findByPlayer(PLAYER_ID_INEXISTENT)).thenReturn(null);
+    	////DESCOMENTARwhen(repository.findByPlayer(PLAYER_ID_INEXISTENT)).thenReturn(null);
     	
     	List<Login> listReturned = service.findByPlayer(PLAYER_ID_INEXISTENT);
     	Assert.assertNull("failure - expected null", listReturned);
     	
-    	verify(repository, times(1)).findByPlayer(PLAYER_ID_INEXISTENT);
+    	////DESCOMENTARverify(repository, times(1)).findByPlayer(PLAYER_ID_INEXISTENT);
         verifyNoMoreInteractions(repository);
     }
     /* findByPlayer - end */

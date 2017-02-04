@@ -1,9 +1,11 @@
 package com.polifono.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Login;
@@ -33,7 +35,14 @@ public class LoginServiceImpl implements ILoginService {
 	}
 	
 	public List<Login> findByPlayer(int playerId) {
-		List<Login> list = repository.findByPlayer(playerId); 
+		List<Date> listDates = repository.findByPlayer(playerId, new PageRequest(0, 30));
+		
+		List<Login> list = new ArrayList<Login>();
+		for (Date s : listDates) {
+			Login l = new Login();
+			l.setDtLogin(s);
+			list.add(l);
+		}
 		
 		if (list == null || list.size() == 0) {
 			return null;

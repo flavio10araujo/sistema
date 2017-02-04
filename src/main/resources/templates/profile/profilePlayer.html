@@ -26,7 +26,7 @@
                             <hr />
                             <h3><strong>Eu</strong></h3>
                             
-                           <p th:if="${player.about == null} OR ${player.about == ''}">
+                           	<p th:if="${player.about == null} OR ${player.about == ''}">
          						<span th:text="#{msg.infoNotFound}"></span>
        						</p>
        						<p th:if="${player.about != null}">

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.polifono.domain.Game;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Phasestatus;
 import com.polifono.domain.Player;
@@ -57,6 +58,27 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 		}
 		
 		return list;
+	}
+	
+	/**
+	 * Based on a list of playerPhase, get the games only once.
+	 * 
+	 * @param list
+	 * @return
+	 */
+	public final List<Game> filterPlayerPhasesListByGame(List<PlayerPhase> list) {
+		List<Game> ret = new ArrayList<Game>();
+		
+		int gameId = 0;
+		
+		for (PlayerPhase pf : list) {
+			if (gameId != pf.getPhase().getMap().getGame().getId()) {
+				gameId = pf.getPhase().getMap().getGame().getId();
+				ret.add(pf.getPhase().getMap().getGame());
+			}
+		}
+		
+		return ret;
 	}
 	
 	/**
