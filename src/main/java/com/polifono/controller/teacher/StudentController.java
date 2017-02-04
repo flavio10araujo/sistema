@@ -88,14 +88,23 @@ public class StudentController extends BaseController {
 			
 			if (currentClass.getPlayer().getId() != currentAuthenticatedUser().getUser().getId()) return REDIRECT_HOME;
 			
+			String emailLogin = classPlayer.getPlayer().getEmail();
+			
 			// Get the player by his email.
 			// Get the player only if he is active.
-			classPlayer.setPlayer(playerService.findByEmailAndStatus(classPlayer.getPlayer().getEmail(), true));
+			classPlayer.setPlayer(playerService.findByEmailAndStatus(emailLogin, true));
 			
 			// If the email is not registered at the system.
 			if (classPlayer.getPlayer() == null) {
-				redirectAttributes.addFlashAttribute("message", "studentNotFound");
-				return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+				
+				// Try to get the player by his login.
+				classPlayer.setPlayer(playerService.findByLogin(emailLogin));
+				
+				// If the login is not registered at the system as well.
+				if (classPlayer.getPlayer() == null) {
+					redirectAttributes.addFlashAttribute("message", "studentNotFound");
+					return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+				}
 			}
 			
 			// Verify if the player is already registered in this class.
@@ -105,11 +114,13 @@ public class StudentController extends BaseController {
 				redirectAttributes.addFlashAttribute("message", "studentAlreadyRegistered");
 				return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
 			}
-
 			
+			//Originalmente, o aluno era cadastrado como pendente e ele somente passaria a integrar a sala de aula após confirmar sua participação através de um e-mail recebido.
+			//Fiz assim para impedir que o professor cadastrasse qualquer pessoa em suas salas.
+			//Alterei posteriormente para facilitar o cadastro dos alunos nas salas. Futuramente devo criar algum mecanismo para o aluno saber que foi adicionado em uma sala
+			//e poder sair dessa sala se ele quiser.
 			classPlayerService.save(classPlayerService.prepareClassPlayerForCreation(classPlayer));
-			
-			EmailSendUtil.sendEmailInvitationToClass(currentAuthenticatedUser().getUser(), classPlayer);
+			//EmailSendUtil.sendEmailInvitationToClass(currentAuthenticatedUser().getUser(), classPlayer);
 			
 			redirectAttributes.addFlashAttribute("save", "success");
 		}

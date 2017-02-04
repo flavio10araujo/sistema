@@ -53,7 +53,7 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
 	public final ClassPlayer prepareClassPlayerForCreation(ClassPlayer classPlayer) {
 		classPlayer.setDtInc(new Date());
 		classPlayer.setActive(true);
-		classPlayer.setStatus(1);
+		classPlayer.setStatus(2);
 		return classPlayer;
 	}
 	

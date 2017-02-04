@@ -36,9 +36,7 @@
                             A tela Gerenciar Alunos é utilizada para o gerenciamento dos alunos (cadastro, exclusão) nas salas de aula. 
                             Ou seja, é nessa tela que você vai buscar um aluno já cadastrado no sistema e incluí-lo em uma de suas salas de aula.
                             É nessa tela também que você pode verificar o histórico de notas e de frequência de cada um de seus alunos.
-                            Os alunos que foram cadastrados com um e-mail receberão um e-mail avisando que eles foram cadastrados em sua sala de aula.
-                            Eles somente começarão a fazer parte de sua sala de aula a partir momento que eles aceitarem o convite para entrar em sua sala de aula.
-                            Para mais informações, verifique o <a href="#">Manual do Professor</a>.
+                           	Para mais informações, verifique o <a href="#">Manual do Professor</a>.
                             </small>
                         </div>
                     </div>
@@ -95,7 +93,7 @@
 	       						
 	       						<div class="form-group">
 	       							<label for="email">E-mail/login do aluno</label>
-	       							<input type="email" th:field="*{player.email}" th:id="player.email" class="form-control" required="true" />
+	       							<input type="text" th:field="*{player.email}" th:id="player.email" class="form-control" required="true" />
 	       						</div>
 	       						
 	       						<button onclick="javascript:submitForm()" class="btn btn-primary pull-right"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Salvar</button>
@@ -221,7 +219,7 @@
 				}
 				
 				if (document.getElementById("alertMessage").value == 'studentNotFound') {
-					bootbox.alert("O e-mail informado não está cadastrado no sistema.");
+					bootbox.alert("O e-mail/login informado não está cadastrado no sistema.");
 				}
 				
 				if (document.getElementById("alertMessage").value == 'studentAlreadyRegistered') {

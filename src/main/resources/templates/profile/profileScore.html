@@ -107,9 +107,10 @@
                            	<p><span th:text="${player.fullName}"></span></p>
                             
                             <hr />
-                            <h5><strong>E-mail</strong></h5>
-                            
-                            <p><span th:text="${player.email}"></span></p>
+                            <h5 th:if="${player.email != null}"><strong>E-mail</strong></h5>
+                            <p th:if="${player.email != null}"><span th:text="${player.email}"></span></p>
+                            <h5 th:if="${player.login != null}"><strong>Login</strong></h5>
+                            <p th:if="${player.login != null}"><span th:text="${player.login}"></span></p>
                             
                             <hr />
                             <h5><strong>Desde</strong></h5>
