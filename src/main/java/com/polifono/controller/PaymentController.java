@@ -121,7 +121,7 @@ public class PaymentController extends BaseController {
 		checkout.setShippingCost(new BigDecimal("0.00"));
 
         checkout.setSender(
-        	player.getName(), // Client's name.
+        	player.getFullName(), // Client's name.
         	//"c42247508001355723309@sandbox.pagseguro.com.br" // Client's e-mail. player.getEmail()
         	//"c123123"+t.getId()+"@sandbox.pagseguro.com.br"
         	player.getEmail()
@@ -147,11 +147,14 @@ public class PaymentController extends BaseController {
 	@RequestMapping(value = {"/pagseguroreturn"}, method = RequestMethod.GET)
 	public final String returnpagseguro(final Model model, @RequestParam("tid") String transactionCode) {
 
-		LOGGER.debug("/pagseguroreturn tid=", transactionCode); //System.out.println("/pagseguroreturn tid=" + transactionCode);
+		LOGGER.debug("/pagseguroreturn tid=", transactionCode); System.out.println("/pagseguroreturn tid=" + transactionCode);
 		
 		if (transactionCode == null || "".equals(transactionCode)) return REDIRECT_HOME;
 		
 		List<Transaction> transactions = transactionService.findTransactionsByCode(transactionCode);
+		
+		model.addAttribute("codRegister", "1");
+		model.addAttribute("msg", messagesResourceBundle.getString("msg.credits.thanks"));
 		
 		// If the transaction is already registered.
 		if (transactions != null && transactions.size() > 0) return URL_BUYCREDITS;
@@ -162,12 +165,12 @@ public class PaymentController extends BaseController {
         	pagSeguroTransaction = TransactionSearchService.searchByCode(PagSeguroConfig.getAccountCredentials(), transactionCode);
         }
         catch (PagSeguroServiceException e) {
-        	LOGGER.debug("/pagseguroreturn ERROR with tid=", transactionCode); //System.out.println("/pagseguroreturn ERROR with tid=" + transactionCode);
-        	LOGGER.debug("error={}", e); //System.err.println(e.getMessage());
+        	LOGGER.debug("/pagseguroreturn ERROR with tid=", transactionCode); System.out.println("/pagseguroreturn ERROR with tid=" + transactionCode);
+        	LOGGER.debug("error={}", e); System.err.println(e.getMessage());
         	
         	// If the transactionCode is not valid.
         	if (pagSeguroTransaction == null) {
-        		LOGGER.debug("/pagseguroreturn TID not valid tid=", transactionCode); //System.out.println("/pagseguroreturn TID not valid tid=" + transactionCode);
+        		LOGGER.debug("/pagseguroreturn TID not valid tid=", transactionCode); System.out.println("/pagseguroreturn TID not valid tid=" + transactionCode);
         		return REDIRECT_HOME;
         	}
         }
@@ -194,9 +197,7 @@ public class PaymentController extends BaseController {
         transaction.setPaymentLink(pagSeguroTransaction.getPaymentLink());
 		
 		transactionService.save(transaction);
-		
-		model.addAttribute("codRegister", "1");
-		model.addAttribute("msg", messagesResourceBundle.getString("msg.credits.thanks"));
+
 		return URL_BUYCREDITS;
 	}
 	

@@ -35,8 +35,8 @@
 		            
 		            	<div class="panel panel-default">
 			                <div class="panel-body">
-			                    <label for="quantity">Informe a quantidade de cr&#xE9;ditos desejada</label> <small><small>(mínimo: 5 máximo: 135)</small></small>
-		                        <input type="number" class="form-control" required="true" name="quantity" id="quantity" min="5" max="135" />
+			                    <label for="quantity">Informe a quantidade de cr&#xE9;ditos desejada</label> <small><small>(mínimo: 5 máximo: 85)</small></small>
+		                        <input type="number" class="form-control" required="true" name="quantity" id="quantity" min="5" max="85" />
 		                        
 		                        <br />
 		                        
@@ -101,8 +101,15 @@
     		
 		</div>
 		
+		<input type="hidden" th:value="${codRegister}" id="alertCodRegister" />
+        <input type="hidden" th:value="${msg}" id="alertMessageContent" />
+		
 		<script th:inline="javascript">
 			/*<![CDATA[*/
+				
+				if (document.getElementById("alertCodRegister").value == 1 || document.getElementById("alertCodRegister").value == 2) {
+					bootbox.alert(document.getElementById("alertMessageContent").value);
+				}
 			
 				$(document).ready(function(){
 	  				$("#btnBuy").click(function(){
@@ -118,7 +125,7 @@
 						return false;
 					}
 					
-					if ($("#quantity").val() < 5 || $("#quantity").val() > 135) {
+					if ($("#quantity").val() < 5 || $("#quantity").val() > 85) {
 						return false;
 					}
 					
