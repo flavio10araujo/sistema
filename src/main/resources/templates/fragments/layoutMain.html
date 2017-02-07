@@ -100,13 +100,14 @@
                             
 							<ul class="nav navbar-nav navbar-right">
 							
-								<li><a><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>
+								<li data-toggle="tooltip" th:title="#{msg.toseemygrades}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}/score|}"><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>
 								
-								<li><a><span th:text="#{app.credits}"></span>: <span sec:authentication="principal.user.totalCredit"></span></a></li>
+								<li data-toggle="tooltip" th:title="#{msg.buymorecredits}"><a><span th:text="#{app.credits}"></span>: <span sec:authentication="principal.user.totalCredit"></span></a></li>
+								<!--<li data-toggle="tooltip" th:title="#{msg.buymorecredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>: <span sec:authentication="principal.user.totalCredit"></span></a></li>-->
 								
 								<li class="dropdown">
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-										<span class="user-avatar pull-left" style="margin-right:8px; margin-top:-5px;">
+										<span class="user-avatar pull-left" style="margin-right:8px;margin-top:-5px">
 											<img th:src="@{|https://www.gravatar.com/avatar/${#authentication.principal.user.emailMD5}.jpg?s=200|}" class="img-responsive img-circle" title="John Doe" alt="John Doe" width="30px" height="30px" />
 										</span>
 										
@@ -173,18 +174,20 @@
 	
 	<script>function logout(){form=document.getElementById("f_logout");form.submit();}</script>
 
-	<script type="text/javascript">
-		$(function () {
-		  $('[data-toggle="tooltip"]').tooltip()
-		})
-		
-		$(function () {
-		  $('[data-toggle="popover"]').popover()
-		})
-		
-		function editPassword() {
-			bootbox.alert("Para alterar sua senha, desconecte do sistema e utilize a seção [Esqueci minha senha].");
-		}
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+			$(function () {
+			  $('[data-toggle="tooltip"]').tooltip()
+			})
+			
+			$(function () {
+			  $('[data-toggle="popover"]').popover()
+			})
+			
+			function editPassword() {
+				bootbox.alert("Para alterar sua senha, desconecte do sistema e utilize a seção [Esqueci minha senha].");
+			}
+		/*]]>*/
 	</script>
 
 	</body>

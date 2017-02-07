@@ -58,6 +58,7 @@ public class ProfileController extends BaseController {
 	public static final String URL_PROFILE_PROFILEPLAYER = "profile/profilePlayer";
 	public static final String URL_PROFILE_PROFILEPLAYEREDIT = "profile/profilePlayerEdit";
 	public static final String URL_PROFILE_PROFILESCORE = "profile/profileScore";
+	public static final String URL_PROFILE_PROFILESCORE_OWNER = "profile/profileScoreOwner";
 	public static final String URL_PROFILE_PROFILEATTENDANCE = "profile/profileAttendance";
 	public static final String URL_PROFILE_PROFILENOTFOUND = "profile/profileNotFound";
 	
@@ -161,7 +162,13 @@ public class ProfileController extends BaseController {
 		model.addAttribute("playerPhasesGames", playerPhasesGames);
 		model.addAttribute("levels", levelService.findAll());
 		
-		return URL_PROFILE_PROFILESCORE;
+		// Students can see his own grades, but in a different page.
+		if (!this.currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")) {
+			return URL_PROFILE_PROFILESCORE_OWNER;
+		}
+		else {
+			return URL_PROFILE_PROFILESCORE;
+		}
 	}
 	
 	@RequestMapping(value = {"/player/{playerId}/attendance"}, method = RequestMethod.GET)

@@ -1,60 +1,134 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
 
-<head></head>
+<head>
+	<style type="text/css">
+        .mainbody{background:#f0f0f0}
+	</style>
+</head>
 
 <body>
-	<div layout:fragment="content">
 	
-		<div class="row">
-	    	<div class="col-sm-12 bg">
-	      		<div class="row">
-	      			
-	      			<div th:if="${codRegister} == 1" class="alert alert-success">
-	  					<label th:utext="${msg}"></label>
-					</div>
-	      			
-	      			<div th:if="${codRegister} == 2" class="alert alert-warning">
-	  					<strong th:text="#{attention_}"></strong> <label th:utext="${msg}"></label>
-					</div>
-					
-					<h1>Comprar cr&#xE9;ditos</h1>
-					
-					<form id="f_credit" th:action="@{/buycredits}" method="post">
-		  				<div class="form-group">
-		    				<input type="number" class="form-control" required="true" name="quantity" id="quantity" placeholder="Informe a quantidade de cr&#xE9;ditos desejada" min="5" max="135" />
-		  				</div>
-		  				<input type="submit" data-loading-text="Aguarde, conectando ao sistema de pagamento..." class="btn btn-primary active" id="btnBuy" value="Comprar" />
-					</form>
-	      		</div>
-	    	</div>
-	  	</div>
-	  	
-	  	<script th:inline="javascript">
-	  		/*<![CDATA[*/	
-  			$(document).ready(function(){
-  				$("#btnBuy").click(function(){
-  					$(this).button('loading');
-  					if(!verifyForm()){
-  						$(this).button('reset');
-  					}
-  				});
-  			});
+	<div layout:fragment="content">
 
-	  		function verifyForm(){
-				if ($("#quantity").val() == "") {
-					return false;
+		<div class="mainbody container-fluid">
+		    
+		    <div class="row">
+		        
+		        <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+		            <div class="panel panel-default">
+		                <div class="panel-body">
+		                    <h1 class="panel-title pull-left" style="font-size:30px;"><i class="fa fa-money" aria-hidden="true"></i> Cr&#xE9;ditos</h1>
+		                </div>
+		            </div>
+		        </div>
+		        
+		        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+		            
+		            <div class="panel panel-default">
+		                <div class="panel-body">
+		                    <h1 class="panel-title pull-left" style="font-size:30px">Comprar Cr&#xE9;ditos</h1>
+		                </div>
+		            </div>
+		            
+		            <form id="f_credit" th:action="@{/buycredits}" method="post" class="form-horizontal">
+		            
+		            	<div class="panel panel-default">
+			                <div class="panel-body">
+			                    <label for="quantity">Informe a quantidade de cr&#xE9;ditos desejada</label> <small><small>(mínimo: 5 máximo: 135)</small></small>
+		                        <input type="number" class="form-control" required="true" name="quantity" id="quantity" min="5" max="135" />
+		                        
+		                        <br />
+		                        
+		                        <a th:href="@{/}" class="btn btn-default"><i class="fa fa-fw fa-times" aria-hidden="true"></i> Cancelar</a>
+			                	<button data-loading-text="Aguarde, conectando ao sistema de pagamento..." class="btn btn-primary pull-right" id="btnBuy"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Comprar</button>
+		                        
+			                </div>
+			            </div>
+					
+					</form>
+					
+					<div class="panel panel-default">
+		                <div class="panel-body">
+                        	<p>A plataforma Polifono.com utiliza o sistema de pagamento <a href="https://pagseguro.uol.com.br" target="_blank" style="text-decoration:none">PagSeguro.com</a>, desenvolvido pela <a href="http://www.uol.com.br" target="_blank" style="text-decoration:none">UOL</a>.</p>
+                        	<br />
+                        	<p>
+                        	Informe a quantidade de créditos desejada e clique em [Comprar]. Você será direcionado para o sistema PagSeguro. Após efetuar o pagamento, o sistema PagSeguro retornará para essa página automaticamente. 
+                        	Os créditos serão adicionados em sua conta apenas após a confirmação de pagamento feita pelo sistema PagSeguro.
+                        	Pode ser necessário sair do sistema e entrar novamente para que os créditos apareçam na sua conta. O sistema PagSeguro lhe enviará um e-mail quando o pagamento for confirmado.
+                        	</p>
+                        </div>
+					</div>
+					
+					<div class="panel panel-default">
+		                <div class="panel-body">
+                        	<h2 class="panel-title pull-left" style="font-size:25px">O sistema PagSeguro</h2>
+                        	
+                        	<br /><br />
+                        	
+                        	<label>Quais as formas de pagamento aceitas pelo PagSeguro?</label>
+                        	<br />
+                        	<p>
+                        	Cartões de crédito - parcelamento em até 18 vezes;<br />
+							Boleto bancário;<br />
+							Transferência de saldo entre contas PagSeguro;<br />
+							Débito bancário.<br />
+							</p>
+							
+							<br />
+                        	
+                        	<label>É possível comprar parcelado pelo PagSeguro?</label>
+                        	<br />
+                        	<p>
+                        	Sim, porém o PagSeguro oferece a opção de parcelamento apenas para pagamento via cartão de crédito.<br />
+                        	O valor mínimo para compra parcelada é de R$ 10,00.<br />
+                        	O valor mínimo da parcela é de R$ 5,00.
+							</p>
+							
+							<br />
+                        	
+                        	<label>Quais cartões de crédito são aceitos pelo PagSeguro?</label>
+                        	<br />
+                        	<p>
+                        	São aceitas mais de 20 opções de cartões. Clique <a href="https://pagseguro.uol.com.br/para_voce/meios_de_pagamento_e_parcelamento.jhtml" target="_blank" style="text-decoration:none">aqui</a> para ver mais informações.
+							</p>
+                        </div>
+					</div>
+
+        		</div>
+        		
+    		</div>
+    		
+		</div>
+		
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			
+				$(document).ready(function(){
+	  				$("#btnBuy").click(function(){
+	  					$(this).button('loading');
+	  					if(!verifyForm()){
+	  						$(this).button('reset');
+	  					}
+	  				});
+	  			});
+
+		  		function verifyForm(){
+					if ($("#quantity").val() == "") {
+						return false;
+					}
+					
+					if ($("#quantity").val() < 5 || $("#quantity").val() > 135) {
+						return false;
+					}
+					
+					return true;
 				}
 				
-				if ($("#quantity").val() < 5 || $("#quantity").val() > 135) {
-					return false;
-				}
-				
-				return true;
-			}
-	  		/*]]>*/
+			/*]]>*/
 		</script>
-	  	
+		
 	</div>
+
 </body>
 </html>
