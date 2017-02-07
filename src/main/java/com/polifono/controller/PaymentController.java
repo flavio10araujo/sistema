@@ -61,12 +61,12 @@ public class PaymentController extends BaseController {
 	@RequestMapping(value = {"/buycredits"}, method = RequestMethod.POST)
 	public final String buycreditssubmit(final Model model, @RequestParam("quantity") Integer quantity) {
 
-		if (quantity < Integer.parseInt(applicationResourceBundle.getString("credits.buy.min")) 
-			|| quantity > Integer.parseInt(applicationResourceBundle.getString("credits.buy.max"))) {
-			
+		int creditsBuyMin = Integer.parseInt(applicationResourceBundle.getString("credits.buy.min"));
+		int creditsBuyMax = Integer.parseInt(applicationResourceBundle.getString("credits.buy.max"));
+		
+		if (quantity < creditsBuyMin || quantity > creditsBuyMax) {
 			model.addAttribute("codRegister", "2");
-			// TODO - alterar essa mensagem para pegar do messages.properties passando os parâmetros 5 e 135.
-			model.addAttribute("msg", "A quantidade de créditos deve ser entre 5 e 135.");
+			model.addAttribute("msg", "A quantidade de créditos deve ser entre " + creditsBuyMin + " e " + creditsBuyMax + ".");
 			return URL_BUYCREDITS;
 		}
 		
@@ -113,7 +113,7 @@ public class PaymentController extends BaseController {
 			"0001", // Item's number.
 			applicationResourceBundle.getString("payment.nf.description"), // Item's name.
 			quantity, // Item's quantity.
-			new BigDecimal("1.00"), // Price for each unity.
+			new BigDecimal(applicationResourceBundle.getString("priceForEachUnity")), // Price for each unity.
 			new Long(0), // Weight.
 			null // ShippingCost
 		);
@@ -121,7 +121,7 @@ public class PaymentController extends BaseController {
 		checkout.setShippingCost(new BigDecimal("0.00"));
 
         checkout.setSender(
-        	player.getFullName(), // Client's name.
+        	player.getName(), // Client's name.
         	//"c42247508001355723309@sandbox.pagseguro.com.br" // Client's e-mail. player.getEmail()
         	//"c123123"+t.getId()+"@sandbox.pagseguro.com.br"
         	player.getEmail()
