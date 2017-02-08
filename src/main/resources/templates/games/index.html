@@ -1,29 +1,91 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
 
-<head></head>
+<head>
+	<style type="text/css">
+        .mainbody{background:#f0f0f0}
+	</style>
+</head>
 
 <body>
 	<div layout:fragment="content">
-		<div class="row">
-	    	<div class="col-sm-12 bg">
-	      		<div class="row">
-	      			<br />
-	      			<span style="margin-bottom:10px;margin-left:10px;" th:each="game : ${games}">
-	           			<a th:href="@{'/games/'+${game.namelink}}" class="btn btn-primary btn-lg" style="margin-bottom:10px" role="button" th:text="${game.name}"></a>
+		
+		<div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+        
+            <div class="panel panel-default">
+            
+                <div class="panel-body">
+                
+                    <div class="pull-left">
+                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-music fa-1x" aria-hidden="true"></i></a>
+                    </div>
+                    
+                    <h4><a href="#" style="text-decoration:none;margin-right:8px; margin-top:-5px;"><strong>Instrumentos</strong></a></h4>
+                    
+                    <hr />
+                    
+                    <span style="margin-bottom:10px;margin-left:10px">
+	           			<a th:href="@{'/games/recorder'}" class="btn btn-primary btn-lg" style="margin-bottom:10px" role="button">Flauta Doce</a>
 	           		</span>
-				</div>
-				<div class="row">
-	  				<br /><br /><br /><br /><br />
-	  			</div>
-	    	</div>
-	    	<!--<div class="col-sm-6 bg">
-	    		<div>Você tem 5 créditos.</div>
-	      		<div>Cada crédito te permite assistir a 1 aula.</div>
-	      		<div>Clique aqui para adquirir mais créditos.</div>
-	      		<div>Veja aqui outras formas de ganhar créditos.</div>
-	    	</div>-->
-	  	</div>
+	           		
+	           		<p><small>Curso completo de flauta doce. Este curso ensina o instrumento flauta doce junto com a teoria musical, 
+	           		ou seja, fazendo este curso você estará apto a ler partituras, formar escalas, criar acordes, etc, além, é claro, de aprender a tocar várias músicas!
+	           		Ao finalizar o curso, o aluno dominará o instrumento flauta doce e possuirá o conhecimento da teoria musical estando pronto 
+	           		para aprender qualquer outro instrumento.</small></p>
+	           		
+	           		<hr />
+	           		
+	           		<span style="margin-bottom:10px;margin-left:10px">
+	           			<button type="button" class="btn btn-primary btn-lg disabled" style="margin-bottom:10px">Violão</button>
+	           		</span>
+	           		
+	           		<p><small>Só mais um pouco! Logo o curso de violão estará disponível.</small></p>
+	           		
+	           		<hr />
+	           		
+	           		<span style="margin-bottom:10px;margin-left:10px">
+	           			<button type="button" class="btn btn-primary btn-lg disabled" style="margin-bottom:10px">Saxofone</button>
+	           		</span>
+	           		
+	           		<p><small>Só mais um pouco! Logo o curso de saxofone estará disponível.</small></p>
+                    
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+        
+            <div class="panel panel-default">
+            
+                <div class="panel-body">
+                
+                    <div class="media">
+                    
+                        <div class="media-body">
+                            <div class="pull-left">
+	                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+	                    </div>
+	                    
+	                    <h4><a href="#" style="text-decoration:none;margin-right:8px; margin-top:-5px;"><strong>Créditos</strong></a></h4>
+	                    
+	                    <hr />
+                    
+                            <p>Você possui <span sec:authentication="principal.user.totalCredit"></span> créditos.</p>
+                           	
+                           	<p>Cada crédito permite assistir a 1 aula.</p>
+                           	
+                           	<p>Clique <a th:href="@{/buycredits}">aqui</a> para adquirir mais créditos.</p>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+        </div>
 	</div>
 </body>
 </html>

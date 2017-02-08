@@ -4,47 +4,62 @@
 <head></head>
 
 <body>
-	<div layout:fragment="content">
-		<div class="row">
+
+   	<div layout:fragment="content" class="container intro">
+		
 	    	<div class="col-sm-6 bg">
-	    		<h1>Confirmação de cadastro</h1>
-	      		<form th:object="${player}" th:action="@{/emailconfirmation}" method="post">
-	  				<div class="form-group">
-	    				<input type="email" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" />
-	  				</div>
-	  				<div class="form-group">
-	    				<input type="text" th:field="*{emailConfirmed}" class="form-control" required="true" placeholder="Código de ativação recebido no e-mail" />
-	  				</div>
-	  				<input type="submit" class="btn btn-default" value="Confirmar" />
-				</form>
+	    	
+	    		<h2 class="title">Confirmação de cadastro</h2>
+	    		<p class="summary">Informe seu e-mail e o código de ativação recebido em seu e-mail:</p>
+	      		
+	      		<div class="login-form-container">
+		      		
+		      		<form class="login-form" th:object="${player}" th:action="@{/emailconfirmation}" method="post">
+		  				<div class="form-group">
+		    				<input type="email" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" />
+		  				</div>
+		  				
+		  				<div class="form-group">
+		    				<input type="text" th:field="*{emailConfirmed}" class="form-control" required="true" placeholder="Código de ativação recebido" />
+		  				</div>
+		  				
+		  				<input type="submit" class="btn btn-cta btn-cta-secondary" value="Confirmar" />
+					</form>
+					
+				</div>
 	    	</div>
+	    	
 	    	<div class="col-sm-6 bg">
-	    		<br />
+	    		<h2 class="title">Reenvio do código</h2>
+	    		<p class="summary">Caso não tenha recebido o código de ativação em seu e-mail, utilize essa seção para reenviar o código:</p>
 	    		
-	    		<div th:if="${codRegister} == 1" class="alert alert-success">
-	  				<strong th:text="#{success_}"></strong> <label th:utext="${msgRegister}"></label><br />
-				</div>
-	    		<div th:if="${codRegister} == 2" class="alert alert-warning">
-	  				<strong th:text="#{attention_}"></strong> <label th:utext="${msgRegister}"></label>
+	    		<div class="login-form-container">
+	    		
+		    		<form class="login-form" th:object="${playerResend}" th:action="@{/emailconfirmationresend}" method="post">
+		  				
+		  				<div class="form-group">
+		    				<input type="email" th:field="*{email}" class="form-control" required="true" placeholder="Informe seu e-mail" />
+		  				</div>
+		  				
+		  				<input type="submit" class="btn btn-cta btn-cta-secondary" value="Reenviar" />
+					</form>
+					
 				</div>
 	    	</div>
-	  	</div>
-	  	<div class="row">
-	    	<div class="col-sm-6 bg">
-	    		<h1>Reenvio do código de ativação</h1>
-	    		<h6>Caso não tenha recebido o código em seu e-mail, utilize essa seção para reenviar o código</h6>
-	      		<form th:object="${playerResend}" th:action="@{/emailconfirmationresend}" method="post">
-	  				<div class="form-group">
-	    				<input type="email" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" />
-	  				</div>
-	  				<input type="submit" class="btn btn-default" value="Reenviar" />
-				</form>
-	    	</div>
-	    	<div class="col-sm-6 bg"></div>
-	  	</div>
-	  	<div class="row">
-	  		<br /><br /><br /><br /><br />
-	  	</div>
+	    	
+	    	<input type="hidden" th:value="${codRegister}" id="alertCodRegister" />
+	    	<input type="hidden" th:value="${msgRegister}" id="alertMsgRegister" />
+	    	
+	    	<script th:inline="javascript">
+				/*<![CDATA[*/
+				function checkMsg() {
+					if (document.getElementById("alertCodRegister").value == 1 || document.getElementById("alertCodRegister").value == 2) {
+						bootbox.alert(document.getElementById("alertMsgRegister").value);
+					}
+				}
+				/*]]>*/
+			</script>
+	  	
 	</div>
 </body>
 </html>

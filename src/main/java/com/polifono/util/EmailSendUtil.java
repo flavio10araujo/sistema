@@ -85,8 +85,8 @@ public class EmailSendUtil {
 			from = resourceBundle.getString("email.noreply");
 			subject = "Confirme seu cadastro na " + resourceBundle.getString("email.company");
 			message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">"
-					+ "<thead><tr><td align=\"center\"><font color=\"#ff8533\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#ff8533\"></td></tr></thead><tbody><tr><td>"
-					+ "<p><font color=\"#ff8533\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
+					+ "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
+					+ "<p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
 					+ "<p><font face=\"arial\" size=\"2\">Você iniciou seu cadastro na plataforma " + resourceBundle.getString("email.company") + " com o e-mail <a href=\"#\">{1}</a>. Para finalizá-lo, precisamos que você valide seu email.</font></p>"
 					+ "<p><font face=\"arial\" size=\"2\">Para validar:</font></p>"
 					+ "<p><font face=\"arial\" size=\"2\">- Acesse <a href=\"http://" + resourceBundle.getString("email.url") + "/emailconfirmation\">" + resourceBundle.getString("email.url") + "/emailconfirmation</a></font></p>"
@@ -95,7 +95,7 @@ public class EmailSendUtil {
 					+ "</td></tr><tr><td>"
 					+ "<font face=\"arial\" size=\"-1\"><br>Atenciosamente,<br>Equipe " + resourceBundle.getString("email.company") + "<br /><br /><strong>" + resourceBundle.getString("email.company") + "</strong> - " + resourceBundle.getString("email.company.slogan") + "</font>"
 					+ "</td></tr><tr><td align=\"center\">"
-					+ "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"http://" + resourceBundle.getString("email.url") + "/faq\">" + resourceBundle.getString("email.url") + "/faq</a></font>"
+					+ "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"http://" + resourceBundle.getString("email.url") + "/#faq\">" + resourceBundle.getString("email.url") + "/#faq</a></font>"
 					+ "</td></tr><tr><td align=\"center\"><hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">Este é um e-mail automático disparado pelo sistema. Favor não respondê-lo, pois esta conta não é monitorada.</font>"
 					+ "</td></tr></tbody></table>";
 
@@ -105,11 +105,13 @@ public class EmailSendUtil {
 			from = resourceBundle.getString("email.noreply");
 			subject = "Sua soliticação de alteração de senha na " + resourceBundle.getString("email.company");
 			message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">"
-					+ "<thead><tr><td align=\"center\"><font color=\"#ff8533\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#ff8533\"></td></tr></thead><tbody><tr><td>"
-					+ "<p><font color=\"#ff8533\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
+					+ "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
+					+ "<p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
 					+ "<p><font face=\"arial\" size=\"2\">Você (ou alguém) solicitou a alteração da senha na plataforma " + resourceBundle.getString("email.company") + " para o login <a href=\"#\">{1}</a>.</font></p>"
 					+ "<p><font face=\"arial\" size=\"2\">Para dar continuidade na alteração da senha:</font></p>"
-					+ "<p><font face=\"arial\" size=\"2\">- Acesse <a href=\"http://" + resourceBundle.getString("email.url") + "/passwordreset\">" + resourceBundle.getString("email.url") + "/passwordreset</a></font></p>"
+					+ "<p><font face=\"arial\" size=\"2\">- Acesse <a href=\"http://" + resourceBundle.getString("email.url") + "\">" + resourceBundle.getString("email.url") + "</a></font></p>"
+					+ "<p><font face=\"arial\" size=\"2\">- Clique no botão [ENTRAR];</font></p>"
+					+ "<p><font face=\"arial\" size=\"2\">- Clique no link [Esqueci minha senha];</font></p>"
 					+ "<p><font face=\"arial\" size=\"2\">- Informe o login cadastrado;</font></p>"
 					+ "<p><font face=\"arial\" size=\"2\">- Informe o seguinte código de confirmação da alteração da senha: <b>{2}</b></font></p>"
 					+ "<p><font face=\"arial\" size=\"2\">- Informe a nova senha desejada.</font></p>"
@@ -117,7 +119,7 @@ public class EmailSendUtil {
 					+ "</td></tr><tr><td>"
 					+ "<font face=\"arial\" size=\"-1\"><br />Atenciosamente,<br />Equipe " + resourceBundle.getString("email.company") + "<br /><br /><strong>" + resourceBundle.getString("email.company") + "</strong> - " + resourceBundle.getString("email.company.slogan") + "</font>"
 					+ "</td></tr><tr><td align=\"center\">"
-					+ "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"http://" + resourceBundle.getString("email.url") + "/faq\">" + resourceBundle.getString("email.url") + "/faq</a></font>"
+					+ "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"http://" + resourceBundle.getString("email.url") + "/#faq\">" + resourceBundle.getString("email.url") + "/#faq</a></font>"
 					+ "</td></tr><tr><td align=\"center\"><hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">Este é um e-mail automático disparado pelo sistema. Favor não respondê-lo, pois esta conta não é monitorada.</font>"
 					+ "</td></tr></tbody></table>";
 			
@@ -127,8 +129,8 @@ public class EmailSendUtil {
 			from = resourceBundle.getString("email.general");
 			subject = "Sua compra de créditos foi confirmada na " + resourceBundle.getString("email.company");
 			message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">"
-					+ "<thead><tr><td align=\"center\"><font color=\"#ff8533\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#ff8533\"></td></tr></thead><tbody><tr><td>"
-					+ "<p><font color=\"#ff8533\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
+					+ "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
+					+ "<p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
 					+ "<p><font face=\"arial\" size=\"2\">A sua compra foi confirmada e os créditos adquiridos já estão disponíveis em sua conta.</font></p>"
 					+ "<p><font face=\"arial\" size=\"2\"><br />O total de créditos adquiridos foi de: <b>{1}</b></font></p>"
 					+ "<p><font face=\"arial\" size=\"2\">Obs.: caso esteja logado no sistema, é necessário deslogar e logar novamente para que os novos créditos sejam mostrados.</b></font></p>"
@@ -136,7 +138,7 @@ public class EmailSendUtil {
 					+ "</td></tr><tr><td>"
 					+ "<font face=\"arial\" size=\"-1\"><br />Atenciosamente,<br />Equipe " + resourceBundle.getString("email.company") + "<br /><br /><strong>" + resourceBundle.getString("email.company") + "</strong> - " + resourceBundle.getString("email.company.slogan") + "</font>"
 					+ "</td></tr><tr><td align=\"center\">"
-					+ "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"http://" + resourceBundle.getString("email.url") + "/faq\">" + resourceBundle.getString("email.url") + "/faq</a></font>"
+					+ "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"http://" + resourceBundle.getString("email.url") + "/#faq\">" + resourceBundle.getString("email.url") + "/#faq</a></font>"
 					+ "</td></tr><tr><td align=\"center\"><hr size=\"2\" color=\"#EFEFEF\">"
 					+ "</td></tr></tbody></table>";
 			
@@ -146,15 +148,15 @@ public class EmailSendUtil {
 			from = resourceBundle.getString("email.general");
 			subject = "Você foi convidado para uma sala de aula na " + resourceBundle.getString("email.company");
 			message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">"
-					+ "<thead><tr><td align=\"center\"><font color=\"#ff8533\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#ff8533\"></td></tr></thead><tbody><tr><td>"
-					+ "<p><font color=\"#ff8533\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
+					+ "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
+					+ "<p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
 					+ "<p><font face=\"arial\" size=\"2\">O professor {1} te adicionou na sala de aula {2}.</font></p>"
 					+ "<p><font face=\"arial\" size=\"2\"><br />Caso você queira participar dessa sala de aula, acesse o seguinte link para confirmar sua participação:</font></p>"
 					+ "<p><font face=\"arial\" size=\"2\"><br /><br /><a href=\"http://" + resourceBundle.getString("email.url") + "/classinvitation\">" + resourceBundle.getString("email.url") + "/classinvitation</a></font></p>"
 					+ "</td></tr><tr><td>"
 					+ "<font face=\"arial\" size=\"-1\"><br />Atenciosamente,<br />Equipe " + resourceBundle.getString("email.company") + "<br /><br /><strong>" + resourceBundle.getString("email.company") + "</strong> - " + resourceBundle.getString("email.company.slogan") + "</font>"
 					+ "</td></tr><tr><td align=\"center\">"
-					+ "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"http://"+ resourceBundle.getString("email.url") + "/faq\">" + resourceBundle.getString("email.url") + "/faq</a></font>"
+					+ "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"http://"+ resourceBundle.getString("email.url") + "/#faq\">" + resourceBundle.getString("email.url") + "/#faq</a></font>"
 					+ "</td></tr><tr><td align=\"center\"><hr size=\"2\" color=\"#EFEFEF\">"
 					+ "</td></tr></tbody></table>";
 			
@@ -165,13 +167,13 @@ public class EmailSendUtil {
 			to = resourceBundle.getString("email.general");
 			subject = "Novo contato: " + args[0];
 			message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">"
-					+ "<thead><tr><td align=\"center\"><font color=\"#ff8533\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#ff8533\"></td></tr></thead><tbody><tr><td>"
-					+ "<p><font color=\"#ff8533\" face=\"arial\" size=\"+1\"><b>A seguinte mensagem foi enviada por {0}:</b></font></p>"
+					+ "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
+					+ "<p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>A seguinte mensagem foi enviada por {0}:</b></font></p>"
 					+ "<p><font face=\"arial\" size=\"2\">Mensagem: {1} </font></p>"
 					+ "</td></tr><tr><td>"
 					+ "<font face=\"arial\" size=\"-1\"><br />Atenciosamente,<br />Equipe " + resourceBundle.getString("email.company") + "<br /><br /><strong>" + resourceBundle.getString("email.company") + "</strong> - " + resourceBundle.getString("email.company.slogan") + "</font>"
 					+ "</td></tr><tr><td align=\"center\">"
-					+ "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"http://" + resourceBundle.getString("email.url") + "/faq\">" + resourceBundle.getString("email.url") + "/faq</a></font>"
+					+ "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"http://" + resourceBundle.getString("email.url") + "/#faq\">" + resourceBundle.getString("email.url") + "/#faq</a></font>"
 					+ "</td></tr><tr><td align=\"center\"><hr size=\"2\" color=\"#EFEFEF\">"
 					+ "</td></tr></tbody></table>";
 			

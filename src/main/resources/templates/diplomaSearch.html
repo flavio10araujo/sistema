@@ -1,41 +1,88 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
 
-<head></head>
+<head>
+	<style type="text/css">
+        .mainbody{background:#f0f0f0}
+	</style>
+</head>
 
 <body>
 	<div layout:fragment="content">
-		<div class="row">
-	    	<div class="col-sm-6 bg">
-	    		<h1 th:text="#{app.certificado}">Certificado</h1>
-	    		
-	    		<div th:if="${message eq 'error'}" class="alert alert-danger alert-dismissible" role="alert">
-  					O certificado informado não existe.
+		
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        
+            <div class="panel panel-default">
+            
+                <div class="panel-body">
+                
+                	<div class="pull-left">
+                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-certificate" aria-hidden="true"></i></a>
+                    </div>
+                    
+                    <h4><a href="#" style="text-decoration:none;margin-right:8px; margin-top:-5px;"><strong th:text="#{app.certificado}">Certificado</strong></a></h4>
+                    
+                    <hr />
+                
+		      		<form th:action="@{/diploma}" method="post">
+		  				<div class="form-group">
+							<label for="code">Informe o código do certificado buscado:</label>
+						  	<input type="text" th:name="code" th:id="code" class="form-control" required="true" />
+						</div>
+		  				
+		  				<a th:href="@{/}" class="btn btn-default"><i class="fa fa-fw fa-times" aria-hidden="true"></i> Voltar</a>
+						<button data-loading-text="Verificando..." class="btn btn-primary pull-right" id="btnDip"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Consultar</button>
+					</form>
+		    	</div>
+		    	
+		    </div>
+		    
+		</div>
+		
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:if="${message eq 'success'}">
+        
+            <div class="panel panel-default">
+            
+            	<div class="panel-body">
+				<p>Certificamos que <b><span th:text="${diploma.player.fullName}"></span></b>
+				concluiu o módulo "<b><span th:text="${diploma.level.name}"></span></b>" do curso de "<b><span th:text="${diploma.game.name}"></span></b>"
+				ministrado pela <span th:text="#{diploma.company}"></span>.<br />
+				Carga horária: <span th:text="${diploma.qtdHours}"></span> horas<br />
+				Data de conclusão: <span th:text="${diploma.dtStr}"></span><br /><br />
+				Clique no link para baixar o certificado: <br /><a th:href="@{'/diploma/'+${diploma.code}}"><i class="fa fa-download" aria-hidden="true"></i> Baixar</a></p>
 				</div>
-	    		
-	      		<form th:action="@{/diploma}" method="post">
-	  				<div class="form-group">
-						<label for="code">Informe o código do certificado buscado:</label>
-					  	<input type="text" th:name="code" th:id="code" class="form-control" required="true" />
-					</div>
-	  				
-	  				<input type="submit" class="btn btn-default" th:value="#{app.send}" />
-				</form>
-	    	</div>
-	    	<div class="col-sm-6 bg">
-	    		<br />
-	    		
-	    		<div th:if="${message eq 'success'}" class="alert alert-success alert-dismissible" role="alert">
- 					Certificamos que <b><span th:text="${diploma.player.name}"></span></b>
-					concluiu o módulo "<b><span th:text="${diploma.level.name}"></span></b>" do curso de "<b><span th:text="${diploma.game.name}"></span></b>"
-					ministrado pela <span th:text="#{diploma.company}"></span>.<br />
-					Carga horária: <span th:text="${diploma.qtdHours}"></span> horas<br />
-					Data de conclusão: <span th:text="${diploma.dtStr}"></span><br /><br />
-					Clique no link para baixar o certificado: <br /> <a th:href="@{'/diploma/'+${diploma.code}}" th:text="${diploma.code}"></a>
-				</div>
+			</div>
+		</div>
+		
+		<input type="hidden" th:value="${message}" id="alertMessage" />
+		
+		<script th:inline="javascript">
+			/*<![CDATA[*/
 				
-	    	</div>
-	  	</div>
+				if (document.getElementById("alertMessage").value == "error") {
+					bootbox.alert("O certificado informado não existe.");
+				}
+			
+				$(document).ready(function(){
+	  				$("#btnDip").click(function(){
+	  					$(this).button('loading');
+	  					if(!verifyForm()){
+	  						$(this).button('reset');
+	  					}
+	  				});
+	  			});
+
+		  		function verifyForm(){
+					if ($("#code").val() == "") {
+						return false;
+					}
+					
+					return true;
+				}
+				
+			/*]]>*/
+		</script>
+		
 	</div>
 </body>
 </html>
