@@ -61,13 +61,16 @@ public class PaymentController extends BaseController {
 	@RequestMapping(value = {"/buycredits"}, method = RequestMethod.POST)
 	public final String buycreditssubmit(final Model model, @RequestParam("quantity") Integer quantity) {
 
-		int creditsBuyMin = Integer.parseInt(applicationResourceBundle.getString("credits.buy.min"));
-		int creditsBuyMax = Integer.parseInt(applicationResourceBundle.getString("credits.buy.max"));
+		// TEACHER and ADMIN don't have limitations to buy credits.
+		if (currentAuthenticatedUser().getUser().getRole().equals("USER")) {
+			int creditsBuyMin = Integer.parseInt(applicationResourceBundle.getString("credits.buy.min"));
+			int creditsBuyMax = Integer.parseInt(applicationResourceBundle.getString("credits.buy.max"));
 		
-		if (quantity < creditsBuyMin || quantity > creditsBuyMax) {
-			model.addAttribute("codRegister", "2");
-			model.addAttribute("msg", "A quantidade de créditos deve ser entre " + creditsBuyMin + " e " + creditsBuyMax + ".");
-			return URL_BUYCREDITS;
+			if (quantity < creditsBuyMin || quantity > creditsBuyMax) {
+				model.addAttribute("codRegister", "2");
+				model.addAttribute("msg", "A quantidade de créditos deve ser entre " + creditsBuyMin + " e " + creditsBuyMax + ".");
+				return URL_BUYCREDITS;
+			}
 		}
 		
 		Player player = currentAuthenticatedUser().getUser();

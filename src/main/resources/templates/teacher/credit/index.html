@@ -1,0 +1,175 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+
+<head>
+	<style type="text/css">
+        .mainbody{background:#f0f0f0}
+	</style>
+</head>
+
+<body>
+
+	<div layout:fragment="content">
+
+        <div class="col-lg-3 col-md-3">
+            
+            <div class="list-group">
+                <a class="list-group-item" th:href="@{/teacher/class}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>  Gerenciar Salas <span class="pull-right"></span></a>
+                <a class="list-group-item" th:href="@{/teacher/student}"><i class="fa fa-users fa-fw" aria-hidden="true"></i>  Gerenciar Alunos</a>
+                <a class="list-group-item" th:href="@{/teacher/report}"><i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>  Relatórios</a>
+                <a class="list-group-item" th:href="@{/teacher/player/create}"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>  Cadastrar Alunos</a>
+                <a class="list-group-item active" href="#"><i class="fa fa-money fa-fw" aria-hidden="true"></i>  Transferir Créditos</a>
+            </div>
+            
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingThree">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="text-decoration:none;">
+                            <h4 class="panel-title">
+                                <i class="fa fa-caret-right fa-fw" aria-hidden="true"></i>  Ajuda?
+                            </h4>
+                        </a>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                        <div class="panel-body">
+                            <small>A tela Transferir Créditos é utilizada quando o professor deseja transferir créditos para um aluno.
+                            Isso pode acontecer quando entra um aluno novo na turma (por exemplo, aluno que entrou na escola no meio do ano).
+                            Outra situação é quando o professor não quer que seus alunos façam muitas aulas com antecedência. Nesse caso, em vez de colocar
+                            30 créditos para o aluno fazer o módulo todo, o professor pode colocar, por exemplo, apenas 10 créditos para o aluno e dessa forma
+                            o aluno somente poderá fazer 10 aulas. Então quando todos os alunos da sala já estiverem na aula 10, o professor coloca mais 10
+                            créditos para cada aluno. Dessa forma, nenhum aluno estará muito adiantado em relação aos demais da turma.
+                            Para mais informações, verifique o <a href="#">Manual do Professor</a>.</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingSix">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseThree" style="text-decoration:none;">
+                            <h4 class="panel-title">
+                                <i class="fa fa-caret-right fa-fw" aria-hidden="true"></i>  Encontrou um erro?
+                            </h4>
+                        </a>
+                    </div>
+                    <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix" style="text-decoration:none;">
+                        <div class="panel-body">
+                            <small>Caso tenha encontrado algum erro no sistema, por favor, avise-nos através do e-mail polifono@polifono.com.</small>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="panel panel-footer">
+                    <small><a href="#">Manual do Professor</a></small><br />
+                    <small><a href="#">Vídeo tutorial</a></small><br />
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+            
+            <div class="panel panel-default">
+                
+                <div class="panel-body">
+                    
+                    <div class="pull-left">
+                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-money fa-fw" aria-hidden="true"></i></a>
+                    </div>
+                    
+                    <h4><a href="#" style="text-decoration:none;"><strong>Transferir Créditos</strong></a> – <small><small><a href="#" style="text-decoration:none; color:grey;"><i><i class="fa fa-exchange" aria-hidden="true"></i> repassar créditos para seus alunos</i></a></small></small></h4>
+                    
+                    <hr />
+                    
+                    <div class="media">
+                        <div class="media-body">
+                            <form id="f_credit_one" th:object="${playerGame}" th:action="@{/teacher/credit/individual}" action="#" method="post">
+       						
+	       						<div class="form-group">
+	       							<label for="email">E-mail/login do aluno</label>
+	       							<input type="text" th:field="*{player.email}" th:id="player.email" class="form-control" required="true" data-toggle="tooltip" title="Informe o login do aluno que receberá os créditos" />
+	       						</div>
+	       						
+	       						<div class="form-group">
+									<label for="gameId" th:text="#{app.course}">Course</label>
+								  	<select class="form-control" th:field="*{game.id}" th:id="gameId" required="true" data-toggle="tooltip" title="O aluno somente poderá gastar os créditos transferidos em aulas deste instrumento">
+								    	<option value="0"></option>
+	  									<option th:each="game : ${games}" th:value="${game.id}" th:text="${game.name}"></option>
+								  	</select>
+								</div>
+								
+								<div class="form-group">
+									<label for="quantity">Quantidade</label> <small><small>(mínimo: 1 máximo: 30)</small></small>
+									<input type="number" class="form-control" required="true" th:field="*{credit}" id="quantity" min="1" max="30" />
+								</div>
+	       						
+	       						<button data-loading-text="Aguarde, transferindo créditos..." id="btnTransfer" onclick="javascript:submitForm()" class="btn btn-primary pull-right"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Transferir</button>
+								
+	 						</form>
+                        </div>
+                    </div>
+                    
+				</div>
+			
+			</div>
+
+        </div>
+        
+        <input type="hidden" th:value="${save}" id="alertSave" />
+        <input type="hidden" th:value="#{crud.msg.notSaved}" id="alertSaveUnsuccess" />
+        
+        <input type="hidden" th:value="${message}" id="alertMessage" />
+        
+        <script th:inline="javascript">
+			/*<![CDATA[*/
+				
+				if (document.getElementById("alertSave").value == 'success') {
+					bootbox.alert("Transferência realizada com sucesso!");
+				}
+				
+				if (document.getElementById("alertSave").value == 'unsuccess') {
+					bootbox.alert(document.getElementById("alertSaveUnsuccess").value);
+				}
+			
+				if (document.getElementById("alertMessage").value == 'studentNotFound') {
+					bootbox.alert("O e-mail/login informado não está cadastrado no sistema.");
+				}
+				
+				if (document.getElementById("alertMessage").value == 'creditsBetweenXandY') {
+					bootbox.alert("A quantidade de créditos transferida deve ser entre 1 e 30.");
+				}
+				
+				if (document.getElementById("alertMessage").value == 'creditsInsufficient') {
+					bootbox.alert("Seus créditos são insuficientes para essa transferência.");
+				}
+			
+				function submitForm() {
+					if (document.getElementById("player.email").value == "") {
+						bootbox.alert("Por favor, informe um valor no campo [E-mail/login do aluno].");
+						return false;
+					}
+					
+					if (document.getElementById("gameId").value == 0) {
+						bootbox.alert("Por favor, selecione uma opção no campo [Curso].");
+						return false;
+					}
+					
+					if (document.getElementById("quantity").value == "" || document.getElementById("quantity").value == 0) {
+						bootbox.alert("Por favor, informe um valor no campo [Quantidade].");
+						return false;
+					}
+				}
+				
+				$(document).ready(function(){
+	  				$("#btnTransfer").click(function(){
+	  					$(this).button('loading');
+	  				});
+	  			});
+				
+			/*]]>*/
+		</script>
+        
+    </div>
+    
+</body>
+</html>

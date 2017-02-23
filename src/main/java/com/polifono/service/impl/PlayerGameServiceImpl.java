@@ -17,6 +17,10 @@ public class PlayerGameServiceImpl implements IPlayerGameService {
 		this.repository = repository;
 	}
 	
+	public final PlayerGame save(PlayerGame playerGame) {
+		return repository.save(playerGame);
+	}
+	
 	public final PlayerGame findOne(int playerGameId) {
 		return repository.findOne(playerGameId);
 	}
@@ -28,5 +32,9 @@ public class PlayerGameServiceImpl implements IPlayerGameService {
 	public PlayerGame preparePlayerGameForRemovingCredits(PlayerGame playerGame, int qtdCredits) {
 		playerGame.setCredit(playerGame.getCredit() - qtdCredits);
 		return playerGame;
+	}
+	
+	public final PlayerGame findByPlayerAndGame(int playerId, int gameId) {
+		return repository.findByPlayerAndGame(playerId, gameId);
 	}
 }

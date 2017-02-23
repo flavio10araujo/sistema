@@ -37,7 +37,7 @@ public abstract class BaseController {
         return currentUser;
     }
     
-    final void updateCurrentAuthenticateUser(Player player) {
+    protected final void updateCurrentAuthenticateUser(Player player) {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     	Authentication newAuth = new UsernamePasswordAuthenticationToken(new CurrentUser(player), auth.getCredentials(), auth.getAuthorities());
     	SecurityContextHolder.getContext().setAuthentication(newAuth);
