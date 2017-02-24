@@ -13,10 +13,10 @@ public interface IClassPlayerRepository extends CrudRepository<ClassPlayer, Inte
 	@Query("SELECT classPlayer FROM ClassPlayer classPlayer, com.polifono.domain.Class clazz WHERE classPlayer.clazz.id = clazz.id AND clazz.player.id = :playerId AND (classPlayer.status = 1 OR classPlayer.status = 2)")
 	public List<ClassPlayer> findClassPlayersByTeacher(@Param("playerId") int playerId);
 	
-	@Query("SELECT classPlayer FROM ClassPlayer classPlayer WHERE classPlayer.clazz.id = :clazzId AND classPlayer.status = :status")
+	@Query("SELECT classPlayer FROM ClassPlayer classPlayer, Player player WHERE classPlayer.clazz.id = :clazzId AND classPlayer.status = :status AND classPlayer.player.id = player.id ORDER BY player.name ASC")
 	public List<ClassPlayer> findClassPlayersByClassAndStatus(@Param("clazzId") int clazzId, @Param("status") int status);
 	
-	@Query("SELECT classPlayer FROM ClassPlayer classPlayer, com.polifono.domain.Class clazz WHERE classPlayer.clazz.id = clazz.id AND clazz.player.id = :playerId AND classPlayer.clazz.id = :clazzId AND (classPlayer.status = 1 OR classPlayer.status = 2)")
+	@Query("SELECT classPlayer FROM ClassPlayer classPlayer, com.polifono.domain.Class clazz, Player player WHERE classPlayer.clazz.id = clazz.id AND classPlayer.player.id = player.id AND clazz.player.id = :playerId AND classPlayer.clazz.id = :clazzId AND (classPlayer.status = 1 OR classPlayer.status = 2) ORDER BY player.name ASC")
 	public List<ClassPlayer> findClassPlayersByTeacherAndClass(@Param("playerId") int playerId, @Param("clazzId") int clazzId);
 	
 	@Query("SELECT classPlayer FROM ClassPlayer classPlayer WHERE classPlayer.clazz.id = :clazzId AND classPlayer.player.id = :playerId")

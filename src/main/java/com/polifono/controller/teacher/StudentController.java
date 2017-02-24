@@ -55,7 +55,7 @@ public class StudentController extends BaseController {
 		}
 		else {
 			model.addAttribute("classFilter", new com.polifono.domain.Class());
-			model.addAttribute("classPlayers", (ArrayList<ClassPlayer>) classPlayerService.findClassPlayersByTeacher(currentAuthenticatedUser().getUser().getId()));
+			//model.addAttribute("classPlayers", (ArrayList<ClassPlayer>) classPlayerService.findClassPlayersByTeacher(currentAuthenticatedUser().getUser().getId()));
 		}
 		
 		return URL_ADMIN_BASIC_INDEX;
