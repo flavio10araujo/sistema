@@ -77,7 +77,7 @@
                         <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-money fa-fw" aria-hidden="true"></i></a>
                     </div>
                     
-                    <h4><a href="#" style="text-decoration:none;"><strong>Transferir Créditos</strong></a> – <small><small><a href="#" style="text-decoration:none; color:grey;"><i><i class="fa fa-exchange" aria-hidden="true"></i> repassar créditos para seus alunos</i></a></small></small></h4>
+                    <h4><a href="#" style="text-decoration:none;"><strong>Transferir Créditos</strong></a> – <small><small><a href="#" style="text-decoration:none; color:grey;"><i><i class="fa fa-exchange" aria-hidden="true"></i> repassar créditos para um aluno</i></a></small></small></h4>
                     
                     <hr />
                     
@@ -104,6 +104,52 @@
 								</div>
 	       						
 	       						<button data-loading-text="Aguarde, transferindo créditos..." id="btnTransfer" onclick="javascript:submitForm()" class="btn btn-primary pull-right"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Transferir</button>
+								
+	 						</form>
+                        </div>
+                    </div>
+                    
+				</div>
+			</div>
+			
+			<div class="panel panel-default">
+				
+				<div class="panel-body">
+                    
+                    <div class="pull-left">
+                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-money fa-fw" aria-hidden="true"></i></a>
+                    </div>
+                    
+                    <h4><a href="#" style="text-decoration:none;"><strong>Transferir Créditos</strong></a> – <small><small><a href="#" style="text-decoration:none; color:grey;"><i><i class="fa fa-exchange" aria-hidden="true"></i> repassar créditos para todos os alunos de uma sala</i></a></small></small></h4>
+                    
+                    <hr />
+                    
+                    <div class="media">
+                        <div class="media-body">
+                            <form id="f_credit_group" th:object="${transferCreditGroupForm}" th:action="@{/teacher/credit/group}" action="#" method="post">
+       						
+	       						<div class="form-group">
+									<label for="clazzIdGroup">Nome da sala</label>
+								  	<select class="form-control" th:field="*{clazz.id}" th:id="clazzIdGroup" required="true" data-toggle="tooltip" title="Todos os alunos ativos desta sala receberão os créditos">
+								    	<option value="0"></option>
+	  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.school} + ' - ' + ${clazz.name}"></option>
+								  	</select>
+								</div>
+								
+								<div class="form-group">
+									<label for="gameIdGroup" th:text="#{app.course}">Course</label>
+									<select class="form-control" th:field="*{game.id}" th:id="gameIdGroup" required="true" data-toggle="tooltip" title="O aluno somente poderá gastar os créditos transferidos em aulas deste instrumento">
+								    	<option value="0"></option>
+	  									<option th:each="game : ${games}" th:value="${game.id}" th:text="${game.name}"></option>
+								  	</select>
+								</div>
+	       						
+	       						<div class="form-group">
+									<label for="quantityGroup">Quantidade</label> <small><small>(mínimo: 1 máximo: 30)</small></small>
+									<input type="number" class="form-control" required="true" th:field="*{credit}" id="quantityGroup" min="1" max="30" data-toggle="tooltip" title="Cada aluno da sala selecionada receberá essa quantidade de créditos" />
+								</div>
+	       						
+	       						<button data-loading-text="Aguarde, transferindo créditos..." id="btnTransferGroup" onclick="javascript:submitFormGroup()" class="btn btn-primary pull-right"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Transferir</button>
 								
 	 						</form>
                         </div>
@@ -142,6 +188,10 @@
 				if (document.getElementById("alertMessage").value == 'creditsInsufficient') {
 					bootbox.alert("Seus créditos são insuficientes para essa transferência.");
 				}
+				
+				if (document.getElementById("alertMessage").value == 'classEmpty') {
+					bootbox.alert("Não há nenhum aluno cadastrado na sala selecionada.");
+				}
 			
 				function submitForm() {
 					if (document.getElementById("player.email").value == "") {
@@ -160,8 +210,29 @@
 					}
 				}
 				
+				function submitFormGroup() {
+					if (document.getElementById("clazzIdGroup").value == 0) {
+						bootbox.alert("Por favor, selecione um valor no campo [Nome da sala].");
+						return false;
+					}
+					
+					if (document.getElementById("gameIdGroup").value == 0) {
+						bootbox.alert("Por favor, selecione uma opção no campo [Curso].");
+						return false;
+					}
+					
+					if (document.getElementById("quantityGroup").value == "" || document.getElementById("quantityGroup").value == 0) {
+						bootbox.alert("Por favor, informe um valor no campo [Quantidade].");
+						return false;
+					}
+				}
+				
 				$(document).ready(function(){
 	  				$("#btnTransfer").click(function(){
+	  					$(this).button('loading');
+	  				});
+	  				
+	  				$("#btnTransferGroup").click(function(){
 	  					$(this).button('loading');
 	  				});
 	  			});
