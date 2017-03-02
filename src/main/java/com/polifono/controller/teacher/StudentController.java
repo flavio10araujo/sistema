@@ -111,7 +111,20 @@ public class StudentController extends BaseController {
 			List<ClassPlayer> classPlayerAux = classPlayerService.findClassPlayersByClassAndPlayer(classPlayer.getClazz().getId(), classPlayer.getPlayer().getId());
 			
 			if (classPlayerAux != null && classPlayerAux.size() > 0) {
-				redirectAttributes.addFlashAttribute("message", "studentAlreadyRegistered");
+				
+				ClassPlayer classPlayerItem = classPlayerAux.get(0);
+				
+				// If the player is already registered and he is not disabled.
+				if (classPlayerItem.getStatus() != 3) {
+					redirectAttributes.addFlashAttribute("message", "studentAlreadyRegistered");
+				}
+				// If the player is already registered but is disabled.
+				else {
+					classPlayerItem.setStatus(2);
+					classPlayerService.save(classPlayerItem);
+					redirectAttributes.addFlashAttribute("message", "studentWasDisabled");
+				}
+				
 				return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
 			}
 			

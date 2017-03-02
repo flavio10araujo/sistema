@@ -132,7 +132,7 @@
 									<label for="clazzIdGroup">Nome da sala</label>
 								  	<select class="form-control" th:field="*{clazz.id}" th:id="clazzIdGroup" required="true" data-toggle="tooltip" title="Todos os alunos ativos desta sala receberão os créditos">
 								    	<option value="0"></option>
-	  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.school} + ' - ' + ${clazz.name}"></option>
+	  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.year} + '/0' + ${clazz.semester} + ' - ' + ${clazz.school} + ' - '+ ${clazz.grade} + ' ' + ${clazz.name}"></option>
 								  	</select>
 								</div>
 								

@@ -1,6 +1,7 @@
 package com.polifono.controller.teacher;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.controller.BaseController;
+import com.polifono.domain.ClassPlayer;
+import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
 
 @Controller
@@ -28,6 +31,9 @@ public class ClassController extends BaseController {
 	
 	@Autowired
 	private IClassService classService;
+	
+	@Autowired
+	private IClassPlayerService classPlayerService;
 
 	@RequestMapping(value = {"/class", "/class/savepage"}, method = RequestMethod.GET)
 	public String savePage(HttpSession session, Model model) {
@@ -55,7 +61,7 @@ public class ClassController extends BaseController {
 	@RequestMapping(value = "/class/{operation}/{id}", method = RequestMethod.GET)
 	public String editRemove(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes, Model model) {
 
-		// The teacher only can edit/delete his own classes.
+		// The teacher only can edit/delete/duplicate his own classes.
 		com.polifono.domain.Class current = classService.findOne(id.intValue());
 		
 		if (current.getPlayer().getId() != this.currentAuthenticatedUser().getUser().getId()) return REDIRECT_HOME;
@@ -78,6 +84,23 @@ public class ClassController extends BaseController {
 			else {
 				redirectAttributes.addFlashAttribute("status", "notfound");
 			}
+		}
+		else if (operation.equals("duplicate")) {
+			com.polifono.domain.Class newClass = classService.clone(current);
+			newClass.setName(newClass.getName() + " CLONE");
+			newClass = classService.save(classService.prepareClassForCreation(newClass));
+			
+			List<ClassPlayer> students = classPlayerService.findClassPlayersByClassAndStatus(current.getId(), 2);
+			
+			for (ClassPlayer student : students) {
+				ClassPlayer studentClone = new ClassPlayer();
+				studentClone.setClazz(newClass);
+				studentClone.setPlayer(student.getPlayer());
+				
+				classPlayerService.save(classPlayerService.prepareClassPlayerForCreation(studentClone));
+			}
+			
+			redirectAttributes.addFlashAttribute("save", "success");
 		}
 
 		return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;

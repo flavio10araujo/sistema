@@ -37,6 +37,15 @@ public class Class {
 	
 	@Column(name = "c014_school")
 	private String school;
+	
+	@Column(name = "c014_year")
+	private int year;
+	
+	@Column(name = "c014_semester")
+	private int semester;
+	
+	@Column(name = "c014_grade")
+	private String grade;
 
 	public int getId() {
 		return id;
@@ -92,5 +101,29 @@ public class Class {
 
 	public void setSchool(String school) {
 		this.school = school;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public int getSemester() {
+		return semester;
+	}
+
+	public void setSemester(int semester) {
+		this.semester = semester;
+	}
+
+	public String getGrade() {
+		return grade;
+	}
+
+	public void setGrade(String grade) {
+		this.grade = grade;
 	}
 }

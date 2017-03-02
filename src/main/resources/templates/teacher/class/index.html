@@ -35,11 +35,14 @@
                         <div class="panel-body">
                             <small>A tela Gerenciar Salas é utilizada para o gerenciamento (cadastro, edição, exclusão) de salas de aula. 
                             Caso você possua alunos em salas de aulas diferentes, é aqui que você deve cadastrar essas salas.
-                            Para uma melhor organização, recomendamos que a sala de aula seja cadastrada relacionada a um ano ou semestre escolar.<br />
+                            Para uma melhor organização, usamos o cadastro da sala relacionado a um ano, semestre letivo, ano escolar e nome da sala.<br />
                             Por exemplo: <br />
-                            Nome da escola: Escola Ricardo Hoffmann<br />
-                            Nome da sala de aula: 2017/01 - 5º ano A.<br />
-                            Onde 2017 é o ano, 01 é o semestre, 5º ano A é referente a turma do quinto ano.
+                            Ano: 2017
+                            Semestre: 1
+                            Nome da escola: Ricardo Hoffmann<br />
+                            Ano escolar: 6º ano<br />
+                            Nome da sala: 1<br />
+                            Dessa forma o nome completo da sala será: 2017/01 - Ricardo Hoffman - 6º ano 1
                             Para mais informações, verifique o <a href="#">Manual do Professor</a>.</small>
                         </div>
                     </div>
@@ -87,13 +90,28 @@
                             <form id="f_class" th:object="${class}" th:action="@{/teacher/class/save}" action="#" method="post">
        						
 	       						<div class="form-group">
+	       							<label for="year">Ano</label>
+	       							<input type="number" th:field="*{year}" th:id="year" class="form-control" required="true" min="2016" max="2018" />
+	       						</div>
+	       						
+	       						<div class="form-group">
+	       							<label for="semester">Semestre</label>
+	       							<input type="number" th:field="*{semester}" th:id="semester" class="form-control" required="true" min="1" max="2" data-toggle="tooltip" title="Primeiro semestre ou segundo semestre" />
+	       						</div>
+	       						
+	       						<div class="form-group">
 	       							<label for="school">Nome da escola</label>
 	       							<input type="text" th:field="*{school}" th:id="school" class="form-control" required="true" />
 	       						</div>
 	       						
 	       						<div class="form-group">
+	       							<label for="grade">Ano escolar</label>
+	       							<input type="text" th:field="*{grade}" th:id="grade" class="form-control" required="true" data-toggle="tooltip" title="Ex.: 5º ano, 6º ano, etc." />
+	       						</div>
+	       						
+	       						<div class="form-group">
 	       							<label for="name">Nome da sala</label>
-	       							<input type="text" th:field="*{name}" th:id="name" class="form-control" required="true" />
+	       							<input type="text" th:field="*{name}" th:id="name" class="form-control" required="true" data-toggle="tooltip" title="Ex.: A, B ou 1, 2 ou manhã, tarde, etc." />
 	       						</div>
 	       						
 	       						<div class="form-group">
@@ -128,7 +146,7 @@
                             <table class="table table-bordered">
 								<thead>
 									<tr class="btn-primary">
-										<th>Escola - Sala</th>
+										<th>Ano - Escola - Sala</th>
 										<th th:text="#{app.description}"></th>
 										<th></th>
 									</tr>
@@ -138,11 +156,12 @@
 										<td colspan="3" align="center" th:text="#{crud.list.empty}"></td> 
 									</tr>
 									<tr th:each="item : ${classes}">
-										<td th:text="${item.school} + ' - '+ ${item.name}"></td>
+										<td th:text="${item.year} + '/0' + ${item.semester} + ' - ' + ${item.school} + ' - '+ ${item.grade} + ' ' + ${item.name}"></td>
 										<td th:text="${item.description}"></td>
 										<td align="center">
 											<a data-toggle="tooltip" th:title="#{app.edit}" th:href="@{/teacher/class/edit/{id}(id=${item.id})}"><span class="glyphicon glyphicon-edit"></span></a> &nbsp; &nbsp;
-											<a data-toggle="tooltip" th:title="#{app.delete}" th:href="'javascript:deleteItem(\'/teacher/class/delete/' + ${item.id} + '\')'"><span class="glyphicon glyphicon-trash"></span></a>
+											<a data-toggle="tooltip" th:title="#{app.delete}" th:href="'javascript:deleteItem(\'/teacher/class/delete/' + ${item.id} + '\')'"><span class="glyphicon glyphicon-trash"></span></a>  &nbsp; &nbsp;
+											<a data-toggle="tooltip" title="Clonar" th:href="'javascript:cloneItem(\'/teacher/class/duplicate/' + ${item.id} + '\')'"><span class="glyphicon glyphicon-duplicate"></span></a>
 										</td>
 									</tr>
 								</tbody>
@@ -199,9 +218,26 @@
 				
 				function deleteItem(url){if(confirm("Você tem certeza que deseja deletar esse item?")){location.href=url;}}
 				
+				function cloneItem(url){if(confirm("Ao clonar uma sala de aula, uma nova sala será criada com todos os alunos que estavam na sala original. Você deseja clonar essa sala de aula?")){location.href=url;}}
+				
 				function submitForm() {
+					if (document.getElementById("year").value == "" || document.getElementById("year").value == "0") {
+						bootbox.alert("Por favor, informe um valor no campo [Ano].");
+						return false;
+					}
+					
+					if (document.getElementById("semester").value == "" || document.getElementById("semester").value == "0") {
+						bootbox.alert("Por favor, informe um valor no campo [Semestre].");
+						return false;
+					}
+					
 					if (document.getElementById("school").value == "") {
 						bootbox.alert("Por favor, informe um valor no campo [Nome da escola].");
+						return false;
+					}
+					
+					if (document.getElementById("grade").value == "") {
+						bootbox.alert("Por favor, informe um valor no campo [Ano escolar].");
 						return false;
 					}
 					

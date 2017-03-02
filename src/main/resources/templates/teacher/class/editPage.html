@@ -88,13 +88,28 @@
 	       						<input type="hidden" th:field="*{id}" />
 	       						
 	       						<div class="form-group">
+	       							<label for="year">Ano</label>
+	       							<input type="number" th:field="*{year}" th:id="year" class="form-control" required="true" min="2016" max="2018" />
+	       						</div>
+	       						
+	       						<div class="form-group">
+	       							<label for="semester">Semestre</label>
+	       							<input type="number" th:field="*{semester}" th:id="semester" class="form-control" required="true" min="1" max="2" data-toggle="tooltip" title="Primeiro semestre ou segundo semestre" />
+	       						</div>
+	       						
+	       						<div class="form-group">
 	       							<label>Nome da escola</label>
 	       							<input type="text" th:field="*{school}" th:id="school" class="form-control" required="true" />
 	       						</div>
 	       						
 	       						<div class="form-group">
+	       							<label for="grade">Ano escolar</label>
+	       							<input type="text" th:field="*{grade}" th:id="grade" class="form-control" required="true" data-toggle="tooltip" title="Ex.: 5º ano, 6º ano, etc." />
+	       						</div>
+	       						
+	       						<div class="form-group">
 	       							<label for="name">Nome da sala</label>
-	       							<input type="text" th:field="*{name}" th:id="name" class="form-control" required="true" />
+	       							<input type="text" th:field="*{name}" th:id="name" class="form-control" required="true" data-toggle="tooltip" title="Ex.: A, B ou 1, 2 ou manhã, tarde, etc." />
 	       						</div>
 	       						
 	       						<div class="form-group">
@@ -131,13 +146,30 @@
 				}
 				
 				function submitForm() {
-					
-					if (document.getElementById("name").value == "") {
+					if (document.getElementById("year").value == "" || document.getElementById("year").value == "0") {
+						bootbox.alert("Por favor, informe um valor no campo [Ano].");
 						return false;
 					}
 					
-					form=document.getElementById("f_class");
-					form.submit();
+					if (document.getElementById("semester").value == "" || document.getElementById("semester").value == "0") {
+						bootbox.alert("Por favor, informe um valor no campo [Semestre].");
+						return false;
+					}
+					
+					if (document.getElementById("school").value == "") {
+						bootbox.alert("Por favor, informe um valor no campo [Nome da escola].");
+						return false;
+					}
+					
+					if (document.getElementById("grade").value == "") {
+						bootbox.alert("Por favor, informe um valor no campo [Ano escolar].");
+						return false;
+					}
+					
+					if (document.getElementById("name").value == "") {
+						bootbox.alert("Por favor, informe um valor no campo [Nome da sala].");
+						return false;
+					}
 				}
 				
 			/*]]>*/

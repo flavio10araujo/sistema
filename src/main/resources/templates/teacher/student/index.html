@@ -88,7 +88,9 @@
 									<label for="clazzId">Nome da sala</label>
 								  	<select class="form-control" th:field="*{clazz.id}" th:id="clazzId" required="true">
 								    	<option value="0"></option>
-	  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.school} + ' - ' + ${clazz.name}"></option>
+	  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" 
+	  										th:text="${clazz.year} + '/0' + ${clazz.semester} + ' - ' + ${clazz.school} + ' - '+ ${clazz.grade} + ' ' + ${clazz.name}">
+	  									</option>
 								  	</select>
 								</div>
 	       						
@@ -126,7 +128,7 @@
 								<label for="clazzIdFilter">Nome da sala</label>
 							  	<select class="form-control" th:field="*{id}" th:id="clazzIdFilter" required="true" data-toggle="tooltip" title="Caso tenha mais de uma sala de aula, utilize esse campo para mostrar apenas os alunos de uma determinada sala.">
 							    	<option value="0"></option>
-  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.school} + ' - ' + ${clazz.name}"></option>
+  									<option th:each="clazz : ${classes}" th:value="${clazz.id}" th:text="${clazz.year} + '/0' + ${clazz.semester} + ' - ' + ${clazz.school} + ' - '+ ${clazz.grade} + ' ' + ${clazz.name}"></option>
 							  	</select>
 							</div>
 							<input type="submit" class="btn btn-default pull-right" th:value="#{app.filter}" />
@@ -142,7 +144,7 @@
 							<table class="table table-bordered">
 								<thead>
 									<tr class="btn-primary">
-										<th>Escola - Sala</th>
+										<th>Ano - Escola - Sala</th>
 										<th th:text="#{app.student}"></th>
 										<th></th>
 									</tr>
@@ -152,7 +154,7 @@
 										<td colspan="3" align="center" th:text="#{crud.list.empty}"></td> 
 									</tr>
 									<tr th:each="item : ${classPlayers}">
-										<td th:text="${item.clazz.school} + ' - ' + ${item.clazz.name}"></td>
+										<td th:text="${item.clazz.year} + '/0' + ${item.clazz.semester} + ' - ' + ${item.clazz.school} + ' - '+ ${item.clazz.grade} + ' ' + ${item.clazz.name}"></td>
 										<td><a th:href="@{|/profile/player/${item.player.id}|}" th:text="${item.player.fullName}" style="text-decoration:none"></a></td>
 										<td align="left">
 											<a data-toggle="tooltip" title="Reenviar e-mail para o aluno" th:if="${item.status==1}" th:href="@{/teacher/student/resendemail/{id}(id=${item.id})}" style="margin-right:10%"><span class="glyphicon glyphicon-repeat"></span></a>
@@ -225,6 +227,10 @@
 				
 				if (document.getElementById("alertMessage").value == 'studentAlreadyRegistered') {
 					bootbox.alert("O estudante buscado já está cadastrado nessa sala de aula.");
+				}
+				
+				if (document.getElementById("alertMessage").value == 'studentWasDisabled') {
+					bootbox.alert("O estudante buscado estava inativo para essa sala. Ele foi reativado.");
 				}
 				
 				if (document.getElementById("alertMessage").value == 'studentNotPending') {
