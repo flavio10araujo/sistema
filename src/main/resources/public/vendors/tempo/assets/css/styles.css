@@ -593,7 +593,7 @@ select {
 }
 /* ======= Signup Section ======= */
 .signup {
-  padding: 80px 0;
+  padding: 30px 0;
 }
 .signup.has-bg-color {
   background: #f5f5f5;
@@ -1025,7 +1025,7 @@ body.modal-open {
 }
 /* ======= Why Section ======= */
 .why {
-  padding: 80px 0;
+  padding: 30px 0;
 }
 .why .title {
   font-weight: bold;
@@ -1040,10 +1040,10 @@ body.modal-open {
   margin-bottom: 30px;
 }
 .why .benefits {
-  padding: 60px 0;
+  padding: 30px 0;
 }
 .why .benefits .item {
-  margin-bottom: 60px;
+  margin-bottom: 30px;
   -webkit-transition: all 0.4s ease-in-out;
   -moz-transition: all 0.4s ease-in-out;
   -ms-transition: all 0.4s ease-in-out;
@@ -1156,7 +1156,7 @@ body.modal-open {
 }
 /* ======= Video Section ======= */
 .video {
-  padding: 80px 0;
+  padding: 30px 0;
   position: relative;
   background: #6dbd63 url('../images/background/video-bg.jpg') no-repeat center center;
   -webkit-background-size: cover;
@@ -1237,7 +1237,7 @@ body.modal-open {
 }
 /* ======= FAQ Section ======= */
 .faq {
-  padding: 80px 0;
+  padding: 30px 0;
 }
 .faq.has-bg-color {
   background: #f5f5f5;
@@ -1327,7 +1327,7 @@ body.modal-open {
   padding-top: 60px;
 }
 .features {
-  padding-top: 80px;
+  padding-top: 30px;
 }
 .features .item {
   padding: 60px 0;
@@ -1347,7 +1347,7 @@ body.modal-open {
 }
 /* ======= Price Plan Section ======= */
 .price-plan {
-  padding: 80px 0;
+  padding: 30px 0;
 }
 .price-plan .title {
   font-size: 28px;
@@ -1436,7 +1436,7 @@ body.modal-open {
 }
 /* ======= Blog Section ======= */
 .blog {
-  padding-top: 60px;
+  padding-top: 30px;
 }
 .blog .title {
   margin-bottom: 30px;
@@ -1586,7 +1586,7 @@ body.modal-open {
 }
 /* ======= Contact ======= */
 .contact-main {
-  padding-top: 80px;
+  padding-top: 0px;
 }
 .contact-main .title {
   margin-top: 0;
@@ -1663,7 +1663,7 @@ body.modal-open {
   color: #999;
 }
 .contact-form-section {
-  padding-bottom: 80px;
+  padding-bottom: 0px;
 }
 .contact-form-section .title {
   margin-bottom: 15px;
@@ -1695,8 +1695,8 @@ body.modal-open {
 }
 /* ======= 404 ======= */
 .section-404 {
-  padding-top: 80px;
-  padding-bottom: 80px;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 .section-404 .title-404 {
   font-size: 70px;
