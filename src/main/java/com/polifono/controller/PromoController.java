@@ -38,7 +38,8 @@ public class PromoController extends BaseController {
 	@Autowired
 	private IContentService contentService;
 	
-	public static final String URL_PROMOS_PHASECONTENT = "promos/phaseContent";
+	public static final String URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR = "promos/phaseContentAcousticGuitar";
+	public static final String URL_PROMOS_PHASECONTENT_RECORDER = "promos/phaseContentRecorder";
 	public static final String REDIRECT_HOME = "redirect:/";
 
 	/**
@@ -92,6 +93,13 @@ public class PromoController extends BaseController {
 		model.addAttribute("phase", phase);
 		model.addAttribute("content", content);
 		
-		return URL_PROMOS_PHASECONTENT;
+		//violão
+		if (game.getId() == 2) {
+			return URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR;
+		}
+		//flauta
+		else {
+			return URL_PROMOS_PHASECONTENT_RECORDER;
+		}
 	}
 }
