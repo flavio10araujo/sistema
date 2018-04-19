@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.polifono.domain.CurrentUser;
@@ -39,7 +40,7 @@ public abstract class BaseController {
     
     protected final void updateCurrentAuthenticateUser(Player player) {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    	Authentication newAuth = new UsernamePasswordAuthenticationToken(new CurrentUser(player), auth.getCredentials(), auth.getAuthorities());
+    	Authentication newAuth = new UsernamePasswordAuthenticationToken(new CurrentUser(player), auth.getCredentials(), AuthorityUtils.createAuthorityList(player.getRole().toString()));
     	SecurityContextHolder.getContext().setAuthentication(newAuth);
     }
 }

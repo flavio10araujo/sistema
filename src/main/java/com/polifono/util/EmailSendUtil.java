@@ -103,7 +103,7 @@ public class EmailSendUtil {
 		}
 		else if (messageType == 2) {
 			from = resourceBundle.getString("email.noreply");
-			subject = "Sua soliticação de alteração de senha na " + resourceBundle.getString("email.company");
+			subject = "Sua solicitação de alteração de senha na " + resourceBundle.getString("email.company");
 			message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">"
 					+ "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
 					+ "<p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"

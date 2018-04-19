@@ -92,7 +92,7 @@
                         <div class="navbar-collapse collapse">
                             
 							<ul class="nav navbar-nav" sec:authorize="hasAuthority('ADMIN')">
-				     			<li><a href="/admin" th:text="#{menu.admin.home}"></a></li>
+				     			<li><a th:href="@{/admin}" th:text="#{menu.admin.home}"></a></li>
 				   			</ul>
 				   			
 					    	<ul class="nav navbar-nav" sec:authorize="hasAuthority('TEACHER')">

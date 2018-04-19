@@ -35,11 +35,9 @@
 		            
 		            	<div class="panel panel-default">
 			                <div class="panel-body">
-			                    <label for="quantity">Informe a quantidade de cr&#xE9;ditos desejada</label> <small><small sec:authorize="hasAuthority('USER')">(mínimo: 5 máximo: 85)</small></small>
+			                    <label for="quantity">Informe a quantidade de cr&#xE9;ditos desejada</label> <small><small sec:authorize="hasAuthority('USER')">(m&#xED;nimo: 5 m&#xE1;ximo: 85)</small></small>
 		                        
-		                        <input sec:authorize="hasAuthority('USER')" type="number" class="form-control" required="true" name="quantity" id="quantity" min="5" max="85" />
-		                        <input sec:authorize="hasAuthority('TEACHER')" type="number" class="form-control" required="true" name="quantity" id="quantity" min="5" />
-		                        <input sec:authorize="hasAuthority('ADMIN')" type="number" class="form-control" required="true" name="quantity" id="quantity" min="5" />
+		                        <input type="number" class="form-control" required="true" name="quantity" id="quantity" min="5" max="85" />
 		                        
 		                        <br />
 		                        
@@ -56,9 +54,10 @@
                         	<p>A plataforma Polifono.com utiliza o sistema de pagamento <a href="https://pagseguro.uol.com.br" target="_blank" style="text-decoration:none">PagSeguro.com</a>, desenvolvido pela <a href="http://www.uol.com.br" target="_blank" style="text-decoration:none">UOL</a>.</p>
                         	<br />
                         	<p>
-                        	Informe a quantidade de créditos desejada e clique em [Comprar]. Você será direcionado para o sistema PagSeguro. Após efetuar o pagamento, o sistema PagSeguro retornará para essa página automaticamente. 
-                        	Os créditos serão adicionados em sua conta apenas após a confirmação de pagamento feita pelo sistema PagSeguro.
-                        	Pode ser necessário sair do sistema e entrar novamente para que os créditos apareçam na sua conta. O sistema PagSeguro lhe enviará um e-mail quando o pagamento for confirmado.
+                        	Informe a quantidade de cr&#xE9;ditos desejada e clique em [Comprar]. Voc&#xEA; ser&#xE1; direcionado para o sistema PagSeguro. Ap&#xF3;s efetuar o pagamento, o sistema PagSeguro retornar&#xE1; para essa p&#xE1;gina automaticamente. 
+                        	Os cr&#xE9;ditos ser&#xE3;o adicionados em sua conta apenas ap&#xF3;s a confirma&#xE7;&#xE3;o de pagamento feita pelo sistema PagSeguro. 
+                        	Pode ser necess&#xE1;rio sair do sistema e entrar novamente para que os cr&#xE9;ditos apare&#xE7;am na sua conta. O sistema PagSeguro lhe enviar&#xE1; um e-mail quando o pagamento for confirmado.
+                        	Cada cr&#xE9;dito custa 1 real. Cada aula custa 1 cr&#xE9;dito.
                         	</p>
                         </div>
 					</div>
@@ -72,28 +71,28 @@
                         	<label>Quais as formas de pagamento aceitas pelo PagSeguro?</label>
                         	<br />
                         	<p>
-                        	Cartões de crédito - parcelamento em até 18 vezes;<br />
-							Boleto bancário;<br />
-							Transferência de saldo entre contas PagSeguro;<br />
-							Débito bancário.<br />
+                        	Cart&#xF5;es de cr&#xE9;dito - parcelamento em at&#xE9; 18 vezes;<br />
+							Boleto banc&#xE1;rio;<br />
+							Transfer&#xEA;ncia de saldo entre contas PagSeguro;<br />
+							D&#xE9;bito banc&#xE1;rio.<br />
 							</p>
 							
 							<br />
                         	
-                        	<label>É possível comprar parcelado pelo PagSeguro?</label>
+                        	<label>&#xC9; poss&#xED;vel comprar parcelado pelo PagSeguro? </label>
                         	<br />
                         	<p>
-                        	Sim, porém o PagSeguro oferece a opção de parcelamento apenas para pagamento via cartão de crédito.<br />
-                        	O valor mínimo para compra parcelada é de R$ 10,00.<br />
-                        	O valor mínimo da parcela é de R$ 5,00.
+                        	Sim, por&#xE9;m o PagSeguro oferece a op&#xE7;&#xE3;o de parcelamento apenas para pagamento via cart&#xE3;o de cr&#xE9;dito.<br />
+                        	O valor m&#xED;nimo para compra parcelada &#xE9; de R$ 10,00.<br />
+                        	O valor m&#xED;nimo da parcela &#xE9; de R$ 5,00.
 							</p>
 							
 							<br />
                         	
-                        	<label>Quais cartões de crédito são aceitos pelo PagSeguro?</label>
+                        	<label>Quais cart&#xF5;es de cr&#xE9;dito s&#xE3;o aceitos pelo PagSeguro? </label>
                         	<br />
                         	<p>
-                        	São aceitas mais de 20 opções de cartões. Clique <a href="https://pagseguro.uol.com.br/para_voce/meios_de_pagamento_e_parcelamento.jhtml" target="_blank" style="text-decoration:none">aqui</a> para ver mais informações.
+                        	S&#xE3;o aceitas mais de 20 op&#xE7;&#xF5;es de cart&#xF5;es. Clique <a href="https://pagseguro.uol.com.br/para_voce/meios_de_pagamento_e_parcelamento.jhtml" target="_blank" style="text-decoration:none">aqui</a> para ver mais informa&#xE7;&#xF5;es.
 							</p>
                         </div>
 					</div>
@@ -116,7 +115,9 @@
 			
 				$(document).ready(function(){
 	  				$("#btnBuy").click(function(){
-	  					$(this).button('loading');
+	  					if ($("#quantity").val() >= 5 && $("#quantity").val() <= 85) {
+	  						$(this).button('loading');
+	  					}
 	  				});
 	  			});
 				

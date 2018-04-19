@@ -24,4 +24,7 @@ public interface IPlayerRepository extends CrudRepository<Player, Integer> {
 	
 	@Query("SELECT player FROM Player player WHERE player.login = :login")
 	public Player findByLogin(@Param("login") String login);
+	
+	@Query("SELECT player FROM Player player WHERE player.idFacebook = :idFacebook")
+	public Player findByIdFacebook(@Param("idFacebook") Long idFacebook);
 }

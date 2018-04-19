@@ -1,5 +1,9 @@
 package com.polifono.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 public class Util {
@@ -72,9 +76,6 @@ public class Util {
 	 *
 	 * Verifica se um array é vazio.
 	 *
-	 * @author Felipe Lima - <a href="mailto:felipe.lima@wises.com.br">felipe.lima@wises.com.br</a>
-	 * @date Dec 18, 2012
-	 *
 	 * @param array
 	 * @return
 	 */
@@ -84,5 +85,22 @@ public class Util {
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Lê uma URL.
+	 * 
+	 * @param url
+	 * @return
+	 * @throws IOException
+	 */
+	public static String readURL(URL url) throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		InputStream is = url.openStream();
+		int r;
+		while ((r = is.read()) != -1) {
+			baos.write(r);
+		}
+		return new String(baos.toByteArray());
 	}
 }

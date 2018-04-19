@@ -313,7 +313,35 @@ public class PlayerServiceImpl implements IPlayerService {
 		return msg;
 	}
 	
+	/**
+	 * Verify if the player has all the attributes mandatories when he is trying to change his password.
+	 * If everything is OK, return an empty string.
+	 * Otherwise, return one string with the message of the error.
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public String validateChangePasswordPlayer(Player player) {
+		String msg = "";
+		
+		if (player.getPassword() == null || player.getPassword().equals("")) {
+			msg = msg + "<br />A senha precisa ser informada.";
+		}
+		else if (player.getPassword().length() < 6 || player.getPassword().length() > 20) {
+			msg = msg + "<br />A senha precisa possuir entre 6 e 20 caracteres.";
+		}
+		else if (!EmailUtil.validatePassword(player.getPassword())) {
+			msg = msg + "<br />A senha precisa possuir ao menos 1 número e ao menos 1 letra.";
+		}
+		
+		return msg;
+	}
+	
 	public Player findByLogin(String login) {
         return repository.findByLogin(login);
     }
+	
+	public Player findByIdFacebook(Long id) {
+		return repository.findByIdFacebook(id);
+	}
 }

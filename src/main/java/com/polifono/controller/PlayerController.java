@@ -1,10 +1,14 @@
 package com.polifono.controller;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +22,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
+import com.polifono.domain.PlayerFacebook;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IPlayerService;
+import com.polifono.service.impl.LoginServiceImpl;
 import com.polifono.util.EmailSendUtil;
 import com.polifono.util.RandomStringUtil;
+import com.polifono.util.Util;
 
 @Controller
 public class PlayerController extends BaseController {
@@ -31,6 +38,9 @@ public class PlayerController extends BaseController {
 	
 	@Autowired
 	private IClassPlayerService classPlayerService;
+	
+	@Autowired
+	private LoginServiceImpl loginService;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PlayerController.class);
 	
@@ -295,14 +305,7 @@ public class PlayerController extends BaseController {
 			}
 			else {
 				playerOld.setPassword(player.getPassword());
-				String msg = null;
-				
-				if (!byLogin) {
-					msg = playerService.validateCreatePlayer(playerOld);
-				}
-				else {
-					msg = playerService.validateCreatePlayerByTeacher(playerOld);
-				}
+				String msg = playerService.validateChangePasswordPlayer(playerOld);
 				
 				// If there is not errors.
 				if (msg.equals("")) {
@@ -366,5 +369,108 @@ public class PlayerController extends BaseController {
 		}
 		
 		return REDIRECT_CLASSINVITATION;
+	}
+	
+	/**
+	 * Method used when the user does the login with his Facebook account.
+	 * 
+	 * @param 
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
+	@RequestMapping("/loginfb")
+	public String loginfb(HttpServletRequest request, final Model model, String code) {
+		
+		try {
+			JSONObject resp = new JSONObject(Util.readURL(new URL("https://graph.facebook.com/me?fields=email,first_name,last_name,gender&access_token=" + code)));
+			PlayerFacebook playerFacebook = new PlayerFacebook(resp);
+			
+			if (playerFacebook == null || playerFacebook.getId() == null) {
+				System.out.println("loginfb - playerFacebook is null");
+				return URL_INDEX;
+			}
+			
+			// Get the ID of the playerFacebook and verify is he is already related to any player.
+			Player player = playerService.findByIdFacebook(playerFacebook.getId());
+			
+			// If yes, log the player in.
+			if (player != null) {
+				request.getSession(true);
+				updateCurrentAuthenticateUser(player);
+				loginService.registerLogin(player);
+			} else {
+				// If not, verify if the playerFacebook has an email.
+				if (playerFacebook.getEmail() != null && !playerFacebook.getEmail().equals("")) {
+					
+					// If it is here it is because playerFacebook doesn't exist in the system AND has an email.
+			
+					player = playerService.findByEmail(playerFacebook.getEmail());
+					
+					// If the playerFacebook's email is already registered in the system.
+					if (player != null) {
+						// If it is here it is because the playerFacebook's email is already registered in the system, but it is not linked to any Facebook account.
+						// Let's create the link and register in the database.
+						player.setIdFacebook(playerFacebook.getId());
+						player.setIndEmailConfirmed(true);
+						
+						playerService.save(player);
+						
+						request.getSession(true);
+						updateCurrentAuthenticateUser(player);
+						loginService.registerLogin(player);
+					} else {
+						// If it is here it is because it is necessary to register the player in the system.
+						player = new Player();
+						
+						player.setIdFacebook(playerFacebook.getId());
+						player.setName(playerFacebook.getFirstName());
+						player.setLastName(playerFacebook.getLastName());
+						player.setEmail(playerFacebook.getEmail());
+						player.setPassword(new RandomStringUtil(6).nextString());
+						player.setIndEmailConfirmed(true);
+						
+						playerService.create(player);
+						
+						request.getSession(true);
+						updateCurrentAuthenticateUser(player);
+						loginService.registerLogin(player);
+					}
+				} else {
+					// If it is here it is because the playerFacebook doesn't exist in the system AND E doesn't have an email.
+					// In this case, the user will not have neither an email nor login. He will always log in with his Facebook account.
+					
+					player = new Player();
+					
+					player.setIdFacebook(playerFacebook.getId());
+					player.setName(playerFacebook.getFirstName());
+					player.setLastName(playerFacebook.getLastName());
+					player.setPassword(new RandomStringUtil(6).nextString());
+					player.setLogin(playerFacebook.getId()+"");
+					
+					playerService.create(player);
+					
+					request.getSession(true);
+					updateCurrentAuthenticateUser(player);
+					loginService.registerLogin(player);
+				}
+			}
+			
+			return REDIRECT_HOME;
+		}
+		catch(MalformedURLException e) {
+			model.addAttribute("player", new Player());
+			model.addAttribute("codRegister", 2);
+			// TODO - buscar msg do messages.
+			model.addAttribute("msgRegister", "<br />Ocorreu algum erro ao utilizar sua conta do Facebook.");
+			return URL_INDEX;
+		}
+		catch(IOException e) {
+			model.addAttribute("player", new Player());
+			model.addAttribute("codRegister", 2);
+			// TODO - buscar msg do messages.
+			model.addAttribute("msgRegister", "<br />Algum erro ocorreu ao utilizar sua conta do Facebook.");
+			return URL_INDEX;
+		}
 	}
 }

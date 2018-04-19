@@ -7,12 +7,12 @@
 		<meta charset="utf-8" />
     	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
     	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    	<meta name="description" content="Aula de música online. Aula de flauta online. Escola de música." />
+    	<meta name="description" content="Aula de música online. Escola de música online." />
     	<meta name="author" content="Amonati" />
     	<link rel="icon" th:href="@{/static/img/favicon.ico}" sizes="32x32" />
 		
-		<link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css' />
-    	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css' />
+		<link href='https://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css' />
+    	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css' />
     	<!-- Global CSS -->
     	<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/tempo/assets/plugins/bootstrap/css/bootstrap.min.css}" />
     	<!-- Plugins CSS -->
@@ -34,8 +34,8 @@
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 			})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-			ga('create', 'UA-91913532-1', 'auto');
-			ga('send', 'pageview');
+			ga('create','UA-91913532-1','auto');
+			ga('send','pageview');
 		</script>
 
 	</head>
@@ -46,23 +46,25 @@
 	    <div id="fb-root"></div>
 	    <script th:inline="javascript">
 			/*<![CDATA[*/
-			(function(d, s, id) {
-			  var js, fjs = d.getElementsByTagName(s)[0];
-			  if (d.getElementById(id)) return;
-			  js = d.createElement(s); js.id = id;
-			  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=502675323178052";
-			  fjs.parentNode.insertBefore(js, fjs);
-			}(document, 'script', 'facebook-jssdk'));
+			function statusChangeCallback(response){if(response.status==='connected'){window.location="./loginfb?code="+response.authResponse.accessToken;}}
+		  	function checkLoginState(){FB.getLoginStatus(function(response){statusChangeCallback(response);});}
+		  	window.fbAsyncInit=function(){FB.init({appId:'324370751419847',cookie:true,xfbml:true,version:'v2.8'});};
+		  	(function(d,s,id){
+		    var js,fjs=d.getElementsByTagName(s)[0];
+		    if(d.getElementById(id)) return;
+		    js=d.createElement(s);js.id=id;
+		    js.src="https://connect.facebook.net/en_US/sdk.js";
+		    fjs.parentNode.insertBefore(js,fjs);
+		  	}(document,'script','facebook-jssdk'));
 			/*]]>*/
 		</script>
-	    
-	    <!-- * Facebook Like button script ends -->
+		<!-- * Facebook Like button script ends -->
 	
 		<div class="wrapper">
         	
-        	<!-- ******HEADER****** --> 
-        	<header id="header" class="header">  
-            	<div class="container">            
+        	<!-- ******HEADER****** -->
+        	<header id="header" class="header">
+            	<div class="container">
                 	<h1 class="logo pull-left" style="margin: 0 0 0 0;padding: 0 0 0 0;">
                     	<a class="navbar-left" th:href="@{/}"><img class="img-responsive" th:src="@{/static/img/logomarca.png}" /></a>
                 	</h1>
@@ -130,19 +132,6 @@
 	            </div><!--//intro-->
 
 	            <div class="fixed-container">
-	                <!--<div class="signup">
-	                    <div class="container text-center">
-	                        <h3 class="title">Experimente!</h3>
-	                        <form class="signup-form">
-	                            <div class="form-group">
-	                                <label class="sr-only" for="semail1">E-mail</label>
-	                                <input type="email" id="semail1" name="semail1" class="form-control" placeholder="E-mail" />
-	                            </div>
-	                            <button type="submit" class="btn btn-cta btn-cta-primary">SIGN UP</button>
-	                        </form>
-	                    </div>
-	                </div>-->
-	                
 	                <div class="social text-center">
 	                    <div class="container">
 	                        <span class="line">Compartilhe essa ideia:</span> 
@@ -152,16 +141,14 @@
 	                        </div>
 	                        
 	                        <div class="fb-share-button" data-href="https://www.facebook.com/polifonooficial/" data-layout="button" data-size="small" data-mobile-iframe="false"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.facebook.com%2Fpolifonooficial%2F&amp;src=sdkpreparse">Share</a></div>
-	                    </div>         
-	                </div>   
+	                    </div>
+	                </div>
 	            </div>
 	            
 	            <div class="bg-slider-wrapper">
 	                <div id="bg-slider" class="flexslider bg-slider">
 	                    <ul class="slides">
 	                        <li class="slide slide-1"></li>
-	                        <!--<li class="slide slide-2"></li>
-	                        <li class="slide slide-3"></li>-->
 	                    </ul>
 	                </div>
 	            </div><!--//bg-slider-wrapper-->
@@ -173,7 +160,7 @@
 	                <h2 class="title text-center">Por que usar a Polifono.com?</h2>
 	                <p class="intro text-center">Veja alguns dos motivos para se juntar a nós</p>
 	                <div class="row">
-	                    <div class="benefits col-md-7 col-sm-6 col-xs-12">                    
+	                    <div class="benefits col-md-7 col-sm-6 col-xs-12">
 	                        
 	                        <div class="item clearfix">
 	                            <div class="icon col-md-3  col-xs-12 text-center">
@@ -194,7 +181,7 @@
 	                                <h3 class="title">Do básico ao avançado</h3>
 	                                <p class="desc">Nosso conteúdo foi programado para atender às pessoas que não sabem absolutamente nada de música. 
 	                                E, a partir disso, evoluir passo a passo na teoria musical e na prática com um instrumento até atingir níveis de completo domínio do instrumento.</p>
-	                            </div><!--//content-->                            
+	                            </div><!--//content-->
 	                        </div><!--//item-->
 	                        
 	                        <div class="item clearfix">
@@ -248,29 +235,13 @@
 	                                <p class="details">
 	                                    <span class="name">Leandro</span>
 	                                    <span class="title">Professor de música</span>
-	                                </p> 
-	                                <i class="fa fa-quote-right"></i>                                
+	                                </p>
+	                                <i class="fa fa-quote-right"></i>
 	                            </div><!--//quote-box-->
 	                            <div class="people text-center">
 	                                <img class="img-rounded user-pic" th:src="@{/vendors/tempo/assets/images/people/people-1.png}" alt="" />                       
 	                            </div><!--//people-->
 	                        </div><!--//item-->
-	                        
-	                        <!--<div class="item">
-	                            <div class="quote-box">
-	                                <blockquote class="quote">Great vehicula consequat cursus. Pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim!
-	                                    
-	                                </blockquote>
-	                                <p class="details">
-	                                    <span class="name">Michelle Cheung</span>
-	                                    <span class="title">San Francisco, US</span>
-	                                </p> 
-	                                <i class="fa fa-quote-right"></i>                                
-	                            </div>
-	                            <div class="people text-center">
-	                                <img class="img-rounded user-pic" th:src="@{/vendors/tempo/assets/images/people/people-2.png}" alt="" />                       
-	                            </div>
-	                        </div>//item-->
 	                        
 	                        <div class="item last">
 	                            <div class="quote-box">
@@ -290,8 +261,7 @@
 	                                <img class="img-rounded user-pic" th:src="@{/vendors/tempo/assets/images/people/people-3.png}" alt="" />                       
 	                            </div><!--//people-->
 	                        </div><!--//item-->
-	                        
-	                    </div>                   
+	                    </div>
 	                </div><!--//row-->
 	            </div><!--//container-->
 	        </section><!--//why-->
@@ -321,7 +291,7 @@
 	                                </div><!--//modal-body-->
 	                            </div><!--//modal-content-->
 	                        </div><!--//modal-dialog-->
-	                    </div><!--//modal-->                    
+	                    </div><!--//modal-->
 	                </div><!--//control-->
 	            </div>
 	        </section><!--//video-->
@@ -360,8 +330,7 @@
 	                        
 	                        <div class="panel">
 	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion"
-	                                data-toggle="collapse" class="panel-toggle" href="#faq3"><i class="fa fa-plus-square"></i>Quais as formas de pagamento aceitas?</a></h4>
+	                                <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq3"><i class="fa fa-plus-square"></i>Quais as formas de pagamento aceitas?</a></h4>
 	                            </div>
 	                
 	                            <div class="panel-collapse collapse" id="faq3">
@@ -373,8 +342,7 @@
 	                
 	                        <div class="panel">
 	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion"
-	                                data-toggle="collapse" class="panel-toggle" href="#faq4"><i class="fa fa-plus-square"></i>Eu receberei algum certificado?</a></h4>
+	                                <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq4"><i class="fa fa-plus-square"></i>Eu receberei algum certificado?</a></h4>
 	                            </div>
 	                
 	                            <div class="panel-collapse collapse" id="faq4">
@@ -388,8 +356,7 @@
 	                
 	                        <div class="panel">
 	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion"
-	                                data-toggle="collapse" class="panel-toggle" href="#faq5"><i class="fa fa-plus-square"></i>Posso acessar o sistema sem usar a Internet?</a></h4>
+	                                <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq5"><i class="fa fa-plus-square"></i>Posso acessar o sistema sem usar a Internet?</a></h4>
 	                            </div>
 	                
 	                            <div class="panel-collapse collapse" id="faq5">
@@ -401,8 +368,7 @@
 	                        
 	                        <div class="panel">
 	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion"
-	                                data-toggle="collapse" class="panel-toggle" href="#faq6"><i class="fa fa-plus-square"></i>Quais os requisitos técnicos para utilizar o sistema?</a></h4>
+	                                <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq6"><i class="fa fa-plus-square"></i>Quais os requisitos técnicos para utilizar o sistema?</a></h4>
 	                            </div>
 	                
 	                            <div class="panel-collapse collapse" id="faq6">
@@ -415,8 +381,7 @@
 	                    <div class="col-md-6 col-sm-6 col-xs-12">
 	                        <div class="panel">
 	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion"
-	                                data-toggle="collapse" class="panel-toggle" href="#faq7"><i class="fa fa-plus-square"></i>Represento uma escola. Como faço para comprar os logins para meus alunos e professores?</a></h4>
+	                                <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq7"><i class="fa fa-plus-square"></i>Represento uma escola. Como faço para comprar os logins para meus alunos e professores?</a></h4>
 	                            </div>
 	                
 	                            <div class="panel-collapse collapse" id="faq7">
@@ -428,8 +393,7 @@
 	                
 	                        <div class="panel">
 	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion"
-	                                data-toggle="collapse" class="panel-toggle" href="#faq8"><i class="fa fa-plus-square"></i>Represento uma escola. Meus alunos poderão usar os créditos para qualquer instrumento?</a></h4>
+	                                <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq8"><i class="fa fa-plus-square"></i>Represento uma escola. Meus alunos poderão usar os créditos para qualquer instrumento?</a></h4>
 	                            </div>
 	                
 	                            <div class="panel-collapse collapse" id="faq8">
@@ -441,8 +405,7 @@
 	                
 	                        <div class="panel">
 	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion"
-	                                data-toggle="collapse" class="panel-toggle" href="#faq9"><i class="fa fa-plus-square"></i>Represento uma escola. O aluno precisa de um email para usar o sistema?</a></h4>
+	                                <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq9"><i class="fa fa-plus-square"></i>Represento uma escola. O aluno precisa de um email para usar o sistema?</a></h4>
 	                            </div>
 	                
 	                            <div class="panel-collapse collapse" id="faq9">
@@ -454,8 +417,7 @@
 	                        
 	                        <div class="panel">
 	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion"
-	                                data-toggle="collapse" class="panel-toggle" href="#faq10"><i class="fa fa-plus-square"></i>Quantas aulas o aluno deve fazer por ano escolar?</a></h4>
+	                                <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq10"><i class="fa fa-plus-square"></i>Quantas aulas o aluno deve fazer por ano escolar?</a></h4>
 	                            </div>
 	                
 	                            <div class="panel-collapse collapse" id="faq10">
@@ -471,7 +433,7 @@
 	                    <h4 class="title">Sua dúvida não está aqui?</h4>
 	                    <a class="btn btn-cta btn-cta-secondary" href="#contact">Entre em contato conosco</a>
 	                </div>
-	            </div><!--//container-->        
+	            </div><!--//container-->
 	        </section><!--//faq-->
 	        
 	        <!-- ******CONTACT****** --> 
@@ -518,7 +480,6 @@
 	                            <p>Somos amantes de música com o objetivo de difundir o ensino dessa arte para a maior quantidade de pessoas possível.
 	                            Empresa brasileira que trabalha desde 2009 na criação de soluções para a Internet.
 	                            </p>
-	                            
 	                        </div><!--//footer-col-inner-->
 	                    </div><!--//foooter-col-->
 	                    <div class="footer-col col-md-3 col-sm-4 col-md-offset-1 links">
@@ -534,14 +495,12 @@
 	                        <div class="footer-col-inner">
 	                            <h3 class="title">Contato</h3>
 	                            <div class="row">
-	                                <!--<p class="tel col-md-12 col-sm-4"><i class="fa fa-phone"></i>0800 123 4567</p>-->
 	                                <p class="email col-md-12 col-sm-4"><i class="fa fa-envelope"></i><a href="#">polifono@polifono.com</a></p>
-	                                <!--<p class="email col-md-12 col-sm-4"><i class="fa fa-comment"></i><a href="#">Live Chat</a></p>-->
-	                            </div> 
-	                        </div><!--//footer-col-inner-->            
-	                    </div><!--//foooter-col-->   
+	                            </div>
+	                        </div><!--//footer-col-inner-->
+	                    </div><!--//foooter-col-->
 	                </div><!--//row-->
-	            </div><!--//container-->        
+	            </div><!--//container-->
 	        </div><!--//footer-content-->
 	        <div class="bottom-bar">
 	            <div class="container">
@@ -567,14 +526,13 @@
 	                    <h4 id="loginModalLabel" class="modal-title text-center">Acesse a sua conta</h4>
 	                </div>
 	                <div class="modal-body">
-	                    <!--<div class="social-login text-center">                        
+	                    <div class="social-login text-center">                        
 	                        <ul class="list-unstyled social-login">
-	                            <li><button class="twitter-btn btn" type="button"><i class="fa fa-twitter"></i>Log in with Twitter</button></li>
-	                            <li><button class="facebook-btn btn" type="button"><i class="fa fa-facebook"></i>Log in with Facebook</button></li>
-	                            <li><button class="google-btn btn" type="button"><i class="fa fa-google-plus"></i>Log in with Google</button></li>
+	                            <!--<li><button class="facebook-btn btn" type="button"><i class="fa fa-facebook"></i>Log in with Facebook</button></li>-->
+	                            <li><fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></fb:login-button></li>
 	                        </ul>
 	                    </div>
-	                    <div class="divider"><span>Or</span></div>-->
+	                    <div class="divider"><span>Ou</span></div>
 	                    <div class="login-form-container">
 	                        
 	                        <form th:action="@{/login}" method="post" class="login-form" role="form">
@@ -597,11 +555,6 @@
 	                            
 	                            <input type="submit" class="btn btn-block btn-cta-primary" th:value="#{log_in}" />
 	                            
-	                            <!--<div class="checkbox remember">
-	                                <label>
-	                                    <input type="checkbox" /> Remember me
-	                                </label>
-	                            </div>-->
 	                        </form>
 	                    </div><!--//login-form-container-->
 	                </div><!--//modal-body-->
@@ -699,44 +652,15 @@
 	    <script th:inline="javascript">
 			/*<![CDATA[*/
 			$('#create_show_password').click(function(){
-				if($('#create_show_password').prop('checked')) {
-					$('#create_password').attr('type', 'text');
-				} else {
-					$('#create_password').attr('type', 'password');
-				}
+				if($('#create_show_password').prop('checked')){$('#create_password').attr('type','text');}
+				else{$('#create_password').attr('type','password');}
 			});
+			$(document).ready(function(){$('[data-toggle="tooltip"]').tooltip();});
+			if(document.getElementById("alertCodRegister").value==1||document.getElementById("alertCodRegister").value==2){bootbox.alert(document.getElementById("alertMsgRegister").value);}
+			if(document.getElementById("alertError").value != null && document.getElementById("alertError").value!=""){bootbox.alert("O login ou senha informado é inválido. Tente novamente.");}
+			if(document.getElementById("alertMessage").value=='success'){bootbox.alert(document.getElementById("alertMsgEmailSent").value);}
+			if(document.getElementById("alertMessage").value=='error'){bootbox.alert(document.getElementById("alertMessageContent").value);}
 			/*]]>*/
 		</script>
-		
-		<script th:inline="javascript">
-			/*<![CDATA[*/
-			$(document).ready(function(){
-    			$('[data-toggle="tooltip"]').tooltip(); 
-			});
-			/*]]>*/
-		</script>
-		
-		<script th:inline="javascript">
-			/*<![CDATA[*/
-			
-			if (document.getElementById("alertCodRegister").value == 1 || document.getElementById("alertCodRegister").value == 2) {
-				bootbox.alert(document.getElementById("alertMsgRegister").value);
-			}
-			
-			if (document.getElementById("alertError").value != null && document.getElementById("alertError").value != "") {
-				bootbox.alert("O login ou senha informado é inválido. Tente novamente.");
-			}
-			
-			if (document.getElementById("alertMessage").value == 'success') {
-				bootbox.alert(document.getElementById("alertMsgEmailSent").value);
-			}
-			
-			if (document.getElementById("alertMessage").value == 'error') {
-				bootbox.alert(document.getElementById("alertMessageContent").value);
-			}
-			
-			/*]]>*/
-		</script>
-
 	</body>
 </html>

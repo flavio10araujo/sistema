@@ -122,6 +122,9 @@ public class Player {
 	@Column(name="c001_about", columnDefinition="TEXT")
 	private String about;
 	
+	@Column(name = "c018_id")
+	private Long idFacebook;
+	
 	public int getId() {
 		return id;
 	}
@@ -418,5 +421,13 @@ public class Player {
 
 	public String getFullName() {
 		return this.getName() + " " + this.getLastName();
+	}
+
+	public Long getIdFacebook() {
+		return idFacebook;
+	}
+
+	public void setIdFacebook(Long idFacebook) {
+		this.idFacebook = idFacebook;
 	}
 }

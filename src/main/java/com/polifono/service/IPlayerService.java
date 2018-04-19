@@ -43,6 +43,10 @@ public interface IPlayerService {
 
 	public String validateUpdateProfile(Player edit);
 	
+	public String validateChangePasswordPlayer(Player player);
+	
 	public Player findByLogin(String login);
+	
+	public Player findByIdFacebook(Long id);
 
 }
