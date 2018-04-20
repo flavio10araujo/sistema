@@ -46,13 +46,31 @@
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 			})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-			ga('create', 'UA-91913532-1', 'auto');
-			ga('send', 'pageview');
+			ga('create','UA-91913532-1','auto');
+			ga('send','pageview');
 		</script>
 
 	</head>
 
 <body>
+
+<div id="fb-root"></div>
+   <script th:inline="javascript">
+	/*<![CDATA[*/
+	function statusChangeCallback(response){if(response.status==='connected'){window.location="/loginfb?code="+response.authResponse.accessToken;}}
+  	function checkLoginState(){FB.getLoginStatus(function(response){statusChangeCallback(response);});}
+  	window.fbAsyncInit=function(){FB.init({appId:'324370751419847',cookie:true,xfbml:true,version:'v2.8'});};
+  	(function(d,s,id){
+    var js,fjs=d.getElementsByTagName(s)[0];
+    if(d.getElementById(id)) return;
+    js=d.createElement(s);js.id=id;
+    js.src="https://connect.facebook.net/pt_BR/sdk.js";
+    fjs.parentNode.insertBefore(js,fjs);
+  	}(document,'script','facebook-jssdk'));
+	/*]]>*/
+</script>
+
+<div class="fb-customerchat" attribution="setup_tool" page_id="243859729372740" logged_in_greeting="Olá! Se tiver alguma dúvida, estamos aqui!" logged_out_greeting="Olá! Se tiver alguma dúvida, estamos aqui!"></div>
 
 <div class="mainbody container-fluid">
 

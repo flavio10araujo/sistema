@@ -42,8 +42,7 @@
 
 	<body class="home-page" data-spy="scroll" data-target=".main-nav" data-offset="1">
 	
-		<!-- * Facebook Like button script starts -->
-	    <div id="fb-root"></div>
+		<div id="fb-root"></div>
 	    <script th:inline="javascript">
 			/*<![CDATA[*/
 			function statusChangeCallback(response){if(response.status==='connected'){window.location="./loginfb?code="+response.authResponse.accessToken;}}
@@ -53,12 +52,13 @@
 		    var js,fjs=d.getElementsByTagName(s)[0];
 		    if(d.getElementById(id)) return;
 		    js=d.createElement(s);js.id=id;
-		    js.src="https://connect.facebook.net/en_US/sdk.js";
+		    js.src="https://connect.facebook.net/pt_BR/sdk.js";
 		    fjs.parentNode.insertBefore(js,fjs);
 		  	}(document,'script','facebook-jssdk'));
 			/*]]>*/
 		</script>
-		<!-- * Facebook Like button script ends -->
+		
+		<div class="fb-customerchat" attribution="setup_tool" page_id="243859729372740" logged_in_greeting="Olá! Se tiver alguma dúvida, estamos aqui!" logged_out_greeting="Olá! Se tiver alguma dúvida, estamos aqui!"></div>
 	
 		<div class="wrapper">
         	
@@ -662,5 +662,6 @@
 			if(document.getElementById("alertMessage").value=='error'){bootbox.alert(document.getElementById("alertMessageContent").value);}
 			/*]]>*/
 		</script>
+
 	</body>
 </html>
