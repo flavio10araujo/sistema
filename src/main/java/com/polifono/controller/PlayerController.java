@@ -447,6 +447,7 @@ public class PlayerController extends BaseController {
 					player.setLastName(playerFacebook.getLastName());
 					player.setPassword(new RandomStringUtil(6).nextString());
 					player.setLogin(playerFacebook.getId()+"");
+					player.setIndEmailConfirmed(true);
 					
 					playerService.create(player);
 					

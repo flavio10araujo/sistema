@@ -119,7 +119,10 @@
 				  				<div class="checkbox">
 			  						<label><input type="checkbox" value="1" id="create_show_password" />Mostrar senha</label>
 								</div>
-	                            <button type="submit" class="btn btn-block btn-cta-secondary">Cadastrar</button>
+	                            <div class="form-group">
+	                            	<button type="submit" class="btn btn-cta btn-cta-secondary">Cadastrar</button>
+	                            	<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="btn fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false">Facebook</fb:login-button>
+	                            </div>
 	                        </form>
 	                    </div><!--//login-form-container-->
 	                </div>

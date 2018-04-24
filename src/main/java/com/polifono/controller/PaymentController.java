@@ -125,8 +125,6 @@ public class PaymentController extends BaseController {
 
         checkout.setSender(
         	player.getFullName(), // Client's name.
-        	//"c42247508001355723309@sandbox.pagseguro.com.br" // Client's e-mail. player.getEmail()
-        	//"c123123"+t.getId()+"@sandbox.pagseguro.com.br"
         	player.getEmail()
         );
 
@@ -135,10 +133,6 @@ public class PaymentController extends BaseController {
         // Sets a reference code for this payment request. The T012.C002_ID is used in this attribute.
         checkout.setReference(""+t.getId());
 
-        //checkout.setNotificationURL("http://www.polifono.com/pagseguronotification");
-
-        //checkout.setRedirectURL("http://www.polifono.com/pagseguroreturn");
-        
         Boolean onlyCheckoutCode = false;
         String checkoutURL = checkout.register(PagSeguroConfig.getAccountCredentials(), onlyCheckoutCode);
 
@@ -200,6 +194,19 @@ public class PaymentController extends BaseController {
         transaction.setPaymentLink(pagSeguroTransaction.getPaymentLink());
 		
 		transactionService.save(transaction);
+		
+		// If the status is PAID (3).
+		if (pagSeguroTransaction.getStatus().getValue() == 3) {
+			// Add credits to the player.
+			playerService.addCreditsToPlayer(transaction.getPlayer().getId(), transaction.getQuantity());
+			
+			// Register this transaction as finished (to avoid that the player receive twice or more the credits).
+			transaction.setClosed(true);
+			transactionService.save(transaction);
+			
+			// Send e-mail.
+			EmailSendUtil.sendEmailPaymentRegistered(transaction.getPlayer(), transaction.getQuantity());
+		}
 
 		return URL_BUYCREDITS;
 	}

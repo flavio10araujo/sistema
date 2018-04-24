@@ -233,7 +233,9 @@ public class EmailSendUtil {
 		args[1] = ""+quantity;
 		
 		try {
-			EmailSendUtil.sendHtmlMail(3, player.getEmail(), args);
+			if (player.getEmail() != null && !"".equals(player.getEmail())) {
+				EmailSendUtil.sendHtmlMail(3, player.getEmail(), args);
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
