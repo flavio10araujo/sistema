@@ -383,7 +383,7 @@ public class PlayerController extends BaseController {
 	public String loginfb(HttpServletRequest request, final Model model, String code) {
 		
 		try {
-			JSONObject resp = new JSONObject(Util.readURL(new URL("https://graph.facebook.com/me?fields=email,first_name,last_name,gender&access_token=" + code)));
+			JSONObject resp = new JSONObject(Util.readURL(new URL("https://graph.facebook.com/v2.12/me?fields=email,first_name,last_name,gender&access_token=" + code)));
 			PlayerFacebook playerFacebook = new PlayerFacebook(resp);
 			
 			if (playerFacebook == null || playerFacebook.getId() == null) {
