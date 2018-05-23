@@ -40,6 +40,7 @@ public class PromoController extends BaseController {
 	
 	public static final String URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR = "promos/phaseContentAcousticGuitar";
 	public static final String URL_PROMOS_PHASECONTENT_RECORDER = "promos/phaseContentRecorder";
+	public static final String URL_PROMOS_PHASECONTENT_MUSIC_THEORY = "promos/phaseContentMusicalTheory";
 	public static final String REDIRECT_HOME = "redirect:/";
 
 	/**
@@ -58,16 +59,24 @@ public class PromoController extends BaseController {
 			@PathVariable("gameName") String gameName
 			) {
 		
-		// http://www.polifono.com/promos/acoustic_guitar/1/1/1
+		// http://www.polifono.com/promos/acoustic_guitar
+		// http://www.polifono.com/promos/recorder
+		// http://www.polifono.com/promos/musical_theory
 		
 		Integer levelOrder = 1;
 		Integer mapOrder = 1;
 		Integer phaseOrder = 1;
+		String gameNameParam = gameName;
 		
 		model.addAttribute("player", new Player());
 		model.addAttribute("playerResend", new Player());
 		
-		Game game = gameService.findByNamelink(gameName);
+		// workaround - if it's trying to see the musical_theory course, it's showed the recorder course.
+		if ("musical_theory".equals(gameName)) {
+			gameNameParam = "recorder";
+		}
+		
+		Game game = gameService.findByNamelink(gameNameParam);
 		
 		// If the game doesn't exist.
 		if (game == null) return REDIRECT_HOME;
@@ -93,11 +102,15 @@ public class PromoController extends BaseController {
 		model.addAttribute("phase", phase);
 		model.addAttribute("content", content);
 		
-		//violão
+		// acoustic_guitar
 		if (game.getId() == 2) {
 			return URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR;
 		}
-		//flauta
+		// musical_theory
+		else if ("musical_theory".equals(gameName)) {
+			return URL_PROMOS_PHASECONTENT_MUSIC_THEORY;
+		}
+		// recorder
 		else {
 			return URL_PROMOS_PHASECONTENT_RECORDER;
 		}

@@ -1,51 +1,214 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutPromo">
 
-<head></head>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+
+	<meta name="author" content="Polifono.com" />
+   	<link rel="icon" th:href="@{/static/img/favicon.ico}" sizes="16x16" />
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<meta name="robots" content="index, follow" />
+	<meta property="og:site_name" content="Polifono.com" />	
+    <meta property="og:locale" content="pt_BR" />
+	
+	<title>Aprenda a tocar viol&#xE3;o hoje!</title>
+    <meta name="description" content="Curso para quem procura aprender a tocar violão de maneira fácil, evoluindo passo a passo até dominar todo o instrumento." />
+    <meta name="keywords" content="como tocar violão, aula de violão, aulas de violão, aula de violão para iniciantes, aprendendo a tocar violão, como aprender a tocar violão sozinho, notas de violão, como tocar violão pela primeira vez, vídeo aula de violão, apostila de violão, curso completo de violão" />
+    <meta property="og:url" content="https://www.polifono.com/promos/acoustic_guitar" />
+    <meta property="og:title" content="Aprenda a tocar violão hoje!" />
+    <meta property="og:description" content="Curso para quem procura aprender a tocar violão de maneira fácil, evoluindo passo a passo até dominar todo o instrumento." />
+    <!--<meta property="og:image" content="https://www.polifono.com/image.jpg" />-->
+	<meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@polifonooficial"/>
+    <meta name="twitter:title" content="Aprenda a tocar violão hoje!" />
+    <meta name="twitter:description" content="Curso para quem procura aprender a tocar violão de maneira fácil, evoluindo passo a passo até dominar todo o instrumento." />
+    <!--<meta name="twitter:image:src" content="https://www.polifono.com/image.jpg" />-->
+    <meta itemprop="name" content="Aprenda a tocar violão hoje!" />
+    <meta itemprop="description" content="Curso para quem procura aprender a tocar violão de maneira fácil, evoluindo passo a passo até dominar todo o instrumento." />
+    <!--<meta itemprop="image" content="https://www.polifono.com/image.jpg" />-->
+    <meta itemprop="url" content="https://www.polifono.com/promos/acoustic_guitar" />
+	
+	<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" />
+	<link rel="stylesheet" type="text/css" media="all" th:href="@{/static/css/promos.css}" />
+	<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+	<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/beeker/bioep.min.js}"></script>
+	
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+		ga('create','UA-91913532-1','auto');
+		ga('send','pageview');
+	</script>
+	
+	<script type="text/javascript">
+	    bioEp.init({
+	        html: '<div id="bio_ep_content">' +
+	                '<span id="txt01">Você ganhou um presente!</span>' +
+	                '<span id="txt02">Se cadastre agora pelo Facebook e comece o curso sem pagar nada!!! Corre que a promoção logo vai acabar...</span>' +
+	                '<br />' +
+	                '<div class="social-login text-center">' +                        
+                    	'<ul class="list-unstyled social-login">' +
+                        	'<li><fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></fb:login-button></li>' +
+                    	'</ul>' +
+                	'</div>' +
+                	'<h2 class="title">ou Cadastre-se</h2>' +
+            		'<div style="margin-left:10px;margin-right:10px">' +
+            			'<form class="login-form" th:object="${player}" th:action="@{/player/create}" action="#" method="post">' +
+            				'<div class="form-group">' +
+               					'<input type="text" th:field="*{name}" class="form-control" required="true" th:placeholder="#{app.full_name}" />' +
+             				'</div>' +
+             				'<div class="form-group">' +
+               					'<input type="email" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" />' +
+             				'</div>' +
+             				'<div class="form-group">' +
+               					'<input type="password" th:field="*{password}" th:id="create_password" class="form-control" required="true" th:placeholder="#{app.password}" data-toggle="tooltip" th:title="#{msg.rule.password}" />' +
+             				'</div>' +
+             				'<div class="form-group">' +
+            					'<button type="submit" class="btn btn-warning btn-lg botao-inscreva-se">Cadastrar</button>' +
+            				'</div>' +
+            			'</form>' +
+            		'</div>' +
+	              '</div>',
+	        css:  '#bio_ep{width:400px;height:450px;color:#fff;background-color:#1a344d;text-align:center}' +
+	              '#bio_ep_content{padding:24px 0 0 0;font-family:"Titillium Web"}' +
+	              '#txt01{display:block;color:#fff;font-size:32px;font-weight:600}' +
+	              '#txt02{display:block;font-size:16px}',
+	        fonts: ['//fonts.googleapis.com/css?family=Titillium+Web:300,400,600'],
+	        cookieExp: 0
+	    });
+	</script>
+
+</head>
 
 <body>
 
-	<div layout:fragment="content">
-	
+<div id="fb-root"></div>
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	function statusChangeCallback(response){if(response.status==='connected'){window.location="/loginfb?code="+response.authResponse.accessToken;}}
+  	function checkLoginState(){FB.getLoginStatus(function(response){statusChangeCallback(response);});}
+  	window.fbAsyncInit=function(){FB.init({appId:'324370751419847',cookie:true,xfbml:true,version:'v2.8'});};
+  	(function(d,s,id){
+    var js,fjs=d.getElementsByTagName(s)[0];
+    if(d.getElementById(id)) return;
+    js=d.createElement(s);js.id=id;
+    js.src="https://connect.facebook.net/pt_BR/sdk.js";
+    fjs.parentNode.insertBefore(js,fjs);
+  	}(document,'script','facebook-jssdk'));
+	/*]]>*/
+</script>
+
+<div class="fb-customerchat" attribution="setup_tool" page_id="243859729372740" logged_in_greeting="Olá! Se tiver alguma dúvida, estamos aqui!" logged_out_greeting="Olá! Se tiver alguma dúvida, estamos aqui!"></div>
+
+<div class="jumbotron" style="padding-top:0px;padding-bottom:0px;margin-bottom:30px;background-color:#51a746;color:#fff">
+    <div class="container text-center">
+        <h2>Aprenda a tocar viol&#xE3;o hoje mesmo!</h2>
+    </div>
+</div>
+
+<div class="jumbotron" style="padding-top:0px;padding-bottom:0px;margin-bottom:20px;background-color:#fff;">
+    <div class="container">
+        <div class="row featurette">
+            <div class="col-md-6">
+                <h2 class="featurette-heading" style="padding-top:0px;margin-top:0px;"><i class="material-icons" style="font-size:25px">grain</i> Se voc&#xEA; procurava um curso de viol&#xE3;o pr&#xE1;tico e que vai direto ao ponto, voc&#xEA; acaba de encontrar!</h2>
+                <p style="font-size:20px;color:#51a746"><i class="material-icons" style="font-size:25px;color:green">done</i> Do b&#xE1;sico ao avan&#xE7;ado!</p>
+                <p style="font-size:20px;color:#51a746"><i class="material-icons" style="font-size:25px;color:green">done</i> Curso com certificado!</p>
+                <p style="font-size:20px;color:#51a746"><i class="material-icons" style="font-size:25px;color:green">done</i> Professor para tirar d&uacute;vidas!</p>
+                <p style="font-size:20px;color:#51a746"><i class="material-icons" style="font-size:25px;color:green">done</i> Cadastro gratuito!</p>
+            </div>
+            <div class="col-md-6">
+                <div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://player.vimeo.com/video/199858396?autoplay=1&amp;loop=0&amp;autopause=0" width="300" height="150" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+                <br /><br />
+                <p class="text-center"><a class="btn btn-warning btn-lg botao-inscreva-se" href="#register">Inscreva-se agora</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="jumbotron" style="padding-top:10px;padding-bottom:0px;margin-bottom:0px;background-color:#51a746;color:#fff">
+    <div class="container">
+        <p class="site-heading" style="font-size:21px;"><i class="material-icons" style="font-size:20px">grain</i> Veja a seguir a primeira aula do curso. Nessa aula, voc&#xEA; vai aprender a sua primeira m&#xFA;sica! Se gostar do curso (e n&#xF3;s sabemos que voc&#xEA; gostar!), fa&#xE7;a seu cadastro rapidinho para ver todas as 30 aulas. Não perca tempo e bons estudos! </p>
+    </div>
+</div>
+
+<div class="jumbotron" style="padding-top:20px;padding-bottom:0px;margin-bottom:20px">
+
+	<div class="container">
+		
 		<style>
 		.embed-container{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;}
 		.embed-container iframe, .embed-container object, .embed-container embed{position:absolute;top:0;left:0;width:100%;height:100%;}
 		</style>
-	
+		
     	<div class="col-sm-12 bg">
-      		<div class="row">
-      			<ol class="breadcrumb">
-					<li>
-						<label style="font-weight:bold;">Curso de viola&#771;o com 30 aulas completas para quem quer aprender a tocar hoje mesmo!</label>
-						<br />
-						Clique <a th:href="@{/}">aqui</a> para se cadastrar. N&#227;o perca tempo!
-						<br />
-						Ou se cadastre com sua conta do Facebook:
-						<br /><br />
-						<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></fb:login-button>
-					</li>
-				</ol>
-      		</div>
       		<div class="row">
 				<div class="panel panel-primary">
 					<div class="panel-heading" th:text="${phase.name}"></div>
 					<div class="panel-body" th:utext="${content.content}"></div>
 				</div>
 			</div>
-			<div class="row">
-      			<ol class="breadcrumb">
-					<li>
-						<label style="font-weight:bold;">Clique <a th:href="@{/}">aqui</a> para se cadastrar e ver todas as 30 aulas!</label>
-						<br />
-						Ou se cadastre com sua conta do Facebook:
-						<br /><br />
-						<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></fb:login-button>
-					</li>
-				</ol>
-				<br /><br />
-      		</div>
     	</div>
-
+		
 	</div>
+</div>
+
+<div id="register" class="jumbotron" style="padding-top:0px;padding-bottom:20px;margin-bottom:0px;background-color:#fff">
+    <div class="container">
+        
+		<p style="font-size:20px;color:#51a746"><i class="material-icons" style="font-size:25px;color:green">done</i> Cadastre-se com apenas um clique usando sua conta do Facebook:</p>
+		
+		<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></fb:login-button>
+		
+		<hr />
+		
+		<p style="font-size:20px;color:#51a746"><i class="material-icons" style="font-size:25px;color:green">done</i> Caso n&#xE3;o tenha Facebook, voc&#xEA; pode fazer o cadastro normal:</p>
+
+		<h2 class="title">Cadastre-se</h2>
+		
+		<div class="login-form-container">
+			
+			<form class="login-form" th:object="${player}" th:action="@{/player/create}" action="#" method="post">
+				<div class="form-group">
+   					<input type="text" th:field="*{name}" class="form-control" required="true" th:placeholder="#{app.full_name}" />
+ 				</div>
+ 				<div class="form-group">
+   					<input type="email" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" />
+ 				</div>
+ 				<div class="form-group">
+   					<input type="password" th:field="*{password}" th:id="create_password" class="form-control" required="true" th:placeholder="#{app.password}" data-toggle="tooltip" th:title="#{msg.rule.password}" />
+ 				</div>
+ 				<div class="checkbox">
+					<label><input type="checkbox" value="1" id="create_show_password" />Mostrar senha</label>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-warning btn-lg botao-inscreva-se">Cadastrar</button>
+				</div>
+			</form>
+		</div>
+
+    </div>
+</div>
+
+<div class="jumbotron" style="padding-top:30px;padding-bottom:30px;margin-bottom:0px;background-color:#51a746;color:#fff">
+    <div class="container">
+        
+    </div>
+</div>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+	$('#create_show_password').click(function(){if($('#create_show_password').prop('checked')){$('#create_password').attr('type','text');}else{$('#create_password').attr('type','password');}});
+	$(function(){$('[data-toggle="tooltip"]').tooltip()})
+	$(function(){$('[data-toggle="popover"]').popover()})
+/*]]>*/
+</script>
+
 </body>
 </html>
