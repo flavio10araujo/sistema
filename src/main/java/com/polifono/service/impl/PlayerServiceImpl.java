@@ -19,7 +19,7 @@ import com.polifono.domain.Game;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerGame;
-import com.polifono.domain.Role;
+import com.polifono.domain.enums.Role;
 import com.polifono.repository.IPlayerRepository;
 import com.polifono.service.IPlayerGameService;
 import com.polifono.service.IPlayerService;

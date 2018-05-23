@@ -19,6 +19,7 @@ import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.polifono.domain.enums.Role;
 import com.polifono.util.DateUtil;
 import com.polifono.util.MD5Util;
 

@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.polifono.controller.BaseController;
-import com.polifono.domain.Combo;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Question;
+import com.polifono.domain.bean.Combo;
 import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IQuestionService;

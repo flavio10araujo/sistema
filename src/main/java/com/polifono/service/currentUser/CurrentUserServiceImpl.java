@@ -1,7 +1,8 @@
 package com.polifono.service.currentUser;
 
-import com.polifono.domain.CurrentUser;
-import com.polifono.domain.Role;
+import com.polifono.domain.bean.CurrentUser;
+import com.polifono.domain.enums.Role;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

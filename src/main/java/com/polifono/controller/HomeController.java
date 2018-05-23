@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.polifono.domain.CurrentUser;
 import com.polifono.domain.Player;
+import com.polifono.domain.bean.CurrentUser;
 import com.polifono.util.EmailSendUtil;
 import com.polifono.util.EmailUtil;
 

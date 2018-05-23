@@ -13,9 +13,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.polifono.domain.CurrentUser;
 import com.polifono.domain.Player;
-import com.polifono.domain.Role;
+import com.polifono.domain.bean.CurrentUser;
+import com.polifono.domain.enums.Role;
 import com.polifono.repository.IPlayerRepository;
 import com.polifono.service.IPlayerGameService;
 import com.polifono.service.IPlayerService;

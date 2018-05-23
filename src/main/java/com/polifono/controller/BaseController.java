@@ -10,8 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.polifono.domain.CurrentUser;
 import com.polifono.domain.Player;
+import com.polifono.domain.bean.CurrentUser;
 
 public abstract class BaseController {
 

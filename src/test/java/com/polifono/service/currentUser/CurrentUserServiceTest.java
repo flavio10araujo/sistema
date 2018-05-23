@@ -7,9 +7,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.polifono.AbstractTest;
-import com.polifono.domain.CurrentUser;
 import com.polifono.domain.Player;
-import com.polifono.domain.Role;
+import com.polifono.domain.bean.CurrentUser;
+import com.polifono.domain.enums.Role;
 
 /**
  * Unit test methods for the CurrentUserServiceImpl.

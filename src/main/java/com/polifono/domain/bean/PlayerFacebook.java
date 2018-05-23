@@ -1,4 +1,4 @@
-package com.polifono.domain;
+package com.polifono.domain.bean;
 
 import org.json.JSONObject;
 

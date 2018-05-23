@@ -1,6 +1,6 @@
 package com.polifono.service.currentUser;
 
-import com.polifono.domain.CurrentUser;
+import com.polifono.domain.bean.CurrentUser;
 
 public interface ICurrentUserService {
 

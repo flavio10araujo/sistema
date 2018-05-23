@@ -22,7 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
-import com.polifono.domain.PlayerFacebook;
+import com.polifono.domain.bean.PlayerFacebook;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.impl.LoginServiceImpl;
