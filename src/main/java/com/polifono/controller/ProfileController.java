@@ -102,7 +102,7 @@ public class ProfileController extends BaseController {
 			phases = new ArrayList<Phase>();
 		}
 		
-		List<PlayerPhase> playerPhases = playerPhaseService.findPlayerPhasesByPlayer(player.getId());
+		List<PlayerPhase> playerPhases = playerPhaseService.findByPlayer(player.getId());
 		
 		if (playerPhases == null) {
 			playerPhases = new ArrayList<PlayerPhase>();
@@ -147,7 +147,7 @@ public class ProfileController extends BaseController {
 			}
 		}
 		
-		List<PlayerPhase> playerPhases = playerPhaseService.findPlayerPhasesByPlayer(player.getId());
+		List<PlayerPhase> playerPhases = playerPhaseService.findByPlayer(player.getId());
 		List<Game> playerPhasesGames = new ArrayList<Game>();
 		
 		if (playerPhases == null) {

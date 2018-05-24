@@ -21,17 +21,17 @@ public interface IClassPlayerService {
 	
 	public ClassPlayer prepareClassPlayerToChangeStatus(ClassPlayer classPlayer, int status);
 	
-	public List<ClassPlayer> findClassPlayersByTeacher(int playerId);
+	public List<ClassPlayer> findByTeacher(int playerId);
 	
-	public List<ClassPlayer> findClassPlayersByTeacherAndClass(int playerId, int clazzId);
+	public List<ClassPlayer> findByTeacherAndClass(int playerId, int clazzId);
 	
-	public List<ClassPlayer> findClassPlayersByClassAndStatus(int clazzId, int status);
+	public List<ClassPlayer> findByClassAndStatus(int clazzId, int status);
 	
-	public List<ClassPlayer> findClassPlayersByClassAndPlayer(int clazzId, int playerId);
+	public List<ClassPlayer> findByClassAndPlayer(int clazzId, int playerId);
 	
-	public List<ClassPlayer> findClassPlayersByPlayerAndStatus(int playerId, int status);
+	public List<ClassPlayer> findByPlayerAndStatus(int playerId, int status);
 	
-	public List<ClassPlayer> findClassPlayersByTeacherAndStudent(int teacherId, int studentId);
+	public List<ClassPlayer> findByTeacherAndStudent(int teacherId, int studentId);
 
 	public boolean isMyStudent(Player user, Player player);
 

@@ -48,24 +48,24 @@ public class QuestionServiceImpl implements IQuestionService {
 		return (List<Question>) repository.findAll();
 	}
 	
-	public final List<Question> findQuestionsByGame(int gameId) {
-		return repository.findQuestionsByGame(gameId);
+	public final List<Question> findByGame(int gameId) {
+		return repository.findByGame(gameId);
 	}
 	
-	public final List<Question> findQuestionsByGameAndLevel(int gameId, int levelId) {
-		return repository.findQuestionsByGameAndLevel(gameId, levelId);
+	public final List<Question> findByGameAndLevel(int gameId, int levelId) {
+		return repository.findByGameAndLevel(gameId, levelId);
 	}
 	
-	public final List<Question> findQuestionsByMap(int mapId) {
-		return repository.findQuestionsByMap(mapId);
+	public final List<Question> findByMap(int mapId) {
+		return repository.findByMap(mapId);
 	}
 	
-	public final List<Question> findQuestionsByPhase(int phaseId) {
-		return repository.findQuestionsByPhase(phaseId);
+	public final List<Question> findByPhase(int phaseId) {
+		return repository.findByPhase(phaseId);
 	}
 	
-	public final List<Question> findQuestionsByContent(int contentId) {
-		List<Question> question = repository.findQuestionsByContent(contentId);
+	public final List<Question> findByContent(int contentId) {
+		List<Question> question = repository.findByContent(contentId);
 		return question;
 	}
 }

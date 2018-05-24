@@ -2,27 +2,27 @@ package com.polifono.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.polifono.domain.Question;
 
-public interface IQuestionRepository extends CrudRepository<Question, Integer> {
+public interface IQuestionRepository extends JpaRepository<Question, Integer> {
 
 	@Query("SELECT question FROM Question question, Content content, Phase phase, Map map WHERE question.content.id = content.id AND content.phase.id = phase.id AND phase.map.id = map.id AND content.contenttype.id = 1 AND map.game.id = :gameId")
-	public List<Question> findQuestionsByGame(@Param("gameId") int gameId);
+	public List<Question> findByGame(@Param("gameId") int gameId);
 	
 	@Query("SELECT question FROM Question question, Content content, Phase phase, Map map WHERE question.content.id = content.id AND content.phase.id = phase.id AND phase.map.id = map.id AND content.contenttype.id = 1 AND map.game.id = :gameId AND map.level.id = :levelId")
-	public List<Question> findQuestionsByGameAndLevel(@Param("gameId") int gameId, @Param("levelId") int levelId);
+	public List<Question> findByGameAndLevel(@Param("gameId") int gameId, @Param("levelId") int levelId);
 	
 	@Query("SELECT question FROM Question question, Content content, Phase phase, Map map WHERE question.content.id = content.id AND content.phase.id = phase.id AND phase.map.id = map.id AND content.contenttype.id = 1 AND map.id = :mapId")
-	public List<Question> findQuestionsByMap(@Param("mapId") int mapId);
+	public List<Question> findByMap(@Param("mapId") int mapId);
 	
 	@Query("SELECT question FROM Question question, Content content, Phase phase WHERE question.content.id = content.id AND content.phase.id = phase.id AND content.contenttype.id = 1 AND phase.id = :phaseId")
-	public List<Question> findQuestionsByPhase(@Param("phaseId") int phaseId);
+	public List<Question> findByPhase(@Param("phaseId") int phaseId);
 	
 	@Query("SELECT question FROM Question question WHERE question.content.id = :contentId")
-	public List<Question> findQuestionsByContent(@Param("contentId") int contentId);
+	public List<Question> findByContent(@Param("contentId") int contentId);
 
 }

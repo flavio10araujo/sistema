@@ -50,8 +50,8 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 		return repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId);
 	}
 	
-	public final List<PlayerPhase> findPlayerPhasesByPlayer(int playerId) {
-		List<PlayerPhase> list = repository.findPlayerPhasesByPlayer(playerId); 
+	public final List<PlayerPhase> findByPlayer(int playerId) {
+		List<PlayerPhase> list = repository.findByPlayer(playerId); 
 		
 		if (list == null || list.size() == 0) {
 			return null;

@@ -337,7 +337,7 @@ public class PlayerController extends BaseController {
 	@RequestMapping(value = {"/classinvitation"}, method = RequestMethod.GET)
 	public final String classinvitation(final Model model) {
 		// Get all the invitation to classes that the student hasn't confirmed his participation yet.
-		List<ClassPlayer> classPlayers = classPlayerService.findClassPlayersByPlayerAndStatus(currentAuthenticatedUser().getUser().getId(), 1);
+		List<ClassPlayer> classPlayers = classPlayerService.findByPlayerAndStatus(currentAuthenticatedUser().getUser().getId(), 1);
 		model.addAttribute("classPlayers", classPlayers);
 		return URL_CLASSINVITATION;
 	}

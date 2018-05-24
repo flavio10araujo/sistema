@@ -199,52 +199,52 @@ public class ClassServiceTest extends AbstractTest {
     }
     /* prepareClassForChangingStatus - end */
     
-    /* findClassesByTeacherAndStatus - begin */
+    /* findByTeacherAndStatus - begin */
     @Test
-    public void findClassesByTeacherAndStatus_WhenSearchByTeacherAndStatusExistents_ReturnList() {
+    public void findByTeacherAndStatus_WhenSearchByTeacherAndStatusExistents_ReturnList() {
     	List<com.polifono.domain.Class> list = getEntityListStubData();
     	
-    	when(repository.findClassesByTeacherAndStatus(TEACHER_ID_EXISTENT, true)).thenReturn(list);
+    	when(repository.findByTeacherAndStatus(TEACHER_ID_EXISTENT, true)).thenReturn(list);
     	
-    	List<com.polifono.domain.Class> listReturned = service.findClassesByTeacherAndStatus(TEACHER_ID_EXISTENT, true);
+    	List<com.polifono.domain.Class> listReturned = service.findByTeacherAndStatus(TEACHER_ID_EXISTENT, true);
         Assert.assertNotNull("failure - not expected null", listReturned);
         Assert.assertNotEquals("failure - list size not expected 0", 0, listReturned.size());
         
-        verify(repository, times(1)).findClassesByTeacherAndStatus(TEACHER_ID_EXISTENT, true);
+        verify(repository, times(1)).findByTeacherAndStatus(TEACHER_ID_EXISTENT, true);
         verifyNoMoreInteractions(repository);
     }
 
     @Test
-    public void findClassesByTeacherAndStatus_WhenSearchByTeacherAndStatusInexistents_ReturnEmptyList() {
-    	when(repository.findClassesByTeacherAndStatus(TEACHER_ID_INEXISTENT, false)).thenReturn(new ArrayList<com.polifono.domain.Class>());
+    public void findByTeacherAndStatus_WhenSearchByTeacherAndStatusInexistents_ReturnEmptyList() {
+    	when(repository.findByTeacherAndStatus(TEACHER_ID_INEXISTENT, false)).thenReturn(new ArrayList<com.polifono.domain.Class>());
     	
-    	List<com.polifono.domain.Class> listReturned = service.findClassesByTeacherAndStatus(TEACHER_ID_INEXISTENT, false);
+    	List<com.polifono.domain.Class> listReturned = service.findByTeacherAndStatus(TEACHER_ID_INEXISTENT, false);
     	Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
     	
-    	verify(repository, times(1)).findClassesByTeacherAndStatus(TEACHER_ID_INEXISTENT, false);
+    	verify(repository, times(1)).findByTeacherAndStatus(TEACHER_ID_INEXISTENT, false);
         verifyNoMoreInteractions(repository);
     }
     
     @Test
-    public void findClassesByTeacherAndStatus_WhenSearchByTeacherExistentButStatusInexistent_ReturnEmptyList() {
-    	when(repository.findClassesByTeacherAndStatus(TEACHER_ID_EXISTENT, false)).thenReturn(new ArrayList<com.polifono.domain.Class>());
+    public void findByTeacherAndStatus_WhenSearchByTeacherExistentButStatusInexistent_ReturnEmptyList() {
+    	when(repository.findByTeacherAndStatus(TEACHER_ID_EXISTENT, false)).thenReturn(new ArrayList<com.polifono.domain.Class>());
     	
-    	List<com.polifono.domain.Class> listReturned = service.findClassesByTeacherAndStatus(TEACHER_ID_EXISTENT, false);
+    	List<com.polifono.domain.Class> listReturned = service.findByTeacherAndStatus(TEACHER_ID_EXISTENT, false);
     	Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
     	
-    	verify(repository, times(1)).findClassesByTeacherAndStatus(TEACHER_ID_EXISTENT, false);
+    	verify(repository, times(1)).findByTeacherAndStatus(TEACHER_ID_EXISTENT, false);
         verifyNoMoreInteractions(repository);
     }
     
     @Test
-    public void findClassesByTeacherAndStatus_WhenSearchStatusExistentButTeacherInexistent_ReturnEmptyList() {
-    	when(repository.findClassesByTeacherAndStatus(TEACHER_ID_INEXISTENT, true)).thenReturn(new ArrayList<com.polifono.domain.Class>());
+    public void findByTeacherAndStatus_WhenSearchStatusExistentButTeacherInexistent_ReturnEmptyList() {
+    	when(repository.findByTeacherAndStatus(TEACHER_ID_INEXISTENT, true)).thenReturn(new ArrayList<com.polifono.domain.Class>());
     	
-    	List<com.polifono.domain.Class> listReturned = service.findClassesByTeacherAndStatus(TEACHER_ID_INEXISTENT, true);
+    	List<com.polifono.domain.Class> listReturned = service.findByTeacherAndStatus(TEACHER_ID_INEXISTENT, true);
     	Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
     	
-    	verify(repository, times(1)).findClassesByTeacherAndStatus(TEACHER_ID_INEXISTENT, true);
+    	verify(repository, times(1)).findByTeacherAndStatus(TEACHER_ID_INEXISTENT, true);
         verifyNoMoreInteractions(repository);
     }
-    /* findClassesByTeacherAndStatus - end */
+    /* findByTeacherAndStatus - end */
 }

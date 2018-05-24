@@ -173,9 +173,9 @@ public class PhaseServiceTest extends AbstractTest {
     	int gameId = GAME_ID_EXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
     	listReturned.add(new Phase());
-    	when(repository.findPhasesByGame(gameId)).thenReturn(listReturned);
+    	when(repository.findByGame(gameId)).thenReturn(listReturned);
     	
-    	List<Phase> list = service.findPhasesByGame(GAME_ID_EXISTENT);
+    	List<Phase> list = service.findByGame(GAME_ID_EXISTENT);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
@@ -184,86 +184,86 @@ public class PhaseServiceTest extends AbstractTest {
     public void findPhasesByGame_WhenSearchByGameInexistent_ReturnEmptyList() {
     	int gameId = GAME_ID_INEXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
-    	when(repository.findPhasesByGame(gameId)).thenReturn(listReturned);
+    	when(repository.findByGame(gameId)).thenReturn(listReturned);
     	
-    	List<Phase> list = service.findPhasesByGame(GAME_ID_INEXISTENT);
+    	List<Phase> list = service.findByGame(GAME_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     /* findPhasesByGame - end */
     
-    /* findPhasesByGameAndLevel - begin */
+    /* findByGameAndLevel - begin */
     @Test
-    public void findPhasesByGameAndLevel_WhenSearchByGameAndLevelExistents_ReturnList() {
+    public void findByGameAndLevel_WhenSearchByGameAndLevelExistents_ReturnList() {
     	int gameId = GAME_ID_EXISTENT, levelId = LEVEL_ID_EXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
     	listReturned.add(new Phase());
-    	when(repository.findPhasesByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
+    	when(repository.findByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
     	
-    	List<Phase> list = service.findPhasesByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
+    	List<Phase> list = service.findByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
-    public void findPhasesByGameAndLevel_WhenSearchByGameAndLevelInexistents_ReturnEmptyList() {
+    public void findByGameAndLevel_WhenSearchByGameAndLevelInexistents_ReturnEmptyList() {
     	int gameId = GAME_ID_INEXISTENT, levelId = LEVEL_ID_INEXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
-    	when(repository.findPhasesByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
+    	when(repository.findByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
     	
-    	List<Phase> list = service.findPhasesByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT);
+    	List<Phase> list = service.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findPhasesByGameAndLevel_WhenSearchByGameExistentButLevelInexistent_ReturnEmptyList() {
+    public void findByGameAndLevel_WhenSearchByGameExistentButLevelInexistent_ReturnEmptyList() {
     	int gameId = GAME_ID_EXISTENT, levelId = LEVEL_ID_INEXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
-    	when(repository.findPhasesByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
+    	when(repository.findByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
     	
-    	List<Phase> list = service.findPhasesByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT);
+    	List<Phase> list = service.findByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
     
     @Test
-    public void findPhasesByGameAndLevel_WhenSearchByLevelExistentButGameInexistent_ReturnEmptyList() {
+    public void findByGameAndLevel_WhenSearchByLevelExistentButGameInexistent_ReturnEmptyList() {
     	int gameId = GAME_ID_INEXISTENT, levelId = LEVEL_ID_EXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
-    	when(repository.findPhasesByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
+    	when(repository.findByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
     	
-    	List<Phase> list = service.findPhasesByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT);
+    	List<Phase> list = service.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
-    /* findPhasesByGameAndLevel - end */
+    /* findByGameAndLevel - end */
     
-    /* findPhasesByMap - begin */
+    /* findByMap - begin */
     @Test
-    public void findPhasesByMap_WhenSearchByMapExistent_ReturnList() {
+    public void findByMap_WhenSearchByMapExistent_ReturnList() {
     	int mapId = MAP_ID_EXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
     	listReturned.add(new Phase());
-    	when(repository.findPhasesByMap(mapId)).thenReturn(listReturned);
+    	when(repository.findByMap(mapId)).thenReturn(listReturned);
     	
-    	List<Phase> list = service.findPhasesByMap(MAP_ID_EXISTENT);
+    	List<Phase> list = service.findByMap(MAP_ID_EXISTENT);
         Assert.assertNotNull("failure - not expected null", list);
         Assert.assertNotEquals("failure - list size not expected 0", 0, list.size());
     }
 
     @Test
-    public void findPhasesByMap_WhenSearchByMapInexistent_ReturnEmptyList() {
+    public void findByMap_WhenSearchByMapInexistent_ReturnEmptyList() {
     	int mapId = MAP_ID_INEXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
-    	when(repository.findPhasesByMap(mapId)).thenReturn(listReturned);
+    	when(repository.findByMap(mapId)).thenReturn(listReturned);
     	
-    	List<Phase> list = service.findPhasesByMap(MAP_ID_INEXISTENT);
+    	List<Phase> list = service.findByMap(MAP_ID_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, list.size());
     }
-    /* findPhasesByMap - end */
+    /* findByMap - end */
     
     /* findPhasesCheckedByMap - begin */
     @Test
     public void findPhasesCheckedByMap_WhenThereAreNotPhasesInTheMap_ReturnNull() {
     	int mapId = MAP_ID_EXISTENT; 
-    	when(repository.findPhasesByMap(mapId)).thenReturn(null);
+    	when(repository.findByMap(mapId)).thenReturn(null);
     	
     	Map map = new Map();
     	map.setId(MAP_ID_EXISTENT);
@@ -279,7 +279,7 @@ public class PhaseServiceTest extends AbstractTest {
     	int mapId = MAP_ID_EXISTENT;
     	List<Phase> listReturned = new ArrayList<Phase>();
     	listReturned.add(new Phase());
-    	when(repository.findPhasesByMap(mapId)).thenReturn(listReturned);
+    	when(repository.findByMap(mapId)).thenReturn(listReturned);
     	
     	Map map = new Map();
     	map.setId(MAP_ID_EXISTENT);
@@ -307,7 +307,7 @@ public class PhaseServiceTest extends AbstractTest {
     	listReturned.add(p2);
     	listReturned.add(p3);
     	listReturned.add(p4);
-    	when(repository.findPhasesByMap(mapId)).thenReturn(listReturned);
+    	when(repository.findByMap(mapId)).thenReturn(listReturned);
     	
     	Map map = new Map();
     	map.setId(MAP_ID_EXISTENT);
@@ -331,7 +331,7 @@ public class PhaseServiceTest extends AbstractTest {
     public void findByMapAndOrder_WhenSearchByMapAndOrderExistents_ReturnList() {
     	int mapId = MAP_ID_EXISTENT, phaseOrder = ORDER_EXISTENT;
     	Phase entityReturned = new Phase();
-    	when(repository.findPhaseByMapAndOrder(mapId, phaseOrder)).thenReturn(entityReturned);
+    	when(repository.findByMapAndOrder(mapId, phaseOrder)).thenReturn(entityReturned);
     	
     	Phase entity = service.findByMapAndOrder(MAP_ID_EXISTENT, ORDER_EXISTENT);
     	Assert.assertNotNull("failure - expected not null", entity);
@@ -340,7 +340,7 @@ public class PhaseServiceTest extends AbstractTest {
     @Test
     public void findByMapAndOrder_WhenSearchByMapAndOrderInexistents_ReturnEmptyList() {
     	int mapId = MAP_ID_INEXISTENT, phaseOrder = ORDER_INEXISTENT;
-    	when(repository.findPhaseByMapAndOrder(mapId, phaseOrder)).thenReturn(null);
+    	when(repository.findByMapAndOrder(mapId, phaseOrder)).thenReturn(null);
     	
     	Phase entity = service.findByMapAndOrder(MAP_ID_INEXISTENT, ORDER_INEXISTENT);
     	Assert.assertNull("failure - expected null", entity);
@@ -358,9 +358,9 @@ public class PhaseServiceTest extends AbstractTest {
     	map.setId(3);
     	item.setMap(map);
     	listReturned.add(item);
-    	when(repository.findPhasesByMap(mapId)).thenReturn(listReturned);
+    	when(repository.findByMap(mapId)).thenReturn(listReturned);
     	
-    	List<Phase> list = service.findPhasesByMap(MAP_ID_EXISTENT);
+    	List<Phase> list = service.findByMap(MAP_ID_EXISTENT);
     	Phase firstPhase = list.get(0);
     	
     	int phaseOrder = (firstPhase.getOrder() + 1);
@@ -385,9 +385,9 @@ public class PhaseServiceTest extends AbstractTest {
     	map.setId(3);
     	item.setMap(map);
     	listReturned.add(item);
-    	when(repository.findPhasesByMap(mapId)).thenReturn(listReturned);
+    	when(repository.findByMap(mapId)).thenReturn(listReturned);
     	
-    	List<Phase> list = service.findPhasesByMap(MAP_ID_EXISTENT);
+    	List<Phase> list = service.findByMap(MAP_ID_EXISTENT);
     	
     	Phase firstPhase = list.get(list.size() - 1);
     	

@@ -75,7 +75,7 @@ public class ContentController extends BaseController {
 				
 				if (contentFilterForm.getMap().getId() > 0) {
 					// Filter.
-					model.addAttribute("phases", (ArrayList<Phase>) phaseService.findPhasesByMap(contentFilterForm.getMap().getId()));
+					model.addAttribute("phases", (ArrayList<Phase>) phaseService.findByMap(contentFilterForm.getMap().getId()));
 					
 					if (contentFilterForm.getPhase().getId() > 0) {
 						// List
@@ -88,7 +88,7 @@ public class ContentController extends BaseController {
 				}
 				else {
 					// Filter.
-					model.addAttribute("phases", (ArrayList<Phase>) phaseService.findPhasesByGameAndLevel(contentFilterForm.getGame().getId(), contentFilterForm.getLevel().getId()));
+					model.addAttribute("phases", (ArrayList<Phase>) phaseService.findByGameAndLevel(contentFilterForm.getGame().getId(), contentFilterForm.getLevel().getId()));
 					// List
 					model.addAttribute("contents", (ArrayList<Content>) contentService.findContentsTextByGameAndLevel(contentFilterForm.getGame().getId(), contentFilterForm.getLevel().getId()));
 				}
@@ -96,7 +96,7 @@ public class ContentController extends BaseController {
 			else {
 				// Filter.
 				//model.addAttribute("maps", (ArrayList<Map>) mapService.findMapsByGame(contentFilterForm.getGame().getId()));
-				model.addAttribute("phases", (ArrayList<Phase>) phaseService.findPhasesByGame(contentFilterForm.getGame().getId()));
+				model.addAttribute("phases", (ArrayList<Phase>) phaseService.findByGame(contentFilterForm.getGame().getId()));
 				// List
 				model.addAttribute("contents", (ArrayList<Content>) contentService.findContentsTextByGame(contentFilterForm.getGame().getId()));
 			}
@@ -134,7 +134,7 @@ public class ContentController extends BaseController {
 				
 				if (contentFilterForm.getMap().getId() > 0) {
 					// Filter.
-					model.addAttribute("phases", (ArrayList<Phase>) phaseService.findPhasesByMap(contentFilterForm.getMap().getId()));
+					model.addAttribute("phases", (ArrayList<Phase>) phaseService.findByMap(contentFilterForm.getMap().getId()));
 					
 					if (contentFilterForm.getPhase().getId() > 0) {
 						// List
@@ -147,14 +147,14 @@ public class ContentController extends BaseController {
 				}
 				else {
 					// Filter.
-					model.addAttribute("phases", (ArrayList<Phase>) phaseService.findPhasesByGameAndLevel(contentFilterForm.getGame().getId(), contentFilterForm.getLevel().getId()));
+					model.addAttribute("phases", (ArrayList<Phase>) phaseService.findByGameAndLevel(contentFilterForm.getGame().getId(), contentFilterForm.getLevel().getId()));
 					// List
 					model.addAttribute("contents", (ArrayList<Content>) contentService.findContentsTestByGameAndLevel(contentFilterForm.getGame().getId(), contentFilterForm.getLevel().getId()));
 				}
 			}
 			else {
 				// Filter.
-				model.addAttribute("phases", (ArrayList<Phase>) phaseService.findPhasesByGame(contentFilterForm.getGame().getId()));
+				model.addAttribute("phases", (ArrayList<Phase>) phaseService.findByGame(contentFilterForm.getGame().getId()));
 				// List
 				model.addAttribute("contents", (ArrayList<Content>) contentService.findContentsTestByGame(contentFilterForm.getGame().getId()));
 			}

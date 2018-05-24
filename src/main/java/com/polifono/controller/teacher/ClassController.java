@@ -38,7 +38,7 @@ public class ClassController extends BaseController {
 	@RequestMapping(value = {"/class", "/class/savepage"}, method = RequestMethod.GET)
 	public String savePage(HttpSession session, Model model) {
 		model.addAttribute("class", new com.polifono.domain.Class());
-		model.addAttribute("classes", (ArrayList<com.polifono.domain.Class>) classService.findClassesByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
+		model.addAttribute("classes", (ArrayList<com.polifono.domain.Class>) classService.findByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
 		
 		return URL_ADMIN_BASIC_INDEX;
 	}
@@ -90,7 +90,7 @@ public class ClassController extends BaseController {
 			newClass.setName(newClass.getName() + " CLONE");
 			newClass = classService.save(classService.prepareClassForCreation(newClass));
 			
-			List<ClassPlayer> students = classPlayerService.findClassPlayersByClassAndStatus(current.getId(), 2);
+			List<ClassPlayer> students = classPlayerService.findByClassAndStatus(current.getId(), 2);
 			
 			for (ClassPlayer student : students) {
 				ClassPlayer studentClone = new ClassPlayer();

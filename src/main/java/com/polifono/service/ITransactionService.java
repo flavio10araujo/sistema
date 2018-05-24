@@ -10,6 +10,6 @@ public interface ITransactionService {
 	
 	public Transaction findOne(int transactionId);
 	
-	public List<Transaction> findTransactionsByCode(String code);
+	public List<Transaction> findByCode(String code);
 
 }

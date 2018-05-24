@@ -65,18 +65,18 @@ public class PhaseController extends BaseController {
 				
 				if (phaseFilterForm.getMap().getId() > 0) {
 					// List
-					model.addAttribute("phases", (ArrayList<Phase>) phaseService.findPhasesByMap(phaseFilterForm.getMap().getId()));
+					model.addAttribute("phases", (ArrayList<Phase>) phaseService.findByMap(phaseFilterForm.getMap().getId()));
 				}
 				else {
 					// List
-					model.addAttribute("phases", (ArrayList<Phase>) phaseService.findPhasesByGameAndLevel(phaseFilterForm.getGame().getId(), phaseFilterForm.getLevel().getId()));
+					model.addAttribute("phases", (ArrayList<Phase>) phaseService.findByGameAndLevel(phaseFilterForm.getGame().getId(), phaseFilterForm.getLevel().getId()));
 				}
 			}
 			else {
 				// Filter
 				model.addAttribute("maps", (ArrayList<Map>) mapService.findMapsByGame(phaseFilterForm.getGame().getId()));
 				// List
-				model.addAttribute("phases", (ArrayList<Phase>) phaseService.findPhasesByGame(phaseFilterForm.getGame().getId()));
+				model.addAttribute("phases", (ArrayList<Phase>) phaseService.findByGame(phaseFilterForm.getGame().getId()));
 			}
 		}
 		else {

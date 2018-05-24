@@ -16,7 +16,7 @@ public interface IPlayerPhaseService {
 	
 	public PlayerPhase findByPlayerPhaseAndStatus(int playerId, int phaseId, int phasestatusId);
 	
-	public List<PlayerPhase> findPlayerPhasesByPlayer(int playerId);
+	public List<PlayerPhase> findByPlayer(int playerId);
 	
 	public List<PlayerPhase> findForReportGeneral(ReportGeneralForm reportGeneralForm, int playerId);
 

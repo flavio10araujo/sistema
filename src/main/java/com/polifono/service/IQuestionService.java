@@ -14,13 +14,13 @@ public interface IQuestionService {
 	
 	public List<Question> findAll();
 	
-	public List<Question> findQuestionsByGame(int gameId);
+	public List<Question> findByGame(int gameId);
 	
-	public List<Question> findQuestionsByGameAndLevel(int gameId, int levelId);
+	public List<Question> findByGameAndLevel(int gameId, int levelId);
 	
-	public List<Question> findQuestionsByMap(int mapId);
+	public List<Question> findByMap(int mapId);
 	
-	public List<Question> findQuestionsByPhase(int phaseId);
+	public List<Question> findByPhase(int phaseId);
 	
-	public List<Question> findQuestionsByContent(int contentId);
+	public List<Question> findByContent(int contentId);
 }

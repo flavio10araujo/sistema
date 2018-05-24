@@ -269,7 +269,7 @@ public class PlayerServiceTest extends AbstractTest {
     public void findByEmailAndStatus_WhenSearchByPlayerExistentAndByRightStatus_ReturnPlayer() {
     	Player entity = getEntityStubData();
     	
-    	when(repository.findByEmailAndStatus(PLAYER_EMAIL_EXISTENT, true)).thenReturn(entity);
+    	when(repository.findByEmailAndActive(PLAYER_EMAIL_EXISTENT, true)).thenReturn(entity);
     	
     	Player entityReturned = service.findByEmailAndStatus(PLAYER_EMAIL_EXISTENT, true);
         
@@ -285,29 +285,29 @@ public class PlayerServiceTest extends AbstractTest {
         Assert.assertNotNull("failure - expected indEmailConfirmed not null", entityReturned.isIndEmailConfirmed());
         Assert.assertNotNull("failure - expected sex not null", entityReturned.getSex());
         
-        verify(repository, times(1)).findByEmailAndStatus(PLAYER_EMAIL_EXISTENT, true);
+        verify(repository, times(1)).findByEmailAndActive(PLAYER_EMAIL_EXISTENT, true);
         verifyNoMoreInteractions(repository);
     }
     
     @Test
     public void findByEmailAndStatus_WhenSearchByPlayerExistentButByWrongStatus_ReturnNull() {
-    	when(repository.findByEmailAndStatus(PLAYER_EMAIL_EXISTENT, false)).thenReturn(null);
+    	when(repository.findByEmailAndActive(PLAYER_EMAIL_EXISTENT, false)).thenReturn(null);
     	
     	Player entityReturned = service.findByEmailAndStatus(PLAYER_EMAIL_EXISTENT, false);
         Assert.assertNull("failure - expected null", entityReturned);
         
-        verify(repository, times(1)).findByEmailAndStatus(PLAYER_EMAIL_EXISTENT, false);
+        verify(repository, times(1)).findByEmailAndActive(PLAYER_EMAIL_EXISTENT, false);
         verifyNoMoreInteractions(repository);
     }
     
     @Test
     public void findByEmailAndStatus_WhenSearchPlayerInexistent_ReturnNull() {
-    	when(repository.findByEmailAndStatus(PLAYER_EMAIL_INEXISTENT, true)).thenReturn(null);
+    	when(repository.findByEmailAndActive(PLAYER_EMAIL_INEXISTENT, true)).thenReturn(null);
     	
     	Player entityReturned = service.findByEmailAndStatus(PLAYER_EMAIL_INEXISTENT, true);
     	Assert.assertNull("failure - expected null", entityReturned);
     	
-    	verify(repository, times(1)).findByEmailAndStatus(PLAYER_EMAIL_INEXISTENT, true);
+    	verify(repository, times(1)).findByEmailAndActive(PLAYER_EMAIL_INEXISTENT, true);
         verifyNoMoreInteractions(repository);
     }
     /* findByEmailAndStatus - end */

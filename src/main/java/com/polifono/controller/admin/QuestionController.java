@@ -75,33 +75,33 @@ public class QuestionController extends BaseController {
 				
 				if (questionFilterForm.getMap().getId() > 0) {
 					// Filter.
-					model.addAttribute("phases", (ArrayList<Phase>) phaseService.findPhasesByMap(questionFilterForm.getMap().getId()));
+					model.addAttribute("phases", (ArrayList<Phase>) phaseService.findByMap(questionFilterForm.getMap().getId()));
 					
 					if (questionFilterForm.getPhase().getId() > 0) {
 						// Filter
 						model.addAttribute("contents", (ArrayList<Content>) contentService.findContentsTestByPhase(questionFilterForm.getPhase().getId()));
 						// List
-						model.addAttribute("questions", (ArrayList<Question>) questionService.findQuestionsByPhase(questionFilterForm.getPhase().getId()));
+						model.addAttribute("questions", (ArrayList<Question>) questionService.findByPhase(questionFilterForm.getPhase().getId()));
 					}
 					else {
 						// Filter
 						model.addAttribute("contents", (ArrayList<Content>) contentService.findContentsTestByMap(questionFilterForm.getMap().getId()));
 						// List
-						model.addAttribute("questions", (ArrayList<Question>) questionService.findQuestionsByMap(questionFilterForm.getMap().getId()));
+						model.addAttribute("questions", (ArrayList<Question>) questionService.findByMap(questionFilterForm.getMap().getId()));
 					}
 				}
 				else {
 					// Filter
 					model.addAttribute("contents", (ArrayList<Content>) contentService.findContentsTestByGameAndLevel(questionFilterForm.getGame().getId(), questionFilterForm.getLevel().getId()));
 					// List
-					model.addAttribute("questions", (ArrayList<Question>) questionService.findQuestionsByGameAndLevel(questionFilterForm.getGame().getId(), questionFilterForm.getLevel().getId()));
+					model.addAttribute("questions", (ArrayList<Question>) questionService.findByGameAndLevel(questionFilterForm.getGame().getId(), questionFilterForm.getLevel().getId()));
 				}
 			}
 			else {
 				// Filter
 				model.addAttribute("contents", (ArrayList<Content>) contentService.findContentsTestByGame(questionFilterForm.getGame().getId()));
 				// List
-				model.addAttribute("questions", (ArrayList<Question>) questionService.findQuestionsByGame(questionFilterForm.getGame().getId()));
+				model.addAttribute("questions", (ArrayList<Question>) questionService.findByGame(questionFilterForm.getGame().getId()));
 			}
 		}
 		else {

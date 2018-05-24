@@ -52,16 +52,16 @@ public class PhaseServiceImpl implements IPhaseService {
 		return (List<Phase>) repository.findAll();
 	}
 	
-	public final List<Phase> findPhasesByGame(int gameId) {
-		return repository.findPhasesByGame(gameId);
+	public final List<Phase> findByGame(int gameId) {
+		return repository.findByGame(gameId);
 	}
 	
-	public final List<Phase> findPhasesByGameAndLevel(int gameId, int levelId) {
-		return repository.findPhasesByGameAndLevel(gameId, levelId);
+	public final List<Phase> findByGameAndLevel(int gameId, int levelId) {
+		return repository.findByGameAndLevel(gameId, levelId);
 	}
 	
-	public final List<Phase> findPhasesByMap(int mapId) {
-		return repository.findPhasesByMap(mapId);
+	public final List<Phase> findByMap(int mapId) {
+		return repository.findByMap(mapId);
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class PhaseServiceImpl implements IPhaseService {
 	 * @return
 	 */
 	public final List<Phase> findPhasesCheckedByMap(Map map, PlayerPhase lastPhaseCompleted) {
-		List<Phase> phases = this.findPhasesByMap(map.getId());
+		List<Phase> phases = this.findByMap(map.getId());
 		
 		// If there are not phases in the map.
 		if (phases == null || phases.size() == 0) {
@@ -99,7 +99,7 @@ public class PhaseServiceImpl implements IPhaseService {
 	}
 	
 	public final Phase findByMapAndOrder(int mapId, int phaseOrder) {
-		return repository.findPhaseByMapAndOrder(mapId, phaseOrder);
+		return repository.findByMapAndOrder(mapId, phaseOrder);
 	}
 	
 	/**

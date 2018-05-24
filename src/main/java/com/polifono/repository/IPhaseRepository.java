@@ -2,25 +2,25 @@ package com.polifono.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.polifono.domain.Phase;
 
-public interface IPhaseRepository extends CrudRepository<Phase, Integer> {
+public interface IPhaseRepository extends JpaRepository<Phase, Integer> {
 
 	@Query("SELECT phase FROM Phase phase WHERE phase.map.id = :mapId")
-	public List<Phase> findPhasesByMap(@Param("mapId") int mapId);
+	public List<Phase> findByMap(@Param("mapId") int mapId);
 	
 	@Query("SELECT phase FROM Phase phase, Map map WHERE phase.map.id = map.id AND map.game.id = :gameId")
-	public List<Phase> findPhasesByGame(@Param("gameId") int gameId);
+	public List<Phase> findByGame(@Param("gameId") int gameId);
 	
 	@Query("SELECT phase FROM Phase phase, Map map WHERE phase.map.id = map.id AND map.game.id = :gameId AND map.level.id = :levelId")
-	public List<Phase> findPhasesByGameAndLevel(@Param("gameId") int gameId, @Param("levelId") int levelId);
+	public List<Phase> findByGameAndLevel(@Param("gameId") int gameId, @Param("levelId") int levelId);
 	
 	@Query("SELECT phase FROM Phase phase WHERE phase.map.id = :mapId AND phase.order = :phaseOrder")
-	public Phase findPhaseByMapAndOrder(@Param("mapId") int mapId, @Param("phaseOrder") int phaseOrder);
+	public Phase findByMapAndOrder(@Param("mapId") int mapId, @Param("phaseOrder") int phaseOrder);
 	
 	@Query("SELECT phase FROM Phase phase WHERE phase.map.id = :mapId AND phase.order = :phaseOrder")
 	public Phase findNextPhaseInThisMap(@Param("mapId") int mapId, @Param("phaseOrder") int phaseOrder);

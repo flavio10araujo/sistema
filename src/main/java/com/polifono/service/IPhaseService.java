@@ -17,11 +17,11 @@ public interface IPhaseService {
 	
 	public List<Phase> findAll();
 	
-	public List<Phase> findPhasesByGame(int gameId);
+	public List<Phase> findByGame(int gameId);
 	
-	public List<Phase> findPhasesByGameAndLevel(int gameId, int levelId);
+	public List<Phase> findByGameAndLevel(int gameId, int levelId);
 	
-	public List<Phase> findPhasesByMap(int mapId);
+	public List<Phase> findByMap(int mapId);
 	
 	public Phase findByMapAndOrder(int mapId, int phaseOrder);
 	

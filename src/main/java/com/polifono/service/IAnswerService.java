@@ -14,14 +14,14 @@ public interface IAnswerService {
 	
 	public List<Answer> findAll();
 	
-	public List<Answer> findAnswersByGame(int gameId);
+	public List<Answer> findByGame(int gameId);
 	
-	public List<Answer> findAnswersByGameAndLevel(int gameId, int levelId);
+	public List<Answer> findByGameAndLevel(int gameId, int levelId);
 	
-	public List<Answer> findAnswersByMap(int mapId);
+	public List<Answer> findByMap(int mapId);
 	
-	public List<Answer> findAnswersByPhase(int phaseId);
+	public List<Answer> findByPhase(int phaseId);
 	
-	public List<Answer> findAnswersByQuestion(int questionId);
+	public List<Answer> findByQuestion(int questionId);
 
 }

@@ -49,7 +49,7 @@ public class TransferCreditController extends BaseController {
 		model.addAttribute("games", gameService.findAll());
 		
 		model.addAttribute("transferCreditGroupForm", new TransferCreditGroupForm());
-		model.addAttribute("classes", (ArrayList<com.polifono.domain.Class>) classService.findClassesByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
+		model.addAttribute("classes", (ArrayList<com.polifono.domain.Class>) classService.findByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
 
 		return "teacher/credit/index";
 	}
@@ -151,7 +151,7 @@ public class TransferCreditController extends BaseController {
 			}
 			
 			// Get all the students of the class selected.
-			List<ClassPlayer> classPlayerList = classPlayerService.findClassPlayersByClassAndStatus(transferCreditGroupForm.getClazz().getId(), 2);
+			List<ClassPlayer> classPlayerList = classPlayerService.findByClassAndStatus(transferCreditGroupForm.getClazz().getId(), 2);
 			
 			// Get the number of students confirmed (2) in the class.
 			int numberOfStudents = classPlayerList.size();

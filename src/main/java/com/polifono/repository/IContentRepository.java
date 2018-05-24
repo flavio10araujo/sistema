@@ -2,13 +2,13 @@ package com.polifono.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.polifono.domain.Content;
 
-public interface IContentRepository extends CrudRepository<Content, Integer> {
+public interface IContentRepository extends JpaRepository<Content, Integer> {
 
 	@Query("SELECT content FROM Content content WHERE content.contenttype.id = 2")
 	public List<Content> findAllText();

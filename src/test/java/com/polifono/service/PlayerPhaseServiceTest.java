@@ -208,16 +208,16 @@ public class PlayerPhaseServiceTest extends AbstractTest {
     	int playerId = PLAYER_ID_EXISTENT;
     	List<PlayerPhase> listReturned = new ArrayList<PlayerPhase>();
     	listReturned.add(new PlayerPhase());
-    	when(repository.findPlayerPhasesByPlayer(playerId)).thenReturn(listReturned);
+    	when(repository.findByPlayer(playerId)).thenReturn(listReturned);
     	
-    	List<PlayerPhase> list = service.findPlayerPhasesByPlayer(PLAYER_ID_EXISTENT);
+    	List<PlayerPhase> list = service.findByPlayer(PLAYER_ID_EXISTENT);
     	Assert.assertNotNull("failure - expected not null", list);
     	Assert.assertNotEquals("failure - not expected list size 0", 0, list.size());
     }
     
     @Test
     public void findPlayerPhasesByPlayer_WhenSearchByPlayerInexistent_ReturnNull() {
-    	List<PlayerPhase> list = service.findPlayerPhasesByPlayer(PLAYER_ID_INEXISTENT);
+    	List<PlayerPhase> list = service.findByPlayer(PLAYER_ID_INEXISTENT);
     	Assert.assertNull("failure - expected null", list);
     }
     /* findPlayerPhasesByPlayer - end */

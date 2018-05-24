@@ -59,8 +59,8 @@ public class ClassServiceImpl implements IClassService {
 		return clazz;
 	}
 	
-	public final List<com.polifono.domain.Class> findClassesByTeacherAndStatus(int playerId, boolean status) {
-		return repository.findClassesByTeacherAndStatus(playerId, status);
+	public final List<com.polifono.domain.Class> findByTeacherAndStatus(int playerId, boolean status) {
+		return repository.findByTeacherAndStatus(playerId, status);
 	}
 	
 	public final com.polifono.domain.Class clone(com.polifono.domain.Class clazz) {

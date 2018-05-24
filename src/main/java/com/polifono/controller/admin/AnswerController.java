@@ -75,40 +75,40 @@ public class AnswerController extends BaseController {
 				
 				if (answerFilterForm.getMap().getId() > 0) {
 					// Filter.
-					model.addAttribute("phases", (ArrayList<Phase>) phaseService.findPhasesByMap(answerFilterForm.getMap().getId()));
+					model.addAttribute("phases", (ArrayList<Phase>) phaseService.findByMap(answerFilterForm.getMap().getId()));
 					
 					if (answerFilterForm.getPhase().getId() > 0) {
 						// Filter
-						model.addAttribute("questions", (ArrayList<Question>) questionService.findQuestionsByPhase(answerFilterForm.getPhase().getId()));
+						model.addAttribute("questions", (ArrayList<Question>) questionService.findByPhase(answerFilterForm.getPhase().getId()));
 						
 						if (answerFilterForm.getQuestion().getId() > 0) {
 							// List
-							model.addAttribute("answers", (ArrayList<Answer>) answerService.findAnswersByQuestion(answerFilterForm.getQuestion().getId()));
+							model.addAttribute("answers", (ArrayList<Answer>) answerService.findByQuestion(answerFilterForm.getQuestion().getId()));
 						}
 						else {
 							// List
-							model.addAttribute("answers", (ArrayList<Answer>) answerService.findAnswersByPhase(answerFilterForm.getPhase().getId()));
+							model.addAttribute("answers", (ArrayList<Answer>) answerService.findByPhase(answerFilterForm.getPhase().getId()));
 						}
 					}
 					else {
 						// Filter
-						model.addAttribute("questions", (ArrayList<Question>) questionService.findQuestionsByMap(answerFilterForm.getMap().getId()));
+						model.addAttribute("questions", (ArrayList<Question>) questionService.findByMap(answerFilterForm.getMap().getId()));
 						// List
-						model.addAttribute("answers", (ArrayList<Answer>) answerService.findAnswersByMap(answerFilterForm.getMap().getId()));
+						model.addAttribute("answers", (ArrayList<Answer>) answerService.findByMap(answerFilterForm.getMap().getId()));
 					}
 				}
 				else {
 					// Filter.
-					model.addAttribute("questions", (ArrayList<Question>) questionService.findQuestionsByGameAndLevel(answerFilterForm.getGame().getId(), answerFilterForm.getLevel().getId()));
+					model.addAttribute("questions", (ArrayList<Question>) questionService.findByGameAndLevel(answerFilterForm.getGame().getId(), answerFilterForm.getLevel().getId()));
 					// List
-					model.addAttribute("answers", (ArrayList<Answer>) answerService.findAnswersByGameAndLevel(answerFilterForm.getGame().getId(), answerFilterForm.getLevel().getId()));
+					model.addAttribute("answers", (ArrayList<Answer>) answerService.findByGameAndLevel(answerFilterForm.getGame().getId(), answerFilterForm.getLevel().getId()));
 				}
 			}
 			else {
 				// Filter.
-				model.addAttribute("questions", (ArrayList<Question>) questionService.findQuestionsByGame(answerFilterForm.getGame().getId()));
+				model.addAttribute("questions", (ArrayList<Question>) questionService.findByGame(answerFilterForm.getGame().getId()));
 				// List
-				model.addAttribute("answers", (ArrayList<Answer>) answerService.findAnswersByGame(answerFilterForm.getGame().getId()));
+				model.addAttribute("answers", (ArrayList<Answer>) answerService.findByGame(answerFilterForm.getGame().getId()));
 			}
 		}
 		else {

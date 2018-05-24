@@ -27,7 +27,7 @@ public class TransactionServiceImpl implements ITransactionService {
 		return repository.findOne(transactionId);
 	}
 	
-	public final List<Transaction> findTransactionsByCode(String code) {
-		return repository.findTransactionsByCode(code);
+	public final List<Transaction> findByCode(String code) {
+		return repository.findByCode(code);
 	}
 }

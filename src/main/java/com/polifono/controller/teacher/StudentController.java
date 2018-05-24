@@ -43,7 +43,7 @@ public class StudentController extends BaseController {
 
 	@RequestMapping(value = {"/student", "/student/savepage"}, method = RequestMethod.GET)
 	public String savePage(HttpSession session, Model model) {
-		model.addAttribute("classes", (ArrayList<com.polifono.domain.Class>) classService.findClassesByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
+		model.addAttribute("classes", (ArrayList<com.polifono.domain.Class>) classService.findByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
 		model.addAttribute("classPlayer", new ClassPlayer());
 		
 		if (session.getAttribute("clazzId") != null) {
@@ -51,7 +51,7 @@ public class StudentController extends BaseController {
 			filterClass.setId((int) session.getAttribute("clazzId"));
 			model.addAttribute("classFilter", filterClass);
 			
-			model.addAttribute("classPlayers", classPlayerService.findClassPlayersByTeacherAndClass(currentAuthenticatedUser().getUser().getId(), (int) session.getAttribute("clazzId")));
+			model.addAttribute("classPlayers", classPlayerService.findByTeacherAndClass(currentAuthenticatedUser().getUser().getId(), (int) session.getAttribute("clazzId")));
 		}
 		else {
 			model.addAttribute("classFilter", new com.polifono.domain.Class());
@@ -108,7 +108,7 @@ public class StudentController extends BaseController {
 			}
 			
 			// Verify if the player is already registered in this class.
-			List<ClassPlayer> classPlayerAux = classPlayerService.findClassPlayersByClassAndPlayer(classPlayer.getClazz().getId(), classPlayer.getPlayer().getId());
+			List<ClassPlayer> classPlayerAux = classPlayerService.findByClassAndPlayer(classPlayer.getClazz().getId(), classPlayer.getPlayer().getId());
 			
 			if (classPlayerAux != null && classPlayerAux.size() > 0) {
 				

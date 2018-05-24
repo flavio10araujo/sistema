@@ -1405,7 +1405,7 @@ public class GameControllerTest extends AbstractControllerTest {
 		content.setId(224);
 		when(contentService.findByPhaseAndOrder(phase.getId(), 0)).thenReturn(content);
 
-		when(questionService.findQuestionsByContent(content.getId())).thenReturn(getQuestionsByContentStubData());
+		when(questionService.findByContent(content.getId())).thenReturn(getQuestionsByContentStubData());
 		
 		mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
         	.andExpect(status().isOk())
@@ -1472,7 +1472,7 @@ public class GameControllerTest extends AbstractControllerTest {
         verifyNoMoreInteractions(playerPhaseService);
         verify(contentService, times(1)).findByPhaseAndOrder(phase.getId(), 0);
         verifyNoMoreInteractions(contentService);
-        verify(questionService, times(1)).findQuestionsByContent(content.getId());
+        verify(questionService, times(1)).findByContent(content.getId());
         verifyNoMoreInteractions(questionService);
 	}
 	
@@ -1520,7 +1520,7 @@ public class GameControllerTest extends AbstractControllerTest {
 		content.setId(224);
 		when(contentService.findByPhaseAndOrder(phase.getId(), 0)).thenReturn(content);
 
-		when(questionService.findQuestionsByContent(content.getId())).thenReturn(getQuestionsByContentStubData());
+		when(questionService.findByContent(content.getId())).thenReturn(getQuestionsByContentStubData());
 		
 		mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
         	.andExpect(status().isOk())
@@ -1586,7 +1586,7 @@ public class GameControllerTest extends AbstractControllerTest {
         verifyNoMoreInteractions(playerPhaseService);
         verify(contentService, times(1)).findByPhaseAndOrder(phase.getId(), 0);
         verifyNoMoreInteractions(contentService);
-        verify(questionService, times(1)).findQuestionsByContent(content.getId());
+        verify(questionService, times(1)).findByContent(content.getId());
         verifyNoMoreInteractions(questionService);
 	}
 	/* initTest - end */

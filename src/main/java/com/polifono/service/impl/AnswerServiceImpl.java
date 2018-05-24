@@ -48,23 +48,23 @@ public class AnswerServiceImpl implements IAnswerService {
 		return (List<Answer>) repository.findAll();
 	}
 	
-	public final List<Answer> findAnswersByGame(int gameId) {
-		return repository.findAnswersByGame(gameId);
+	public final List<Answer> findByGame(int gameId) {
+		return repository.findByGame(gameId);
 	}
 	
-	public final List<Answer> findAnswersByGameAndLevel(int gameId, int levelId) {
-		return repository.findAnswersByGameAndLevel(gameId, levelId);
+	public final List<Answer> findByGameAndLevel(int gameId, int levelId) {
+		return repository.findByGameAndLevel(gameId, levelId);
 	}
 	
-	public final List<Answer> findAnswersByMap(int mapId) {
-		return repository.findAnswersByMap(mapId);
+	public final List<Answer> findByMap(int mapId) {
+		return repository.findByMap(mapId);
 	}
 	
-	public final List<Answer> findAnswersByPhase(int phaseId) {
-		return repository.findAnswersByPhase(phaseId);
+	public final List<Answer> findByPhase(int phaseId) {
+		return repository.findByPhase(phaseId);
 	}
 	
-	public final List<Answer> findAnswersByQuestion(int questionId) {
-		return repository.findAnswersByQuestion(questionId);
+	public final List<Answer> findByQuestion(int questionId) {
+		return repository.findByQuestion(questionId);
 	}
 }

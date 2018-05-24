@@ -2,13 +2,13 @@ package com.polifono.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.polifono.domain.Map;
 
-public interface IMapRepository extends CrudRepository<Map, Integer> {
+public interface IMapRepository extends JpaRepository<Map, Integer> {
 
 	@Query("SELECT map FROM Map map WHERE map.game.id = :gameId ORDER BY map.order ASC")
 	public List<Map> findMapsByGame(@Param("gameId") int gameId);

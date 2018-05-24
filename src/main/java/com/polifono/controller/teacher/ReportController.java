@@ -39,7 +39,7 @@ public class ReportController extends BaseController {
 	public String reportGeneral(Model model) {
 		
 		model.addAttribute("games", gameService.findAll());
-		model.addAttribute("classes", classService.findClassesByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
+		model.addAttribute("classes", classService.findByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
 		// Form
 		model.addAttribute("reportGeneralForm", new ReportGeneralForm());
 		
@@ -51,7 +51,7 @@ public class ReportController extends BaseController {
 		String msg = validateReportGeneral(reportGeneralForm);
 		
 		model.addAttribute("games", gameService.findAll());
-		model.addAttribute("classes", classService.findClassesByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
+		model.addAttribute("classes", classService.findByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
 		// Form
 		model.addAttribute("reportGeneralForm", reportGeneralForm);
 		
@@ -62,7 +62,7 @@ public class ReportController extends BaseController {
 			return "teacher/report/index";
 		}
 		
-		List<ClassPlayer> classPlayers = classPlayerService.findClassPlayersByClassAndStatus(reportGeneralForm.getClazz().getId(), 2);
+		List<ClassPlayer> classPlayers = classPlayerService.findByClassAndStatus(reportGeneralForm.getClazz().getId(), 2);
 		List<ReportGeneralDTO> list = new ArrayList<ReportGeneralDTO>();
 		
 		for (ClassPlayer classPlayer : classPlayers) {

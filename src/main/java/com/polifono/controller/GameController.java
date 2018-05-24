@@ -333,7 +333,7 @@ public class GameController extends BaseController {
 		
 		// Get the questionary of this phase.
 		Content content = contentService.findByPhaseAndOrder(phase.getId(), 0);
-		List<Question> questions = questionService.findQuestionsByContent(content.getId());
+		List<Question> questions = questionService.findByContent(content.getId());
 		
 		model.addAttribute("game", game);
 		model.addAttribute("map", map);

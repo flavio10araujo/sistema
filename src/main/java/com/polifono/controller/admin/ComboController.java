@@ -49,7 +49,7 @@ public class ComboController extends BaseController {
     public List<Combo> comboPhase(@RequestParam(value="mapId") String mapId) {
     	List<Combo> list = new ArrayList<Combo>();
     	
-    	List<Phase> auxiliar = phaseService.findPhasesByMap(Integer.parseInt(mapId));
+    	List<Phase> auxiliar = phaseService.findByMap(Integer.parseInt(mapId));
     	
     	for (Phase item : auxiliar) {
     		Combo combo = new Combo();
@@ -65,7 +65,7 @@ public class ComboController extends BaseController {
     public List<Combo> comboQuestion(@RequestParam(value="phaseId") String phaseId) {
     	List<Combo> list = new ArrayList<Combo>();
     	
-    	List<Question> auxiliar = questionService.findQuestionsByPhase(Integer.parseInt(phaseId));
+    	List<Question> auxiliar = questionService.findByPhase(Integer.parseInt(phaseId));
     	
     	for (Question item : auxiliar) {
     		Combo combo = new Combo();

@@ -148,7 +148,7 @@ public class PaymentController extends BaseController {
 		
 		if (transactionCode == null || "".equals(transactionCode)) return REDIRECT_HOME;
 		
-		List<Transaction> transactions = transactionService.findTransactionsByCode(transactionCode);
+		List<Transaction> transactions = transactionService.findByCode(transactionCode);
 		
 		model.addAttribute("codRegister", "1");
 		model.addAttribute("msg", messagesResourceBundle.getString("msg.credits.thanks"));

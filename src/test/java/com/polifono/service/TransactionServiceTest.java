@@ -125,30 +125,30 @@ public class TransactionServiceTest extends AbstractTest {
     }
     /* findOne - end */
     
-    /* findTransactionsByCode - begin */
+    /* findByCode - begin */
     @Test
-    public void findTransactionsByCode_WhenSearchByCodeExistent_ReturnList() {
+    public void findByCode_WhenSearchByCodeExistent_ReturnList() {
     	List<Transaction> list = getEntityListStubData();
     	
-    	when(repository.findTransactionsByCode(CODE_EXISTENT)).thenReturn(list);
+    	when(repository.findByCode(CODE_EXISTENT)).thenReturn(list);
     	
-    	List<Transaction> listReturned = service.findTransactionsByCode(CODE_EXISTENT);
+    	List<Transaction> listReturned = service.findByCode(CODE_EXISTENT);
         Assert.assertNotNull("failure - not expected null", listReturned);
         Assert.assertNotEquals("failure - list size not expected 0", 0, listReturned.size());
         
-        verify(repository, times(1)).findTransactionsByCode(CODE_EXISTENT);
+        verify(repository, times(1)).findByCode(CODE_EXISTENT);
         verifyNoMoreInteractions(repository);
     }
 
     @Test
-    public void findTransactionsByCode_WhenSearchByCodeInexistent_ReturnEmptyList() {
-    	when(repository.findTransactionsByCode(CODE_INEXISTENT)).thenReturn(new ArrayList<Transaction>());
+    public void findByCode_WhenSearchByCodeInexistent_ReturnEmptyList() {
+    	when(repository.findByCode(CODE_INEXISTENT)).thenReturn(new ArrayList<Transaction>());
     	
-    	List<Transaction> listReturned = service.findTransactionsByCode(CODE_INEXISTENT);
+    	List<Transaction> listReturned = service.findByCode(CODE_INEXISTENT);
     	Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
     	
-    	verify(repository, times(1)).findTransactionsByCode(CODE_INEXISTENT);
+    	verify(repository, times(1)).findByCode(CODE_INEXISTENT);
         verifyNoMoreInteractions(repository);
     }
-    /* findTransactionsByCode - end */
+    /* findByCode - end */
 }

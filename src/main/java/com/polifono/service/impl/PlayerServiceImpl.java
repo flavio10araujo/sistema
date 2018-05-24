@@ -78,7 +78,7 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 	
 	public Player findByEmailAndStatus(String email, boolean status) {
-        return repository.findByEmailAndStatus(email, status);
+        return repository.findByEmailAndActive(email, status);
     }
 	
 	/**

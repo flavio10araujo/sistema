@@ -16,7 +16,7 @@ public interface IClassService {
 	
 	public com.polifono.domain.Class prepareClassForChangingStatus(com.polifono.domain.Class clazz, boolean status);
 	
-	public List<com.polifono.domain.Class> findClassesByTeacherAndStatus(int playerId, boolean status);
+	public List<com.polifono.domain.Class> findByTeacherAndStatus(int playerId, boolean status);
 	
 	public com.polifono.domain.Class clone(com.polifono.domain.Class clazz);
 
