@@ -3,29 +3,33 @@ package com.polifono.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.Nonnull;
-
 import com.polifono.domain.Game;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 
 public interface IPlayerService {
 
-	public Player create(Player player);
+	public Player save(Player o);
 	
-	public Player save(Player player);
+	//public Boolean delete(Integer id);
 	
 	public Player findOne(int id);
 	
 	public List<Player> findAll();
 	
+	
 	public Player findByEmail(String email);
 	
 	public Player findByEmailAndStatus(String email, boolean status);
 	
-	public Optional<Player> findByEmailAndStatusForLogin(String email, boolean status);
+	public Player findByLogin(String login);
 	
-	public String encryptPassword(@Nonnull final String rawPassword);
+	public Player findByIdFacebook(Long id);
+	
+	
+	public Player create(Player o);
+	
+	public Optional<Player> findByEmailAndStatusForLogin(String email, boolean status);
 	
 	public Player addCreditsToPlayer(int playerId, int qtdCredits);
 	
@@ -44,9 +48,5 @@ public interface IPlayerService {
 	public String validateUpdateProfile(Player edit);
 	
 	public String validateChangePasswordPlayer(Player player);
-	
-	public Player findByLogin(String login);
-	
-	public Player findByIdFacebook(Long id);
 
 }

@@ -6,13 +6,14 @@ import com.polifono.domain.Content;
 
 public interface IContentService {
 
-	public Content save(Content content);
+	public Content save(Content o);
 	
 	public Boolean delete(Integer id);
 	
-	public Content findOne(int contentId);
+	public Content findOne(int id);
 	
 	public List<Content> findAll();
+	
 	
 	public List<Content> findAllText();
 	

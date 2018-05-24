@@ -9,13 +9,14 @@ import com.polifono.domain.PlayerPhase;
 
 public interface IPhaseService {
 
-	public Phase save(Phase phase);
+	public Phase save(Phase o);
 	
 	public Boolean delete(Integer id);
 	
-	public Phase findOne(int phaseId);
+	public Phase findOne(int id);
 	
 	public List<Phase> findAll();
+	
 	
 	public List<Phase> findByGame(int gameId);
 	
@@ -24,6 +25,7 @@ public interface IPhaseService {
 	public List<Phase> findByMap(int mapId);
 	
 	public Phase findByMapAndOrder(int mapId, int phaseOrder);
+	
 	
 	public Phase findNextPhaseInThisMap(int mapId, int phaseOrder);
 	

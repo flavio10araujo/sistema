@@ -1,18 +1,14 @@
 package com.polifono.service.impl;
 
-import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import javax.annotation.Nonnull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Game;
@@ -25,6 +21,7 @@ import com.polifono.service.IPlayerGameService;
 import com.polifono.service.IPlayerService;
 import com.polifono.util.EmailUtil;
 import com.polifono.util.RandomStringUtil;
+import com.polifono.util.StringUtil;
 
 @Service
 public class PlayerServiceImpl implements IPlayerService {
@@ -54,7 +51,7 @@ public class PlayerServiceImpl implements IPlayerService {
 	public Player preparePlayerForCreation(Player player) {
 		player.setDtInc(new Date());
 		player.setActive(true);
-		player.setPassword(encryptPassword(player.getPassword()));
+		player.setPassword(StringUtil.encryptPassword(player.getPassword()));
 		player.setCredit(Integer.parseInt(resourceBundle.getString("credits.creation"))); // n credits are given to the player when he creates the account.
 		player.setRole(Role.USER);
 		player.setEmailConfirmed(new RandomStringUtil(10).nextString()); // This field is sent to the player's email to confirm if the email is real.
@@ -102,11 +99,6 @@ public class PlayerServiceImpl implements IPlayerService {
         	// - Or the player is trying to access the system with his login.
         	return repository.findByLoginAndStatusForLogin(email, status);
         }
-    }
-	
-	public String encryptPassword(@Nonnull final String rawPassword) {
-        final String salt = BCrypt.gensalt(10, new SecureRandom());
-        return BCrypt.hashpw(rawPassword, salt);
     }
 	
 	public final Player addCreditsToPlayer(int playerId, int qtdCredits) {

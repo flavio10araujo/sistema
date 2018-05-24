@@ -6,13 +6,14 @@ import com.polifono.domain.Answer;
 
 public interface IAnswerService {
 
-	public Answer save(Answer answer);
+	public Answer save(Answer o);
 	
 	public Boolean delete(Integer id);
 	
-	public Answer findOne(int answerId);
+	public Answer findOne(int id);
 	
 	public List<Answer> findAll();
+	
 	
 	public List<Answer> findByGame(int gameId);
 	

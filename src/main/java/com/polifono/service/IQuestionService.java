@@ -6,13 +6,14 @@ import com.polifono.domain.Question;
 
 public interface IQuestionService {
 
-	public Question save(Question question);
+	public Question save(Question o);
 	
 	public Boolean delete(Integer id);
 	
-	public Question findOne(int questionId);
+	public Question findOne(int id);
 	
 	public List<Question> findAll();
+	
 	
 	public List<Question> findByGame(int gameId);
 	

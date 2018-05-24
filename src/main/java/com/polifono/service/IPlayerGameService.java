@@ -4,12 +4,18 @@ import com.polifono.domain.PlayerGame;
 
 public interface IPlayerGameService {
 
-	public PlayerGame save(PlayerGame playerGame);
+	public PlayerGame save(PlayerGame o);
 	
-	public PlayerGame findOne(int playerGameId);
+	//public Boolean delete(Integer id);
 	
-	public PlayerGame removeCreditsFromPlayer(PlayerGame playerGame, int qtdCredits);
+	public PlayerGame findOne(int id);
+	
+	//public List<PlayerGame> findAll();
+	
 	
 	public PlayerGame findByPlayerAndGame(int playerId, int gameId);
+	
+	
+	public PlayerGame removeCreditsFromPlayer(PlayerGame playerGame, int qtdCredits);
 
 }

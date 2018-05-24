@@ -7,7 +7,7 @@ import com.polifono.domain.Player;
 
 public interface IClassPlayerService {
 	
-	public ClassPlayer save(ClassPlayer classPlayer);
+	public ClassPlayer save(ClassPlayer o);
 	
 	public Boolean delete(Integer id);
 	
@@ -15,11 +15,6 @@ public interface IClassPlayerService {
 
 	public List<ClassPlayer> findAll();
 	
-	public ClassPlayer prepareClassPlayerForCreation(ClassPlayer classPlayer);
-	
-	public Boolean changeStatus(int id, int status);
-	
-	public ClassPlayer prepareClassPlayerToChangeStatus(ClassPlayer classPlayer, int status);
 	
 	public List<ClassPlayer> findByTeacher(int playerId);
 	
@@ -33,6 +28,10 @@ public interface IClassPlayerService {
 	
 	public List<ClassPlayer> findByTeacherAndStudent(int teacherId, int studentId);
 
+	
+	public ClassPlayer create(ClassPlayer o);
+	
 	public boolean isMyStudent(Player user, Player player);
 
+	public Boolean changeStatus(int id, int status);
 }

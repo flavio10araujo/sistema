@@ -7,8 +7,7 @@ import java.security.NoSuchAlgorithmException;
 public class MD5Util {
 
 	/*public static void main (String[] args) {
-		//System.out.println(md5Hex("flavio10araujo@yahoo.com.br"));
-		System.out.println(md5Hex("marisleinegrimm@gmail.com"));
+		System.out.println(md5Hex("flavio10araujo@gmail.com"));
 	}*/
 	
 	public static String hex(byte[] array) {

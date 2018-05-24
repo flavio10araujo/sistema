@@ -9,14 +9,22 @@ import com.polifono.domain.PlayerPhase;
 import com.polifono.form.teacher.ReportGeneralForm;
 
 public interface IPlayerPhaseService {
-
-	public PlayerPhase save(PlayerPhase playerPhase);
 	
-	public PlayerPhase findLastPhaseCompleted(int playerId, int gameId);
+	public PlayerPhase save(PlayerPhase o);
+	
+	//public Boolean delete(Integer id);
+	
+	//public PlayerPhase findOne(int id);
+		
+	//public List<PlayerPhase> findAll();
+	
+	
+	public List<PlayerPhase> findByPlayer(int playerId);
 	
 	public PlayerPhase findByPlayerPhaseAndStatus(int playerId, int phaseId, int phasestatusId);
 	
-	public List<PlayerPhase> findByPlayer(int playerId);
+	public PlayerPhase findLastPhaseCompleted(int playerId, int gameId);
+	
 	
 	public List<PlayerPhase> findForReportGeneral(ReportGeneralForm reportGeneralForm, int playerId);
 

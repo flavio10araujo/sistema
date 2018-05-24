@@ -19,10 +19,12 @@ public class AnswerServiceImpl implements IAnswerService {
 		this.repository = repository;
 	}
 	
+	@Override
 	public final Answer save(Answer answer) {
 		return repository.save(answer);
 	}
 	
+	@Override
 	public Boolean delete(Integer id) {
 		Answer temp = repository.findOne(id);
 		
@@ -40,30 +42,37 @@ public class AnswerServiceImpl implements IAnswerService {
 		return false;
 	}
 	
+	@Override
 	public final Answer findOne(int answerId) {
 		return repository.findOne(answerId);
 	}
 	
+	@Override
 	public final List<Answer> findAll() {
 		return (List<Answer>) repository.findAll();
 	}
 	
+	@Override
 	public final List<Answer> findByGame(int gameId) {
 		return repository.findByGame(gameId);
 	}
 	
+	@Override
 	public final List<Answer> findByGameAndLevel(int gameId, int levelId) {
 		return repository.findByGameAndLevel(gameId, levelId);
 	}
 	
+	@Override
 	public final List<Answer> findByMap(int mapId) {
 		return repository.findByMap(mapId);
 	}
 	
+	@Override
 	public final List<Answer> findByPhase(int phaseId) {
 		return repository.findByPhase(phaseId);
 	}
 	
+	@Override
 	public final List<Answer> findByQuestion(int questionId) {
 		return repository.findByQuestion(questionId);
 	}

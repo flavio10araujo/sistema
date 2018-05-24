@@ -132,7 +132,7 @@ public class StudentController extends BaseController {
 			//Fiz assim para impedir que o professor cadastrasse qualquer pessoa em suas salas.
 			//Alterei posteriormente para facilitar o cadastro dos alunos nas salas. Futuramente devo criar algum mecanismo para o aluno saber que foi adicionado em uma sala
 			//e poder sair dessa sala se ele quiser.
-			classPlayerService.save(classPlayerService.prepareClassPlayerForCreation(classPlayer));
+			classPlayerService.create(classPlayer);
 			//EmailSendUtil.sendEmailInvitationToClass(currentAuthenticatedUser().getUser(), classPlayer);
 			
 			redirectAttributes.addFlashAttribute("save", "success");

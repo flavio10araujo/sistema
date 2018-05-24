@@ -9,13 +9,14 @@ import com.polifono.domain.PlayerPhase;
 
 public interface IMapService {
 
-	public Map save(Map map);
+	public Map save(Map o);
 	
 	public Boolean delete(Integer id);
 	
 	public Map findOne(int id);
 
 	public List<Map> findAll();
+	
 	
 	public List<Map> findMapsByGame(int gameId);
 	
@@ -27,6 +28,7 @@ public interface IMapService {
 	
 	public Map findNextMapSameLevel(Map mapCurrent);
 
+	
 	public boolean playerCanAccessThisMap(Map map, Player user);
 
 	public Map findCurrentMap(Game game, PlayerPhase playerPhase);

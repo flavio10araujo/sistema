@@ -183,7 +183,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
 		// active = true;
 		// status = 1;
     	ClassPlayer entity = getEntityStubData();
-    	ClassPlayer entityReturned = service.prepareClassPlayerForCreation(entity);
+    	ClassPlayer entityReturned = service.create(entity);
 
         Assert.assertNotNull("failure - expected not null", entityReturned);
         Assert.assertEquals("failure - expected id attribute match", entity.getId(), entityReturned.getId());
@@ -219,7 +219,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
     }
     /* changeStatus - end */
     
-    /* prepareClassPlayerToChangeStatus - begin */
+    /* prepareClassPlayerToChangeStatus - begin 
     @Test
     public void prepareClassPlayerToChangeStatus_WhenEverythingIsOK_ReturnEntityWithStatusChanged() {
     	ClassPlayer entity = getEntityStubData();
@@ -230,7 +230,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
     	entityChanged = service.prepareClassPlayerToChangeStatus(entity, STATUS_DISABLED);
     	Assert.assertEquals("failure - expected attribute status match", STATUS_DISABLED.intValue(), entityChanged.getStatus());
     }
-    /* prepareClassPlayerToChangeStatus - end */
+    prepareClassPlayerToChangeStatus - end */
     
     /* findClassPlayersByTeacher - begin */
     @Test

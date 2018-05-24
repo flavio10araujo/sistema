@@ -97,7 +97,7 @@ public class ClassController extends BaseController {
 				studentClone.setClazz(newClass);
 				studentClone.setPlayer(student.getPlayer());
 				
-				classPlayerService.save(classPlayerService.prepareClassPlayerForCreation(studentClone));
+				classPlayerService.create(studentClone);
 			}
 			
 			redirectAttributes.addFlashAttribute("save", "success");

@@ -28,6 +28,7 @@ import com.polifono.service.IPlayerService;
 import com.polifono.service.impl.LoginServiceImpl;
 import com.polifono.util.EmailSendUtil;
 import com.polifono.util.RandomStringUtil;
+import com.polifono.util.StringUtil;
 import com.polifono.util.Util;
 
 @Controller
@@ -309,7 +310,7 @@ public class PlayerController extends BaseController {
 				
 				// If there is not errors.
 				if (msg.equals("")) {
-					playerOld.setPassword(playerService.encryptPassword(playerOld.getPassword()));
+					playerOld.setPassword(StringUtil.encryptPassword(playerOld.getPassword()));
 					playerOld.setPasswordReset(""); // If the user has changed the password successfully, the reset code is cleaned.
 					playerService.save(playerOld);
 					
