@@ -10,8 +10,8 @@
     	<meta name="description" content="Aula de música online. Escola de música online." />
     	<meta name="author" content="Amonati" />
     	<link rel="icon" th:href="@{/static/img/favicon.ico}" sizes="32x32" />
-		
-		<link href='https://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css' />
+    	
+    	<link href='https://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css' />
     	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css' />
     	<!-- Global CSS -->
     	<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/tempo/assets/plugins/bootstrap/css/bootstrap.min.css}" />
@@ -61,8 +61,8 @@
 		<div class="fb-customerchat" attribution="setup_tool" page_id="243859729372740" logged_in_greeting="Olá! Se tiver alguma dúvida, estamos aqui!" logged_out_greeting="Olá! Se tiver alguma dúvida, estamos aqui!"></div>
 	
 		<div class="wrapper">
-        	
-        	<!-- ******HEADER****** -->
+		
+			<!-- ******HEADER****** -->
         	<header id="header" class="header">
             	<div class="container">
                 	<h1 class="logo pull-left" style="margin: 0 0 0 0;padding: 0 0 0 0;">
@@ -89,8 +89,8 @@
 	                </nav><!--//main-nav-->
 	            </div><!--//container-->
 	        </header><!--//header-->
-	        
-	        <!-- ******PROMO****** --> 
+
+			<!-- ******PROMO****** --> 
 	        <section id="promo" class="promo section">
 
 				<div class="container intro" style="margin-bottom:40px;">
@@ -111,7 +111,7 @@
 				    				<input type="text" th:field="*{name}" class="form-control" required="true" th:placeholder="#{app.full_name}" />
 				  				</div>
 	                            <div class="form-group">
-				    				<input type="email" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" />
+				    				<input type="email" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" th:id="emailRegister" />
 				  				</div>
 				  				<div class="form-group">
 				    				<input type="password" th:field="*{password}" th:id="create_password" class="form-control" required="true" th:placeholder="#{app.password}" data-toggle="tooltip" th:title="#{msg.rule.password}" />
@@ -156,8 +156,8 @@
 	                </div>
 	            </div><!--//bg-slider-wrapper-->
 	        </section><!--//promo-->
-	        
-	        <!-- ******WHY****** -->
+
+			<!-- ******WHY****** -->
 	        <section id="why" class="why section">
 	            <div class="container">
 	                <h2 class="title text-center">Por que usar a Polifono.com?</h2>
@@ -268,8 +268,8 @@
 	                </div><!--//row-->
 	            </div><!--//container-->
 	        </section><!--//why-->
-	        
-	        <!-- ******VIDEO****** -->
+			
+			<!-- ******VIDEO****** -->
 	        <section id="video" class="video section">
 	            <div class="container">
 	                <h2 class="title">Aprenda música, comece hoje!</h2>
@@ -298,8 +298,8 @@
 	                </div><!--//control-->
 	            </div>
 	        </section><!--//video-->
-	        
-	        <!-- ******FAQ****** -->
+			
+			<!-- ******FAQ****** -->
 	        <section id="faq" class="faq section has-bg-color">
 	            <div class="container">
 	                <h2 class="title text-center">Perguntas frequentes</h2>
@@ -438,10 +438,11 @@
 	                </div>
 	            </div><!--//container-->
 	        </section><!--//faq-->
-	        
-	        <!-- ******CONTACT****** --> 
+			
+			<!-- ******CONTACT****** --> 
 	        <section id="contact" class="signup">
 	            <div class="container text-center">
+	                
 	                <h2 class="title">Entre em contato conosco</h2>
 	                <p class="summary">Responderemos o mais breve possível.</p>
 	                
@@ -453,9 +454,9 @@
 	  					<span th:utext="${messageContent}"></span>
 					</div>
 	                
-	                <form class="form" th:action="@{/contact}" method="post">
-	                    
-	                    <div class="form-group email">
+	                <form class="formContact" id="formContact" th:action="@{/contact}" method="post">
+
+						<div class="form-group email">
 							<label class="sr-only" for="email" th:text="#{app.email}"></label>
 						  	<input type="email" th:name="email" th:id="email" class="form-control" required="true" th:placeholder="#{app.email}" />
 						</div>
@@ -464,10 +465,16 @@
 							<label class="sr-only" for="message" th:text="#{app.message}"></label>
 						  	<textarea class="form-control" rows="5" th:name="message" th:id="message" required="true" th:placeholder="#{app.message}"></textarea>
 						</div>
-	                    
-	                    <button type="submit" class="btn btn-cta btn-cta-primary">Enviar</button>
-	                </form><!--//signup-form-->
-	            </div>
+						
+						<div class="form-group">
+							<div class="g-recaptcha" data-sitekey="6LcW3XoUAAAAALSA0tnwIpHduEl2YpzmJUc_VYm7" data-callback="recaptchaCallback" data-expired-callback="recaptchaExpired" style="margin-top: 3rem;"></div>
+							<input id="hidden-grecaptcha" name="hidden-grecaptcha" type="text" style="opacity:0;position:absolute;top:0;left:0;height:1px;width:1px;" />
+						</div>
+						
+						<button type="submit" class="btn btn-cta btn-cta-primary button-register" disabled="true">Enviar</button>
+
+					</form>
+				</div>
 	        </section><!--//contact-->
 	        
 		</div><!--//wrapper-->
@@ -521,8 +528,8 @@
 	            </div><!--//container-->
 	        </div><!--//bottom-bar-->
 	    </footer><!--//footer-->
-	    
-	    <!-- Login Modal -->
+
+		<!-- Login Modal -->
 	    <div class="modal modal-login" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
 	        <div class="modal-dialog">
 	            <div class="modal-content">
@@ -545,13 +552,13 @@
 	                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                            
 	                            <div class="form-group email">
-	                                <label class="sr-only" for="email">E-mail ou login</label>
-	                                <input type="text" name="email" id="email" class="form-control login-email" required="true" placeholder="E-mail ou login" />
+	                                <label class="sr-only" for="emailLogin">E-mail ou login</label>
+	                                <input type="text" name="email" id="emailLogin" class="form-control login-email" required="true" placeholder="E-mail ou login" />
 	                            </div>
 	                            
 	                            <div class="form-group password">
-	                                <label class="sr-only" for="login-password">Senha</label>
-	                                <input type="password" name="password" id="password" class="form-control login-password" required="true" th:placeholder="#{app.password}" />
+	                                <label class="sr-only" for="passwordLogin">Senha</label>
+	                                <input type="password" name="password" id="passwordLogin" class="form-control login-password" required="true" th:placeholder="#{app.password}" />
 	                                
 	                                <p class="forgot-password">
 	                                    <a href="#" id="resetpass-link" data-toggle="modal" data-target="#resetpass-modal">Esqueci minha senha</a>
@@ -569,8 +576,8 @@
 	            </div><!--//modal-content-->
 	        </div><!--//modal-dialog-->
 	    </div><!--//modal-->
-	    
-	    <!-- Reset Password Modal -->
+		
+		<!-- Reset Password Modal -->
 	    <div class="modal modal-resetpass" id="resetpass-modal" tabindex="-1" role="dialog" aria-labelledby="resetpassModalLabel" aria-hidden="true">
 	        <div class="modal-dialog">
 	            <div class="modal-content">
@@ -605,8 +612,8 @@
 	                        <form class="resetpass-form" th:object="${player}" th:action="@{/passwordreset}" method="post">             
 	                            
 	                            <div class="form-group email">
-	                                <label class="sr-only" for="reg-email">E-mail ou login</label>
-	                                <input id="reg-email" name="reg-email" type="text" th:field="*{email}" class="form-control login-email" required="true" placeholder="E-mail ou login" />
+	                                <label class="sr-only" for="reg-emailReset">E-mail ou login</label>
+	                                <input id="reg-emailReset" name="reg-email" type="text" th:field="*{email}" class="form-control login-email" required="true" placeholder="E-mail ou login" />
 	                            </div>
 	                            
 	                            <div class="form-group">
@@ -645,7 +652,7 @@
 	    <script type="text/javascript" th:inline="javascript" th:src="@{/vendors/tempo/assets/js/main.js}"></script> 
 	    
 	    <!-- Vimeo video API -->
-	    <script src="https://secure-a.vimeocdn.com/js/froogaloop2.min.js"></script>
+	    <script src="https://f.vimeocdn.com/js/froogaloop2.min.js"></script>
 	    <script type="text/javascript" th:src="@{/vendors/tempo/assets/js/vimeo.js}"></script> 
 	    
 	    <!--[if !IE]>-->
@@ -666,6 +673,72 @@
 			if(document.getElementById("alertMessage").value=='success'){bootbox.alert(document.getElementById("alertMsgEmailSent").value);}
 			if(document.getElementById("alertMessage").value=='error'){bootbox.alert(document.getElementById("alertMessageContent").value);}
 			/*]]>*/
+		</script>
+
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js'></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js'></script>
+		<script src='https://www.google.com/recaptcha/api.js?hl=pt-BR'></script>
+
+		<script th:inline="javascript">
+		/*<![CDATA[*/
+	    function debounce(func,wait,immediate){
+	    	var timeout;
+	    	return function(){
+	    		var context=this,args=arguments;
+	    		var later=function(){
+	    			timeout=null;
+	    			if (!immediate) func.apply(context,args);
+	    		};
+	    		var callNow=immediate && !timeout;
+	    		clearTimeout(timeout);
+	    		timeout=setTimeout(later,wait);
+	    		if(callNow) func.apply(context,args);
+	    	};
+	    };
+	    function recaptchaCallback(){
+	    	var response=grecaptcha.getResponse(),
+	    	$button=jQuery(".button-register");
+	    	jQuery("#hidden-grecaptcha").val(response);
+	    	console.log(jQuery("#formContact").valid());
+	    	if(jQuery("#formContact").valid()){$button.attr("disabled",false);}
+	    	else{$button.attr("disabled","disabled");}
+	    }
+	    function recaptchaExpired(){
+	    	var $button=jQuery(".button-register");
+	    	jQuery("#hidden-grecaptcha").val("");
+	    	var $button=jQuery(".button-register");
+	    	if(jQuery("#formContact").valid()){$button.attr("disabled",false);}
+	    	else{$button.attr("disabled","disabled");}
+	    }
+	    function submitFormContact(){jQuery("#formContact").submit();}
+	    (function($,root,undefined){
+	    	$(function(){
+	    		'use strict';
+	            jQuery("#formContact").find("input").on("keyup",debounce(function(){
+	            	var $button=jQuery(".button-register");
+	              	console.log(jQuery("#formContact").valid());
+	              	if(jQuery("#formContact").valid()){$button.attr("disabled",false);}
+	              	else{$button.attr("disabled","disabled");}
+	            },1000));
+	            jQuery("#formContact").validate({
+	            	rules:{
+	                	"email":{required:true,email:true},
+	                	"message":{required:true,minlength: "10"},                
+	                	"hidden-grecaptcha":{required:true,minlength:"255"}
+	              	},
+	              	messages:{
+	            		"email":"Por favor, informe um email.",
+	                	"message":{
+	                		required:"Por favor, preencha o campo de mensagem.",
+							minlength:"A mensagem deve conter pelo menos 10 caracteres."
+	                	},
+	                	"hidden-grecaptcha":"Por favor, marque o campo Não sou um robô."
+	              	},
+	              	submitHandler: submitFormContact
+	            });
+	        });
+	    })(jQuery, this);
+	    /*]]>*/
 		</script>
 
 	</body>

@@ -2,8 +2,12 @@ package com.polifono.controller;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.domain.Player;
 import com.polifono.domain.bean.CurrentUser;
+import com.polifono.service.impl.RecaptchaService;
 import com.polifono.util.EmailSendUtil;
 import com.polifono.util.EmailUtil;
 
@@ -24,6 +29,8 @@ public class HomeController extends BaseController {
     public static final String URL_CONTACT = "contact";
     public static final String URL_CONTACTOPEN = "index";
     public static final String REDIRECT_GAMES = "redirect:/games/";
+    
+    @Autowired RecaptchaService captchaService;
     
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
 	public final String index(final Model model) {
@@ -60,7 +67,8 @@ public class HomeController extends BaseController {
     }
 
     @RequestMapping(value = {"/contact"}, method = RequestMethod.POST)
-    public final String contactsubmit(final Model model, @RequestParam(value = "email", defaultValue = "") String email, @RequestParam("message") String message) {
+    public final String contactsubmit(final Model model, @RequestParam(value = "email", defaultValue = "") String email, @RequestParam("message") String message, 
+    		@RequestParam(name="g-recaptcha-response") String recaptchaResponse, HttpServletRequest request) {
     	
     	boolean logged = false;
     	
@@ -71,6 +79,27 @@ public class HomeController extends BaseController {
     		logged = true;
     		email = currentUser.getUser().getEmail();
     	}
+    	
+    	String captchaVerifyMessage = captchaService.verifyRecaptcha(request.getRemoteAddr(), recaptchaResponse);
+    	
+    	if (StringUtils.isNotEmpty(captchaVerifyMessage)) {
+			//Map<String, Object> response = new HashMap<>();
+			//response.put("message", captchaVerifyMessage);
+			//return ResponseEntity.badRequest().body(response);
+    		
+    		// If there are errors.
+    		model.addAttribute("message", "error");
+			model.addAttribute("messageContent", "Por favor, marque o campo Não sou um robô.");
+			
+			if (logged) {
+				return URL_CONTACT;
+			}
+			else {
+				model.addAttribute("player", new Player());
+				model.addAttribute("playerResend", new Player());
+				return URL_CONTACTOPEN;
+			}
+		}
     	
     	String msg = this.validateContact(email, message);
     	

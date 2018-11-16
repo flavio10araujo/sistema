@@ -164,7 +164,7 @@ public class EmailSendUtil {
 		}
 		else if (messageType == 5) {
 			from = resourceBundle.getString("email.general");
-			to = resourceBundle.getString("email.general");
+			to = resourceBundle.getString("email.general.to");
 			subject = "Novo contato: " + args[0];
 			message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">"
 					+ "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
