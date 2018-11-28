@@ -58,28 +58,19 @@
 		
 		<script th:inline="javascript">
 			/*<![CDATA[*/
-				
-				if (document.getElementById("alertMessage").value == "error") {
-					bootbox.alert("O certificado informado nÃ£o existe.");
-				}
+				if(document.getElementById("alertMessage").value=="error"){bootbox.alert("O certificado informado não existe.");}
 			
 				$(document).ready(function(){
 	  				$("#btnDip").click(function(){
 	  					$(this).button('loading');
-	  					if(!verifyForm()){
-	  						$(this).button('reset');
-	  					}
+	  					if(!verifyForm()){$(this).button('reset');}
 	  				});
 	  			});
 
 		  		function verifyForm(){
-					if ($("#code").val() == "") {
-						return false;
-					}
-					
+					if($("#code").val()==""){return false;}
 					return true;
 				}
-				
 			/*]]>*/
 		</script>
 		
