@@ -108,19 +108,13 @@
 		
 		<script th:inline="javascript">
 			/*<![CDATA[*/
-				
-				if (document.getElementById("alertCodRegister").value == 1 || document.getElementById("alertCodRegister").value == 2) {
-					bootbox.alert(document.getElementById("alertMessageContent").value);
-				}
-			
+				if(document.getElementById("alertCodRegister").value==1 || document.getElementById("alertCodRegister").value==2){bootbox.alert(document.getElementById("alertMessageContent").value);}
+
 				$(document).ready(function(){
 	  				$("#btnBuy").click(function(){
-	  					if ($("#quantity").val() >= 5 && $("#quantity").val() <= 85) {
-	  						$(this).button('loading');
-	  					}
+	  					if($("#quantity").val() >= 5 && $("#quantity").val() <= 85){$(this).button('loading');}
 	  				});
 	  			});
-				
 			/*]]>*/
 		</script>
 		
