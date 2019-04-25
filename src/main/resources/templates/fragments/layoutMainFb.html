@@ -59,18 +59,18 @@
 <body>
 
 <div id="fb-root"></div>
-   <script th:inline="javascript">
+<script th:inline="javascript">
 	/*<![CDATA[*/
-	function statusChangeCallback(response){if(response.status==='connected'){window.location="/loginfb?code="+response.authResponse.accessToken;}}
+	function statusChangeCallback(response){if(response.status==='connected'){window.location="./loginfb?code="+response.authResponse.accessToken;}}
   	function checkLoginState(){FB.getLoginStatus(function(response){statusChangeCallback(response);});}
   	window.fbAsyncInit=function(){FB.init({appId:'324370751419847',cookie:true,xfbml:true,version:'v2.8'});};
   	(function(d,s,id){
-    var js,fjs=d.getElementsByTagName(s)[0];
-    if(d.getElementById(id)) return;
-    js=d.createElement(s);js.id=id;
-    js.src="https://connect.facebook.net/pt_BR/sdk.js";
-    fjs.parentNode.insertBefore(js,fjs);
-  	}(document,'script','facebook-jssdk'));
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(d.getElementById(id)) return;
+          js=d.createElement(s);js.id=id;
+          js.src="https://connect.facebook.net/pt_BR/sdk/xfbml.customerchat.js";
+          fjs.parentNode.insertBefore(js,fjs);
+        	}(document,'script','facebook-jssdk'));
 	/*]]>*/
 </script>
 

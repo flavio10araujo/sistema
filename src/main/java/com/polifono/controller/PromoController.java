@@ -38,9 +38,11 @@ public class PromoController extends BaseController {
 	@Autowired
 	private IContentService contentService;
 	
-	public static final String URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR = "promos/phaseContentAcousticGuitar";
-	public static final String URL_PROMOS_PHASECONTENT_RECORDER = "promos/phaseContentRecorder";
 	public static final String URL_PROMOS_PHASECONTENT_MUSIC_THEORY = "promos/phaseContentMusicalTheory";
+	public static final String URL_PROMOS_PHASECONTENT_RECORDER = "promos/phaseContentRecorder";
+	public static final String URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR = "promos/phaseContentAcousticGuitar";
+	public static final String URL_PROMOS_PHASECONTENT_SAXOPHONE = "promos/phaseContentSaxophone";
+	
 	public static final String REDIRECT_HOME = "redirect:/";
 
 	/**
@@ -59,9 +61,10 @@ public class PromoController extends BaseController {
 			@PathVariable("gameName") String gameName
 			) {
 		
-		// http://www.polifono.com/promos/acoustic_guitar
-		// http://www.polifono.com/promos/recorder
 		// http://www.polifono.com/promos/musical_theory
+		// http://www.polifono.com/promos/recorder
+		// http://www.polifono.com/promos/acoustic_guitar
+		// http://www.polifono.com/promos/saxophone
 		
 		Integer levelOrder = 1;
 		Integer mapOrder = 1;
@@ -102,8 +105,12 @@ public class PromoController extends BaseController {
 		model.addAttribute("phase", phase);
 		model.addAttribute("content", content);
 		
+		// saxophone
+		if (game.getId() == 3) {
+			return URL_PROMOS_PHASECONTENT_SAXOPHONE;
+		}
 		// acoustic_guitar
-		if (game.getId() == 2) {
+		else if (game.getId() == 2) {
 			return URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR;
 		}
 		// musical_theory
