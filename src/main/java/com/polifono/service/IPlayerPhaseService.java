@@ -6,6 +6,7 @@ import com.polifono.domain.Game;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
+import com.polifono.dto.RankingDTO;
 import com.polifono.form.teacher.ReportGeneralForm;
 
 public interface IPlayerPhaseService {
@@ -33,5 +34,7 @@ public interface IPlayerPhaseService {
 	public PlayerPhase setTestAttempt(Player user, Phase phase);
 	
 	public List<Game> filterPlayerPhasesListByGame(List<PlayerPhase> list);
+	
+	public List<RankingDTO> getRankingMonthly();
 
 }

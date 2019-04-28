@@ -1,5 +1,6 @@
 package com.polifono.service.impl;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +12,11 @@ import com.polifono.domain.Phase;
 import com.polifono.domain.Phasestatus;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
+import com.polifono.dto.RankingDTO;
 import com.polifono.form.teacher.ReportGeneralForm;
 import com.polifono.repository.IPlayerPhaseRepository;
 import com.polifono.service.IPlayerPhaseService;
+import com.polifono.util.DateUtil;
 
 @Service
 public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
@@ -139,5 +142,37 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 		}
 		
 		return this.save(playerPhase);
+	}
+	
+	/**
+	 * This method is used to get the top 10 best students of the month.
+	 * The students that has achieved the highest scores.
+	 */
+	public List<RankingDTO> getRankingMonthly() {
+		List<RankingDTO> ranking = new ArrayList<RankingDTO>();
+		
+		Object[][] objects;
+		try {
+			objects = repository.getRanking(DateUtil.getFirstDayOfTheCurrentMonth(), DateUtil.getLastDayOfTheCurrentMonth());
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return ranking;
+		}
+		
+		for (Object[] o : objects) {
+			RankingDTO r = new RankingDTO();
+			Player p = new Player();
+			
+			p.setId((int) o[0]);
+			p.setName((String) o[1]);
+			p.setLastName((String) o[2]);
+			
+			r.setPlayer(p);
+			r.setScore(((Number) o[3]).intValue());
+			
+			ranking.add(r);
+		} 
+		
+		return ranking;
 	}
 }

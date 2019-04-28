@@ -91,6 +91,49 @@
                 
             </div>
             
+            <div class="panel panel-default">
+            
+                <div class="panel-body">
+                
+                    <div class="media">
+                    
+                        <div class="media-body">
+                            <div class="pull-left">
+	                        	<a href="#" class="btn btn-link" style="text-decoration:none"><i class="fa fa-trophy" aria-hidden="true"></i></a>
+	                    	</div>
+	                    
+	                    	<h4><a href="#" style="text-decoration:none;margin-right:8px;margin-top:-5px"><strong>Ranking mensal</strong></a></h4>
+	                    
+	                    	<hr />
+                    
+                            <div style="overflow-x:auto;">
+	                            <table class="table table-striped table-condensed">
+	             					<thead>
+										<tr>
+	        								<th data-toggle="tooltip" title="Os 10 melhores alunos desse mês">Aluno</th>
+	        								<th data-toggle="tooltip" title="Pontuação obtida no mês atual">Pontos</th>
+	      								</tr>
+    								</thead>
+	             					<tbody>
+               							<tr th:each="ranking : ${ranking_monthly}">
+   											<td>
+   												<a th:href="@{'/profile/player/'+${ranking.player.id}}" style="text-decoration:none"><span th:text="${ranking.player.name + ' ' + ranking.player.lastName}"></span></a>
+   											</td>
+   											
+   											<td th:text="${ranking.score}"></td>
+   										</tr>
+	             					</tbody>
+	           					</table>
+	                        </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
         </div>
 	</div>
 </body>

@@ -89,7 +89,8 @@ public class GameController extends BaseController {
 	 */
 	@RequestMapping(value = {"/games"}, method = RequestMethod.GET)
 	public final String listGames(final Model model) {
-		model.addAttribute("games", gameService.findAll());
+		//model.addAttribute("games", gameService.findAll());
+		model.addAttribute("ranking_monthly", playerPhaseService.getRankingMonthly());
 		return URL_GAMES_INDEX;
 	}
 
