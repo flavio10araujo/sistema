@@ -100,18 +100,19 @@
 <body>
 
 <div id="fb-root"></div>
+
 <script th:inline="javascript">
 	/*<![CDATA[*/
-	function statusChangeCallback(response){if(response.status==='connected'){window.location="/loginfb?code="+response.authResponse.accessToken;}}
+	function statusChangeCallback(response){if(response.status==='connected'){window.location="./loginfb?code="+response.authResponse.accessToken;}}
   	function checkLoginState(){FB.getLoginStatus(function(response){statusChangeCallback(response);});}
   	window.fbAsyncInit=function(){FB.init({appId:'324370751419847',cookie:true,xfbml:true,version:'v2.8'});};
   	(function(d,s,id){
-    var js,fjs=d.getElementsByTagName(s)[0];
-    if(d.getElementById(id)) return;
-    js=d.createElement(s);js.id=id;
-    js.src="https://connect.facebook.net/pt_BR/sdk.js";
-    fjs.parentNode.insertBefore(js,fjs);
-  	}(document,'script','facebook-jssdk'));
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(d.getElementById(id)) return;
+          js=d.createElement(s);js.id=id;
+          js.src="https://connect.facebook.net/pt_BR/sdk/xfbml.customerchat.js";
+          fjs.parentNode.insertBefore(js,fjs);
+        	}(document,'script','facebook-jssdk'));
 	/*]]>*/
 </script>
 
@@ -127,11 +128,11 @@
     <div class="container">
         <div class="row featurette">
             <div class="col-md-6">
-                <h2 class="featurette-heading" style="padding-top:0px;margin-top:0px;"><i class="material-icons" style="font-size:25px">grain</i> Se voc&#xEA; procurava o melhor e mais completo curso de teoria musical da Internet, acaba de encontrar!</h2>
-                <p style="font-size:20px;color:#51a746"><i class="material-icons" style="font-size:25px;color:green">done</i> Do b&#xE1;sico ao avan&#xE7;ado!</p>
-                <p style="font-size:20px;color:#51a746"><i class="material-icons" style="font-size:25px;color:green">done</i> Curso com certificado!</p>
-                <p style="font-size:20px;color:#51a746"><i class="material-icons" style="font-size:25px;color:green">done</i> Professor para tirar d&uacute;vidas!</p>
-                <p style="font-size:20px;color:#51a746"><i class="material-icons" style="font-size:25px;color:green">done</i> Cadastro gratuito!</p>
+                <h2 class="featurette-heading" style="padding-top:0px;margin-top:0px;margin-bottom:20px"><i class="material-icons" style="font-size:25px">grain</i> Se voc&#xEA; procurava o melhor e mais completo curso de teoria musical da Internet, acaba de encontrar!</h2>
+                <p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Do b&#xE1;sico ao avan&#xE7;ado!</p>
+                <p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Curso com certificado!</p>
+                <p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Professor para tirar d&uacute;vidas!</p>
+                <p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Cadastro gratuito!</p>
             </div>
             <div class="col-md-6">
                 <div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://player.vimeo.com/video/199858396?autoplay=1&amp;loop=0&amp;autopause=0" width="300" height="150" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
@@ -144,15 +145,16 @@
 
 <div class="jumbotron" style="padding-top:0px;padding-bottom:0px;margin-bottom:20px;background-color:#fff;">
     <div class="container" style="width:100%;text-align: center;">
-		<img class="fr-dib fr-draggable img-responsive" style="display:inline;margin-bottom:3px;" th:src="@{/static/img/promos/aluno03.jpg}" />
+		<img class="fr-dib fr-draggable img-responsive" style="display:inline;margin-bottom:3px;" th:src="@{/static/img/promos/aluno04.jpg}" />
 		<img class="fr-dib fr-draggable img-responsive" style="display:inline;margin-bottom:3px;" th:src="@{/static/img/promos/aluno02.jpg}" />
-		<img class="fr-dib fr-draggable img-responsive" style="display:inline" th:src="@{/static/img/promos/aluno04.jpg}" />
+		<img class="fr-dib fr-draggable img-responsive" style="display:inline" th:src="@{/static/img/promos/aluno03.jpg}" />
     </div>
 </div>
 
 <div class="jumbotron" style="padding-top:10px;padding-bottom:0px;margin-bottom:0px;background-color:#51a746;color:#fff">
     <div class="container">
-        <p class="site-heading" style="font-size:21px;"><i class="material-icons" style="font-size:20px">grain</i> Veja a seguir a primeira aula. Nesse curso, n&#xF3;s juntamos a teoria musical com a pr&#xE1;tica da flauta doce, assim, voc&#xEA; aprender&#xE1; toda a leitura musical usando um instrumento para entender na pr&#xE1;tica como funciona. Se gostar do curso (e n&#xF3;s sabemos que voc&#xEA; gostar!), fa&#xE7;a seu cadastro rapidinho para ver todas as 90 aulas. Não perca tempo e bons estudos! </p>
+        <p class="site-heading" style="font-size:21px;"><i class="material-icons" style="font-size:20px">grain</i> Veja a seguir a primeira aula. 
+		Nesse curso, n&#xF3;s juntamos a teoria musical com a pr&#xE1;tica da flauta doce, assim, voc&#xEA; aprender&#xE1; toda a leitura musical usando um instrumento para entender na pr&#xE1;tica como funciona. Se gostar do curso (e n&#xF3;s sabemos que voc&#xEA; vai gostar!), fa&#xE7;a seu cadastro rapidinho para ver todas as 90 aulas. Não perca tempo e bons estudos! </p>
     </div>
 </div>
 
@@ -180,13 +182,13 @@
 <div id="register" class="jumbotron" style="padding-top:0px;padding-bottom:20px;margin-bottom:0px;background-color:#fff">
     <div class="container">
         
-		<p style="font-size:20px;color:#51a746"><i class="material-icons" style="font-size:25px;color:green">done</i> Cadastre-se com apenas um clique usando sua conta do Facebook:</p>
+		<p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Cadastre-se com apenas um clique usando seu Facebook:</p>
 		
 		<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></fb:login-button>
 		
 		<hr />
 		
-		<p style="font-size:20px;color:#51a746"><i class="material-icons" style="font-size:25px;color:green">done</i> Caso n&#xE3;o tenha Facebook, voc&#xEA; pode fazer o cadastro normal:</p>
+		<p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Ou cadastre-se com seu e-mail:</p>
 
 		<h2 class="title">Cadastre-se</h2>
 		
