@@ -32,7 +32,7 @@
     <meta itemprop="url" content="https://media.polifono.com/img/sax_1_1_002_1_01.png" />
 	
 	<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" />
-	<link rel="stylesheet" type="text/css" media="all" th:href="@{/static/css/promos.css}" />
+	<!--<link rel="stylesheet" type="text/css" media="all" th:href="@{/static/css/promos.css}" /> -->
 	<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
 	<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
@@ -103,7 +103,7 @@
 
 <script th:inline="javascript">
 	/*<![CDATA[*/
-	function statusChangeCallback(response){if(response.status==='connected'){window.location="./loginfb?code="+response.authResponse.accessToken;}}
+	function statusChangeCallback(response){if(response.status==='connected'){window.location="https://www.polifono.com/loginfb?code="+response.authResponse.accessToken;}}
   	function checkLoginState(){FB.getLoginStatus(function(response){statusChangeCallback(response);});}
   	window.fbAsyncInit=function(){FB.init({appId:'324370751419847',cookie:true,xfbml:true,version:'v2.8'});};
   	(function(d,s,id){
@@ -171,10 +171,24 @@
       		<div class="row">
 				<div class="panel panel-primary">
 					<div class="panel-heading" th:text="${phase.name}"></div>
-					<div class="panel-body" th:utext="${content.content}"></div>
+					<div class="panel-body" th:utext="${content.content}" style="color:black;line-height:normal;"></div>
 				</div>
 			</div>
+			<div class="row" align="right">
+				<a href="#register" class="btn btn-primary" role="button" data-loading-text="Aguardando o seu cadastro..." id="btnOk">Ver a próxima aula >></a>
+				<br /><br />
+			</div>
     	</div>
+    	
+    	<script th:inline="javascript">
+	  		/*<![CDATA[*/	
+  			$(document).ready(function(){
+  				$("#btnOk").click(function(){
+  					$(this).button('loading');
+  				});
+  			});
+	  		/*]]>*/
+		</script>
 		
 	</div>
 </div>
@@ -182,7 +196,7 @@
 <div id="register" class="jumbotron" style="padding-top:0px;padding-bottom:20px;margin-bottom:0px;background-color:#fff">
     <div class="container">
         
-		<p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Cadastre-se com apenas um clique usando seu Facebook:</p>
+		<p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Cadastre-se com seu Facebook:</p>
 		
 		<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></fb:login-button>
 		

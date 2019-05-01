@@ -384,7 +384,7 @@ public class PlayerController extends BaseController {
 	public String loginfb(HttpServletRequest request, final Model model, String code) {
 		
 		try {
-			JSONObject resp = new JSONObject(Util.readURL(new URL("https://graph.facebook.com/v2.12/me?fields=email,first_name,last_name,gender&access_token=" + code)));
+			JSONObject resp = new JSONObject(Util.readURL(new URL("https://graph.facebook.com/v2.12/me?fields=email,first_name,last_name&access_token=" + code)));
 			PlayerFacebook playerFacebook = new PlayerFacebook(resp);
 			
 			if (playerFacebook == null || playerFacebook.getId() == null) {
@@ -465,6 +465,7 @@ public class PlayerController extends BaseController {
 			model.addAttribute("codRegister", 2);
 			// TODO - buscar msg do messages.
 			model.addAttribute("msgRegister", "<br />Ocorreu algum erro ao utilizar sua conta do Facebook.");
+			System.out.println("MalformedURLException - loginfb - Ocorreu algum erro ao utilizar sua conta do Facebook.");
 			return URL_INDEX;
 		}
 		catch(IOException e) {
@@ -472,6 +473,7 @@ public class PlayerController extends BaseController {
 			model.addAttribute("codRegister", 2);
 			// TODO - buscar msg do messages.
 			model.addAttribute("msgRegister", "<br />Algum erro ocorreu ao utilizar sua conta do Facebook.");
+			System.out.println("IOException - loginfb - Ocorreu algum erro ao utilizar sua conta do Facebook.");
 			return URL_INDEX;
 		}
 	}

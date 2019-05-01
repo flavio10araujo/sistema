@@ -43,6 +43,8 @@ public class PromoController extends BaseController {
 	public static final String URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR = "promos/phaseContentAcousticGuitar";
 	public static final String URL_PROMOS_PHASECONTENT_SAXOPHONE = "promos/phaseContentSaxophone";
 	
+	public static final String URL_PROMOS_PHASECONTENT_TESTE = "promos/phaseContentTeste";
+	
 	public static final String REDIRECT_HOME = "redirect:/";
 
 	/**
@@ -66,6 +68,8 @@ public class PromoController extends BaseController {
 		// http://www.polifono.com/promos/acoustic_guitar
 		// http://www.polifono.com/promos/saxophone
 		
+		// http://www.polifono.com/promos/testes
+		
 		Integer levelOrder = 1;
 		Integer mapOrder = 1;
 		Integer phaseOrder = 1;
@@ -76,6 +80,11 @@ public class PromoController extends BaseController {
 		
 		// workaround - if it's trying to see the musical_theory course, it's showed the recorder course.
 		if ("musical_theory".equals(gameName)) {
+			gameNameParam = "recorder";
+		}
+		
+		// teste
+		if ("teste".equals(gameName)) {
 			gameNameParam = "recorder";
 		}
 		
@@ -116,6 +125,10 @@ public class PromoController extends BaseController {
 		// musical_theory
 		else if ("musical_theory".equals(gameName)) {
 			return URL_PROMOS_PHASECONTENT_MUSIC_THEORY;
+		}
+		// teste
+		else if ("teste".equals(gameName)) {
+			return URL_PROMOS_PHASECONTENT_TESTE;
 		}
 		// recorder
 		else {
