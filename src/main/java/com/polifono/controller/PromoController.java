@@ -18,6 +18,7 @@ import com.polifono.service.IGameService;
 import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerService;
+import com.polifono.util.ContentUtil;
 
 @Controller
 public class PromoController extends BaseController {
@@ -85,7 +86,7 @@ public class PromoController extends BaseController {
 		
 		// teste
 		if ("teste".equals(gameName)) {
-			gameNameParam = "recorder";
+			gameNameParam = "saxophone";
 		}
 		
 		Game game = gameService.findByNamelink(gameNameParam);
@@ -104,7 +105,7 @@ public class PromoController extends BaseController {
 		if (phase == null) return REDIRECT_HOME;
 		
 		// Get the first content of this phase.
-		Content content = contentService.findByPhaseAndOrder(phase.getId(), 1);
+		Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(phase.getId(), 1));
 		
 		// If the content doesn't exist.
 		if (content == null) return REDIRECT_HOME;
@@ -115,11 +116,11 @@ public class PromoController extends BaseController {
 		model.addAttribute("content", content);
 		
 		// saxophone
-		if (game.getId() == 3) {
+		if ("saxophone".equals(gameName)) {
 			return URL_PROMOS_PHASECONTENT_SAXOPHONE;
 		}
 		// acoustic_guitar
-		else if (game.getId() == 2) {
+		else if ("acoustic_guitar".equals(gameName)) {
 			return URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR;
 		}
 		// musical_theory

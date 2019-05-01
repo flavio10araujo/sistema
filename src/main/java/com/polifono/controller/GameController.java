@@ -34,6 +34,7 @@ import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.IQuestionService;
+import com.polifono.util.ContentUtil;
 import com.polifono.util.RandomStringUtil;
 
 @Controller
@@ -257,7 +258,7 @@ public class GameController extends BaseController {
 		if (!phaseService.playerCanAccessThisPhase(phase, this.currentAuthenticatedUser().getUser())) return REDIRECT_HOME;
 		
 		// Get the first content of this phase.
-		Content content = contentService.findByPhaseAndOrder(phase.getId(), 1);
+		Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(phase.getId(), 1));
 		
 		// If the content doesn't exist.
 		if (content == null) return REDIRECT_HOME;
