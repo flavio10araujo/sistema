@@ -16,9 +16,11 @@ public class ContentUtil {
 				+ "<p><span style=\"font-size:14px\"><span style=\"font-family:Verdana,Geneva,sans-serif\"><strong>Aten&ccedil;&atilde;o</strong>: Neste curso, utilizaremos o <u><strong>Saxofone Alto</strong></u>, que tem a afina&ccedil;&atilde;o em Mi bemol. No entanto como dito, voc&ecirc; poder&aacute; treinar os exerc&iacute;cios com qualquer modelo da fam&iacute;lia do saxofone.</span></span></p>"
 				);
 		
-		Content resultado = formatContent(original);
+		//Content resultado = formatContent(original);
 		
-		System.out.println(resultado.getContent());
+		//System.out.println(resultado.getContent());
+		
+		System.out.println(getURLImageFromCompleteTagHTML("<img class=\"img-responsive\" alt=\"\" src=\"https://media.polifono.com/img/sax_1_1_001_1_01.png\" height=\"705\" width=\"1000\" />"));
 	}
 	
 	public static Content formatContent(Content content) {
@@ -56,6 +58,7 @@ public class ContentUtil {
 		for (int i = 1; i < imgsOriginal.length; i++) {
 			imgsFormatted[i] = formatClassImgResponsive(imgsOriginal[i]);
 			imgsFormatted[i] = formatImgWidthAndHeight(imgsFormatted[i]);
+			imgsFormatted[i] = addPopupToImage(imgsFormatted[i]);
 			//System.out.println(imgsFormatted[i]);
 		}
 		
@@ -77,14 +80,13 @@ public class ContentUtil {
 	 */
 	public static String formatImgWidthAndHeight(String content) {
 		String htmlHeight = "height=\"X\" ";
-		String htmlWidth = "width=\"X\" ";
+		String htmlWidth = "width=\"X\"";
 		String style, height, width;
 		int indexStyle, indexHeight, indexWidth;
 		
 		indexStyle = content.indexOf("style=\"height:");
 		
 		if (indexStyle > 0) {
-		
 			style = content.substring(indexStyle);
 			style = style.substring(0, style.indexOf("px\"") + 3);
 			//System.out.println("Style = " + style);
@@ -106,6 +108,49 @@ public class ContentUtil {
 		}
 		
 		return content;
+	}
+	
+	/**
+	 * This method will add an html "a href" around the image.
+	 * With this, it is possible to click on the image to see it in its original size in a popup.
+	 * 
+	 * Ex.: 
+	 * From:
+	 * <img src="https://media.polifono.com/img/recorder_1_1_001_1_01.jpg" width="75" height="75" />
+	 * To:
+	 * <a class="image-popup-vertical-fit" href="https://media.polifono.com/img/recorder_1_1_001_1_01.jpg" title="">
+	 * <img src="https://media.polifono.com/img/recorder_1_1_001_1_01.jpg" width="75" height="75" />
+	 * </a>
+	 * 
+	 * @param content
+	 * @return
+	 */
+	public static String addPopupToImage(String content) {
+		String htmlABegin = "<a class=\"image-popup-vertical-fit\" href=\"X\" title=\"\">";
+		htmlABegin = htmlABegin.replace("X", getURLImageFromCompleteTagHTML(content));
+		return htmlABegin + content + "</a>";  
+	}
+	
+	/**
+	 * Ex.:
+	 * tagImg = <img class="img-responsive" alt="" src="https://media.polifono.com/img/sax_1_1_001_1_01.png" height="705" width="1000" />
+	 * return = https://media.polifono.com/img/sax_1_1_001_1_01.png
+	 * 
+	 * @param tagImg
+	 * @return
+	 */
+	public static String getURLImageFromCompleteTagHTML(String tagImg) {
+		// <img class="img-responsive" alt="" src="https://media.polifono.com/img/sax_1_1_001_1_01.png" height="705" width="1000" />
+		String img = "";
+		
+		int indexSrc = tagImg.indexOf("src=\"");
+		
+		if (indexSrc > 0) {
+			img = tagImg.substring(indexSrc + 5);
+			img = img.substring(0, img.indexOf("\""));
+		}
+		
+		return img;
 	}
 	
 	public static String replaceImages(String content, String[] imgsOriginal, String[] imgsFormatted) {
