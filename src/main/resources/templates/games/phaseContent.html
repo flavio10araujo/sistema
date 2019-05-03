@@ -23,8 +23,8 @@
 				</ol>
 			</div>
 			<div class="row" align="right" style="height:0px">
-				<a onClick="fontSize('a');" data-toggle="tooltip" title="Aumentar o texto" class="btn btn-primary" style="height:42px;padding-right:6px;padding-left:6px"><span class="glyphicon glyphicon-plus-sign" style="font-size:20px"></span></a>
-				<a onClick="fontSize('d');" data-toggle="tooltip" title="Diminuir o texto" class="btn btn-primary" style="height:42px;padding-right:6px;padding-left:6px;margin-right:8px"><span class="glyphicon glyphicon-minus-sign" style="font-size:20px"></span></a>
+				<a onClick="fontSize('a');" data-toggle="tooltip" title="Aumentar o texto" class="btn btn-primary" style="height:42px;padding-right:6px;padding-left:6px"><span class="fa fa-plus-circle" style="font-size:20px"></span></a>
+				<a onClick="fontSize('d');" data-toggle="tooltip" title="Diminuir o texto" class="btn btn-primary" style="height:42px;padding-right:6px;padding-left:6px;margin-right:8px"><span class="fa fa-minus-circle" style="font-size:20px"></span></a>
 			</div>
       		<div class="row">
 				<div class="panel panel-primary">
@@ -33,7 +33,7 @@
 				</div>
 			</div>
 			<div class="row" align="right">
-				<a th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/'+${map.order}+'/'+${phase.order}+'/test'}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Concluir&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-arrow-right"></span></a>
+				<a th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/'+${map.order}+'/'+${phase.order}+'/test'}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Concluir&nbsp;&nbsp;&nbsp;<span class="fa fa-arrow-right"></span></a>
 				<br /><br />
 			</div>
 			<div class="row breadcrumb">
