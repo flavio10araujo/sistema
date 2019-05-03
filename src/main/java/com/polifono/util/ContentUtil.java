@@ -2,6 +2,11 @@ package com.polifono.util;
 
 import com.polifono.domain.Content;
 
+/**
+ * 
+ * This class has methods to change the content of the classes.
+ *
+ */
 public class ContentUtil {
 
 	public static void main(String args[]) {
@@ -31,6 +36,8 @@ public class ContentUtil {
 		String[] imgsFormatted = formatImages(imgsOriginal);
 		
 		formatted = replaceImages(formatted, imgsOriginal, imgsFormatted);
+		
+		formatted = addClassText(formatted);
 		
 		content.setContent(formatted);
 		
@@ -70,6 +77,27 @@ public class ContentUtil {
 		content = content.replaceAll("fr-dib fr-draggable ", "");
 		content = content.replaceAll("class=\"img-responsive\" ", "");
 		return content.replaceAll("<img ", "<img class=\"img-responsive\" ");
+	}
+	
+	public static String addClassText(String content) {
+		content = addClassFontSize(content);
+		return content;
+	}
+	
+	/**
+	 * In the text, there are 4 sizes of font-size: 24px, 20px, 16px and 14px.
+	 * This method will add a different css class for each font-size.
+	 * Thus it will be possible to use the functionality increase-decrease text.
+	 * 
+	 * @param content
+	 * @return
+	 */
+	public static String addClassFontSize(String content) {
+		content = content.replaceAll("style=\"font-size:24px\"", "class=\"txtClass fontSize24px\" style=\"font-size:24px\"");
+		content = content.replaceAll("style=\"font-size:20px\"", "class=\"txtClass fontSize20px\" style=\"font-size:20px\"");
+		content = content.replaceAll("style=\"font-size:16px\"", "class=\"txtClass fontSize16px\" style=\"font-size:16px\"");
+		content = content.replaceAll("style=\"font-size:14px\"", "class=\"txtClass fontSize14px\" style=\"font-size:14px\"");
+		return content;
 	}
 	
 	/**

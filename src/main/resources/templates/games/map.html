@@ -51,8 +51,8 @@
 	      	</div>
 
 		  	<!-- LISTAS DAS FASES V2: http://bootsnipp.com/snippets/featured/form-process-steps -->
-           	<div class="row bs-wizard" style="border-bottom:0">
-                <div th:each="phase : ${phases}" th:class="((${phase.opened}) ? 'col-xs-6 col-sm-3 col-md-3 bs-wizard-step complete' : 'col-xs-6 col-sm-3 col-md-3 bs-wizard-step disabled')">
+           	<div class="row bs-wizard" style="border-bottom:0;margin-top:0px">
+                <div th:each="phase : ${phases}" th:class="((${phase.opened}) ? 'col-xs-6 col-sm-3 col-md-3 bs-wizard-step complete' : 'col-xs-6 col-sm-3 col-md-3 bs-wizard-step disabled')" data-toggle="tooltip" th:title="${phase.order} + ' : ' + ${phase.name}" >
 					<div class="text-center bs-wizard-stepnum" th:text="${phase.order}"></div>
                   	<div class="progress"><div class="progress-bar"></div></div>
                   	<a th:href="@{((${phase.opened}) ? '/games/'+${game.namelink}+'/'+${map.level.order}+'/'+${map.order}+'/'+${phase.order} : '#')}" class="bs-wizard-dot"></a>
@@ -61,6 +61,16 @@
            	</div>
 			<!-- LISTAS DAS FASES V2: http://bootsnipp.com/snippets/featured/form-process-steps - FIM -->
 			
+			<br />
+			
+			<div class="row breadcrumb">
+	     		Informações sobre as aulas:<br />
+	     		Para acessar uma aula, clique no botão da aula.<br />
+	     		Se o botão estiver laranjado, significa que essa aula está liberada para você.<br />
+	     		Se o botão estiver cinza, significa que essa aula está bloqueada para você.<br />
+	     		Para desbloquear uma aula, é necessário passar na prova da aula anterior.<br />
+	     		Para acessar a prova de uma aula, entre na aula e clique no botão [Concluir].
+	      	</div>
 			<div class="row">
 	  			<br /><br /><br /><br /><br />
 	  		</div>

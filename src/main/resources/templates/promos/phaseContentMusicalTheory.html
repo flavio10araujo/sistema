@@ -169,6 +169,10 @@
 		</style>
 		
     	<div class="col-sm-12 bg">
+      		<div class="row" align="right" style="height:0px">
+				<a onClick="fontSize('a');" data-toggle="tooltip" title="Aumentar o texto" class="btn btn-primary" style="height:42px;padding-top:10px;padding-right:10px;padding-left:10px;border:0px"><span class="glyphicon glyphicon-plus-sign" style="font-size:20px"></span></a>
+				<a onClick="fontSize('d');" data-toggle="tooltip" title="Diminuir o texto" class="btn btn-primary" style="height:42px;padding-top:10px;padding-right:10px;padding-left:10px;margin-right:8px;border:0px"><span class="glyphicon glyphicon-minus-sign" style="font-size:20px"></span></a>
+			</div>
       		<div class="row">
 				<div class="panel panel-primary">
 					<div class="panel-heading" th:text="${phase.name}"></div>
@@ -272,6 +276,36 @@
 			}
 		});
 	});
+	
+	var fontChange=0;
+	function fontSize(e){
+		var elemento24=$(".fontSize24px");
+		var fonte24 = elemento24.css('font-size');
+		var elemento20=$(".fontSize20px");
+		var fonte20 = elemento20.css('font-size');
+		var elemento16=$(".fontSize16px");
+		var fonte16 = elemento16.css('font-size');
+		var elemento14=$(".fontSize14px");
+		var fonte14 = elemento14.css('font-size');
+		
+		if(e=='a'){
+			if(fontChange<=10){
+				elemento24.css("fontSize",parseInt(fonte24)+1);
+				elemento20.css("fontSize",parseInt(fonte20)+1);
+				elemento16.css("fontSize",parseInt(fonte16)+1);
+				elemento14.css("fontSize",parseInt(fonte14)+1);
+				fontChange++;
+			}
+		}else if('d'){
+			if(fontChange>=-10){
+				elemento24.css("fontSize",parseInt(fonte24)-1);
+				elemento20.css("fontSize",parseInt(fonte20)-1);
+				elemento16.css("fontSize",parseInt(fonte16)-1);
+				elemento14.css("fontSize",parseInt(fonte14)-1);
+				fontChange--;
+			}
+		}
+	}
 	/*]]>*/
 </script>
 

@@ -20,15 +20,25 @@
 					<!--<li th:text="${map.name}"></li>-->
 					<li th:text="#{app.phase}+' '+${phase.order}" class="active"></li>
 				</ol>
-      		</div>
+			</div>
+			<div class="row" align="right" style="height:0px">
+				<a onClick="fontSize('a');" data-toggle="tooltip" title="Aumentar o texto" class="btn btn-primary" style="height:42px;padding-right:6px;padding-left:6px"><span class="glyphicon glyphicon-plus-sign" style="font-size:20px"></span></a>
+				<a onClick="fontSize('d');" data-toggle="tooltip" title="Diminuir o texto" class="btn btn-primary" style="height:42px;padding-right:6px;padding-left:6px;margin-right:8px"><span class="glyphicon glyphicon-minus-sign" style="font-size:20px"></span></a>
+			</div>
       		<div class="row">
 				<div class="panel panel-primary">
 					<div class="panel-heading" th:text="${phase.name}"></div>
 					<div class="panel-body" th:utext="${content.content}"></div>
 				</div>
 			</div>
-			<div class="row">
-				<a th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/'+${map.order}+'/'+${phase.order}+'/test'}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Concluir</a>
+			<div class="row" align="right">
+				<a th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/'+${map.order}+'/'+${phase.order}+'/test'}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Concluir&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-arrow-right"></span></a>
+				<br /><br />
+			</div>
+			<div class="row breadcrumb">
+				Clique no botão [Concluir] para fazer a prova dessa aula.<br />
+				O aluno pode fazer a prova quantas vezes for preciso, mas assim que conseguir acertar 70% das questões, não será mais possível ver a prova.<br />
+				Para desbloquear a próxima aula, é obrigatório fazer a prova da aula atual.
 				<br /><br />
 			</div>
     	</div>
@@ -36,10 +46,38 @@
     	<script th:inline="javascript">
 	  		/*<![CDATA[*/	
   			$(document).ready(function(){
-  				$("#btnOk").click(function(){
-  					$(this).button('loading');
-  				});
+  				$("#btnOk").click(function(){$(this).button('loading');});
   			});
+	  		
+  			var fontChange=0;
+	  		function fontSize(e){
+	  			var elemento24=$(".fontSize24px");
+  				var fonte24 = elemento24.css('font-size');
+  				var elemento20=$(".fontSize20px");
+  				var fonte20 = elemento20.css('font-size');
+  				var elemento16=$(".fontSize16px");
+  				var fonte16 = elemento16.css('font-size');
+  				var elemento14=$(".fontSize14px");
+  				var fonte14 = elemento14.css('font-size');
+  				
+  				if(e=='a'){
+  					if(fontChange<=10){
+	  					elemento24.css("fontSize",parseInt(fonte24)+1);
+	  					elemento20.css("fontSize",parseInt(fonte20)+1);
+	  					elemento16.css("fontSize",parseInt(fonte16)+1);
+	  					elemento14.css("fontSize",parseInt(fonte14)+1);
+	  					fontChange++;
+  					}
+  				}else if('d'){
+  					if(fontChange>=-10){
+	  					elemento24.css("fontSize",parseInt(fonte24)-1);
+	  					elemento20.css("fontSize",parseInt(fonte20)-1);
+	  					elemento16.css("fontSize",parseInt(fonte16)-1);
+	  					elemento14.css("fontSize",parseInt(fonte14)-1);
+	  					fontChange--;
+  					}
+  				}
+  			}
 	  		/*]]>*/
 		</script>
 

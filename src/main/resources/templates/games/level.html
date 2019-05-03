@@ -13,17 +13,24 @@
 					<li th:text="${game.name}" class="active"></li>
 				</ol>
 	      	</div>
-		  	
 		  	<div class="row">
 		    	<div class="col-sm-12">
-		      		<br />
 		      		<span th:each="level : ${levels}">
 		           		<a th:if="${level.opened}" th:href="@{'/games/'+${game.namelink}+'/'+${level.order}+'/1'}" style="margin-left:10px;margin-bottom:10px" class="btn btn-primary btn-lg" role="button" th:text="${level.name}"></a>
 		           		<button th:if="${not level.opened}" type="button" style="margin-left:10px;margin-bottom:10px" class="btn btn-primary btn-lg disabled" th:text="${level.name}" />
+		           		<br />
 		           	</span>
+		           	<br />
 		    	</div>
 	  		</div>
-	  		
+	  		<div class="row breadcrumb">
+	     		Informações sobre os níveis:<br />
+	     		Cada nível contém 30 aulas.<br />
+	     		A sequência dos níveis é: Iniciante, Básico, Intermediário, Intermediário-avançado e Avançado.<br />
+	     		<u>Esta página mostra quais são os níveis disponíveis para o curso de <span th:text="${game.name}"></span>.</u><br />
+	     		O aluno deve concluir todas as aulas de um nível para desbloquear o nível seguinte.<br />
+	     		Ao concluir um nível, o aluno receberá um certificado de conclusão de nível.
+	      	</div>
 	  		<div class="row">
 	  			<br /><br /><br /><br /><br />
 	  		</div>
