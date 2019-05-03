@@ -15,6 +15,7 @@
       		<div class="row">
       			<br />
       			<ol class="breadcrumb">
+					<li><a th:href="@{'/games/'}">Cursos</a></li>
 					<li><a th:href="@{'/games/'+${game.namelink}}" th:text="${game.name}"></a></li>
 					<li><a th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/1'}" th:text="${map.level.name}"></a></li>
 					<!--<li th:text="${map.name}"></li>-->

@@ -44,6 +44,7 @@
 		  	<div class="row">
 	     		<br />
 	     		<ol class="breadcrumb">
+					<li><a th:href="@{'/games/'}">Cursos</a></li>
 					<li><a th:href="@{'/games/'+${game.namelink}}" th:text="${game.name}"></a></li>
 					<li th:text="${map.level.name}" class="active"></li>
 					<!--<li th:text="${map.name}" class="active"></li>-->

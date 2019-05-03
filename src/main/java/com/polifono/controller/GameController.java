@@ -380,6 +380,8 @@ public class GameController extends BaseController {
 			playerPhase.setDtTest(new Date());
 			playerPhase.setScore(gameService.calculateScore(playerPhase.getNumAttempts(), grade));
 			
+			model.addAttribute("score", playerPhase.getScore());
+			
 			Player player = playerService.findOne(this.currentAuthenticatedUser().getUser().getId());
 			player.setScore(this.calculatePlayerScoreAfterPassTheTest(player.getScore(), playerPhase.getScore()));
 			
