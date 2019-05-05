@@ -16,21 +16,25 @@
       			<br />
       			<ol class="breadcrumb">
 					<li><a th:href="@{'/games/'}">Cursos</a></li>
-					<li><a th:href="@{'/games/'+${game.namelink}}" th:text="${game.name}"></a></li>
-					<li><a th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/1'}" th:text="${map.level.name}"></a></li>
+					<li><a th:href="@{'/games/'+${game.namelink}}" th:text="${game.name}" id="breadcrumbGame"></a></li>
+					<li><a th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/1'}" th:text="${map.level.name}" id="breadcrumbLevel"></a></li>
 					<!--<li th:text="${map.name}"></li>-->
 					<li th:text="#{app.phase}+' '+${phase.order}" class="active"></li>
 				</ol>
 			</div>
 			<div class="row" align="right" style="height:0px">
+				<a onClick="switchColor();" data-toggle="tooltip" title="Mudar cor de fundo" class="btn btn-primary" style="height:42px;padding-right:6px;padding-left:6px"><span class="fa fa-adjust" style="font-size:20px"></span></a>
 				<a onClick="fontSize('a');" data-toggle="tooltip" title="Aumentar o texto" class="btn btn-primary" style="height:42px;padding-right:6px;padding-left:6px"><span class="fa fa-plus-circle" style="font-size:20px"></span></a>
 				<a onClick="fontSize('d');" data-toggle="tooltip" title="Diminuir o texto" class="btn btn-primary" style="height:42px;padding-right:6px;padding-left:6px;margin-right:8px"><span class="fa fa-minus-circle" style="font-size:20px"></span></a>
 			</div>
       		<div class="row">
 				<div class="panel panel-primary">
 					<div class="panel-heading" th:text="${phase.name}"></div>
-					<div class="panel-body" th:utext="${content.content}"></div>
+					<div class="panel-body" th:utext="${content.content}" id="content"></div>
 				</div>
+			</div>
+			<div class="row" align="left" style="height:0px">
+				<a onClick="printContent();" data-toggle="tooltip" title="Imprimir" class="btn btn-primary" shape="rect"><span class="fa fa-print" ></span></a>
 			</div>
 			<div class="row" align="right">
 				<a th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/'+${map.order}+'/'+${phase.order}+'/test'}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Concluir&nbsp;&nbsp;&nbsp;<span class="fa fa-arrow-right"></span></a>
@@ -46,20 +50,19 @@
     	
     	<script th:inline="javascript">
 	  		/*<![CDATA[*/	
-  			$(document).ready(function(){
-  				$("#btnOk").click(function(){$(this).button('loading');});
-  			});
+  			$(document).ready(function(){$("#btnOk").click(function(){$(this).button('loading');});});
 	  		
-  			var fontChange=0;
+  			//
+	  		var fontChange=0;
 	  		function fontSize(e){
 	  			var elemento24=$(".fontSize24px");
-  				var fonte24 = elemento24.css('font-size');
+  				var fonte24=elemento24.css('font-size');
   				var elemento20=$(".fontSize20px");
-  				var fonte20 = elemento20.css('font-size');
+  				var fonte20=elemento20.css('font-size');
   				var elemento16=$(".fontSize16px");
-  				var fonte16 = elemento16.css('font-size');
+  				var fonte16=elemento16.css('font-size');
   				var elemento14=$(".fontSize14px");
-  				var fonte14 = elemento14.css('font-size');
+  				var fonte14=elemento14.css('font-size');
   				
   				if(e=='a'){
   					if(fontChange<=10){
@@ -79,7 +82,39 @@
   					}
   				}
   			}
-	  		/*]]>*/
+	  		
+	  		//
+	  		var switchColorControl=false;
+			function switchColor(){if(switchColorControl){switchWhite();}else{switchBlack();}}
+			function switchBlack(){switchColorControl=true;document.getElementById('content').style.backgroundColor='black';document.getElementById('content').style.color='white';}
+			function switchWhite(){switchColorControl=false;document.getElementById('content').style.backgroundColor='white';document.getElementById('content').style.color='black';}
+	  		
+			//
+			function printContent() {
+				if ($(window).width() > 767) {
+					printContentBig();
+				} else {
+					printContentSmall();
+				}
+			}
+			
+			function printContentBig(){
+				var divToPrint=$('#content').clone();
+				var txt1=$("<span></span><br />").text("Polifono.com - Music Network & E-learning");
+				var txt2=$("<span></span>").text("Curso de "+$('#breadcrumbGame').text()+" - Módulo "+$('#breadcrumbLevel').text());
+				$(divToPrint).prepend(txt1,txt2);
+				$(divToPrint).append("Todos os direitos reservados. Conteúdo disponível apenas para estudo pessoal, não permitida a sua reprodução, venda ou qualquer forma de lucro sem devida autorização. Mais informações em www.polifono.com.")
+				$(divToPrint).children(".embed-container").remove();
+				newWin = window.open("");
+				newWin.document.write($(divToPrint).html());
+				newWin.print();
+				newWin.close();
+			}
+			
+			function printContentSmall() {
+				window.print();
+			}
+			/*]]>*/
 		</script>
 
 	</div>

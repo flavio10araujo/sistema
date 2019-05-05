@@ -25,7 +25,12 @@ public class ContentUtil {
 		
 		//System.out.println(resultado.getContent());
 		
-		System.out.println(getURLImageFromCompleteTagHTML("<img class=\"img-responsive\" alt=\"\" src=\"https://media.polifono.com/img/sax_1_1_001_1_01.png\" height=\"705\" width=\"1000\" />"));
+		//System.out.println(getURLImageFromCompleteTagHTML("<img class=\"img-responsive\" alt=\"\" src=\"https://media.polifono.com/img/sax_1_1_001_1_01.png\" height=\"705\" width=\"1000\" />"));
+		
+		
+		addFullScreenToVideo("<div class='embed-container'><iframe src='https://player.vimeo.com/video/179239622' frameborder='0' webkitAllowFullScreen=\"true\" mozallowfullscreen=\"true\" allowFullScreen=\"true\"></iframe></div><p><br />");
+		
+		addFullScreenToVideo("<div class=\"embed-container\"><iframe frameborder=\"0\" src=\"https://player.vimeo.com/video/179239622\"></iframe></div><p><br />");
 	}
 	
 	public static Content formatContent(Content content) {
@@ -38,6 +43,10 @@ public class ContentUtil {
 		formatted = replaceImages(formatted, imgsOriginal, imgsFormatted);
 		
 		formatted = addClassText(formatted);
+		
+		formatted = removeSpaces(formatted);
+		
+		formatted = addFullScreenToVideo(formatted);
 		
 		content.setContent(formatted);
 		
@@ -184,6 +193,50 @@ public class ContentUtil {
 	public static String replaceImages(String content, String[] imgsOriginal, String[] imgsFormatted) {
 		for (int i = 1; i < imgsOriginal.length; i++) {
 			content = content.replace(imgsOriginal[i], imgsFormatted[i]);
+		}
+		
+		return content;
+	}
+	
+	public static String removeSpaces(String content) {
+		return content.replaceAll("<p>&nbsp;</p>", "");
+	}
+	
+	/**
+	 * This method is just to confirm that the video has the properties to be fullscreen.
+	 * 
+	 * @param content
+	 * @return
+	 */
+	public static String addFullScreenToVideo(String content) {
+		
+		String iframe = "", newIframe = "";
+		int indexIframe = content.indexOf("<iframe");
+		
+		if (indexIframe > 0) {
+			iframe = content.substring(indexIframe);
+			iframe = iframe.substring(0, iframe.indexOf(">") + 1);
+			//System.out.println(iframe);
+			
+			newIframe = iframe;
+			
+			// The video must have these three properties to be fullscreen:
+			// webkitAllowFullScreen="true" mozallowfullscreen="true" allowFullScreen="true"
+			if (newIframe.indexOf("webkitAllowFullScreen") < 0) {
+				newIframe = newIframe.replace(">", " webkitAllowFullScreen=\"true\">");
+			}
+			
+			if (newIframe.indexOf("mozallowfullscreen") < 0) {
+				newIframe = newIframe.replace(">", " mozallowfullscreen=\"true\">");
+			}
+			
+			if (newIframe.indexOf("allowFullScreen") < 0) {
+				newIframe = newIframe.replace(">", " allowFullScreen=\"true\">");
+			}
+			
+			//System.out.println(newIframe);
+			
+			content = content.replace(iframe, newIframe);
 		}
 		
 		return content;
