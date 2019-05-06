@@ -52,14 +52,13 @@
 		<script>
 		  window.dataLayer = window.dataLayer || [];
 		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date());
-		
-		  gtag('config', 'AW-1067435224');
+		  gtag('js',new Date());
+		  gtag('config','AW-1067435224');
 		</script>
 		
 		<!-- Event snippet for Cadastros conversion page -->
 		<script>
-		  gtag('event', 'conversion', {'send_to': 'AW-1067435224/mxpNCKT6kIMBENiJ__wD'});
+		  gtag('event','conversion',{'send_to':'AW-1067435224/mxpNCKT6kIMBENiJ__wD'});
 		</script>
     	
     	<script>
@@ -143,9 +142,7 @@
 				   			</ul>
                             
 							<ul class="nav navbar-nav navbar-right">
-							
-								
-								
+
 								<li data-toggle="tooltip" th:title="#{msg.toseemygrades}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}/score|}"><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>
 								
 								<li data-toggle="tooltip" th:title="#{msg.buymorecredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>: <span sec:authentication="principal.user.totalCredit"></span></a></li>
