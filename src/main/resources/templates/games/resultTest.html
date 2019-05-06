@@ -15,7 +15,7 @@
 		</div>
 		<div class="row breadcrumb">
 	    	<div class="col-sm-12 bg">
-	      		<div class="row" th:if="${grade} &gt; 70">
+	      		<div class="row" th:if="${grade} &gt;= 70">
 	      			<h3>Parabéns! Você passou de fase!</h3><br />
 	      			A fase <span th:text="${phase.order}"></span> foi desbloqueada.<br />
 	      			A porcentagem de acertos foi de <span th:text="${grade}"></span>%.<br />

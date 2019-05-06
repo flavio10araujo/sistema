@@ -185,4 +185,9 @@ public class PhaseServiceImpl implements IPhaseService {
 		
 		return false;
 	}
+
+	@Override
+	public List<Phase> findPhasesBySearchAndUser(String q, int playerId) {
+		return repository.findPhasesBySearchAndUser(q, playerId); 
+	}
 }

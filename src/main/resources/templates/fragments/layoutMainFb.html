@@ -32,6 +32,8 @@
 			.post-content{margin-left:58px}
 			.badge-important{margin-top:3px;margin-left:25px;position:absolute}
 			body{background-color:#e8e8e8}
+			@media(min-width:768px){.searchBar{width:148px}}
+			@media(max-width:767px){.searchBar{width:100%}}
 		</style>
 		
 		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
@@ -142,9 +144,22 @@
                             
 							<ul class="nav navbar-nav navbar-right">
 							
+								
+								
 								<li data-toggle="tooltip" th:title="#{msg.toseemygrades}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}/score|}"><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>
 								
 								<li data-toggle="tooltip" th:title="#{msg.buymorecredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>: <span sec:authentication="principal.user.totalCredit"></span></a></li>
+								
+								<li>
+    								<form class="navbar-form" th:action="@{/search}">
+	      								<div class="input-group">
+	        								<input type="text" class="searchBar" style="padding:0px 8px;height:30px;margin-top:5px" required="true" maxlength="25" placeholder="Pesquisar" name="q" />
+	        								<div class="input-group-btn">
+	          									<button class="btn btn-default" type="submit" style="padding:0px 0px;font-size:22px;margin-top:3px;margin-left:8px"><i class="fa fa-search"></i></button>
+	        								</div>
+	      								</div>
+	    							</form>
+								</li>
 								
 								<li class="dropdown">
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -217,17 +232,9 @@
 
 	<script th:inline="javascript">
 		/*<![CDATA[*/
-			$(function () {
-			  $('[data-toggle="tooltip"]').tooltip()
-			})
-			
-			$(function () {
-			  $('[data-toggle="popover"]').popover()
-			})
-			
-			function editPassword() {
-				bootbox.alert("Para alterar sua senha, desconecte do sistema e utilize a seção [Esqueci minha senha].");
-			}
+			$(function(){$('[data-toggle="tooltip"]').tooltip()})
+			$(function (){$('[data-toggle="popover"]').popover()})
+			function editPassword(){bootbox.alert("Para alterar sua senha, desconecte do sistema e utilize a seção [Esqueci minha senha].");}
 		/*]]>*/
 	</script>
 

@@ -38,4 +38,6 @@ public interface IPhaseService {
 	public List<Phase> findPhasesCheckedByMap(Map map, PlayerPhase lastPhaseCompleted);
 
 	public boolean playerCanAccessThisPhase(Phase phase, Player user);
+	
+	public List<Phase> findPhasesBySearchAndUser(String q, int playerId);
 }
