@@ -2,6 +2,7 @@ package com.polifono.service;
 
 import java.util.List;
 
+import com.polifono.domain.Player;
 import com.polifono.domain.Transaction;
 
 public interface ITransactionService {
@@ -14,7 +15,8 @@ public interface ITransactionService {
 	
 	//public List<Transaction> findAll();
 	
-	
 	public List<Transaction> findByCode(String code);
+	
+	public List<Transaction> findByPlayerAndStatus(Player player, int status);
 
 }

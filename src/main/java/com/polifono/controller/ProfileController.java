@@ -20,6 +20,8 @@ import com.polifono.domain.Login;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
+import com.polifono.domain.Transaction;
+import com.polifono.domain.enums.Role;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IDiplomaService;
 import com.polifono.service.ILevelService;
@@ -27,6 +29,7 @@ import com.polifono.service.ILoginService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.IPlayerService;
+import com.polifono.service.ITransactionService;
 
 @Controller
 @RequestMapping("/profile")
@@ -53,6 +56,9 @@ public class ProfileController extends BaseController {
 	@Autowired
 	private ILevelService levelService;
 	
+	@Autowired
+	private ITransactionService transactionService;
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileController.class);
 	
 	public static final String URL_PROFILE_PROFILEPLAYER = "profile/profilePlayer";
@@ -60,6 +66,8 @@ public class ProfileController extends BaseController {
 	public static final String URL_PROFILE_PROFILESCORE = "profile/profileScore";
 	public static final String URL_PROFILE_PROFILESCORE_OWNER = "profile/profileScoreOwner";
 	public static final String URL_PROFILE_PROFILEATTENDANCE = "profile/profileAttendance";
+	public static final String URL_PROFILE_PROFILEATTENDANCE_OWNER = "profile/profileAttendanceOwner";
+	public static final String URL_PROFILE_PROFILECREDITS = "profile/profileCredits";
 	public static final String URL_PROFILE_PROFILENOTFOUND = "profile/profileNotFound";
 	
 	public static final String REDIRECT_HOME = "redirect:/";
@@ -132,15 +140,15 @@ public class ProfileController extends BaseController {
 		// If the player logged in is not the player Id && is not ADMIN and is not TEACHER.
 		if (
 				this.currentAuthenticatedUser().getUser().getId() != playerId &&
-				!this.currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN") &&
-				!this.currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")
+				!this.currentAuthenticatedUser().getUser().getRole().equals(Role.ADMIN) &&
+				!this.currentAuthenticatedUser().getUser().getRole().equals(Role.TEACHER)
 			) {
 			return REDIRECT_HOME;
 		}
 
 		// The teacher only can see his own page and of his students.
 		if (this.currentAuthenticatedUser().getUser().getId() != playerId && 
-				this.currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")) {
+				this.currentAuthenticatedUser().getUser().getRole().equals(Role.TEACHER)) {
 			
 			if (!classPlayerService.isMyStudent(currentAuthenticatedUser().getUser(), player)) {
 				return REDIRECT_HOME;
@@ -163,7 +171,11 @@ public class ProfileController extends BaseController {
 		model.addAttribute("levels", levelService.findAll());
 		
 		// Students can see his own grades, but in a different page.
-		if (!this.currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")) {
+		if (this.currentAuthenticatedUser().getUser().getRole().equals(Role.USER)
+				|| this.currentAuthenticatedUser().getUser().getRole().equals(Role.ADMIN)) {
+			
+			model.addAttribute("editAvailable", true);
+			
 			return URL_PROFILE_PROFILESCORE_OWNER;
 		}
 		else {
@@ -181,15 +193,15 @@ public class ProfileController extends BaseController {
 		// If the player logged in is not the player Id && is not ADMIN and is not TEACHER.
 		if (
 				currentAuthenticatedUser().getUser().getId() != playerId &&
-				!currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN") &&
-				!currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")
+				!currentAuthenticatedUser().getUser().getRole().equals(Role.ADMIN) &&
+				!currentAuthenticatedUser().getUser().getRole().equals(Role.TEACHER)
 			) {
 			return REDIRECT_HOME;
 		}
 		
 		// The teacher only can see his own page and of his students.
 		if (currentAuthenticatedUser().getUser().getId() != playerId && 
-				currentAuthenticatedUser().getUser().getRole().toString().equals("TEACHER")) {
+				currentAuthenticatedUser().getUser().getRole().equals(Role.TEACHER)) {
 			
 			if (!classPlayerService.isMyStudent(currentAuthenticatedUser().getUser(), player)) {
 				return REDIRECT_HOME;
@@ -205,7 +217,53 @@ public class ProfileController extends BaseController {
 		model.addAttribute("player", player);
 		model.addAttribute("logins", logins);
 		
-		return URL_PROFILE_PROFILEATTENDANCE;
+		// Students can see his own attendances, but in a different page.
+		if (this.currentAuthenticatedUser().getUser().getRole().equals(Role.USER)
+				|| this.currentAuthenticatedUser().getUser().getRole().equals(Role.ADMIN)) {
+			
+			model.addAttribute("editAvailable", true);
+			
+			return URL_PROFILE_PROFILEATTENDANCE_OWNER;
+		}
+		else {
+			return URL_PROFILE_PROFILEATTENDANCE;
+		}
+	}
+	
+	@RequestMapping(value = {"/player/{playerId}/credits"}, method = RequestMethod.GET)
+	public final String credits(final Model model, @PathVariable("playerId") Integer playerId) {
+		
+		Player player = playerService.findOne(playerId);
+		
+		if (player == null) return URL_PROFILE_PROFILENOTFOUND;
+		
+		// If the player logged in is not the player Id && is not ADMIN.
+		if (
+				currentAuthenticatedUser().getUser().getId() != playerId &&
+				!currentAuthenticatedUser().getUser().getRole().equals(Role.ADMIN)
+			) {
+			return REDIRECT_HOME;
+		}
+		
+		List<Transaction> transactions = transactionService.findByPlayerAndStatus(player, 3);
+		
+		if (transactions == null) {
+			transactions = new ArrayList<Transaction>();
+		}
+		
+		model.addAttribute("player", player);
+		model.addAttribute("transactions", transactions);
+		
+		if (this.currentAuthenticatedUser().getUser().getRole().equals(Role.ADMIN)) {
+			model.addAttribute("editAvailable", true);
+			
+			return URL_PROFILE_PROFILECREDITS;
+		}
+		else {
+			// TODO
+			// For now, only admins can see the credits page.
+			return REDIRECT_HOME;
+		}
 	}
 	
 	@RequestMapping(value = {"/player/edit/{playerId}"}, method = RequestMethod.GET)

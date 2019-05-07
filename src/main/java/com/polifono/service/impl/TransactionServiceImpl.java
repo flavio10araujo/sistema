@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.polifono.domain.Player;
 import com.polifono.domain.Transaction;
 import com.polifono.repository.ITransactionRepository;
 import com.polifono.service.ITransactionService;
@@ -29,5 +30,9 @@ public class TransactionServiceImpl implements ITransactionService {
 	
 	public final List<Transaction> findByCode(String code) {
 		return repository.findByCode(code);
+	}
+	
+	public final List<Transaction> findByPlayerAndStatus(Player player, int status) {
+		return repository.findByPlayerAndStatus(player, status);
 	}
 }
