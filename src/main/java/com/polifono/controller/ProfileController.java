@@ -253,17 +253,9 @@ public class ProfileController extends BaseController {
 		
 		model.addAttribute("player", player);
 		model.addAttribute("transactions", transactions);
+		model.addAttribute("editAvailable", true);
 		
-		if (this.currentAuthenticatedUser().getUser().getRole().equals(Role.ADMIN)) {
-			model.addAttribute("editAvailable", true);
-			
-			return URL_PROFILE_PROFILECREDITS;
-		}
-		else {
-			// TODO
-			// For now, only admins can see the credits page.
-			return REDIRECT_HOME;
-		}
+		return URL_PROFILE_PROFILECREDITS;
 	}
 	
 	@RequestMapping(value = {"/player/edit/{playerId}"}, method = RequestMethod.GET)
