@@ -102,7 +102,7 @@
                         
                         <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/attendance|}" data-toggle="tooltip" title="Ver a frequência no curso" class="btn btn-link" style="text-decoration:none">Frequência</a>
                         
-                        <a sec:authorize="hasAuthority('ADMIN')" th:href="@{|/profile/player/${player.id}/credits|}" data-toggle="tooltip" title="Ver a quantidade de créditos adquiridos até o momento" class="btn btn-link" style="text-decoration:none">Créditos</a>
+                        <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/credits|}" data-toggle="tooltip" title="Ver a quantidade de créditos adquiridos até o momento" class="btn btn-link" style="text-decoration:none">Créditos</a>
                     </span>
                 </div>
             </div>
