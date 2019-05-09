@@ -155,7 +155,7 @@ public class ContentUtil {
 	 * From:
 	 * <img src="https://media.polifono.com/img/recorder_1_1_001_1_01.jpg" width="75" height="75" />
 	 * To:
-	 * <a class="image-popup-vertical-fit" href="https://media.polifono.com/img/recorder_1_1_001_1_01.jpg" title="">
+	 * <a class="image-popup-no-margins" href="https://media.polifono.com/img/recorder_1_1_001_1_01.jpg" title="">
 	 * <img src="https://media.polifono.com/img/recorder_1_1_001_1_01.jpg" width="75" height="75" />
 	 * </a>
 	 * 
@@ -163,7 +163,7 @@ public class ContentUtil {
 	 * @return
 	 */
 	public static String addPopupToImage(String content) {
-		String htmlABegin = "<a class=\"image-popup-vertical-fit\" href=\"X\" title=\"\">";
+		String htmlABegin = "<a class=\"image-popup-no-margins\" href=\"X\" title=\"\">";
 		htmlABegin = htmlABegin.replace("X", getURLImageFromCompleteTagHTML(content));
 		return htmlABegin + content + "</a>";  
 	}

@@ -39,12 +39,16 @@ public class PromoController extends BaseController {
 	@Autowired
 	private IContentService contentService;
 	
-	public static final String URL_PROMOS_PHASECONTENT_MUSIC_THEORY = "promos/phaseContentMusicalTheory";
-	public static final String URL_PROMOS_PHASECONTENT_RECORDER = "promos/phaseContentRecorder";
-	public static final String URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR = "promos/phaseContentAcousticGuitar";
-	public static final String URL_PROMOS_PHASECONTENT_SAXOPHONE = "promos/phaseContentSaxophone";
+	public static final String URL_PROMOS_PHASECONTENT_MUSIC_THEORY = "promos/musical_theory/general";
+	public static final String URL_PROMOS_PHASECONTENT_RECORDER = "promos/recorder/general";
+	public static final String URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR = "promos/acoustic_guitar/general";
+	public static final String URL_PROMOS_PHASECONTENT_SAXOPHONE = "promos/saxophone/general";
 	
-	public static final String URL_PROMOS_PHASECONTENT_TESTE = "promos/phaseContentTeste";
+	public static final int FIRST_PHASE_RECORDER = 1;
+	public static final int FIRST_PHASE_ACOUSTIC_GUITAR = 92;
+	public static final int FIRST_PHASE_SAXOPHONE = 152;
+	
+	public static final String URL_PROMOS_PHASECONTENT_TESTE = "promos/phaseContent";
 	
 	public static final String REDIRECT_HOME = "redirect:/";
 
@@ -54,12 +58,12 @@ public class PromoController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = {"/promos"}, method = RequestMethod.GET)
-	public final String listGames(final Model model) {
+	public final String redirectHome(final Model model) {
 		return REDIRECT_HOME;
 	}
 
 	@RequestMapping(value = {"/promos/{gameName}"}, method = RequestMethod.GET)
-	public final String listPromosLevel05(
+	public final String promos(
 			final Model model, 
 			@PathVariable("gameName") String gameName
 			) {
@@ -86,7 +90,7 @@ public class PromoController extends BaseController {
 		
 		// teste
 		if ("teste".equals(gameName)) {
-			gameNameParam = "saxophone";
+			gameNameParam = "acoustic_guitar";
 		}
 		
 		Game game = gameService.findByNamelink(gameNameParam);
@@ -135,5 +139,49 @@ public class PromoController extends BaseController {
 		else {
 			return URL_PROMOS_PHASECONTENT_RECORDER;
 		}
+	}
+	
+	@RequestMapping(value = {"/promos/recorder"}, method = RequestMethod.GET)
+	public final String promosRecorder(final Model model) {
+		Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_RECORDER, 1));
+		
+		model.addAttribute("content", content);
+		model.addAttribute("player", new Player());
+		model.addAttribute("playerResend", new Player());
+		
+		return URL_PROMOS_PHASECONTENT_RECORDER;
+	}
+	
+	@RequestMapping(value = {"/promos/musical_theory"}, method = RequestMethod.GET)
+	public final String promosMusicalTheory(final Model model) {
+		Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_RECORDER, 1));
+		
+		model.addAttribute("content", content);
+		model.addAttribute("player", new Player());
+		model.addAttribute("playerResend", new Player());
+		
+		return URL_PROMOS_PHASECONTENT_MUSIC_THEORY;
+	}
+	
+	@RequestMapping(value = {"/promos/acoustic_guitar"}, method = RequestMethod.GET)
+	public final String promosAcousticGuitar(final Model model) {
+		Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_ACOUSTIC_GUITAR, 1));
+		
+		model.addAttribute("content", content);
+		model.addAttribute("player", new Player());
+		model.addAttribute("playerResend", new Player());
+		
+		return URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR;
+	}
+	
+	@RequestMapping(value = {"/promos/saxophone"}, method = RequestMethod.GET)
+	public final String promosSaxophone(final Model model) {
+		Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_SAXOPHONE, 1));
+		
+		model.addAttribute("content", content);
+		model.addAttribute("player", new Player());
+		model.addAttribute("playerResend", new Player());
+		
+		return URL_PROMOS_PHASECONTENT_SAXOPHONE;
 	}
 }

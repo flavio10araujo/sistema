@@ -51,7 +51,6 @@
     	<script th:inline="javascript">
 	  		/*<![CDATA[*/	
   			$(document).ready(function(){$("#btnOk").click(function(){$(this).button('loading');});});
-	  		
   			//
 	  		var fontChange=0;
 	  		function fontSize(e){
@@ -72,7 +71,7 @@
 	  					elemento14.css("fontSize",parseInt(fonte14)+1);
 	  					fontChange++;
   					}
-  				}else if('d'){
+  				}else if(e=='d'){
   					if(fontChange>=-10){
 	  					elemento24.css("fontSize",parseInt(fonte24)-1);
 	  					elemento20.css("fontSize",parseInt(fonte20)-1);
@@ -82,22 +81,13 @@
   					}
   				}
   			}
-	  		
 	  		//
 	  		var switchColorControl=false;
 			function switchColor(){if(switchColorControl){switchWhite();}else{switchBlack();}}
 			function switchBlack(){switchColorControl=true;document.getElementById('content').style.backgroundColor='black';document.getElementById('content').style.color='white';}
 			function switchWhite(){switchColorControl=false;document.getElementById('content').style.backgroundColor='white';document.getElementById('content').style.color='black';}
-	  		
 			//
-			function printContent() {
-				if ($(window).width() > 767) {
-					printContentBig();
-				} else {
-					printContentSmall();
-				}
-			}
-			
+			function printContent(){if($(window).width()>767){printContentBig();}else{printContentSmall();}}
 			function printContentBig(){
 				var divToPrint=$('#content').clone();
 				var txt1=$("<span></span><br />").text("Polifono.com - Music Network & E-learning");
@@ -105,15 +95,12 @@
 				$(divToPrint).prepend(txt1,txt2);
 				$(divToPrint).append("Todos os direitos reservados. Conteúdo disponível apenas para estudo pessoal, não permitida a sua reprodução, venda ou qualquer forma de lucro sem devida autorização. Mais informações em www.polifono.com.")
 				$(divToPrint).children(".embed-container").remove();
-				newWin = window.open("");
+				newWin=window.open("");
 				newWin.document.write($(divToPrint).html());
 				newWin.print();
 				newWin.close();
 			}
-			
-			function printContentSmall() {
-				window.print();
-			}
+			function printContentSmall(){window.print();}
 			/*]]>*/
 		</script>
 
