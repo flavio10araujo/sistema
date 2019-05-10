@@ -44,6 +44,9 @@ public class PromoController extends BaseController {
 	public static final String URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR = "promos/acoustic_guitar/general";
 	public static final String URL_PROMOS_PHASECONTENT_SAXOPHONE = "promos/saxophone/general";
 	
+	// minified versions (not dynamic)
+	public static final String URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR_MIN = "promos/acoustic_guitar/general.min";
+	
 	public static final int FIRST_PHASE_RECORDER = 1;
 	public static final int FIRST_PHASE_ACOUSTIC_GUITAR = 92;
 	public static final int FIRST_PHASE_SAXOPHONE = 152;
@@ -165,13 +168,14 @@ public class PromoController extends BaseController {
 	
 	@RequestMapping(value = {"/promos/acoustic_guitar"}, method = RequestMethod.GET)
 	public final String promosAcousticGuitar(final Model model) {
-		Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_ACOUSTIC_GUITAR, 1));
+		//Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_ACOUSTIC_GUITAR, 1));
 		
-		model.addAttribute("content", content);
+		//model.addAttribute("content", content);
 		model.addAttribute("player", new Player());
 		model.addAttribute("playerResend", new Player());
 		
-		return URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR;
+		//return URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR;
+		return URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR_MIN;
 	}
 	
 	@RequestMapping(value = {"/promos/saxophone"}, method = RequestMethod.GET)

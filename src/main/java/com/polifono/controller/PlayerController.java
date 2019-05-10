@@ -65,7 +65,11 @@ public class PlayerController extends BaseController {
 		}
 		
 		// Verify if the email is already in use.
-		Player playerOld = playerService.findByEmail(player.getEmail());
+		Player playerOld = null; 
+				
+		if (player.getEmail() != null && !"".equals(player.getEmail().trim())) {
+			playerOld = playerService.findByEmail(player.getEmail());
+		}
 		
 		if (playerOld != null) {
 			model.addAttribute("player", player);
