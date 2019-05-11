@@ -2,7 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <title>Aprenda a tocar flauta hoje!</title>
-<link rel="icon" th:href="@{/static/img/favicon.ico}" sizes="16x16"/>
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="robots" content="index, follow"/>
@@ -57,29 +56,29 @@ window.fbAsyncInit=function(){FB.init({appId:'324370751419847',cookie:true,xfbml
 </script>
 <div class="fb-customerchat" attribution="setup_tool" page_id="243859729372740" logged_in_greeting="Olá! Se tiver alguma dúvida, estamos aqui!" logged_out_greeting="Olá! Se tiver alguma dúvida, estamos aqui!"></div>
 
-<div class="jumbotron" style="padding-top:0px;padding-bottom:10px;margin-bottom:30px;background-color:#51a746;color:#fff"><div class="container text-center"><h2>Aprenda a tocar flauta doce hoje mesmo!</h2></div></div>
+<div class="jumbotron" style="padding-top:0px;padding-bottom:10px;margin-bottom:30px;background-color:#51a746;color:#fff"><div class="container text-center"><h2>Comece a tocar flauta doce hoje mesmo!</h2></div></div>
 <div class="jumbotron" style="padding-top:0px;padding-bottom:0px;margin-bottom:20px;background-color:#fff">
     <div class="container">
         <div class="row featurette">
             <div class="col-md-6">
-                <h2 class="featurette-heading" style="padding-top:0px;margin-top:0px;margin-bottom:20px">Se voc&#xEA; procurava um curso completo de flauta doce e que vai direto ao ponto, voc&#xEA; acaba de encontrar!</h2>
+                <h2 class="featurette-heading" style="padding-top:0px;margin-top:0px;margin-bottom:20px">Se voc&#xEA; procura um curso completo de flauta doce e que vai direto ao ponto, acaba de encontrar!</h2>
                 <p style="color:#51a746"><i class="fa fa-check" style="font-size:25px"></i><span style="font-size:20px;font-weight:bold">&nbsp;Do b&#xE1;sico ao avan&#xE7;ado!</span></p>
                 <p style="color:#51a746"><i class="fa fa-check" style="font-size:25px"></i><span style="font-size:20px;font-weight:bold">&nbsp;Curso com certificado!</span></p>
                 <p style="color:#51a746"><i class="fa fa-check" style="font-size:25px"></i><span style="font-size:20px;font-weight:bold">&nbsp;Professor para tirar d&uacute;vidas!</span></p>
                 <p style="color:#51a746"><i class="fa fa-check" style="font-size:25px"></i><span style="font-size:20px;font-weight:bold">&nbsp;Cadastro gratuito!</span></p>
             </div>
             <div class="col-md-6">
-                <div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://player.vimeo.com/video/199858396?autoplay=1&amp;loop=0&amp;autopause=0" width="300" height="150" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
-                <br /><br /><p class="text-center"><a class="btn btn-warning btn-lg botao-inscreva-se" href="#register">Inscreva-se agora</a></p>
+                <div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://player.vimeo.com/video/199858396?autoplay=0&amp;loop=0&amp;autopause=0" width="300" height="150" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+                <br/><br/><p class="text-center"><a class="btn btn-warning btn-lg" style="margin-left:5px;" href="#register">Inscreva-se agora</a><a class="btn btn-warning btn-lg" style="margin-left:5px;" href="#aula">Ver uma aula</a></p>
             </div>
         </div>
     </div>
 </div>
 <div class="jumbotron" style="padding-top:0px;padding-bottom:0px;margin-bottom:20px;background-color:#fff">
     <div class="container" style="width:100%;text-align:center">
-		<img class="fr-dib fr-draggable img-responsive" style="display:inline;margin-bottom:3px" th:src="@{/static/img/promos/aluno02.jpg}" width="471" height="520"/>
-		<img class="fr-dib fr-draggable img-responsive" style="display:inline;margin-bottom:3px" th:src="@{/static/img/promos/aluno01.jpg}" width="471" height="520"/>
-		<img class="fr-dib fr-draggable img-responsive" style="display:inline" th:src="@{/static/img/promos/aluno03.jpg}" width="471" height="520"/>
+		<img class="fr-dib fr-draggable img-responsive" style="display:inline;margin-bottom:3px" th:src="@{/static/img/promos/aluno02.jpg}" width="379" height="401"/>
+		<img class="fr-dib fr-draggable img-responsive" style="display:inline;margin-bottom:3px" th:src="@{/static/img/promos/aluno01.jpg}" width="379" height="401"/>
+		<img class="fr-dib fr-draggable img-responsive" style="display:inline;margin-bottom:3px" th:src="@{/static/img/promos/aluno03.jpg}" width="379" height="401"/>
     </div>
 </div>
 <div class="jumbotron" style="padding-top:10px;padding-bottom:0px;margin-bottom:0px;background-color:#51a746;color:#fff"><div class="container"><p class="site-heading" style="font-size:21px">Veja a seguir a primeira aula do curso. Nessa aula, voc&#xEA; ser&#xE1; apresentado aos diversos tipos de flauta que existem e come&#xE7;ar&#xE1; a entrar no mundo das flautas. Se gostar do curso (e n&#xF3;s sabemos que voc&#xEA; vai gostar!), fa&#xE7;a seu cadastro rapidinho para ver todas as 90 aulas. Não perca tempo e bons estudos!</p></div></div>
@@ -97,12 +96,12 @@ window.fbAsyncInit=function(){FB.init({appId:'324370751419847',cookie:true,xfbml
 			</div>
       		<div class="row">
 				<div class="panel panel-primary">
-					<div class="panel-heading" th:text="${content.phase.name}"></div>
+					<div class="panel-heading" th:text="${content.phase.name}" id="aula"></div>
 					<div class="panel-body" th:utext="${content.content}" style="line-height:normal" id="content"></div>
 				</div>
 			</div>
 			<div class="row" align="right">
-				<a href="#register" class="btn btn-primary" role="button" data-loading-text="Aguardando o seu cadastro..." id="btnOk">Ver a próxima aula&nbsp;&nbsp;&nbsp;<span class="fa fa-arrow-right"></span></a><br /><br />
+				<a th:href="@{'/promos/register'}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Ver a próxima aula&nbsp;&nbsp;&nbsp;<span class="fa fa-arrow-right"></span></a><br/><br/>
 			</div>
     	</div>
 	</div>

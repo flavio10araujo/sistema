@@ -39,13 +39,18 @@ public class PromoController extends BaseController {
 	@Autowired
 	private IContentService contentService;
 	
+	public static final String URL_PROMOS_REGISTER = "promos/register";
+	
 	public static final String URL_PROMOS_PHASECONTENT_MUSIC_THEORY = "promos/musical_theory/general";
 	public static final String URL_PROMOS_PHASECONTENT_RECORDER = "promos/recorder/general";
 	public static final String URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR = "promos/acoustic_guitar/general";
 	public static final String URL_PROMOS_PHASECONTENT_SAXOPHONE = "promos/saxophone/general";
 	
 	// minified versions (not dynamic)
+	public static final String URL_PROMOS_PHASECONTENT_MUSIC_THEORY_MIN = "promos/musical_theory/general.min";
+	public static final String URL_PROMOS_PHASECONTENT_RECORDER_MIN = "promos/recorder/general.min";
 	public static final String URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR_MIN = "promos/acoustic_guitar/general.min";
+	public static final String URL_PROMOS_PHASECONTENT_SAXOPHONE_MIN = "promos/saxophone/general.min";
 	
 	public static final int FIRST_PHASE_RECORDER = 1;
 	public static final int FIRST_PHASE_ACOUSTIC_GUITAR = 92;
@@ -63,6 +68,13 @@ public class PromoController extends BaseController {
 	@RequestMapping(value = {"/promos"}, method = RequestMethod.GET)
 	public final String redirectHome(final Model model) {
 		return REDIRECT_HOME;
+	}
+	
+	@RequestMapping(value = {"/promos/register"}, method = RequestMethod.GET)
+	public final String regiter(final Model model) {
+		model.addAttribute("player", new Player());
+		model.addAttribute("playerResend", new Player());
+		return URL_PROMOS_REGISTER;
 	}
 
 	@RequestMapping(value = {"/promos/{gameName}"}, method = RequestMethod.GET)
@@ -146,24 +158,24 @@ public class PromoController extends BaseController {
 	
 	@RequestMapping(value = {"/promos/recorder"}, method = RequestMethod.GET)
 	public final String promosRecorder(final Model model) {
-		Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_RECORDER, 1));
+		//Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_RECORDER, 1));
 		
-		model.addAttribute("content", content);
+		//model.addAttribute("content", content);
 		model.addAttribute("player", new Player());
 		model.addAttribute("playerResend", new Player());
 		
-		return URL_PROMOS_PHASECONTENT_RECORDER;
+		return URL_PROMOS_PHASECONTENT_RECORDER_MIN;
 	}
 	
 	@RequestMapping(value = {"/promos/musical_theory"}, method = RequestMethod.GET)
 	public final String promosMusicalTheory(final Model model) {
-		Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_RECORDER, 1));
+		//Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_RECORDER, 1));
 		
-		model.addAttribute("content", content);
+		//model.addAttribute("content", content);
 		model.addAttribute("player", new Player());
 		model.addAttribute("playerResend", new Player());
 		
-		return URL_PROMOS_PHASECONTENT_MUSIC_THEORY;
+		return URL_PROMOS_PHASECONTENT_MUSIC_THEORY_MIN;
 	}
 	
 	@RequestMapping(value = {"/promos/acoustic_guitar"}, method = RequestMethod.GET)
@@ -180,12 +192,12 @@ public class PromoController extends BaseController {
 	
 	@RequestMapping(value = {"/promos/saxophone"}, method = RequestMethod.GET)
 	public final String promosSaxophone(final Model model) {
-		Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_SAXOPHONE, 1));
+		//Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_SAXOPHONE, 1));
 		
-		model.addAttribute("content", content);
+		//model.addAttribute("content", content);
 		model.addAttribute("player", new Player());
 		model.addAttribute("playerResend", new Player());
 		
-		return URL_PROMOS_PHASECONTENT_SAXOPHONE;
+		return URL_PROMOS_PHASECONTENT_SAXOPHONE_MIN;
 	}
 }
