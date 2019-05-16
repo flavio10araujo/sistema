@@ -106,6 +106,26 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/com.googlecode.htmlcompressor/htmlcompressor -->
+		<dependency>
+		    <groupId>com.googlecode.htmlcompressor</groupId>
+		    <artifactId>htmlcompressor</artifactId>
+		    <version>1.5.2</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/com.yahoo.platform.yui/yuicompressor -->
+		<dependency>
+		    <groupId>com.yahoo.platform.yui</groupId>
+		    <artifactId>yuicompressor</artifactId>
+		    <version>2.4.8</version>
+		    <exclusions>
+		        <exclusion>
+		            <artifactId>js</artifactId>
+		            <groupId>rhino</groupId>
+		        </exclusion>
+		    </exclusions>
+		</dependency>
 
         <!-- Test - begin -->
         <dependency>
