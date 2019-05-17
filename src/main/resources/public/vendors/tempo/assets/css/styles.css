@@ -218,9 +218,14 @@ input[type=button],input[type=email],input[type=password],input[type=submit],inp
     background-size: cover
 }
 
-@media (min-width: 1199px) {
+@media (min-width: 1601px) {
 	.bg-slider-wrapper .flexslider .slide.slide-1 {
-    	background: #fff url(../images/background/promo-bg.jpg) no-repeat;
+    	background: #fff url(../images/background/promo-bg.jpg) no-repeat 50% top;
+	}
+}
+@media (max-width: 1601px) {
+	.bg-slider-wrapper .flexslider .slide.slide-1 {
+    	background: #fff url(../images/background/promo-bg1600px.jpg) no-repeat;
 	}
 }
 @media (max-width: 1199px) {
@@ -1032,31 +1037,31 @@ body.modal-open {
 
 @media (min-width: 1199px) {
 	.video {
-    	background: #6dbd63 url(../images/background/video-bg.jpg) no-repeat center center;
+    	background: url(../images/background/video-bg.jpg) no-repeat center center;
 	}
 }
 
 @media (max-width: 1199px) {
 	.video {
-    	background: #6dbd63 url(../images/background/video-bg1198px.jpg) no-repeat center center;
+    	background: url(../images/background/video-bg1198px.jpg) no-repeat center center;
 	}
 }
 
 @media (max-width: 991px) {
 	.video {
-    	background: #6dbd63 url(../images/background/video-bg990px.jpg) no-repeat center center;
+    	background: url(../images/background/video-bg990px.jpg) no-repeat center center;
 	}
 }
 
 @media (max-width: 767px) {
 	.video {
-    	background: #6dbd63 url(../images/background/video-bg766px.jpg) no-repeat center center;
+    	background: url(../images/background/video-bg766px.jpg) no-repeat center center;
 	}
 }
 
 @media (max-width: 415px) {
 	.video {
-    	background: #6dbd63 url(../images/background/video-bg414px.jpg) no-repeat center center;
+    	background: url(../images/background/video-bg414px.jpg) no-repeat center center;
 	}
 }
 
