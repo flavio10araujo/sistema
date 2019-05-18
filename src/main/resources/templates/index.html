@@ -7,7 +7,7 @@
 		<meta charset="utf-8" />
     	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
     	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    	<meta name="description" content="Aula de música online. Escola de música online." />
+    	<meta name="description" content="Aula de música online. Escola de música online. Aprenda música sem sair de casa." />
     	<meta name="author" content="Amonati" />
     	<link rel="icon" th:href="@{/static/img/favicon.ico}" sizes="32x32" />
     	
@@ -57,14 +57,16 @@
 		  		FB.init({appId:'324370751419847', cookie:true, xfbml:true, version:'v2.8'});
 		  	};
 		  	
-		  	(function(d,s,id) {
-            	var js, fjs = d.getElementsByTagName(s)[0];
-            	if (d.getElementById(id)) return;
-            	js = d.createElement(s);
-            	js.id = id;
-            	js.src = "https://connect.facebook.net/pt_BR/sdk/xfbml.customerchat.js";
-            	fjs.parentNode.insertBefore(js, fjs);
-          	}(document, 'script', 'facebook-jssdk'));
+		  	$(window).bind("load", function() {
+		  		(function(d,s,id) {
+	            	var js, fjs = d.getElementsByTagName(s)[0];
+	            	if (d.getElementById(id)) return;
+	            	js = d.createElement(s);
+	            	js.id = id;
+	            	js.src = "https://connect.facebook.net/pt_BR/sdk/xfbml.customerchat.js";
+	            	fjs.parentNode.insertBefore(js, fjs);
+	          	}(document, 'script', 'facebook-jssdk'));
+		     });
 			/*]]>*/
 		</script>
 		
@@ -114,6 +116,7 @@
 						<input type="hidden" th:value="${messageContent}" id="alertMessageContent" />
 		                
 		                <h2 class="title">Cadastre-se</h2>
+		                
 		                <div class="login-form-container">
 	                        
 	                        <form class="login-form" th:object="${player}" th:action="@{/player/create}" action="#" method="post">
@@ -146,14 +149,8 @@
 	            <div class="fixed-container">
 	                <div class="social text-center">
 	                    <div class="container">
-	                        <span class="line">Compartilhe essa ideia:</span> 
-	                        
-	                        <div class="twitter-tweet">
-	                            <a href="https://twitter.com/share" class="twitter-share-button" data-via="polifonooficial" data-hashtags="aprendamusica #músicanasescolas">Tweet</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-	                        </div>
-	                        
-	                        <div class="fb-share-button" data-href="https://www.facebook.com/polifonooficial/" data-layout="button" data-size="small" data-mobile-iframe="false"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.facebook.com%2Fpolifonooficial%2F&amp;src=sdkpreparse">Share</a></div>
-	                    </div>
+	                        <span class="line">Aprenda música sem sair de casa, comece hoje!</span>
+						</div>
 	                </div>
 	            </div>
 	            
@@ -170,6 +167,7 @@
 	        <section id="why" class="why section">
 	            <div class="container">
 	                <h2 class="title text-center">Por que usar a Polifono.com?</h2>
+	                
 	                <p class="intro text-center">Veja alguns dos motivos para se juntar a nós</p>
 	                <div class="row">
 	                    <div class="benefits col-md-7 col-sm-6 col-xs-12">
@@ -453,6 +451,7 @@
 	            <div class="container text-center">
 	                
 	                <h2 class="title">Entre em contato conosco</h2>
+	                
 	                <p class="summary">Responderemos o mais breve possível.</p>
 	                
 	                <div th:if="${message eq 'success'}" class="alert alert-success alert-dismissible" role="alert">
@@ -548,8 +547,7 @@
 	                <div class="modal-body">
 	                    <div class="social-login text-center">                        
 	                        <ul class="list-unstyled social-login">
-	                            <!--<li><button class="facebook-btn btn" type="button"><i class="fa fa-facebook"></i>Log in with Facebook</button></li>-->
-	                            <li><fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></fb:login-button></li>
+	                            <li><fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-auto-logout-link="false" data-use-continue-as="false"></fb:login-button></li>
 	                        </ul>
 	                    </div>
 	                    <div class="divider"><span>Ou</span></div>
