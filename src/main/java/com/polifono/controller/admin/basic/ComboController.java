@@ -1,4 +1,4 @@
-package com.polifono.controller.admin;
+package com.polifono.controller.admin.basic;
 
 import java.util.ArrayList;
 import java.util.List;

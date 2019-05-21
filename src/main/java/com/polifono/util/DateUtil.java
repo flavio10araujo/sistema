@@ -7,11 +7,18 @@ import java.util.Calendar;
 public class DateUtil {
 
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	private static SimpleDateFormat simpleDateFormatYearMonthDay = new SimpleDateFormat("yyy-MM-dd");
 
 	public static void main(String args[]) {
 		try {
-			System.out.println(getFirstDayOfTheCurrentMonth());
-			System.out.println(getLastDayOfTheCurrentMonth());
+			//System.out.println(getFirstDayOfTheCurrentMonth());
+			//System.out.println(getLastDayOfTheCurrentMonth());
+			
+			String d1Str = "2019-01-05";
+			//String d1Str = "05/01/2019";
+			java.util.Date d1 = parseDateYearMonthDayFormat(d1Str);
+			System.out.println(d1);
+			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -39,7 +46,7 @@ public class DateUtil {
 
 	/**
 	 * @return a java.util.Date object.
-	 * @param data A string with a "dd/MM/yyyy" pattern.
+	 * @param data is a string with a "dd/MM/yyyy" pattern.
 	 */
 	public static java.util.Date parseDate(String data) throws ParseException {
 		if (Util.isEmpty(data)) {
@@ -47,6 +54,18 @@ public class DateUtil {
 		}
 
 		return simpleDateFormat.parse(data);
+	}
+	
+	/**
+	 * @return a java.util.Date object.
+	 * @param data is a string with a "YYYY-MM-DD" pattern.
+	 */
+	public static java.util.Date parseDateYearMonthDayFormat(String data) throws ParseException {
+		if (Util.isEmpty(data)) {
+			return null;
+		}
+
+		return simpleDateFormatYearMonthDay.parse(data);
 	}
 	
 	public static java.util.Date getFirstDayOfTheCurrentMonth() throws ParseException {

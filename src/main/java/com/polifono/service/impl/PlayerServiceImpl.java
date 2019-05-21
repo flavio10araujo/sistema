@@ -78,6 +78,14 @@ public class PlayerServiceImpl implements IPlayerService {
         return repository.findByEmailAndActive(email, status);
     }
 	
+	public Player findByLogin(String login) {
+        return repository.findByLogin(login);
+    }
+	
+	public Player findByIdFacebook(Long id) {
+		return repository.findByIdFacebook(id);
+	}
+	
 	/**
 	 * This method is used to login.
 	 * This method was changed to permit that an user without email could access the system.
@@ -101,6 +109,12 @@ public class PlayerServiceImpl implements IPlayerService {
         }
     }
 	
+	@Override
+	public List<Player> findByDateIncRange(Date dateBegin, Date dateEnd) {
+		return (List<Player>) repository.findByDateIncRange(dateBegin, dateEnd);
+	}
+	
+	@Override
 	public final Player addCreditsToPlayer(int playerId, int qtdCredits) {
 		Player player = this.findOne(playerId);
 		return this.save(preparePlayerForAddingCredits(player, qtdCredits));
@@ -111,6 +125,7 @@ public class PlayerServiceImpl implements IPlayerService {
 		return player;
 	}
 	
+	@Override
 	public final Player removeCreditsFromPlayer(int playerId, int qtdCredits) {
 		Player player = this.findOne(playerId);
 		return this.save(prepareForRemovingCredits(player, qtdCredits));
@@ -327,13 +342,5 @@ public class PlayerServiceImpl implements IPlayerService {
 		}
 		
 		return msg;
-	}
-	
-	public Player findByLogin(String login) {
-        return repository.findByLogin(login);
-    }
-	
-	public Player findByIdFacebook(Long id) {
-		return repository.findByIdFacebook(id);
 	}
 }

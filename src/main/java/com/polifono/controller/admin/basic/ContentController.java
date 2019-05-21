@@ -1,4 +1,4 @@
-package com.polifono.controller.admin;
+package com.polifono.controller.admin.basic;
 
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ import com.polifono.domain.Game;
 import com.polifono.domain.Level;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
-import com.polifono.form.admin.ContentFilterForm;
+import com.polifono.form.admin.basic.ContentFilterForm;
 import com.polifono.service.impl.ContentServiceImpl;
 import com.polifono.service.impl.GameServiceImpl;
 import com.polifono.service.impl.LevelServiceImpl;

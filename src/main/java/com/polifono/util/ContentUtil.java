@@ -74,7 +74,7 @@ public class ContentUtil {
 		for (int i = 1; i < imgsOriginal.length; i++) {
 			imgsFormatted[i] = formatClassImgResponsive(imgsOriginal[i]);
 			imgsFormatted[i] = formatImgWidthAndHeight(imgsFormatted[i]);
-			imgsFormatted[i] = addPopupToImage(imgsFormatted[i]);
+			imgsFormatted[i] = addLazyLoadingToImage(addPopupToImage(imgsFormatted[i]));
 			//System.out.println(imgsFormatted[i]);
 		}
 		
@@ -102,10 +102,10 @@ public class ContentUtil {
 	 * @return
 	 */
 	public static String addClassFontSize(String content) {
-		content = content.replaceAll("style=\"font-size:24px\"", "class=\"txtClass fontSize24px\" style=\"font-size:24px\"");
-		content = content.replaceAll("style=\"font-size:20px\"", "class=\"txtClass fontSize20px\" style=\"font-size:20px\"");
-		content = content.replaceAll("style=\"font-size:16px\"", "class=\"txtClass fontSize16px\" style=\"font-size:16px\"");
-		content = content.replaceAll("style=\"font-size:14px\"", "class=\"txtClass fontSize14px\" style=\"font-size:14px\"");
+		content = content.replaceAll("style=\"font-size:24px\"", "class=\"fontSize24px\" style=\"font-size:24px\"");
+		content = content.replaceAll("style=\"font-size:20px\"", "class=\"fontSize20px\" style=\"font-size:20px\"");
+		content = content.replaceAll("style=\"font-size:16px\"", "class=\"fontSize16px\" style=\"font-size:16px\"");
+		content = content.replaceAll("style=\"font-size:14px\"", "class=\"fontSize14px\" style=\"font-size:14px\"");
 		return content;
 	}
 	
@@ -166,6 +166,35 @@ public class ContentUtil {
 		String htmlABegin = "<a class=\"image-popup-no-margins\" href=\"X\" title=\"\">";
 		htmlABegin = htmlABegin.replace("X", getURLImageFromCompleteTagHTML(content));
 		return htmlABegin + content + "</a>";  
+	}
+	
+	/**
+	 * This method will prepare the image to work with the jquery lazy-loading function.
+	 * With this, the image will be send to the user only when the image seen on the screen.
+	 * 
+	 * Ex.: 
+	 * From:
+	 * <a class="image-popup-no-margins" href="https://media.polifono.com/img/recorder_1_1_001_1_01.jpg" title="">
+	 * <img src="https://media.polifono.com/img/recorder_1_1_001_1_01.jpg" width="75" height="75" />
+	 * </a>
+	 * To:
+	 * <a class="image-popup-no-margins lazy-img" href="https://media.polifono.com/img/recorder_1_1_001_1_01.jpg" title="">
+	 * <img src="" data-url="https://media.polifono.com/img/recorder_1_1_001_1_01.jpg" width="75" height="75" data-min-width="0" data-max-width="999999" />
+	 * </a>
+	 * 
+	 * @param content
+	 * @return
+	 */
+	public static String addLazyLoadingToImage(String content) {
+		content = content.replace("image-popup-no-margins", "image-popup-no-margins lazy-img");
+		content = content.replace("/>", " data-min-width=\"0\" data-max-width=\"999999\" />");
+		
+		String src = getURLImageFromCompleteTagHTML(content);
+		
+		content = content.replace("src=\""+src+"\"", "src=\"\"");
+		content = content.replace("<img", "<img data-url=\""+src+"\" ");
+		
+		return content;
 	}
 	
 	/**

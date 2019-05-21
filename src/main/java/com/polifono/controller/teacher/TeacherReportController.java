@@ -21,7 +21,7 @@ import com.polifono.service.IPlayerPhaseService;
 
 @Controller
 @RequestMapping("/teacher")
-public class ReportController extends BaseController {
+public class TeacherReportController extends BaseController {
 	
 	@Autowired
 	private IGameService gameService;

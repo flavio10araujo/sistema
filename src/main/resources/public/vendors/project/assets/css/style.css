@@ -6934,3 +6934,13 @@ a.list-group-item-danger.active:focus {
 .popover {
   color: #333333;
 }
+
+/* Lazy-loading of images. */
+.lazy-img img {
+	opacity: 0;
+}
+
+.lazy-img img.loaded {
+	opacity: 1;
+	transition: opacity 1s;
+}

@@ -1,5 +1,6 @@
 package com.polifono.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,8 @@ public interface IPlayerService {
 	public Player findByLogin(String login);
 	
 	public Player findByIdFacebook(Long id);
+	
+	public List<Player> findByDateIncRange(Date dateBegin, Date dateEnd);
 	
 	
 	public Player create(Player o);

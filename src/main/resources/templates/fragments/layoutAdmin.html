@@ -36,6 +36,12 @@
 	         				<li><a th:href="@{/admin/basic/answer}" th:text="#{menu.admin.answers}"></a></li>
 	       				</ul>
 	     			</li>
+	     			<li class="dropdown">
+	       				<a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{menu.admin.report}"><span class="caret"></span></a>
+	       				<ul class="dropdown-menu">
+	         				<li><a th:href="@{/admin/report/register}" th:text="#{menu.admin.report.register}"></a></li>
+	       				</ul>
+	     			</li>
 	   			</ul>
 	   			<ul class="nav navbar-nav navbar-right">
 	     			<li th:title="#{app.profile}"><a href="#" sec:authentication="principal.user.name"></a></li>
