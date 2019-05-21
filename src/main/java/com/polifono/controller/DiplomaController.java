@@ -61,8 +61,10 @@ public class DiplomaController extends BaseController {
     public final String diplomaSearchSubmit(final Model model, @RequestParam(value = "code", defaultValue = "") String code) {
     	
 		if (code == null || "".equals(code)) {
-			// If the user is logged in, get his email.
-	    	if (currentAuthenticatedUser() != null) return URL_DIPLOMA_SEARCH;
+			// If the user is logged in.
+	    	if (currentAuthenticatedUser() != null) {
+	    		return URL_DIPLOMA_SEARCH;
+	    	}
 			else {
 				model.addAttribute("player", new Player());
 				model.addAttribute("playerResend", new Player());
@@ -78,10 +80,13 @@ public class DiplomaController extends BaseController {
 		}
 		else {
 			model.addAttribute("message", "error");
+			model.addAttribute("messageContent", "O certificado informado não existe.");
 		}
     	
-    	// If the user is logged in, get his email.
-    	if (currentAuthenticatedUser() != null) return URL_DIPLOMA_SEARCH;
+    	// If the user is logged in.
+    	if (currentAuthenticatedUser() != null) {
+    		return URL_DIPLOMA_SEARCH;
+    	}
 		else {
 			model.addAttribute("player", new Player());
 			model.addAttribute("playerResend", new Player());
@@ -92,8 +97,10 @@ public class DiplomaController extends BaseController {
 	@RequestMapping(value = {"/diploma/{code}"}, method = RequestMethod.GET)
 	public final String diplomaGet(HttpServletResponse response, final Model model, @PathVariable("code") String code) throws JRException, IOException {
 		if (code == null || "".equals(code)) {
-			// If the user is logged in, get his email.
-	    	if (currentAuthenticatedUser() != null) return URL_DIPLOMA_SEARCH;
+			// If the user is logged in.
+	    	if (currentAuthenticatedUser() != null) {
+	    		return URL_DIPLOMA_SEARCH;
+	    	}
 			else {
 				model.addAttribute("player", new Player());
 				model.addAttribute("playerResend", new Player());
@@ -106,8 +113,10 @@ public class DiplomaController extends BaseController {
 		if (diploma == null) {
 			model.addAttribute("message", "error");
 			
-			// If the user is logged in, get his email.
-	    	if (currentAuthenticatedUser() != null) return URL_DIPLOMA_SEARCH;
+			// If the user is logged in.
+	    	if (currentAuthenticatedUser() != null) {
+	    		return URL_DIPLOMA_SEARCH;
+	    	}
 			else {
 				model.addAttribute("player", new Player());
 				model.addAttribute("playerResend", new Player());

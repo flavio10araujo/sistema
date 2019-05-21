@@ -44,21 +44,29 @@ $(document).ready(function() {
 });
 
 /*Alerts*/
-if (document.getElementById("alertCodRegister").value == 1 || document.getElementById("alertCodRegister").value == 2) {
-	bootbox.alert(document.getElementById("alertMsgRegister").value);
-}
+try {
+	if (document.getElementById("alertCodRegister").value == 1 || document.getElementById("alertCodRegister").value == 2) {
+		bootbox.alert(document.getElementById("alertMsgRegister").value);
+	}
+} catch(e) {}
 
-if (document.getElementById("alertError").value != null && document.getElementById("alertError").value != "") {
-	bootbox.alert("O login ou senha informado é inválido. Tente novamente.");
-}
+try {
+	if (document.getElementById("alertError").value != null && document.getElementById("alertError").value != "") {
+		bootbox.alert("O login ou senha informado é inválido. Tente novamente.");
+	}
+} catch(e) {}
 
-if (document.getElementById("alertMessage").value == 'success') {
-	bootbox.alert(document.getElementById("alertMsgEmailSent").value);
-}
+try {
+	if (document.getElementById("alertMessage").value == 'success') {
+		bootbox.alert(document.getElementById("alertMsgEmailSent").value);
+	}
+} catch(e) {}
 
-if (document.getElementById("alertMessage").value == 'error') {
-	bootbox.alert(document.getElementById("alertMessageContent").value);
-}
+try {
+	if (document.getElementById("alertMessage").value == 'error') {
+		bootbox.alert(document.getElementById("alertMessageContent").value);
+	}
+} catch(e) {}
 
 /*Captcha*/
 function debounce(func,wait,immediate){

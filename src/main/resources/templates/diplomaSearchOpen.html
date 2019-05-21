@@ -24,8 +24,9 @@
 		<div class="col-md-6">
 
 			<input type="hidden" th:value="${message}" id="alertMessage" />
-           
-           	<div th:if="${message eq 'success'}">
+			<input type="hidden" th:value="${messageContent}" id="alertMessageContent" />
+			
+			<div th:if="${message eq 'success'}">
            	
            		<h2 class="title">Certificado válido!</h2>
 
@@ -40,16 +41,6 @@
 			</div>
 
 		</div>
-		
-		<script th:inline="javascript">
-			/*<![CDATA[*/
-			function checkMsg() {
-				if (document.getElementById("alertMessage").value == 'error') {
-					bootbox.alert("O certificado informado não existe.");
-				}
-			}
-			/*]]>*/
-		</script>
 
 	</div>
 

@@ -61,12 +61,13 @@ public class CompressResponseFilter implements Filter {
 				uri.contains(".png") || 
 				uri.contains(".jpg") ||
 				uri.contains(".gif") ||
-				uri.contains(".bmp")) {
+				uri.contains(".bmp") ||
+				uri.contains(".pdf")) {
 			
 			return false;
 		}
 		
-		if (uri.contains("/static/") || uri.contains("/vendors/")) {
+		if (uri.contains("/static/") || uri.contains("/vendors/") || uri.contains("/diploma/")) {
 			return false;
 		}
 

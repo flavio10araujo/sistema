@@ -44,7 +44,7 @@
         	<header id="header" class="header">  
             	<div class="container">            
                 	<h1 class="logo pull-left" style="margin: 0 0 0 0;padding: 0 0 0 0;">
-                    	<a class="navbar-left" th:href="@{/}"><img class="img-responsive" th:src="@{/static/img/logomarca.png}" /></a>
+                    	<a class="navbar-left" th:href="@{/}"><i class="sprite sprite-logomarca"></i></a>
                 	</h1>
                 	
 	                <nav id="main-nav" class="main-nav navbar-right" role="navigation">
@@ -59,7 +59,6 @@
 	                    <div class="navbar-collapse collapse" id="navbar-collapse">
 	                        <ul class="nav navbar-nav">
 	                            <li class="active nav-item"><a th:href="@{/}">Início</a></li>
-	                            <li class="nav-item nav-item-cta last"><button type="button" class="btn btn-cta btn-cta-primary" data-toggle="modal" data-target="#login-modal">Entrar</button></li>
 	                        </ul><!--//nav-->
 	                    </div><!--//navabr-collapse-->
 	                </nav><!--//main-nav-->
@@ -75,8 +74,6 @@
 	                <div id="bg-slider" class="flexslider bg-slider">
 	                    <ul class="slides">
 	                        <li class="slide slide-1"></li>
-	                        <!--<li class="slide slide-2"></li>
-	                        <li class="slide slide-3"></li>-->
 	                    </ul>
 	                </div>
 	            </div><!--//bg-slider-wrapper-->
@@ -95,7 +92,6 @@
 	                            <p>Somos amantes de música com o objetivo de difundir o ensino dessa arte para a maior quantidade de pessoas possível.
 	                            Empresa brasileira que trabalha desde 2009 na criação de soluções para a Internet.
 	                            </p>
-	                            
 	                        </div><!--//footer-col-inner-->
 	                    </div><!--//foooter-col-->
 	                    <div class="footer-col col-md-3 col-sm-4 col-md-offset-1 links">
@@ -111,156 +107,28 @@
 	                        <div class="footer-col-inner">
 	                            <h3 class="title">Contato</h3>
 	                            <div class="row">
-	                                <!--<p class="tel col-md-12 col-sm-4"><i class="fa fa-phone"></i>0800 123 4567</p>-->
 	                                <p class="email col-md-12 col-sm-4"><i class="fa fa-envelope"></i><a href="#">polifono@polifono.com</a></p>
-	                                <!--<p class="email col-md-12 col-sm-4"><i class="fa fa-comment"></i><a href="#">Live Chat</a></p>-->
-	                            </div> 
-	                        </div><!--//footer-col-inner-->            
-	                    </div><!--//foooter-col-->   
+	                            </div>
+	                        </div><!--//footer-col-inner-->
+	                    </div><!--//foooter-col-->
 	                </div><!--//row-->
-	            </div><!--//container-->        
+	            </div><!--//container-->
 	        </div><!--//footer-content-->
 	        <div class="bottom-bar">
 	            <div class="container">
 	                <div class="row">
-	                    <small class="copyright col-md-6 col-sm-6 col-xs-12">Copyright @ 2017 Polifono.com</small>
+	                    <small class="copyright col-md-6 col-sm-6 col-xs-12">Copyright @ 2019 Polifono.com</small>
 	                    <ul class="social col-md-6 col-sm-6 col-xs-12 list-inline">
-	                        <li><a href="https://twitter.com/polifonooficial" target="_blank"><i class="fa fa-twitter"></i></a></li>
-	                        <li><a href="https://www.facebook.com/polifonooficial/" target="_blank"><i class="fa fa-facebook"></i></a></li>                        
 	                        <li><a href="https://www.linkedin.com/company/polifono" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-	                        <li class="last"><a href="https://www.youtube.com/channel/UCslgUflGdFKPWjBOVIvSQVQ" target="_blank"><i class="fa fa-youtube"></i></a></li>
+	                        <li><a href="https://www.instagram.com/polifono_music/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+	                        <li><a href="https://twitter.com/polifonooficial" target="_blank"><i class="fa fa-twitter"></i></a></li>
+	                        <li><a href="https://www.youtube.com/c/PolifonoOficial" target="_blank"><i class="fa fa-youtube"></i></a></li>
+	                        <li class="last"><a href="https://www.facebook.com/polifonooficial/" target="_blank"><i class="fa fa-facebook"></i></a></li>
 	                    </ul><!--//social-->
 	                </div><!--//row-->
 	            </div><!--//container-->
 	        </div><!--//bottom-bar-->
 	    </footer><!--//footer-->
-	    
-	    <!-- Login Modal -->
-	    <div class="modal modal-login" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-	        <div class="modal-dialog">
-	            <div class="modal-content">
-	                <div class="modal-header">
-	                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	                    <h4 id="loginModalLabel" class="modal-title text-center">Acesse a sua conta</h4>
-	                </div>
-	                <div class="modal-body">
-	                    <!--<div class="social-login text-center">                        
-	                        <ul class="list-unstyled social-login">
-	                            <li><button class="twitter-btn btn" type="button"><i class="fa fa-twitter"></i>Log in with Twitter</button></li>
-	                            <li><button class="facebook-btn btn" type="button"><i class="fa fa-facebook"></i>Log in with Facebook</button></li>
-	                            <li><button class="google-btn btn" type="button"><i class="fa fa-google-plus"></i>Log in with Google</button></li>
-	                        </ul>
-	                    </div>
-	                    <div class="divider"><span>Or</span></div>-->
-	                    <div class="login-form-container">
-	                        
-	                        <form th:action="@{/login}" method="post" class="login-form" role="form">
-	                        	
-	                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	                            
-	                            <div class="form-group email">
-	                                <label class="sr-only" for="email">E-mail ou login</label>
-	                                <input type="text" name="email" id="email" class="form-control login-email" required="true" placeholder="E-mail ou login" />
-	                            </div>
-	                            
-	                            <div class="form-group password">
-	                                <label class="sr-only" for="login-password">Senha</label>
-	                                <input type="password" name="password" id="password" class="form-control login-password" required="true" th:placeholder="#{app.password}" />
-	                                
-	                                <p class="forgot-password">
-	                                    <a href="#" id="resetpass-link" data-toggle="modal" data-target="#resetpass-modal">Esqueci minha senha</a>
-	                                </p>
-	                            </div>
-	                            
-	                            <input type="submit" class="btn btn-block btn-cta-primary" th:value="#{log_in}" />
-	                            
-	                            <!--<div class="checkbox remember">
-	                                <label>
-	                                    <input type="checkbox" /> Remember me
-	                                </label>
-	                            </div>-->
-	                        </form>
-	                    </div><!--//login-form-container-->
-	                </div><!--//modal-body-->
-	                <div class="modal-footer">
-	                    <!--<p>New to Tempo? <a class="signup-link" id="signup-link" href="#">Sign up now</a></p> -->                    
-	                </div>
-	            </div><!--//modal-content-->
-	        </div><!--//modal-dialog-->
-	    </div><!--//modal-->
-	    
-	    <!-- Reset Password Modal -->
-	    <div class="modal modal-resetpass" id="resetpass-modal" tabindex="-1" role="dialog" aria-labelledby="resetpassModalLabel" aria-hidden="true">
-	        <div class="modal-dialog">
-	            <div class="modal-content">
-	                <div class="modal-header">
-	                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	                    <h4 id="resetpassModalLabel" class="modal-title text-center">Altera&#xE7;&#xE3;o de senha</h4>
-	                </div>
-	                
-	                <div class="modal-body">
-	                    <div class="resetpass-form-container">
-	                        
-	                        <p class="intro">Enviar c&#xF3;digo de altera&#xE7;&#xE3;o de senha por e-mail:</p>
-	                        
-	                        <form class="resetpass-form" th:object="${playerResend}" th:action="@{/passwordresetresend}" method="post">              
-	                            
-	                            <div class="form-group email">
-	                                <label class="sr-only" for="reg-email">E-mail ou login</label>
-	                                <input id="reg-email" name="reg-email" type="text" th:field="*{email}" class="form-control login-email" required="true" placeholder="E-mail ou login" />
-	                            </div>
-	                            
-	                            <button type="submit" class="btn btn-block btn-cta-primary">Enviar</button>
-	                        </form>
-	                        
-	                    </div>
-	                    
-	                    <div class="divider" style="margin-top:10px;"><span>Ou</span></div>
-	                    
-	                    <div class="resetpass-form-container">
-	                        
-	                        <p class="intro">Alterar a senha:</p>
-	                        
-	                        <form class="resetpass-form" th:object="${player}" th:action="@{/passwordreset}" method="post">             
-	                            
-	                            <div class="form-group email">
-	                                <label class="sr-only" for="reg-email">E-mail ou login</label>
-	                                <input id="reg-email" name="reg-email" type="text" th:field="*{email}" class="form-control login-email" required="true" placeholder="E-mail ou login" />
-	                            </div>
-	                            
-	                            <div class="form-group">
-	                                <label class="sr-only" for="reg-code">Código de alteração de senha recebido no e-mail</label>
-	                                <input id="reg-code" name="reg-code" type="text" th:field="*{passwordReset}" class="form-control" required="true" th:placeholder="#{msg.passwordreset.code}" />
-	                            </div>
-	                            
-	                            <div class="form-group password">
-	                                <label class="sr-only" for="reg-password">Nova senha</label>
-	                                <input id="reg-password" name="reg-password" type="password" th:field="*{password}" class="form-control login-password" required="true" placeholder="Nova senha" data-toggle="tooltip" th:title="#{msg.rule.password}" />
-	                            </div>
-	                            
-	                            <button type="submit" class="btn btn-block btn-cta-primary">Confirmar</button>
-	                        </form>
-	                        
-	                    </div>
-	                </div>
-	                
-	                <div class="modal-footer">
-	                    <p>Voltar para a <a class="back-to-login-link" id="back-to-login-link" href="#">página de login</a></p>                    
-	                </div><!--//modal-footer-->
-	            </div><!--//modal-content-->
-	        </div><!--//modal-dialog-->
-	    </div><!--//modal-->
-		
-		<script th:inline="javascript">
-			/*<![CDATA[*/
-			$(document).ready(function(){
-    			$('[data-toggle="tooltip"]').tooltip(); 
-			});
-			
-			// Os corpos de página precisam ter essa função.
-			checkMsg();
-			/*]]>*/
-		</script>
 
 	</body>
 </html>

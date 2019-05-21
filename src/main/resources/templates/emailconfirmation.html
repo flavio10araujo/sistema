@@ -49,16 +49,6 @@
 	    	
 	    	<input type="hidden" th:value="${codRegister}" id="alertCodRegister" />
 	    	<input type="hidden" th:value="${msgRegister}" id="alertMsgRegister" />
-	    	
-	    	<script th:inline="javascript">
-				/*<![CDATA[*/
-				function checkMsg() {
-					if (document.getElementById("alertCodRegister").value == 1 || document.getElementById("alertCodRegister").value == 2) {
-						bootbox.alert(document.getElementById("alertMsgRegister").value);
-					}
-				}
-				/*]]>*/
-			</script>
 	  	
 	</div>
 </body>
