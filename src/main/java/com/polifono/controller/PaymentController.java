@@ -45,22 +45,20 @@ public class PaymentController extends BaseController {
 
 	@RequestMapping(value = {"/buycredits"}, method = RequestMethod.GET)
 	public final String buycredits(final Model model) {
-		
-		// If the player has not confirmed his e-mail yet.
-		if (!playerService.isEmailConfirmed(currentAuthenticatedUser().getUser())) {
-			model.addAttribute("player", new Player());
-			model.addAttribute("playerResend", new Player());
-			model.addAttribute("codRegister", 2);
-			model.addAttribute("msgRegister", "<br />Para poder comprar créditos é necessário primeiramente confirmar o seu e-mail.<br />No momento do seu cadastro, nós lhe enviamos um e-mail de confirmação de cadastro com um código de ativação. Caso você não possua mais esse e-mail, utilize essa tela para reenviar o código de ativação.");
-			return URL_EMAILCONFIRMATION;
-		}
-		
 		return URL_BUYCREDITS;
 	}
 	
 	@RequestMapping(value = {"/buycredits"}, method = RequestMethod.POST)
 	public final String buycreditssubmit(final Model model, @RequestParam("quantity") Integer quantity) {
 
+		// If the player has not confirmed his e-mail yet.
+		if (!playerService.isEmailConfirmed(currentAuthenticatedUser().getUser())) {
+			model.addAttribute("codRegister", "2");
+			model.addAttribute("msg", "Para poder adquirir créditos é necessário primeiramente confirmar o seu e-mail.<br />No momento do seu cadastro, nós lhe enviamos um e-mail com um código de ativação.<br />Acesse seu email e verifique o código enviado.");
+			return URL_BUYCREDITS;
+		}
+		
+		
 		// TEACHER and ADMIN don't have limitations to buy credits.
 		if (currentAuthenticatedUser().getUser().getRole().equals("USER")) {
 			int creditsBuyMin = Integer.parseInt(applicationResourceBundle.getString("credits.buy.min"));

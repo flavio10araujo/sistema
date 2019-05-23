@@ -16,17 +16,35 @@
 		<div class="row breadcrumb">
 	    	<div class="col-sm-12 bg">
 	      		<div class="row" th:if="${grade} &gt;= 70">
-	      			<h3>Parabéns! Você passou de fase!</h3><br />
-	      			A fase <span th:text="${phase.order}"></span> foi desbloqueada.<br />
-	      			A porcentagem de acertos foi de <span th:text="${grade}"></span>%.<br />
-	      			Você ganhou <span th:text="${score}"></span> pontos.<br /><br />
-	      			<a th:href="@{'/games/'+${phase.map.game.namelink}+'/'+${phase.map.level.order}+'/'+${phase.map.order}+'/'+${phase.order}}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Ir para a próxima fase&nbsp;&nbsp;&nbsp;<span class="fa fa-arrow-right"></span></a> 
+	      			<div th:if="${#authentication.principal.user.totalCredit} &gt; 0">
+	      				<h3>Parabéns! Você passou de fase!</h3>
+	      				
+	      				A porcentagem de acertos foi de <span th:text="${grade}"></span>%.<br />
+	      				Você ganhou <span th:text="${score}"></span> pontos.<br /><br />
+	      				
+	      				A Fase <span th:text="${phase.order}"></span> foi desbloqueada.<br /><br />
+	      				
+	      				<a th:href="@{'/games/'+${phase.map.game.namelink}+'/'+${phase.map.level.order}+'/'+${phase.map.order}+'/'+${phase.order}}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Ir para a próxima fase&nbsp;&nbsp;&nbsp;<span class="fa fa-arrow-right"></span></a>
+	      				<br /><br />
+	      			</div>
+	      			<div th:if="${#authentication.principal.user.totalCredit} &lt; 1">
+	      				<h3>Parabéns! Você passou de fase!</h3>
+	      				
+	      				A porcentagem de acertos foi de <span th:text="${grade}"></span>%.<br />
+	      				Você ganhou <span th:text="${score}"></span> pontos.<br /><br />
+	      				
+	      				Os seus créditos acabaram...<br />
+	      				Para ver a Fase <span th:text="${phase.order}"></span>, será necessário adquirir mais créditos!<br /><br />
+	      				<a th:href="@{/buycredits}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Adquirir mais créditos&nbsp;&nbsp;&nbsp;<span class="fa fa-arrow-right"></span></a>
+	      				<br /><br />
+	      			</div>
 	      		</div>
 	      		<div class="row" th:if="${grade} &lt; 70">
-	      			<h3>Resultado do teste da fase <span th:text="${phase.order}"></span>:</h3><br />
+	      			<h3>Resultado do teste da Fase <span th:text="${phase.order}"></span>:</h3>
 	      			Sua porcentagem de acertos foi de <span th:text="${grade}"></span>%.<br />
 	      			A porcentagem mínima para passar de fase é de 70%.<br /><br />
 	      			<a th:href="@{'/games/'+${phase.map.game.namelink}+'/'+${phase.map.level.order}+'/'+${phase.map.order}+'/'+${phase.order}}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk"><span class="fa fa-arrow-left"></span>&nbsp;&nbsp;&nbsp;Rever a aula</a>
+	      			<br /><br />
 	      		</div>
 	    	</div>
 	  	</div>

@@ -27,6 +27,7 @@ import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.impl.LoginServiceImpl;
 import com.polifono.util.EmailSendUtil;
+import com.polifono.util.EmailUtil;
 import com.polifono.util.RandomStringUtil;
 import com.polifono.util.StringUtil;
 import com.polifono.util.Util;
@@ -68,6 +69,7 @@ public class PlayerController extends BaseController {
 		Player playerOld = null; 
 				
 		if (player.getEmail() != null && !"".equals(player.getEmail().trim())) {
+			player.setEmail(EmailUtil.avoidWrongDomain(player.getEmail()));
 			playerOld = playerService.findByEmail(player.getEmail());
 		}
 		
@@ -84,10 +86,12 @@ public class PlayerController extends BaseController {
 			if (msg.equals("")) {
 				String password = player.getPassword();
 				
-				String name = player.getName().trim();
+				player.setName(StringUtil.formatNamePlayer(player.getName()));
+				
+				String name = player.getName();
 				name = name.substring(0, name.indexOf(" "));
 				
-				String lastName = player.getName().trim();
+				String lastName = player.getName();
 				lastName = lastName.substring(lastName.indexOf(" ") + 1).trim();
 				
 				player.setLastName(lastName);
