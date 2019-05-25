@@ -33,18 +33,34 @@ public interface IPlayerRepository extends JpaRepository<Player, Integer> {
 	 * GROUP 04
 	 * - Players that have never bought credits.
 	 * - Players that have been made their register at least one month ago.
-	 * - Players that didn't receive one message of type 02 in the last 2 months.
+	 * - Players that didn't receive one message of type 04 in the last 2 months.
 	 */
 	@Query(value = "select * from t001_player t1 where "
-			+ "date(t1.c001_dt_inc) < '2019-04-23' and "
+			+ "date(t1.c001_dt_inc) < date(:dateOneMonthAgo) and "
 			+ "t1.c001_active = 1 and "
 			+ "t1.c001_role = 'user' and "
 			+ "t1.c001_id_creator is null and "
-			+ "t1.c001_email is not null and "
-			+ "t1.c001_email != '' and "
-			+ "(select count(1) from t020_communication t20, t021_player_communication t21 where t20.c020_id = t21.c020_id and t20.c019_id = 4 and date(t20.c020_dt_inc) >= '2019-03-23' and t21.c001_id = t1.c001_id) = 0 and "
+			+ "t1.c001_email is not null and t1.c001_email != '' and "
+			+ "(select count(1) from t020_communication t20, t021_player_communication t21 where t20.c020_id = t21.c020_id and t20.c019_id = 4 and date(t20.c020_dt_inc) >= date(:dateTwoMonthsAgo) and t21.c001_id = t1.c001_id) = 0 and "
 			+ "(select count(1) from t012_transaction t12 where t12.c012_status = 3 and t12.c001_id = t1.c001_id) = 0 "
 			+ "limit 10", nativeQuery = true)
-	public List<Player> findCommunicationGroup04();
-
+	public List<Player> findCommunicationGroup04(@Param("dateOneMonthAgo") Date dateOneMonthAgo, @Param("dateTwoMonthsAgo") Date dateTwoMonthsAgo);
+	
+	/**
+	 * GROUP 05
+	 * - Players that have already bought credits.
+	 * - Players that have their last access older than one month.
+	 * - Players that didn't receive one message of type 05 in the last 2 months.
+	 * - Players that didn't finish any course.
+	 */
+	@Query(value = "select * from t001_player t1 where "
+			+ "t1.c001_active = 1 and "
+			+ "t1.c001_role = 'user' and "
+			+ "t1.c001_email is not null and t1.c001_email != '' and "
+			+ "(select count(1) from t012_transaction t12 where t12.c012_status = 3 and t12.c001_id = t1.c001_id) > 0 and "
+			+ "(select count(1) from t013_login t13 where t13.c001_id = t1.c001_id and date(t13.c013_dt_login) >= date(:dateOneMonthAgo)) = 0 and "
+			+ "(select count(1) from t020_communication t20, t021_player_communication t21 where t20.c020_id = t21.c020_id and t20.c019_id = 5 and date(t20.c020_dt_inc) >= date(:dateTwoMonthsAgo) and t21.c001_id = t1.c001_id) = 0 and "
+			+ "(select count(1) from t007_player_phase t7 where t7.c001_id = t1.c001_id and t7.c006_id = 3 and t7.c005_id in (91, 151, 181)) = 0 "
+			+ "limit 10", nativeQuery = true)
+	public List<Player> findCommunicationGroup05(@Param("dateOneMonthAgo") Date dateOneMonthAgo, @Param("dateTwoMonthsAgo") Date dateTwoMonthsAgo);
 }

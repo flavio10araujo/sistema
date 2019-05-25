@@ -19,6 +19,7 @@ import com.polifono.domain.enums.Role;
 import com.polifono.repository.IPlayerRepository;
 import com.polifono.service.IPlayerGameService;
 import com.polifono.service.IPlayerService;
+import com.polifono.util.DateUtil;
 import com.polifono.util.EmailUtil;
 import com.polifono.util.RandomStringUtil;
 import com.polifono.util.StringUtil;
@@ -346,6 +347,11 @@ public class PlayerServiceImpl implements IPlayerService {
 	
 	@Override
 	public List<Player> findCommunicationGroup04() {
-		return repository.findCommunicationGroup04();
+		return repository.findCommunicationGroup04(DateUtil.subtractMonth(new Date(), 1), DateUtil.subtractMonth(new Date(), 2));
+	}
+	
+	@Override
+	public List<Player> findCommunicationGroup05() {
+		return repository.findCommunicationGroup05(DateUtil.subtractMonth(new Date(), 1), DateUtil.subtractMonth(new Date(), 2));
 	}
 }

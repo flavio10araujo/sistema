@@ -54,6 +54,8 @@ public interface IPlayerService {
 	
 	//Communication - begin
 	public List<Player> findCommunicationGroup04();
+	
+	public List<Player> findCommunicationGroup05();
 	//Communication - end
 
 }

@@ -48,22 +48,7 @@ public class AdminMessageController {
 		List<Player> players = playerService.findCommunicationGroup04();
 		EmailSendUtil.sendEmailCommunication(groupcommunication.getId(), players);
 		
-		Communication communication = new Communication();
-		communication.setGroupcommunication(groupcommunication);
-		communication.setDtInc(new Date());
-		
-		// T019
-		communicationService.save(communication);
-		
-		for (Player player : players) {
-			
-			PlayerCommunication playerCommunication = new PlayerCommunication();
-			playerCommunication.setPlayer(player);
-			playerCommunication.setCommunication(communication);
-			
-			// T020
-			playerCommunicationService.save(playerCommunication);
-		}
+		registerMessages(groupcommunication, players);
 		
 		model.addAttribute("players", players);
 		
@@ -79,11 +64,19 @@ public class AdminMessageController {
 	public String group05Submit(Model model) {
 		
 		Groupcommunication groupcommunication = new Groupcommunication();
-		groupcommunication.setId(4);
+		groupcommunication.setId(5);
 		
-		List<Player> players = playerService.findCommunicationGroup04();
+		List<Player> players = playerService.findCommunicationGroup05();
 		EmailSendUtil.sendEmailCommunication(groupcommunication.getId(), players);
+
+		registerMessages(groupcommunication, players);
 		
+		model.addAttribute("players", players);
+		
+		return URL_ADMIN_MSG_G05;
+	}
+	
+	private void registerMessages(Groupcommunication groupcommunication, List<Player> players) {
 		Communication communication = new Communication();
 		communication.setGroupcommunication(groupcommunication);
 		communication.setDtInc(new Date());
@@ -100,9 +93,5 @@ public class AdminMessageController {
 			// T020
 			playerCommunicationService.save(playerCommunication);
 		}
-		
-		model.addAttribute("players", players);
-		
-		return URL_ADMIN_MSG_G05;
 	}
 }

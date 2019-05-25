@@ -14,12 +14,14 @@ public class DateUtil {
 			//System.out.println(getFirstDayOfTheCurrentMonth());
 			//System.out.println(getLastDayOfTheCurrentMonth());
 			
-			String d1Str = "2019-01-05";
+			//String d1Str = "2019-01-05";
 			//String d1Str = "05/01/2019";
-			java.util.Date d1 = parseDateYearMonthDayFormat(d1Str);
-			System.out.println(d1);
+			//java.util.Date d1 = parseDateYearMonthDayFormat(d1Str);
+			//System.out.println(d1);
 			
-		} catch (ParseException e) {
+			//System.out.println(subtractMonth(new java.util.Date(), 2));
+			
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -86,5 +88,12 @@ public class DateUtil {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
+	}
+	
+	public static java.util.Date subtractMonth(java.util.Date currentDate, int subtract) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(currentDate);
+		cal.add(Calendar.MONTH, (subtract * -1));
+		return cal.getTime();
 	}
 }
