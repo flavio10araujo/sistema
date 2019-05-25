@@ -1,6 +1,7 @@
 package com.polifono.controller.admin.report;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
-import com.polifono.dto.teacher.ReportGeneralDTO;
 import com.polifono.form.admin.report.RegisterFilterForm;
-import com.polifono.form.teacher.ReportGeneralForm;
 import com.polifono.service.IPlayerService;
 
 @Controller
@@ -50,6 +48,11 @@ public class AdminReportController {
 			model.addAttribute("message", "error");
 			model.addAttribute("messageContent", msg);
 			return URL_ADMIN_REPORT_REGISTER;
+		}
+		
+		if (registerFilterForm.getDateBegin() == null || registerFilterForm.getDateEnd() == null) {
+			registerFilterForm.setDateBegin(new Date());
+			registerFilterForm.setDateEnd(new Date());
 		}
 		
 		List<Player> players = playerService.findByDateIncRange(registerFilterForm.getDateBegin(), registerFilterForm.getDateEnd());

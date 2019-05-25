@@ -343,4 +343,9 @@ public class PlayerServiceImpl implements IPlayerService {
 		
 		return msg;
 	}
+	
+	@Override
+	public List<Player> findCommunicationGroup04() {
+		return repository.findCommunicationGroup04();
+	}
 }

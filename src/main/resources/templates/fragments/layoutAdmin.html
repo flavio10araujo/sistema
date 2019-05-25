@@ -42,6 +42,16 @@
 	         				<li><a th:href="@{/admin/report/register}" th:text="#{menu.admin.report.register}"></a></li>
 	       				</ul>
 	     			</li>
+	     			<li class="dropdown">
+	       				<a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{menu.admin.message}"><span class="caret"></span></a>
+	       				<ul class="dropdown-menu">
+	         				<li><a href="#" th:text="#{menu.admin.message.group01}"></a></li>
+	         				<li><a href="#" th:text="#{menu.admin.message.group02}"></a></li>
+	         				<li><a href="#" th:text="#{menu.admin.message.group03}"></a></li>
+	         				<li><a th:href="@{/admin/message/group04}" th:text="#{menu.admin.message.group04}"></a></li>
+	         				<li><a th:href="@{/admin/message/group05}" th:text="#{menu.admin.message.group05}"></a></li>
+	       				</ul>
+	     			</li>
 	   			</ul>
 	   			<ul class="nav navbar-nav navbar-right">
 	     			<li th:title="#{app.profile}"><a href="#" sec:authentication="principal.user.name"></a></li>

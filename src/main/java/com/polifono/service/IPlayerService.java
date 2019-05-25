@@ -51,5 +51,9 @@ public interface IPlayerService {
 	public String validateUpdateProfile(Player edit);
 	
 	public String validateChangePasswordPlayer(Player player);
+	
+	//Communication - begin
+	public List<Player> findCommunicationGroup04();
+	//Communication - end
 
 }
