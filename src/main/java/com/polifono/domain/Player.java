@@ -19,6 +19,7 @@ import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.polifono.domain.enums.Rank;
 import com.polifono.domain.enums.Role;
 import com.polifono.util.DateUtil;
 import com.polifono.util.MD5Util;
@@ -58,6 +59,9 @@ public class Player {
 	
 	@Column(name = "c001_credit")
 	private int credit;
+	
+	@Column(name = "c001_coin")
+	private int coin;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "c001_role")
@@ -431,4 +435,61 @@ public class Player {
 	public void setIdFacebook(Long idFacebook) {
 		this.idFacebook = idFacebook;
 	}
+
+	public int getCoin() {
+		return coin;
+	}
+
+	public void setCoin(int coin) {
+		this.coin = coin;
+	}
+	
+	/**
+     * From 0 to 1000 points = Level 1 = White
+     * From 1001 to 3000 points = Level 2 = Yellow
+     * From 3001 to 5000 points = Level 3 = Orange
+     * From 5001 to 6500 points = Level 4 = Red
+     * From 6501 to 9000 points = Level 5 = Purple
+     * From 9001 to 14000 points = Level 6 = Brown
+     * From 14001 to 18000 points = Level 7 = Black
+     * From 18001 to 21000 points = Level 8 = Copper
+     * From 21001 to 24000 points = Level 9 = Silver 
+     * From 24001 to infinity = Level 10 = Gold
+     * @param score
+     * @return
+     */
+	public Rank getRank() {
+		
+		int score = this.getScore();
+		
+		if (score <= 1000) {
+    		return Rank.WHITE;
+    	} else if (score > 1000 && score <= 3000) {
+    		return Rank.YELLOW;
+    	} else if (score > 3000 && score <= 5000) {
+    		return Rank.ORANGE;
+    	} else if (score > 5000 && score <= 6500) {
+    		return Rank.RED;
+    	} else if (score > 6500 && score <= 9000) {
+    		return Rank.PURPLE;
+    	} else if (score > 9000 && score <= 14000) {
+    		return Rank.BROWN;
+    	} else if (score > 14000 && score <= 18000) {
+    		return Rank.BLACK;
+    	} else if (score > 18000 && score <= 21000) {
+    		return Rank.COPPER;
+    	} else if (score > 21000 && score <= 24000) {
+    		return Rank.SILVER;
+    	} else {
+    		return Rank.GOLD;
+    	}
+	}
+	
+	public String getRankColor() {
+        return getRank().getColor();
+    }
+	
+	public int getRankLevel() {
+        return getRank().getLevel();
+    }
 }

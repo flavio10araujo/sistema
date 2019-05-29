@@ -32,6 +32,11 @@
        						<p th:if="${player.about != null}">
          						<span th:text="${player.about}"></span>
        						</p>
+       						
+       						<hr />
+                            <h3><strong>Nível musical</strong></h3>
+                            
+                           	<span class="badge" th:text="${player.rankLevel}">1</span>&nbsp;<span th:text="${player.rankColor}"></span>
                             
                             <hr />
                             <h3><strong>Cidade</strong></h3>

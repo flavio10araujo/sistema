@@ -384,6 +384,7 @@ public class GameController extends BaseController {
 			
 			Player player = playerService.findOne(this.currentAuthenticatedUser().getUser().getId());
 			player.setScore(this.calculatePlayerScoreAfterPassTheTest(player.getScore(), playerPhase.getScore()));
+			player.setCoin(this.calculatePlayerCoinAfterPassTheTest(player.getCoin(), playerPhase.getScore()));
 			
 			player = playerService.removeOneCreditFromPlayer(player, currentPhase.getMap().getGame());
 			
@@ -440,6 +441,10 @@ public class GameController extends BaseController {
 	
 	public final int calculatePlayerScoreAfterPassTheTest(int playerScore, int testScore) {
 		return playerScore + testScore;
+	}
+	
+	public final int calculatePlayerCoinAfterPassTheTest(int playerCoin, int testScore) {
+		return playerCoin + testScore;
 	}
 	
 	/**
