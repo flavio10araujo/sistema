@@ -6,12 +6,7 @@
 <body>
 	<div layout:fragment="content">
 	
-		<style>
-		.embed-container{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;}
-		.embed-container iframe, .embed-container object, .embed-container embed{position:absolute;top:0;left:0;width:100%;height:100%;}
-		</style>
-	
-    	<div class="col-sm-12 bg">
+		<div class="col-sm-12 bg">
       		<div class="row">
       			<br />
       			<ol class="breadcrumb">
@@ -54,149 +49,8 @@
   					$(this).button('loading');
   				});
   			});
-  			
-	  		//
-	  		var fontChange = 0;
-	  		
-	  		function fontSize(e) {
-	  			var elemento24 = $(".fontSize24px");
-  				var fonte24 = elemento24.css('font-size');
-  				var elemento20 = $(".fontSize20px");
-  				var fonte20 = elemento20.css('font-size');
-  				var elemento16 = $(".fontSize16px");
-  				var fonte16 = elemento16.css('font-size');
-  				var elemento14 = $(".fontSize14px");
-  				var fonte14 = elemento14.css('font-size');
-  				
-  				if (e == 'a') {
-  					if (fontChange <= 10) {
-	  					elemento24.css("fontSize", parseInt(fonte24) + 1);
-	  					elemento20.css("fontSize", parseInt(fonte20) + 1);
-	  					elemento16.css("fontSize", parseInt(fonte16) + 1);
-	  					elemento14.css("fontSize", parseInt(fonte14) + 1);
-	  					fontChange++;
-  					}
-  				}
-  				else if (e == 'd') {
-  					if (fontChange >= -10) {
-	  					elemento24.css("fontSize", parseInt(fonte24) - 1);
-	  					elemento20.css("fontSize", parseInt(fonte20) - 1);
-	  					elemento16.css("fontSize", parseInt(fonte16) - 1);
-	  					elemento14.css("fontSize", parseInt(fonte14) - 1);
-	  					fontChange--;
-  					}
-  				}
-  			}
-	  		
-	  		//
-	  		var switchColorControl = false;
-			
-	  		function switchColor() {
-				if (switchColorControl) {
-					switchWhite();
-				} else {
-					switchBlack();
-				}
-			}	
-			
-			function switchBlack() {
-				switchColorControl = true;
-				document.getElementById('content').style.backgroundColor = 'black';
-				document.getElementById('content').style.color = 'white';
-			}
-			
-			function switchWhite() {
-				switchColorControl = false;
-				document.getElementById('content').style.backgroundColor = 'white';
-				document.getElementById('content').style.color='black';
-			}
-			
-			//
-			function printContent() {
-				if ($(window).width() > 767) {
-					printContentBig();
-				}
-				else {
-					printContentSmall();
-				}
-			}
-			
-			function printContentBig() {
-				var divToPrint = $('#content').clone();
-				var txt1 = $("<span></span><br />").text("Polifono.com - Music Network & E-learning");
-				var txt2 = $("<span></span>").text("Curso de "+$('#breadcrumbGame').text()+" - Módulo "+$('#breadcrumbLevel').text());
-				$(divToPrint).prepend(txt1, txt2);
-				$(divToPrint).append("Todos os direitos reservados. Conteúdo disponível apenas para estudo pessoal, não permitida a sua reprodução, venda ou qualquer forma de lucro sem devida autorização. Mais informações em www.polifono.com.")
-				$(divToPrint).children(".embed-container").remove();
-				newWin=window.open("");
-				newWin.document.write($(divToPrint).html());
-				newWin.print();
-				newWin.close();
-			}
-			
-			function printContentSmall() {
-				window.print();
-			}
-			
-			// Image lazy-loading.
-			var loadImages;
-					
-			$(document).ready(function(){
-				$(".lazy-img img").on('load', function(){
-					$(this).addClass("loaded");
-				});
-				
-				$(document).on("scroll", function(){
-					loadImages();
-				});
-				
-				(loadImages = function(){
-					$.each($(".lazy-img"), function() {
-						var block = $(this);
-						var image = block.find("img");
-						
-						var rightImage = isRightImage(image.data("min-width"), image.data("max-width"));
-						
-						if (rightImage && isOnScreen(block)) {
-							var url = image.data("url");
-							
-							if (image.is(':hidden')) {
-								image.show();
-							}
-							
-							if (image.attr("src") != url) {
-								image.attr("src", url);
-							}
-						}
-						
-						if (!rightImage) {
-							if (image.is(':visible')) {
-								image.hide();
-							}
-						}
-					})
-				})();
-			});
-
-			function isOnScreen(element) {
-				var win = $(window);
-				var screenTop = win.scrollTop();
-				var screenBottom = screenTop + win.height();
-				var elementTop = element.offset().top;
-				var elementBottom = elementTop + element.height();
-				return elementBottom > screenTop && elementTop < screenBottom;
-			}
-
-			function isRightImage(wMin, wMax) {
-				if (screen.width >= wMin && screen.width <= wMax) {
-					return true;
-				}	
-				return false;
-			}
-			/*]]>*/
+  			/*]]>*/
 		</script>
-		
-		<style>.lazy-img img{opacity:0;}.lazy-img img.loaded{opacity:1;transition:opacity 1s;}</style>
 
 	</div>
 </body>

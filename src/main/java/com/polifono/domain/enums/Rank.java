@@ -9,8 +9,8 @@ public enum Rank {
 	BROWN(6, "Faixa Marrom"), 
 	BLACK(7, "Faixa Preta"), 
 	COPPER(8, "Faixa Cobre"), 
-	SILVER(9, "Faixa Prata"), 
-	GOLD(10, "Faixa Ouro");
+	SILVER(9, "Faixa Prateada"), 
+	GOLD(10, "Faixa Dourada");
 	
 	private int level;
 	private String color;

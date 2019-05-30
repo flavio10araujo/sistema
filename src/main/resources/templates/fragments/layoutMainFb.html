@@ -14,72 +14,24 @@
     	
     	<link rel="icon" th:href="@{/static/img/favicon.ico}" sizes="16x16" />
 		
-		<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" />
-		
-		<style type="text/css">
-			/* Special class on .container surrounding .navbar, used for positioning it into place. */
-			.navbar-wrapper{position:fixed;top:0;left:0;right:0;z-index:20;margin-left:-15px;margin-right:-15px}
-			/* Flip around the padding for proper display in narrow viewports */
-			.navbar-wrapper .container{padding-left:0;padding-right:0}
-			.navbar-wrapper .navbar{padding-left:15px;padding-right:15px}
-			.navbar-content{width:320px;padding:15px;padding-bottom:0px}
-			.navbar-content:before, .navbar-content:after{display:table;content:"";line-height:0}
-			.navbar-nav.navbar-right:last-child{margin-right:15px !important}
-			.navbar-footer{background-color:#DDD}
-			.navbar-footer-content{padding:15px 15px 15px 15px}
-			.dropdown-menu{padding:0px;overflow:hidden}
-			.brand_network{color:#9D9D9D;float:left;position:absolute;left:70px;top:30px;font-size:smaller}
-			.post-content{margin-left:58px}
-			.badge-important{margin-top:3px;margin-left:25px;position:absolute}
-			body{background-color:#e8e8e8}
-			@media(min-width:768px){.searchBar{width:148px}}
-			@media(max-width:767px){.searchBar{width:100%}}
-		</style>
-		
-		<style>
-		.footer{background:#EDEFF1;height:auto;padding-bottom:30px;position:relative;width:100%;border-bottom:1px solid #CCCCCC;border-top:1px solid #DDDDDD;}
-		.footer p{margin:0;}
-		.footer h3{border-bottom:1px solid #BAC1C8;color:#54697E;font-size:18px;font-weight:600;line-height:27px;text-transform:uppercase;}
-		.footer ul{font-size:13px;list-style-type:none;margin-left:0;padding-left:0;margin-top:15px;color:#7F8C8D;}
-		.footer ul li a{padding:0 0 5px 0;display:block;}
-		.footer a{color:#78828D}
-		.social li{background:none repeat scroll 0 0 #B5B5B5;border:2px solid #B5B5B5;-webkit-border-radius:50%;-moz-border-radius:50%;-o-border-radius:50%;-ms-border-radius:50%;border-radius:50%;float:left;height:36px;line-height:36px;padding:0;text-align:center;width:36px;transition:all 0.5s ease 0s;-moz-transition:all 0.5s ease 0s;-webkit-transition:all 0.5s ease 0s;-ms-transition:all 0.5s ease 0s;-o-transition:all 0.5s ease 0s;}
-		.social li:hover{transform:scale(1.15) rotate(360deg);-webkit-transform:scale(1.1) rotate(360deg);-moz-transform:scale(1.1) rotate(360deg);-ms-transform:scale(1.1) rotate(360deg);-o-transform:scale(1.1) rotate(360deg);}
-		.social li a{color:#EDEFF1;}
-		.social li:hover{border:2px solid #2c3e50;background:#2c3e50;}
-		.social li a i{font-size:16px;margin:0;color:#EDEFF1 !important;}
-		.footer-bottom{background:#E3E3E3;border-top:1px solid #DDDDDD;padding-top:10px;padding-bottom:10px;}
-		.footer-bottom p.pull-left{padding-top:6px;}
-		@media(min-width:768px){.footer h3{padding:10px 0 10px 0;}.social li{margin:0 8px 0 0;}}
-		@media(max-width:767px){.footer h3{padding:10px 0 10px 10px;}.social li{margin:0 8px 0 10px;}}
-		</style>
-		
-		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
-		
-		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
-		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 		
-		<!-- Global CSS -->
-    	<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/project/assets/css/style.min.css}" />
-    	
-    	<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootbox/bootbox.min.js}"></script>
+		<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/project/assets/css/style.minV20190529.css}" />
+		
+		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/project/assets/js/mainHeader.minV20190529.js}"></script>
+		<script defer="defer" type="text/javascript" th:inline="javascript" th:src="@{/vendors/project/assets/js/mainFooter.minV20190529.js}"></script>
     	
     	<!-- Global site tag (gtag.js) - Google Ads: 1067435224 -->
 		<script async="true" src="https://www.googletagmanager.com/gtag/js?id=AW-1067435224"></script>
 		<script>
-		  window.dataLayer = window.dataLayer || [];
-		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js',new Date());
-		  gtag('config','AW-1067435224');
-		</script>
-		
-		<!-- Event snippet for Cadastros conversion page -->
-		<script>
-		  gtag('event','conversion',{'send_to':'AW-1067435224/mxpNCKT6kIMBENiJ__wD'});
-		</script>
-    	
-    	<script>
+			<!-- Google Ads -->
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js',new Date());
+			gtag('config','AW-1067435224');
+			<!-- Google - Event snippet for Cadastros conversion page -->
+			gtag('event','conversion',{'send_to':'AW-1067435224/mxpNCKT6kIMBENiJ__wD'});	
+			<!-- Google analytics --> 
 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -161,7 +113,7 @@
                             
 							<ul class="nav navbar-nav navbar-right">
 
-								<li data-toggle="tooltip" th:title="#{msg.toseemygrades}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}/score|}"><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.score"></span></a></li>
+								<li data-toggle="tooltip" th:title="#{msg.toseemygrades}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}/score|}"><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.coin"></span></a></li>
 								
 								<li data-toggle="tooltip" th:title="#{msg.buymorecredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>: <span sec:authentication="principal.user.totalCredit"></span></a></li>
 								
@@ -263,16 +215,6 @@
 </footer>
 
 	<form name="f_logout" id="f_logout" th:action="@{/logout}" method="post" />
-	
-	<script>function logout(){form=document.getElementById("f_logout");form.submit();}</script>
-
-	<script th:inline="javascript">
-		/*<![CDATA[*/
-			$(function(){$('[data-toggle="tooltip"]').tooltip()})
-			$(function (){$('[data-toggle="popover"]').popover()})
-			function editPassword(){bootbox.alert("Para alterar sua senha, desconecte do sistema e utilize a seção [Esqueci minha senha].");}
-		/*]]>*/
-	</script>
 
 	</body>
 </html>
