@@ -1,6 +1,5 @@
 package com.polifono.util;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -277,7 +276,34 @@ public class EmailSendUtil {
 			message = replaceParamsMessage(message, args);
 		}
 		else if (messageType == 5) {
+			from = resourceBundle.getString("email.general");
+			subject = "Sentimos sua falta na " + resourceBundle.getString("email.company") + "... Acesse sua conta para continuar a aprender música!";
 			
+			message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">"
+					+ "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
+					+ "<p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
+					+ "<p><font face=\"arial\" size=\"2\">Sentimos sua falta! Já faz tempo que você não acessa a " + resourceBundle.getString("email.company") + "! "
+					+ "<p><font face=\"arial\" size=\"2\">Estamos sempre melhorando nosso sistema, criando novas funcionalidades e adicionando novas aulas.</font></p>";
+					
+			// Credits > 0
+			if (Integer.parseInt(args[2]) > 0) {
+				message = message + "<p><font face=\"arial\" size=\"2\">Você ainda tem créditos em sua conta da sua última compra!</font></p>";
+			}
+			
+			message = message + "<p><font face=\"arial\" size=\"2\">Mini relatório do aluno:</font></p>"
+					+ "<p><font face=\"arial\" size=\"2\">- Créditos em conta: {2}</font></p>"
+					+ "<p><font face=\"arial\" size=\"2\">- Pontuação total: {3}</font></p>"
+					+ "<p><font face=\"arial\" size=\"2\">- Nível musical: {4}</font></p>";
+			
+			message = message + "<p><font face=\"arial\" size=\"2\"><br />Acesse <a href=\"https://" + resourceBundle.getString("email.url") + "\">" + resourceBundle.getString("email.url") + "</a> e continue estudando para subir de nível!</font></p>"
+					+ "</td></tr><tr><td>"
+					+ "<font face=\"arial\" size=\"-1\"><br />Aguardamos você!<br />Equipe " + resourceBundle.getString("email.company") + "<br /><br /><strong>" + resourceBundle.getString("email.company") + "</strong> - " + resourceBundle.getString("email.company.slogan") + "</font>"
+					+ "</td></tr><tr><td align=\"center\">"
+					+ "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"https://" + resourceBundle.getString("email.url") + "/#faq\">" + resourceBundle.getString("email.url") + "/#faq</a></font>"
+					+ "</td></tr><tr><td align=\"center\"><hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\"></font>"
+					+ "</td></tr></tbody></table>";
+			
+			message = replaceParamsMessage(message, args);
 		}
 		
 		if (async) {
@@ -406,18 +432,6 @@ public class EmailSendUtil {
 	}
 	
 	/**
-	 * This method is used to send the email to a player from the group communication of type groupcommunicationId.
-	 * 
-	 * @param groupcommunicationId
-	 * @param player
-	 */
-	public static void sendEmailCommunication(int groupcommunicationId, Player player) {
-		List<Player> players = new ArrayList<Player>();
-		players.add(player);
-		sendEmailCommunication(groupcommunicationId, players);
-	}
-	
-	/**
 	 * This method is used to send the email to list of players from the group communication of type groupcommunicationId.
 	 * 
 	 * @param groupcommunicationId
@@ -425,9 +439,12 @@ public class EmailSendUtil {
 	 */
 	public static void sendEmailCommunication(int groupcommunicationId, List<Player> players) {
 		for (Player player : players) {
-			String[] args = new String[3];
+			String[] args = new String[5];
 			args[0] = player.getName();
 			args[1] = (player.getIdFacebook() != null ? String.valueOf(player.getIdFacebook()) : null);
+			args[2] = String.valueOf(player.getCredit());
+			args[3] = String.valueOf(player.getScore());
+			args[4] = "(" + player.getRankLevel() + ") " + player.getRankColor();
 			
 			try {
 				EmailSendUtil.sendMessageCommunication(false, groupcommunicationId, player.getEmail(), args);

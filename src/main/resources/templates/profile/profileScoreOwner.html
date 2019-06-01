@@ -1,170 +1,60 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMainFb">
-
-<head>
-	<style type="text/css">
-        .mainbody{background:#f0f0f0}
-	</style>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutProfile">
 
 <body>
-	<div layout:fragment="content">
+	<div layout:fragment="contentProfile">
 	
-        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-        
-            <div class="panel panel-default">
-            
-                <div class="panel-body">
+		<div class="panel panel-default" th:each="playerPhaseGame : ${playerPhasesGames}">
                 
-                    <div class="media">
-                    
-                        <div align="center">
-                            <a th:href="@{'/profile/player/'+${player.id}}"><img class="thumbnail img-responsive" th:src="@{'https://www.gravatar.com/avatar/'+${player.emailMD5}+'.jpg?s=200'}" width="300px" height="300px" /></a>
-                        </div>
-                        
-                        <div class="media-body">
-                            <hr />
-                            <h3><strong>Eu</strong></h3>
-                            
-                           	<p th:if="${player.about == null} OR ${player.about == ''}">
-         						<span th:text="#{msg.infoNotFound}"></span>
-       						</p>
-       						<p th:if="${player.about != null}">
-         						<span th:text="${player.about}"></span>
-       						</p>
-       						
-       						<hr />
-                            <h3><strong>Nível musical</strong></h3>
-                            
-                           	<span class="badge" th:text="${player.rankLevel}">1</span>&nbsp;<span th:text="${player.rankColor}"></span>
-                            
-                            <hr />
-                            <h3><strong>Cidade</strong></h3>
-                            
-                            <p th:if="${player.address == null} OR ${player.address == ''}">
-         						<span th:text="#{msg.infoNotFound}"></span>
-       						</p>
-       						<p th:if="${player.address != null}">
-         						<span th:text="${player.address}"></span>
-       						</p>
-                            
-                            <hr />
-                            <h3><strong>Nascimento</strong></h3>
-                            
-                            <p th:if="${player.dtBirth == null}">
-         						<span th:text="#{msg.infoNotFound}"></span>
-       						</p>
-       						<p th:if="${player.dtBirth != null}">
-         						<span th:text="${#calendars.format(player.dtBirth,'dd/MM/yyyy')}"></span>
-       						</p>
-                            
-                            <hr />
-                            <h3><strong>Sexo</strong></h3>
-                            
-                            <p th:if="${player.sex == 0}">
-         						<span th:text="#{msg.infoNotFound}"></span>
-       						</p>
-       						<p th:if="${player.sex > 0}">
-         						<span th:text="( (${player.sex} == 1) ? #{app.male} : #{app.female})"></span>
-       						</p>
-       						
-       						<hr />
-                            <h3><strong>Desde</strong></h3>
-                            <span th:text="${#calendars.format(player.dtInc,'dd/MM/yyyy')}"></span>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                </div>
-                
-            </div>
-            
-        </div>
-        
-        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-        
-            <div class="panel panel-default">
-            
-                <div class="panel-body">
-                
-                    
-                    <h1 class="panel-title pull-left" style="font-size:30px;" th:text="${player.name}+' '+${player.lastName}">Name</h1> 
-                    
-                    <div class="dropdown pull-right" th:if="${editAvailable == true}">
-                        <a th:href="@{'/profile/player/edit/'+${player.id}}" class="btn btn-success dropdown-toggle" th:title="#{app.edit}">Editar</a>
-                    </div>
-                    
-                    <br /><br />
-                    
-                    <h4 th:text="${player.email}" th:if="${editAvailable == true}">example@polifono.com</h4>
-                    
-                    <hr />
-                    
-                    <span class="pull-left">
-                        <a th:if="${editAvailable == false}" href="#" class="btn btn-link" style="text-decoration:none">Pontos <span class="badge" th:text="${player.score}">1</span></a>
-                        <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/score|}" data-toggle="tooltip" title="Ver a pontuação obtida em cada fase" class="btn btn-link" style="text-decoration:none">Pontos <span class="badge" th:text="${player.score}">1</span></a>
-                        
-                        <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/attendance|}" data-toggle="tooltip" title="Ver a frequência no curso" class="btn btn-link" style="text-decoration:none">Frequência</a>
-                        
-                        <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/credits|}" data-toggle="tooltip" title="Ver a quantidade de créditos adquiridos até o momento" class="btn btn-link" style="text-decoration:none">Créditos</a>
-                    </span>
-                </div>
-            </div>
-            
-            <hr />
-            
-            <div class="panel panel-default" th:each="playerPhaseGame : ${playerPhasesGames}">
-                
-                <div class="panel-body">
-                
-                	<div class="pull-left"><a class="btn btn-link" data-toggle="collapse" data-parent="#accordion" th:href="@{'#collapseGrades'+${playerPhaseGame.id}}" aria-expanded="false" th:attr="aria-controls='collapseGrades'+${playerPhaseGame.id}" style="text-decoration:none"><i class="fa fa-music fa-1x" aria-hidden="true"></i></a></div>
-                    
-                    <h4><a data-toggle="collapse" data-parent="#accordion" th:href="@{'#collapseGrades'+${playerPhaseGame.id}}" aria-expanded="false" th:attr="aria-controls='collapseGrades' + ${playerPhaseGame.id}" style="text-decoration:none"><strong th:text="${playerPhaseGame.name}"></strong></a></h4>
-                    
-                    <div th:id="${'collapseGrades'+playerPhaseGame.id}" class="collapse in">
-	                    <div th:each="level : ${levels}" style="margin-top:15px;">
-		                    
-		                    <h5><a data-toggle="collapse" data-parent="#accordion" th:href="@{'#collapseGrades'+${playerPhaseGame.id}+'-'+${level.id}}" aria-expanded="false" th:attr="aria-controls='collapseGrades'+${playerPhaseGame.id}+'-'+${level.id}" style="text-decoration:none"><strong th:text="${level.name}"></strong></a></h5>
-		                    
-		                    <div th:id="${'collapseGrades'+playerPhaseGame.id+'-'+level.id}" class="collapse in">
-		                    
-			                    <div role="tabpanel" class="media">
-			                        <div class="table-responsive">
-			                            <table class="table table-striped table-condensed">
-			             					<thead>
-												<tr>
-			        								<th>Fase</th>
-			        								<th data-toggle="tooltip" title="Número de vezes que o aluno fez o teste até obter o mínimo de 70% de acertos">Tentativas</th>
-			        								<th>Nota</th>
-			        								<th data-toggle="tooltip" title="Pontuação baseada no número de acertos e número de tentativas">Pontos</th>
-			      								</tr>
-		    								</thead>
-			             					<tbody>
-			             						<div th:each="playerPhase : ${playerPhases}" th:if="${playerPhase.phase.map.game.id} == ${playerPhaseGame.id} AND ${playerPhase.phase.map.level.id} == ${level.id}">
-			               							<tr>
-			   											<td th:text="${playerPhase.phase.order}"></td>
-			   											<td th:text="${playerPhase.numAttempts}"></td>
-			   											<td th:text="${playerPhase.grade}"></td>
-			   											<td th:text="${playerPhase.score}"></td>
-			   										</tr>
-			   									</div>
-			             					</tbody>
-			           					</table>
-			                        </div>
-			                    </div>
-		                    
+			<div class="panel-body">
+               
+               	<div class="pull-left"><a class="btn btn-link" data-toggle="collapse" data-parent="#accordion" th:href="@{'#collapseGrades'+${playerPhaseGame.id}}" aria-expanded="false" th:attr="aria-controls='collapseGrades'+${playerPhaseGame.id}" style="text-decoration:none"><i class="fa fa-music fa-1x" aria-hidden="true"></i></a></div>
+                   
+                   <h4><a data-toggle="collapse" data-parent="#accordion" th:href="@{'#collapseGrades'+${playerPhaseGame.id}}" aria-expanded="false" th:attr="aria-controls='collapseGrades' + ${playerPhaseGame.id}" style="text-decoration:none"><strong th:text="${playerPhaseGame.name}"></strong></a></h4>
+                   
+                   <div th:id="${'collapseGrades'+playerPhaseGame.id}" class="collapse in">
+                    <div th:each="level : ${levels}" style="margin-top:15px;">
+	                    
+	                    <h5><a data-toggle="collapse" data-parent="#accordion" th:href="@{'#collapseGrades'+${playerPhaseGame.id}+'-'+${level.id}}" aria-expanded="false" th:attr="aria-controls='collapseGrades'+${playerPhaseGame.id}+'-'+${level.id}" style="text-decoration:none"><strong th:text="${level.name}"></strong></a></h5>
+	                    
+	                    <div th:id="${'collapseGrades'+playerPhaseGame.id+'-'+level.id}" class="collapse in">
+	                    
+		                    <div role="tabpanel" class="media">
+		                        <div class="table-responsive">
+		                            <table class="table table-striped table-condensed">
+		             					<thead>
+											<tr>
+		        								<th>Fase</th>
+		        								<th data-toggle="tooltip" title="Número de vezes que o aluno fez o teste até obter o mínimo de 70% de acertos">Tentativas</th>
+		        								<th>Nota</th>
+		        								<th data-toggle="tooltip" title="Pontuação baseada no número de acertos e número de tentativas">Pontos</th>
+		      								</tr>
+	    								</thead>
+		             					<tbody>
+		             						<div th:each="playerPhase : ${playerPhases}" th:if="${playerPhase.phase.map.game.id} == ${playerPhaseGame.id} AND ${playerPhase.phase.map.level.id} == ${level.id}">
+		               							<tr>
+		   											<td th:text="${playerPhase.phase.order}"></td>
+		   											<td th:text="${playerPhase.numAttempts}"></td>
+		   											<td th:text="${playerPhase.grade}"></td>
+		   											<td th:text="${playerPhase.score}"></td>
+		   										</tr>
+		   									</div>
+		             					</tbody>
+		           					</table>
+		                    	</div>
 		                    </div>
-	                    </div>
-                    </div>
-                    
+	                    
+						</div>
+					
+					</div>
+				
 				</div>
-			
+                   
 			</div>
-
-        </div>
+		
+		</div>
         
-    </div>
+	</div>
 
 </body>
 </html>

@@ -43,7 +43,7 @@ public interface IPlayerRepository extends JpaRepository<Player, Integer> {
 			+ "t1.c001_email is not null and t1.c001_email != '' and "
 			+ "(select count(1) from t020_communication t20, t021_player_communication t21 where t20.c020_id = t21.c020_id and t20.c019_id = 4 and date(t20.c020_dt_inc) >= date(:dateTwoMonthsAgo) and t21.c001_id = t1.c001_id) = 0 and "
 			+ "(select count(1) from t012_transaction t12 where t12.c012_status = 3 and t12.c001_id = t1.c001_id) = 0 "
-			+ "limit 10", nativeQuery = true)
+			+ "limit 25", nativeQuery = true)
 	public List<Player> findCommunicationGroup04(@Param("dateOneMonthAgo") Date dateOneMonthAgo, @Param("dateTwoMonthsAgo") Date dateTwoMonthsAgo);
 	
 	/**
@@ -61,6 +61,6 @@ public interface IPlayerRepository extends JpaRepository<Player, Integer> {
 			+ "(select count(1) from t013_login t13 where t13.c001_id = t1.c001_id and date(t13.c013_dt_login) >= date(:dateOneMonthAgo)) = 0 and "
 			+ "(select count(1) from t020_communication t20, t021_player_communication t21 where t20.c020_id = t21.c020_id and t20.c019_id = 5 and date(t20.c020_dt_inc) >= date(:dateTwoMonthsAgo) and t21.c001_id = t1.c001_id) = 0 and "
 			+ "(select count(1) from t007_player_phase t7 where t7.c001_id = t1.c001_id and t7.c006_id = 3 and t7.c005_id in (91, 151, 181)) = 0 "
-			+ "limit 10", nativeQuery = true)
+			+ "limit 25", nativeQuery = true)
 	public List<Player> findCommunicationGroup05(@Param("dateOneMonthAgo") Date dateOneMonthAgo, @Param("dateTwoMonthsAgo") Date dateTwoMonthsAgo);
 }

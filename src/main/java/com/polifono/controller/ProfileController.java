@@ -61,6 +61,7 @@ public class ProfileController extends BaseController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileController.class);
 	
+	public static final String URL_PROFILE_PROFILENOTFOUND = "profile/profileNotFound";
 	public static final String URL_PROFILE_PROFILEPLAYER = "profile/profilePlayer";
 	public static final String URL_PROFILE_PROFILEPLAYEREDIT = "profile/profilePlayerEdit";
 	public static final String URL_PROFILE_PROFILESCORE = "profile/profileScore";
@@ -68,7 +69,7 @@ public class ProfileController extends BaseController {
 	public static final String URL_PROFILE_PROFILEATTENDANCE = "profile/profileAttendance";
 	public static final String URL_PROFILE_PROFILEATTENDANCE_OWNER = "profile/profileAttendanceOwner";
 	public static final String URL_PROFILE_PROFILECREDITS = "profile/profileCredits";
-	public static final String URL_PROFILE_PROFILENOTFOUND = "profile/profileNotFound";
+	public static final String URL_PROFILE_PROFILEVIDEOS = "profile/profileVideos";
 	
 	public static final String REDIRECT_HOME = "redirect:/";
 
@@ -256,6 +257,33 @@ public class ProfileController extends BaseController {
 		model.addAttribute("editAvailable", true);
 		
 		return URL_PROFILE_PROFILECREDITS;
+	}
+	
+	@RequestMapping(value = {"/player/{playerId}/videos"}, method = RequestMethod.GET)
+	public final String videos(final Model model, @PathVariable("playerId") Integer playerId) {
+		
+		Player player = playerService.findOne(playerId);
+		
+		if (player == null) return URL_PROFILE_PROFILENOTFOUND;
+		
+		
+		// If the player logged in is not the playerId && is not ADMIN.
+		if (
+				currentAuthenticatedUser().getUser().getId() != playerId &&
+				!currentAuthenticatedUser().getUser().getRole().equals(Role.ADMIN)
+			) {
+			model.addAttribute("editAvailable", false);
+		} else {
+			model.addAttribute("editAvailable", true);
+		}
+		
+		List<Phase> videos = new ArrayList<Phase>();
+		
+		model.addAttribute("player", player);
+		model.addAttribute("videos", videos);
+		
+		
+		return URL_PROFILE_PROFILEVIDEOS;
 	}
 	
 	@RequestMapping(value = {"/player/edit/{playerId}"}, method = RequestMethod.GET)

@@ -1,5 +1,6 @@
 package com.polifono.controller.admin.message;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -66,7 +67,14 @@ public class AdminMessageController {
 		Groupcommunication groupcommunication = new Groupcommunication();
 		groupcommunication.setId(5);
 		
-		List<Player> players = playerService.findCommunicationGroup05();
+		//List<Player> players = playerService.findCommunicationGroup05();
+		
+		/*TESTE*/ // PRECISO TESTAR SE A FIND COMMUNICATION GROUP 05 ESTA TRAZENDO OS CARAS CERTOS!!!
+		Player player = playerService.findOne(9);
+		List<Player> players = new ArrayList<Player>();
+		players.add(player);
+		/*TESTE*/
+		
 		EmailSendUtil.sendEmailCommunication(groupcommunication.getId(), players);
 
 		registerMessages(groupcommunication, players);

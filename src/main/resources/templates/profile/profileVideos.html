@@ -1,0 +1,66 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutProfile">
+
+<body>
+	<div layout:fragment="contentProfile">
+
+		<div class="panel panel-default">
+
+    		<div class="panel-body">
+        
+        		<div class="pull-left"><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" class="btn btn-link" style="text-decoration:none" aria-controls="collapseInstrument" href="#collapseInstrument"><i class="fa fa-video-camera fa-1x" aria-hidden="true"></i></a></div>
+
+				<h4><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" style="text-decoration:none" aria-controls="collapseInstrument" href="#collapseInstrument"><strong>Ensaios</strong></a></h4>
+               
+               	<div id="collapseInstrument" class="collapse in">
+               
+                	<hr />
+                
+                	<!--<div class="post-content" th:if="${#lists.isEmpty(videos)}">
+                		<p>Nenhum vídeo enviado até o momento.</p>
+					</div>
+                
+                	<div class="post-content" th:each="video : ${videos}">
+                		
+					</div>-->
+					
+					
+					<div>
+						<div class="row">
+					    	<div class="col-sm-9">
+								<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/ePbKGoIGAXY" allowfullscreen="true"></iframe></div>
+								<h3>Flauta doce : Iniciante : Fase 8</h3>
+					    	</div>
+					  	</div>
+					  	
+					  	<hr />
+					  	
+					  	<div class="row">
+					    	<div class="col-sm-9">
+					      		<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/GUCy75CA3Aw" allowfullscreen="true"></iframe></div>
+					      		<h3>Flauta doce : Iniciante : Fase 9</h3>
+					    	</div>
+					  	</div>
+					  	
+					  	<hr />
+					  	
+					  	<div class="row">
+					    	<div class="col-sm-9">
+					      		<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/LL92Wsu4bJk" allowfullscreen="true"></iframe></div>
+					      		<h3>Flauta doce : Iniciante : Fase 10</h3>
+					    	</div>
+					  	</div>
+					  	
+					  	<hr />
+					</div>
+
+				</div>
+               
+			</div>
+           
+		</div>
+            
+	</div>
+
+</body>
+</html>
