@@ -30,7 +30,7 @@ public class CompressResponseFilter implements Filter {
 			HtmlResponseWrapper capturingResponseWrapper = new HtmlResponseWrapper((HttpServletResponse) response);
 			filterChain.doFilter(request, capturingResponseWrapper);
 
-			if (response.getContentType() != null && response.getContentType().contains("text/html")) {
+			if (response.getContentType() != null) {
 				String content = capturingResponseWrapper.getCaptureAsString();
 				response.getWriter().write(compressor.compress(content));
 			}
@@ -40,7 +40,7 @@ public class CompressResponseFilter implements Filter {
 	@Override
 	public void init(FilterConfig config) throws ServletException {
 		compressor = new HtmlCompressor();
-		//compressor.setCompressCss(true);
+		compressor.setCompressCss(true);
 		compressor.setCompressJavaScript(true);
 	}
 
