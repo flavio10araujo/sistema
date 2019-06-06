@@ -22,6 +22,9 @@ public class Level {
 	@Column(name = "c003_order")
 	private int order;
 	
+	@Column(name = "c003_active")
+	private boolean active;
+	
 	@Transient
 	boolean opened = false;
 
@@ -55,5 +58,13 @@ public class Level {
 
 	public void setOpened(boolean opened) {
 		this.opened = opened;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }

@@ -4,9 +4,15 @@
 <body>
 	<div layout:fragment="contentProfile">
 
-		<div class="panel panel-default">
+        <div class="panel panel-default" th:if="${editAvailable == true}">
+            <div class="panel-body">
+                <a th:href="@{'/profile/player/addVideo/'+${player.id}}" class="btn btn-success dropdown-toggle">Adicionar um vídeo</a>
+            </div>
+	    </div>
+        
+        <div class="panel panel-default">
 
-    		<div class="panel-body">
+            <div class="panel-body">
         
         		<div class="pull-left"><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" class="btn btn-link" style="text-decoration:none" aria-controls="collapseInstrument" href="#collapseInstrument"><i class="fa fa-video-camera fa-1x" aria-hidden="true"></i></a></div>
 
@@ -16,51 +22,77 @@
                
                 	<hr />
                 
-                	<!--<div class="post-content" th:if="${#lists.isEmpty(videos)}">
-                		<p>Nenhum vídeo enviado até o momento.</p>
-					</div>
-                
-                	<div class="post-content" th:each="video : ${videos}">
-                		
-					</div>-->
-					
-					
-					<div>
-						<div class="row">
-					    	<div class="col-sm-9">
-								<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/ePbKGoIGAXY" allowfullscreen="true"></iframe></div>
-								<h3>Flauta doce : Iniciante : Fase 8</h3>
-					    	</div>
-					  	</div>
-					  	
-					  	<hr />
-					  	
-					  	<div class="row">
-					    	<div class="col-sm-9">
-					      		<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/GUCy75CA3Aw" allowfullscreen="true"></iframe></div>
-					      		<h3>Flauta doce : Iniciante : Fase 9</h3>
-					    	</div>
-					  	</div>
-					  	
-					  	<hr />
-					  	
-					  	<div class="row">
-					    	<div class="col-sm-9">
-					      		<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/LL92Wsu4bJk" allowfullscreen="true"></iframe></div>
-					      		<h3>Flauta doce : Iniciante : Fase 10</h3>
-					    	</div>
-					  	</div>
-					  	
-					  	<hr />
-					</div>
+                	<div id="app">
+                        <div class="row" v-for="video in videos">
+                            <div class="col-sm-9">
+					      		<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" :src="video.url" allowfullscreen="true"></iframe></div>
+					      		<h3>{{video.gameName}} : {{video.levelName}} : Aula {{video.phaseOrder}}</h3><br /><br />
+                            </div>
+                        </div>
+                    </div>
 
 				</div>
                
 			</div>
            
-		</div>
-            
-	</div>
+        </div>
 
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            var app = new Vue({
+                el: '#app',
+                data () {
+                    return {
+                        page: 0,
+                        lastPage: false,
+                        videos: []
+                    }
+                },
+                methods: {
+                    getInitialVideos() {
+                        axios.get("/playervideos/player/"+this.getPlayerId()+"?page="+this.page+"&size=1")
+                            .then(response => {
+                            this.videos.push(response.data[0]);
+                        });
+                    },
+                    scroll (video) {
+                        window.onscroll = () => {
+                            if (!this.lastPage) {
+                                let bottomOfWindow = Math.round(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight;
+                                let bottomOfWindow1 = Math.round(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight + 1;
+                                let bottomOfWindow2 = Math.round(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight - 1;
+
+                                if (bottomOfWindow || bottomOfWindow1 || bottomOfWindow2) {
+                                    this.page++;
+                                    axios.get("/playervideos/player/"+this.getPlayerId()+"?page="+this.page+"&size=1")
+                                    .then(response => {
+                                        if (response.data.length == 0) {
+                                            this.lastPage = true;
+                                        } else {
+                                            this.videos.push(response.data[0]);
+                                        }
+                                    });
+                                }
+                            }
+                        };
+                    },
+                    getPlayerId(){
+                        var splitted = window.location.href.split('/');
+                        return splitted[splitted.length-2];
+                    }
+                },
+                mounted() {
+                    this.scroll(this.video);
+                },
+                beforeMount() {
+                    this.getInitialVideos();
+                }
+            })
+            /*]]>*/
+        </script>
+            
+    </div>
+    
 </body>
+
 </html>

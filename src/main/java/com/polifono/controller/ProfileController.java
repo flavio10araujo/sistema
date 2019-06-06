@@ -16,19 +16,24 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.domain.Diploma;
 import com.polifono.domain.Game;
+import com.polifono.domain.Level;
 import com.polifono.domain.Login;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
+import com.polifono.domain.Playervideo;
 import com.polifono.domain.Transaction;
 import com.polifono.domain.enums.Role;
 import com.polifono.service.IClassPlayerService;
+import com.polifono.service.IContentService;
 import com.polifono.service.IDiplomaService;
+import com.polifono.service.IGameService;
 import com.polifono.service.ILevelService;
 import com.polifono.service.ILoginService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.IPlayerService;
+import com.polifono.service.IPlayervideoService;
 import com.polifono.service.ITransactionService;
 
 @Controller
@@ -54,10 +59,19 @@ public class ProfileController extends BaseController {
 	private IDiplomaService diplomaService;
 	
 	@Autowired
+	private IGameService gameService;
+	
+	@Autowired
 	private ILevelService levelService;
 	
 	@Autowired
 	private ITransactionService transactionService;
+	
+	@Autowired
+	private IPlayervideoService playervideoService;
+	
+	@Autowired
+	private IContentService contentService;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileController.class);
 	
@@ -70,6 +84,7 @@ public class ProfileController extends BaseController {
 	public static final String URL_PROFILE_PROFILEATTENDANCE_OWNER = "profile/profileAttendanceOwner";
 	public static final String URL_PROFILE_PROFILECREDITS = "profile/profileCredits";
 	public static final String URL_PROFILE_PROFILEVIDEOS = "profile/profileVideos";
+	public static final String URL_PROFILE_PROFILEPLAYERADDVIDEO = "profile/profileVideosEdit";
 	
 	public static final String REDIRECT_HOME = "redirect:/";
 
@@ -354,5 +369,71 @@ public class ProfileController extends BaseController {
 		}
 		
 		return "redirect:/profile/player/" + edit.getId();
+	}
+	
+	@RequestMapping(value = {"/player/addVideo/{playerId}"}, method = RequestMethod.GET)
+	public final String profilePlayerAddVideo(final Model model, @PathVariable("playerId") Integer playerId) {
+		
+		// Verify if the playerId belongs to the player logged OR the user logged is an admin.
+		if (this.currentAuthenticatedUser().getUser().getId() == playerId || this.currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN")) {
+			Player player = playerService.findOne(playerId);
+			
+			if (player == null) return URL_PROFILE_PROFILENOTFOUND;
+			
+			model.addAttribute("player", player);
+			
+			// Filter.
+			model.addAttribute("games", (ArrayList<Game>) gameService.findAll());
+			model.addAttribute("levels", (ArrayList<Level>) levelService.findAll());
+			// Form
+			Playervideo playervideo = new Playervideo();
+			playervideo.setPlayer(player);
+			model.addAttribute("playervideo", playervideo);
+		}
+		else {
+			LOGGER.debug("Someone tried to add a video to another player with a different id.");
+			return REDIRECT_HOME;
+		}
+
+		return URL_PROFILE_PROFILEPLAYERADDVIDEO;
+	}
+	
+	@RequestMapping(value = "/player/addVideo", method = RequestMethod.POST)
+	public String addVideo(final Model model, @ModelAttribute("playervideo") Playervideo playervideo, final RedirectAttributes redirectAttributes) {
+
+		// The player only can add videos in his name.
+		// The admin can add videos for everybody.
+		if (this.currentAuthenticatedUser().getUser().getId() != playervideo.getPlayer().getId() 
+				&& !this.currentAuthenticatedUser().getUser().getRole().toString().equals("ADMIN")) {
+			return REDIRECT_HOME;
+		}
+
+		String msg = playerService.validateAddVideo(playervideo);
+		
+		if (!"".equals(msg)) {
+			// Msgs.
+			model.addAttribute("message", "error");
+			model.addAttribute("messageContent", msg);
+			// Filter.
+			model.addAttribute("games", (ArrayList<Game>) gameService.findAll());
+			model.addAttribute("levels", (ArrayList<Level>) levelService.findAll());
+			// Form.
+			model.addAttribute("playervideo", playervideo);
+			
+			return URL_PROFILE_PROFILEPLAYERADDVIDEO;
+		}
+		
+		try  {
+			playervideo.setContent(contentService.findByPhaseAndOrder(playervideo.getContent().getPhase().getId(), 1));
+			
+			playervideoService.save(playervideo);
+			
+			redirectAttributes.addFlashAttribute("edit", "success");
+		}
+		catch(Exception e) {
+			redirectAttributes.addFlashAttribute("edit", "unsuccess");
+		}
+		
+		return "redirect:/profile/player/" + playervideo.getPlayer().getId() + "/videos";
 	}
 }

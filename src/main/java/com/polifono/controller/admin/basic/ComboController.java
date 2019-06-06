@@ -61,6 +61,35 @@ public class ComboController extends BaseController {
     	return list;
     }
     
+    /**
+     * In this method, we consider that mapId is always the first map of the list.
+     * 
+     * @param gameId
+     * @param levelId
+     * @return
+     */
+    @RequestMapping("/comboPhaseWithMap")
+    public List<Combo> comboPhase(@RequestParam(value="gameId") String gameId, @RequestParam(value="levelId") String levelId) {
+    	List<Combo> list = new ArrayList<Combo>();
+    	
+    	List<Map> auxiliarMap = mapService.findMapsByGameAndLevel(Integer.parseInt(gameId), Integer.parseInt(levelId));
+    	
+    	if (auxiliarMap != null && auxiliarMap.size() > 0) {
+    	
+	    	List<Phase> auxiliar = phaseService.findByMap(auxiliarMap.get(0).getId());
+	    	
+	    	for (Phase item : auxiliar) {
+	    		Combo combo = new Combo();
+	    		combo.setId(item.getId());
+	    		combo.setName(item.getOrder() + ". " + item.getName());
+	    		list.add(combo);
+	    	}
+    	
+    	}
+    	
+    	return list;
+    }
+    
     @RequestMapping("/comboQuestion")
     public List<Combo> comboQuestion(@RequestParam(value="phaseId") String phaseId) {
     	List<Combo> list = new ArrayList<Combo>();

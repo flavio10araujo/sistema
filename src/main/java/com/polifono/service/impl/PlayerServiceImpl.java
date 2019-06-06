@@ -15,6 +15,7 @@ import com.polifono.domain.Game;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerGame;
+import com.polifono.domain.Playervideo;
 import com.polifono.domain.enums.Role;
 import com.polifono.repository.IPlayerRepository;
 import com.polifono.service.IPlayerGameService;
@@ -340,6 +341,20 @@ public class PlayerServiceImpl implements IPlayerService {
 		}
 		else if (!EmailUtil.validatePassword(player.getPassword())) {
 			msg = msg + "<br />A senha precisa possuir ao menos 1 número e ao menos 1 letra.";
+		}
+		
+		return msg;
+	}
+	
+	@Override
+	public String validateAddVideo(Playervideo playervideo) {
+		String msg = "";
+		
+		if (playervideo.getContent() == null || playervideo.getContent().getPhase() == null || playervideo.getContent().getPhase().getId() == 0) {
+			msg = msg + "<br />Por favor, selecione uma fase.";
+		}
+		else if ("".equals(StringUtil.formatYoutubeUrl(playervideo.getUrl()))) {
+			msg = msg + "<br />O endereço do vídeo informado não parece estar correto.";
 		}
 		
 		return msg;

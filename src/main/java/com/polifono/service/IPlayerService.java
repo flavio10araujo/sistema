@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.polifono.domain.Game;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
+import com.polifono.domain.Playervideo;
 
 public interface IPlayerService {
 
@@ -51,6 +52,8 @@ public interface IPlayerService {
 	public String validateUpdateProfile(Player edit);
 	
 	public String validateChangePasswordPlayer(Player player);
+	
+	public String validateAddVideo(Playervideo playervideo);
 	
 	//Communication - begin
 	public List<Player> findCommunicationGroup04();

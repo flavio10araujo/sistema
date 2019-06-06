@@ -41,7 +41,7 @@ public class CompressResponseFilter implements Filter {
 	public void init(FilterConfig config) throws ServletException {
 		compressor = new HtmlCompressor();
 		compressor.setCompressCss(true);
-		compressor.setCompressJavaScript(true);
+		//compressor.setCompressJavaScript(true);
 	}
 
 	@Override

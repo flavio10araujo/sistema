@@ -19,6 +19,7 @@ import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.polifono.domain.enums.Rank;
 import com.polifono.domain.enums.Role;
 import com.polifono.util.DateUtil;
@@ -42,6 +43,7 @@ public class Player {
 	@Column(name = "c001_email")
 	private String email;
 	
+	@JsonIgnore
 	@Column(name = "c001_password")
 	private String password;
 	
@@ -70,9 +72,11 @@ public class Player {
 	@Column(name = "c001_ind_email_confirmed")
 	private boolean indEmailConfirmed;
 	
+	@JsonIgnore
 	@Column(name = "c001_email_confirmed")
 	private String emailConfirmed;
 	
+	@JsonIgnore
 	@Column(name = "c001_password_reset")
 	private String passwordReset;
 	
@@ -102,6 +106,7 @@ public class Player {
 	@Column(name = "c001_address")
 	private String address;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
 	private List<PlayerGame> playerGameList;
 	
