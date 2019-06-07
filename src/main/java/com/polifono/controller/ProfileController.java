@@ -292,11 +292,7 @@ public class ProfileController extends BaseController {
 			model.addAttribute("editAvailable", true);
 		}
 		
-		List<Phase> videos = new ArrayList<Phase>();
-		
 		model.addAttribute("player", player);
-		model.addAttribute("videos", videos);
-		
 		
 		return URL_PROFILE_PROFILEVIDEOS;
 	}
@@ -383,8 +379,8 @@ public class ProfileController extends BaseController {
 			model.addAttribute("player", player);
 			
 			// Filter.
-			model.addAttribute("games", (ArrayList<Game>) gameService.findAll());
-			model.addAttribute("levels", (ArrayList<Level>) levelService.findAll());
+			model.addAttribute("games", (ArrayList<Game>) gameService.findByActive(true));
+			model.addAttribute("levels", (ArrayList<Level>) levelService.findByActive(true));
 			// Form
 			Playervideo playervideo = new Playervideo();
 			playervideo.setPlayer(player);
@@ -408,15 +404,35 @@ public class ProfileController extends BaseController {
 			return REDIRECT_HOME;
 		}
 
+		Player player = playerService.findOne(playervideo.getPlayer().getId());
+		
+		if (player == null) {
+			return REDIRECT_HOME;
+		} else {
+			playervideo.setPlayer(player);
+		}
+		
 		String msg = playerService.validateAddVideo(playervideo);
+		
+		// If no problems has been detected until now. 
+		if ("".equals(msg)) {
+			// The player cannot add a video in a phase that he hasn't finished yet.
+			if (playerPhaseService.findByPlayerPhaseAndStatus(player.getId(), playervideo.getContent().getPhase().getId(), 3) == null) {
+				msg = "<br />Só é permitido adicionar vídeos em aulas que o aluno já concluiu.";
+			}
+			// The player cannot add more than one video in the same phase.
+			else if (playervideoService.findByPlayerAndPhase(player, playervideo.getContent().getPhase()) != null) {
+				msg = "<br />Não é permitido adicionar mais de um vídeo para a mesma fase.";
+			}
+		}
 		
 		if (!"".equals(msg)) {
 			// Msgs.
 			model.addAttribute("message", "error");
 			model.addAttribute("messageContent", msg);
 			// Filter.
-			model.addAttribute("games", (ArrayList<Game>) gameService.findAll());
-			model.addAttribute("levels", (ArrayList<Level>) levelService.findAll());
+			model.addAttribute("games", (ArrayList<Game>) gameService.findByActive(true));
+			model.addAttribute("levels", (ArrayList<Level>) levelService.findByActive(true));
 			// Form.
 			model.addAttribute("playervideo", playervideo);
 			
@@ -424,14 +440,21 @@ public class ProfileController extends BaseController {
 		}
 		
 		try  {
-			playervideo.setContent(contentService.findByPhaseAndOrder(playervideo.getContent().getPhase().getId(), 1));
+			player.setScore(player.getScore() + 25);
+			player.setCoin(player.getCoin() + 25);
 			
+			if (this.currentAuthenticatedUser().getUser().getId() == playervideo.getPlayer().getId()) {
+				// Update session user.
+				this.updateCurrentAuthenticateUser(player);
+			}
+			
+			playervideo.setContent(contentService.findByPhaseAndOrder(playervideo.getContent().getPhase().getId(), 1));
 			playervideoService.save(playervideo);
 			
-			redirectAttributes.addFlashAttribute("edit", "success");
+			redirectAttributes.addFlashAttribute("save", "success");
 		}
 		catch(Exception e) {
-			redirectAttributes.addFlashAttribute("edit", "unsuccess");
+			redirectAttributes.addFlashAttribute("save", "unsuccess");
 		}
 		
 		return "redirect:/profile/player/" + playervideo.getPlayer().getId() + "/videos";

@@ -23,12 +23,16 @@
                 	<hr />
                 
                 	<div id="app">
+
                         <div class="row" v-for="video in videos">
                             <div class="col-sm-9">
 					      		<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" :src="video.url" allowfullscreen="true"></iframe></div>
 					      		<h3>{{video.gameName}} : {{video.levelName}} : Aula {{video.phaseOrder}}</h3><br /><br />
                             </div>
                         </div>
+
+                        <span>{{msgNoVideos}}</span>
+
                     </div>
 
 				</div>
@@ -45,6 +49,7 @@
                     return {
                         page: 0,
                         lastPage: false,
+                        msgNoVideos: "",
                         videos: []
                     }
                 },
@@ -52,7 +57,12 @@
                     getInitialVideos() {
                         axios.get("/playervideos/player/"+this.getPlayerId()+"?page="+this.page+"&size=1")
                             .then(response => {
-                            this.videos.push(response.data[0]);
+                                if (response.data.length == 0) {
+                                    this.lastPage = true;
+                                    this.msgNoVideos = 'Nenhum vídeo enviado até o momento.';
+                                } else {
+                                    this.videos.push(response.data[0]);
+                                }
                         });
                     },
                     scroll (video) {
@@ -68,6 +78,7 @@
                                     .then(response => {
                                         if (response.data.length == 0) {
                                             this.lastPage = true;
+                                            this.msgNoVideos = 'Não há mais vídeos para exibir.';
                                         } else {
                                             this.videos.push(response.data[0]);
                                         }
@@ -76,7 +87,7 @@
                             }
                         };
                     },
-                    getPlayerId(){
+                    getPlayerId() {
                         var splitted = window.location.href.split('/');
                         return splitted[splitted.length-2];
                     }

@@ -28,6 +28,11 @@ public class LevelServiceImpl implements ILevelService {
 		return (List<Level>) repository.findByGame(gameId);
 	}
 	
+	@Override
+	public List<Level> findByActive(boolean active) {
+		return (List<Level>) repository.findByActive(active);
+	}
+	
 	/**
 	 * Verify which levels are opened.
 	 * Catch all the levels of a game and, based on the last level permitted to the player (levelPermitted), check or not the flag opened in each level.

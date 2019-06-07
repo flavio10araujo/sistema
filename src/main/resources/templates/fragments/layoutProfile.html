@@ -120,12 +120,17 @@
             
         </div>
         
+        <input type="hidden" th:value="${save}" id="alertSave" />
         <input type="hidden" th:value="${edit}" id="alertEdit" />
+        <input type="hidden" th:value="#{crud.msg.savedSuccessfully}" id="alertSaveSuccess" />
         <input type="hidden" th:value="#{crud.msg.editedSuccessfully}" id="alertEditSuccess" />
+        <input type="hidden" th:value="#{crud.msg.notSaved}" id="alertSaveError" />
         <input type="hidden" th:value="#{crud.msg.notEdited}" id="alertEditError" />
 
 		<script th:inline="javascript">
-			/*<![CDATA[*/
+            /*<![CDATA[*/
+            if(document.getElementById("alertSave").value=='success'){bootbox.alert(document.getElementById("alertSaveSuccess").value);}
+			if(document.getElementById("alertSave").value=='unsuccess'){bootbox.alert(document.getElementById("alertSaveError").value);}
 			if(document.getElementById("alertEdit").value=='success'){bootbox.alert(document.getElementById("alertEditSuccess").value);}
 			if(document.getElementById("alertEdit").value=='unsuccess'){bootbox.alert(document.getElementById("alertEditError").value);}
 			/*]]>*/

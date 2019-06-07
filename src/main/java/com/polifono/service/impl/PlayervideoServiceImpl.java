@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.Playervideo;
 import com.polifono.repository.IPlayervideoRepository;
@@ -37,5 +38,10 @@ public class PlayervideoServiceImpl implements IPlayervideoService {
 	@Override
 	public List<Playervideo> findAllByPlayer(Player player, Pageable pageable) {
 		return repository.findAllByPlayer(player, pageable);
-	}	
+	}
+
+	@Override
+	public Playervideo findByPlayerAndPhase(Player player, Phase phase) {
+		return repository.findByPlayerAndPhase(player.getId(), phase.getId());
+	}
 }

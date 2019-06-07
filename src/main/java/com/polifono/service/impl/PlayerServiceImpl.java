@@ -16,6 +16,7 @@ import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerGame;
 import com.polifono.domain.Playervideo;
+import com.polifono.domain.enums.Rank;
 import com.polifono.domain.enums.Role;
 import com.polifono.repository.IPlayerRepository;
 import com.polifono.service.IPlayerGameService;
@@ -350,7 +351,10 @@ public class PlayerServiceImpl implements IPlayerService {
 	public String validateAddVideo(Playervideo playervideo) {
 		String msg = "";
 		
-		if (playervideo.getContent() == null || playervideo.getContent().getPhase() == null || playervideo.getContent().getPhase().getId() == 0) {
+		if (playervideo.getPlayer().getRankLevel() <= Rank.WHITE.getLevel()) {
+			return "<br />Você ainda não tem permissão para adicionar vídeos.<br />Continue estudando para desbloquear essa funcionalidade!";
+		}
+		else if (playervideo.getContent() == null || playervideo.getContent().getPhase() == null || playervideo.getContent().getPhase().getId() == 0) {
 			msg = msg + "<br />Por favor, selecione uma fase.";
 		}
 		else if ("".equals(StringUtil.formatYoutubeUrl(playervideo.getUrl()))) {

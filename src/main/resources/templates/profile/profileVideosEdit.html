@@ -35,17 +35,34 @@
                         
                         <div class="panel-body">
 
-                            Utilize os filtros a seguir para adicionar um vídeo seu executando os exercícios de uma determinada aula.<br />
-                            É permitido adicionar apenas 1 vídeo por aula.<br />
-                            O vídeo deve estar disponível no <a href="https://www.youtube.com" target="_blank">Youtube</a>.<br />
-                            Copie e cole o endereço do vídeo no campo URL.<br />
-                            Os seguintes formatos são aceitos: 
+                            <h3>Regras:</h3>
+                            
+                            <ul>
+                                <li>É necessário ser um aluno de nível Faixa Amarela ou superior para poder adicionar vídeos.</li>
+                                <li>Só é permitido adicionar vídeos em aulas que o aluno já concluiu.</li>
+                                <li>É permitido adicionar um único vídeo em cada aula.</li>
+                                <li>O vídeo deve estar disponível no <a href="https://www.youtube.com" target="_blank">Youtube</a> do aluno.</li>
+                            </ul>
+
+                            <h3>Como fazer:</h3>
+
+                            <ol>
+                                <li>Selecione um curso e um nível no formulário abaixo.</li>
+                                <li>Selecione uma fase (esse campo aparece apenas após a seleção dos campos curso e nível).</li>
+                                <li>Copie e cole o endereço do vídeo no Youtube no campo URL.</li>
+                            </ol>
+
+                            <h3>Formatos permitidos:</h3> 
                             <ul>    
                                 <li>https://www.youtube.com/watch?v=jCJhLO90DEU</li>
                                 <li>https://youtu.be/jCJhLO90DEU</li>
                                 <li>https://m.youtube.com/watch?v=jCJhLO90DEU</li>
                             </ul>
-                            A cada vídeo adicionado e aprovado, o aluno recebe 25 pontos.<br /><br />
+                            
+                            <h3>Recompensa:</h3>
+                            <ul>
+                                <li>A cada vídeo adicionado o aluno recebe 25 pontos.</li>
+                            </ul>
 
                             <hr />
 
@@ -74,7 +91,7 @@
                                         <input type="text" class="form-control" th:field="*{url}" th:id="url" required="true" maxlength="255" placeholder="https://www.youtube.com/watch?v=" />
                                     </div>
                                 </div>
-                                <input type="button" class="btn btn-success  pull-right" th:value="#{app.save}" onclick="javascript:submitFilter()" />
+                                <input type="button" class="btn btn-success pull-right" th:value="#{app.save}" data-loading-text="Salvando..." id="btnOk" />
                             </form>
 
                         </div>
@@ -94,32 +111,41 @@
             /*<![CDATA[*/
             if(document.getElementById("alertMessage").value=='error'){bootbox.alert(document.getElementById("alertMessageContent").value);}
 
-			function submitFilter(){
+            $(document).ready(function(){
+  				$("#btnOk").click(function() {
+                    if(submitFilter()){  
+                        $(this).button('loading');
+                        form=document.getElementById("f_filter");
+				        form.submit();
+                    }
+  				});
+  			});
+
+            function submitFilter(){
 				if (document.getElementById("gameId").value == 0) {
                     bootbox.alert("Por favor, selecione um curso.");
-                    return;
+                    return false;
 				}
 				
 				if (document.getElementById("levelId").value == 0) {
 					bootbox.alert("Por favor, selecione um nível.");
-					return;
+					return false;
                 }
                 
                 if (document.getElementById("phaseId").value == 0) {
 					bootbox.alert("Por favor, selecione uma fase.");
-					return;
+					return false;
                 }
                 
                 if (document.getElementById("url").value == "") {
 					bootbox.alert("Por favor, informe o endereço do vídeo no Youtube.");
-					return;
+					return false;
 				} else if (document.getElementById("url").value.length <= 25) {
                     bootbox.alert("O endereço do vídeo informado não parece estar correto.");
-					return;
+					return false;
                 }
 				
-				form=document.getElementById("f_filter");
-				form.submit();
+				return true;
 			}
 			
 			function verifyGameLevel(){

@@ -23,6 +23,9 @@ public class Game {
 	
 	@Column(name = "c002_order")
 	private int order;
+	
+	@Column(name = "c002_active")
+	private boolean active;
 
 	public int getId() {
 		return id;
@@ -54,5 +57,13 @@ public class Game {
 
 	public void setOrder(int order) {
 		this.order = order;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }

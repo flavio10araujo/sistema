@@ -10,6 +10,9 @@ import com.polifono.domain.Level;
 
 public interface ILevelRepository extends JpaRepository<Level, Integer> {
 
+	@Query("SELECT level FROM Level level WHERE level.active = :active")
+	public List<Level> findByActive(@Param("active") boolean active);
+	
 	@Query("SELECT DISTINCT level FROM Level level, Phase phase, Map map WHERE phase.map.id = map.id AND map.level.id = level.id AND map.game.id = :gameId")
 	public List<Level> findByGame(@Param("gameId") int gameId);
 }

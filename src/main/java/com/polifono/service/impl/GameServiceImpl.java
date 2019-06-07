@@ -30,6 +30,11 @@ public class GameServiceImpl implements IGameService {
 		return (List<Game>) repository.findAll();
 	}
 	
+	@Override
+	public List<Game> findByActive(boolean active) {
+		return repository.findByActive(active);
+	}
+	
 	public final Game findByNamelink(String namelink) {
 		return repository.findByNamelink(namelink);
 	}

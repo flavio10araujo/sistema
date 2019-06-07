@@ -15,6 +15,8 @@ public interface IGameService {
 		
 	public List<Game> findAll();
 	
+	public List<Game> findByActive(boolean active);
+	
 	
 	public Game findByNamelink(String namelink);
 
