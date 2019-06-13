@@ -39,18 +39,118 @@
 				O aluno pode fazer a prova quantas vezes for preciso, mas assim que conseguir acertar 70% das questões, não será mais possível ver a prova.<br />
 				Para desbloquear a próxima aula, é obrigatório fazer a prova da aula atual.
 				<br /><br />
-			</div>
-    	</div>
-    	
-    	<script th:inline="javascript">
-	  		/*<![CDATA[*/	
-  			$(document).ready(function(){
-  				$("#btnOk").click(function() {
-  					$(this).button('loading');
-  				});
-  			});
-  			/*]]>*/
-		</script>
+            </div>
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <a th:href="@{'/profile/player/addVideo/'+${#authentication.principal.user.id}}" class="btn btn-success dropdown-toggle">Adicionar um ensaio</a>
+                        <input type="hidden" id="contentId" th:field="${content.id}" />
+                    </div>
+                </div>
+                
+                <div class="panel panel-default">
+
+                    <div class="panel-body">
+                
+                        <div class="pull-left"><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" class="btn btn-link" style="text-decoration:none" aria-controls="collapseInstrument" href="#collapseInstrument"><i class="fa fa-video-camera fa-1x" aria-hidden="true"></i></a></div>
+
+                        <h4><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" style="text-decoration:none" aria-controls="collapseInstrument" href="#collapseInstrument"><strong>Ensaios dos alunos</strong></a></h4>
+                    
+                        <div id="collapseInstrument" class="collapse in">
+                    
+                            <hr />
+                        
+                            <div id="app">
+
+                                <div class="row" v-for="video in videos">
+                                    <div class="col-sm-9">
+                                        <div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" :src="video.url" allowfullscreen="true"></iframe></div>
+										<h4>Aluno(a): <a :href="'/profile/player/'+video.playerId">{{video.playerFirstName}} {{video.playerLastName}}</a></h4>
+										<h4>{{video.gameName}} : {{video.levelName}} : Aula {{video.phaseOrder}}</h4><br /><br />
+                                    </div>
+                                </div>
+
+                                <span>{{msgNoVideos}}</span>
+
+                            </div>
+
+                        </div>
+                    
+                    </div>
+                
+                </div>
+
+                <script th:inline="javascript">
+                    /*<![CDATA[*/
+                    var app = new Vue({
+                        el: '#app',
+                        data () {
+                            return {
+                                page: 0,
+                                lastPage: false,
+                                msgNoVideos: "",
+                                videos: []
+                            }
+                        },
+                        methods: {
+                            getInitialVideos() {
+                                axios.get("/playervideos/content/"+this.getContentId()+"?page="+this.page+"&size=1")
+                                    .then(response => {
+                                        if (response.data.length == 0) {
+                                            this.lastPage = true;
+                                            this.msgNoVideos = 'Nenhum ensaio dessa aula até o momento. Seja o primeiro a enviar um ensaio!';
+                                        } else {
+                                            this.videos.push(response.data[0]);
+                                        }
+                                });
+                            },
+                            scroll (video) {
+                                window.onscroll = () => {
+                                    if (!this.lastPage) {
+                                        let bottomOfWindow = Math.round(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight;
+                                        let bottomOfWindow1 = Math.round(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight + 1;
+                                        let bottomOfWindow2 = Math.round(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight - 1;
+
+                                        if (bottomOfWindow || bottomOfWindow1 || bottomOfWindow2) {
+                                            this.page++;
+                                            axios.get("/playervideos/content/"+this.getContentId()+"?page="+this.page+"&size=1")
+                                            .then(response => {
+                                                if (response.data.length == 0) {
+                                                    this.lastPage = true;
+                                                    this.msgNoVideos = 'Não há mais vídeos para exibir.';
+                                                } else {
+                                                    this.videos.push(response.data[0]);
+                                                }
+                                            });
+                                        }
+                                    }
+                                };
+                            },
+                            getContentId() {
+                                return document.getElementById("contentId").value;
+                            }
+                        },
+                        mounted() {
+                            this.scroll(this.video);
+                        },
+                        beforeMount() {
+                            this.getInitialVideos();
+                        }
+                    })
+                    /*]]>*/
+                </script>
+            </div>
+        </div>
+                
+        <script th:inline="javascript">
+            /*<![CDATA[*/	
+            $(document).ready(function(){
+                $("#btnOk").click(function() {
+                    $(this).button('loading');
+                });
+            });
+            /*]]>*/
+        </script>
 
 	</div>
 </body>

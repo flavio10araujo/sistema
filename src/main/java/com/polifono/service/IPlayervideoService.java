@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
+import com.polifono.domain.Content;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.Playervideo;
@@ -18,6 +19,8 @@ public interface IPlayervideoService {
 	
 	public List<Playervideo> findAll();
 	
+	
+	public List<Playervideo> findAllByContent(Content content, Pageable pageable);
 	
 	public List<Playervideo> findAllByPlayer(Player player, Pageable pageable);
 	

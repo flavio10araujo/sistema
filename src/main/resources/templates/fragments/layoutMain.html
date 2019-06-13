@@ -19,7 +19,16 @@
 		<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/project/assets/css/style.minV20190529.css}" />
 		
 		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/project/assets/js/mainHeader.minV20190529.js}"></script>
-		<script defer="defer" type="text/javascript" th:inline="javascript" th:src="@{/vendors/project/assets/js/mainFooter.minV20190529.js}"></script>
+        <script defer="defer" type="text/javascript" th:inline="javascript" th:src="@{/vendors/project/assets/js/mainFooter.minV20190529.js}"></script>
+        
+        <!-- Vuejs para dev: -->
+        <!--
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://vuejs.org/js/vue.js"></script>
+        -->
+        <!-- Vuejs para prod: -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
 		
 		<!-- Global site tag (gtag.js) - Google Ads: 1067435224 -->
 		<script async="true" src="https://www.googletagmanager.com/gtag/js?id=AW-1067435224"></script>
