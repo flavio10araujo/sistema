@@ -35,6 +35,28 @@ public class PlayervideoController extends BaseController {
 	@Autowired
 	private IPlayerService playerService;
 	
+	@GetMapping(value="/playervideos")
+	@ResponseBody
+    public List<PlayervideoDTO> playervideosGeneral(@RequestParam(value = "page") String pageStr, @RequestParam(value = "size") String sizeStr) {
+
+		try {
+			int page = Integer.parseInt(pageStr);
+			int size = Integer.parseInt(sizeStr);
+			
+			if (size > 10) {
+				size = 10;
+			}
+			
+			Sort sort = new Sort(new Sort.Order(Direction.DESC, "dtInc"));
+			Pageable pageable = new PageRequest(page, size, sort);
+			
+			return convertToDto(playervideoService.findAll(pageable));
+		}
+		catch (Exception e) {
+			return new ArrayList<PlayervideoDTO>();
+		}
+    }
+	
 	@GetMapping(value="/playervideos/content/{contentId}")
 	@ResponseBody
     public List<PlayervideoDTO> playervideosByContent(@PathVariable("contentId") Integer contentId, @RequestParam(value = "page") String pageStr, @RequestParam(value = "size") String sizeStr) {

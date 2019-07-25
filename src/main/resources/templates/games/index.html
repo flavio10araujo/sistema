@@ -10,7 +10,7 @@
 <body>
 	<div layout:fragment="content">
 		
-		<div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+		<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         
             <div class="panel panel-default">
             
@@ -60,7 +60,7 @@
             
         </div>
         
-        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 col-lg-push-5 col-md-push-5">
         
             <div class="panel panel-default">
             
@@ -135,6 +135,113 @@
             </div>
             
         </div>
+        
+        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 col-lg-pull-3 col-md-pull-3">
+        
+        	<div class="panel panel-default">
+                <div class="panel-body">
+                    <a th:href="@{'/profile/player/addVideo/'+${#authentication.principal.user.id}}" class="btn btn-success dropdown-toggle">Adicionar um ensaio</a>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+
+                <div class="panel-body">
+            
+                    <div class="pull-left"><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" class="btn btn-link" style="text-decoration:none" aria-controls="collapseInstrument" href="#collapseInstrument"><i class="fa fa-video-camera fa-1x" aria-hidden="true"></i></a></div>
+
+                    <h4><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" style="text-decoration:none" aria-controls="collapseInstrument" href="#collapseInstrument"><strong>Ensaios dos alunos</strong></a></h4>
+                
+                    <div id="collapseInstrument" class="collapse in">
+                
+                        <hr />
+                    
+                        <div id="app">
+
+                            <div class="row" v-for="video in videos">
+                                <div class="col-sm-12">
+                                    <div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" :src="video.url" allowfullscreen="true"></iframe></div>
+									<h4>Aluno(a): <a :href="'/profile/player/'+video.playerId">{{video.playerFirstName}} {{video.playerLastName}}</a></h4>
+									<h4>{{video.gameName}} : {{video.levelName}} : Aula {{video.phaseOrder}}</h4><br /><br />
+                                </div>
+                            </div>
+
+                            <span>{{msgNoVideos}}</span>
+
+                        </div>
+
+                    </div>
+                
+				</div>
+            
+			</div>
+			
+			<script th:inline="javascript">
+                    /*<![CDATA[*/
+                    var app = new Vue({
+                        el: '#app',
+                        data () {
+                            return {
+                                page: 0,
+                                lastPage: false,
+                                msgNoVideos: "",
+                                videos: []
+                            }
+                        },
+                        methods: {
+                            getInitialVideos() {
+                            	axios.get("/playervideos?page="+this.page+"&size=3")
+                                    .then(response => {
+                                        if (response.data.length == 0) {
+                                            this.lastPage = true;
+                                            this.msgNoVideos = 'Nenhum ensaio até o momento. Seja o primeiro a enviar um ensaio!';
+                                        } else {
+                                            for (i=0; i < response.data.length; i++) {
+                                            	this.videos.push(response.data[i]);
+                                        	}
+                                            
+                                        }
+                                });
+                            },
+                            scroll (video) {
+                                window.onscroll = () => {
+                                    if (!this.lastPage) {
+                                        let bottomOfWindow = Math.round(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight;
+                                        let bottomOfWindow1 = Math.round(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight + 1;
+                                        let bottomOfWindow2 = Math.round(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight - 1;
+
+                                        if (bottomOfWindow || bottomOfWindow1 || bottomOfWindow2) {
+                                            this.page++;
+                                            axios.get("/playervideos?page="+this.page+"&size=3")
+                                            .then(response => {
+                                                if (response.data.length == 0) {
+                                                    this.lastPage = true;
+                                                    this.msgNoVideos = 'Não há mais vídeos para exibir.';
+                                                } else {
+                                                	for (i=0; i < response.data.length; i++) {
+                                                    	this.videos.push(response.data[i]);
+                                                	}
+                                                }
+                                            });
+                                        }
+                                    }
+                                };
+                            },
+                            getContentId() {
+                                return document.getElementById("contentId").value;
+                            }
+                        },
+                        mounted() {
+                            this.scroll(this.video);
+                        },
+                        beforeMount() {
+                            this.getInitialVideos();
+                        }
+                    })
+                    /*]]>*/
+                </script>
+		</div>
+        
 	</div>
 </body>
 </html>

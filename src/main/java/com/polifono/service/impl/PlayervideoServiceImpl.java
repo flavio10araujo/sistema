@@ -37,6 +37,11 @@ public class PlayervideoServiceImpl implements IPlayervideoService {
 	}
 	
 	@Override
+	public List<Playervideo> findAll(Pageable pageable) {
+		return repository.findGeneral(pageable);
+	}
+	
+	@Override
 	public List<Playervideo> findAllByContent(Content content, Pageable pageable) {
 		return repository.findAllByContent(content, pageable);
 	}

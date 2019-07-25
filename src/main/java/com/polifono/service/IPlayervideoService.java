@@ -19,6 +19,7 @@ public interface IPlayervideoService {
 	
 	public List<Playervideo> findAll();
 	
+	public List<Playervideo> findAll(Pageable pageable);
 	
 	public List<Playervideo> findAllByContent(Content content, Pageable pageable);
 	

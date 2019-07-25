@@ -13,6 +13,9 @@ import com.polifono.domain.Playervideo;
 
 public interface IPlayervideoRepository extends JpaRepository<Playervideo, Integer> {
 
+	@Query("SELECT playervideo FROM Playervideo playervideo WHERE active = 1 ORDER BY dtInc DESC")
+	List<Playervideo> findGeneral(Pageable pageable);
+	
 	List<Playervideo> findAllByPlayer(Player player, Pageable pageable);
 	
 	List<Playervideo> findAllByContent(Content content, Pageable pageable);
