@@ -45,16 +45,19 @@ public class PromoController extends BaseController {
 	public static final String URL_PROMOS_PHASECONTENT_RECORDER = "promos/recorder/general";
 	public static final String URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR = "promos/acoustic_guitar/general";
 	public static final String URL_PROMOS_PHASECONTENT_SAXOPHONE = "promos/saxophone/general";
+	public static final String URL_PROMOS_PHASECONTENT_TRUMPET = "promos/trumpet/general";
 	
 	// minified versions (not dynamic)
 	public static final String URL_PROMOS_PHASECONTENT_MUSIC_THEORY_MIN = "promos/musical_theory/general.min";
 	public static final String URL_PROMOS_PHASECONTENT_RECORDER_MIN = "promos/recorder/general.min";
 	public static final String URL_PROMOS_PHASECONTENT_ACOUSTIC_GUITAR_MIN = "promos/acoustic_guitar/general.min";
 	public static final String URL_PROMOS_PHASECONTENT_SAXOPHONE_MIN = "promos/saxophone/general.min";
+	public static final String URL_PROMOS_PHASECONTENT_TRUMPET_MIN = "promos/trumpet/general.min";
 	
 	public static final int FIRST_PHASE_RECORDER = 1;
 	public static final int FIRST_PHASE_ACOUSTIC_GUITAR = 92;
 	public static final int FIRST_PHASE_SAXOPHONE = 152;
+	public static final int FIRST_PHASE_TRUMPET = 212;
 	
 	public static final String URL_PROMOS_PHASECONTENT_TESTE = "promos/phaseContent";
 	
@@ -87,6 +90,7 @@ public class PromoController extends BaseController {
 		// http://www.polifono.com/promos/recorder
 		// http://www.polifono.com/promos/acoustic_guitar
 		// http://www.polifono.com/promos/saxophone
+		// http://www.polifono.com/promos/trumpet
 		
 		// http://www.polifono.com/promos/testes
 		
@@ -134,8 +138,12 @@ public class PromoController extends BaseController {
 		model.addAttribute("phase", phase);
 		model.addAttribute("content", content);
 		
+		// trumpet
+		if ("trumpet".equals(gameName)) {
+			return URL_PROMOS_PHASECONTENT_TRUMPET;
+		}
 		// saxophone
-		if ("saxophone".equals(gameName)) {
+		else if ("saxophone".equals(gameName)) {
 			return URL_PROMOS_PHASECONTENT_SAXOPHONE;
 		}
 		// acoustic_guitar
@@ -199,5 +207,16 @@ public class PromoController extends BaseController {
 		model.addAttribute("playerResend", new Player());
 		
 		return URL_PROMOS_PHASECONTENT_SAXOPHONE_MIN;
+	}
+	
+	@RequestMapping(value = {"/promos/trumpet"}, method = RequestMethod.GET)
+	public final String promosTrumpet(final Model model) {
+		//Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_SAXOPHONE, 1));
+		
+		//model.addAttribute("content", content);
+		model.addAttribute("player", new Player());
+		model.addAttribute("playerResend", new Player());
+		
+		return URL_PROMOS_PHASECONTENT_TRUMPET_MIN;
 	}
 }

@@ -29,6 +29,6 @@ public interface IPlayerPhaseRepository extends JpaRepository<PlayerPhase, UUID>
 	+ "AND (phase.order >= :phaseBegin AND phase.order <= :phaseEnd) ")
 	public List<PlayerPhase> findForReportGeneral(@Param("playerId") int playerId, @Param("gameId") int gameId, @Param("phaseBegin") int phaseBegin, @Param("phaseEnd") int phaseEnd);
 	
-	@Query(value = "SELECT t1.c001_id, t1.C001_NAME, t1.c001_LAST_NAME, SUM(t7.C007_SCORE) FROM t007_player_phase t7, t001_player t1 WHERE t1.c001_id = t7.c001_id AND t7.c006_id = 3 AND DATE(t7.c007_dt_test) BETWEEN :dateBegin AND :dateEnd GROUP BY t1.c001_id ORDER BY 4 DESC LIMIT 10", nativeQuery = true)
+	@Query(value = "SELECT t1.c001_id, t1.C001_NAME, t1.c001_LAST_NAME, SUM(t7.C007_SCORE) FROM t007_player_phase t7, t001_player t1 WHERE t1.c001_id = t7.c001_id AND t7.c006_id = 3 AND DATE(t7.c007_dt_test) BETWEEN :dateBegin AND :dateEnd AND t1.c001_id not in (1, 2) GROUP BY t1.c001_id ORDER BY 4 DESC LIMIT 10", nativeQuery = true)
 	public Object[][] getRanking(@Param("dateBegin") Date dateBegin, @Param("dateEnd") Date dateEnd);
 }
