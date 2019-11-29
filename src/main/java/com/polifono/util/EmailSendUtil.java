@@ -250,7 +250,7 @@ public class EmailSendUtil {
 					+ "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
 					+ "<p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
 					+ "<p><font face=\"arial\" size=\"2\">Sentimos sua falta! Já faz tempo que você não acessa a " + resourceBundle.getString("email.company") + "! "
-					+ "<p><font face=\"arial\" size=\"2\">Estamos sempre melhorando nosso sistema e já temos cursos de violão, saxofone, flauta doce e teoria musical.</font></p>"
+					+ "<p><font face=\"arial\" size=\"2\">Estamos sempre melhorando nosso sistema e já temos cursos de trompete, violão, saxofone, flauta doce e teoria musical.</font></p>"
 					+ "<p><font face=\"arial\" size=\"2\">Para continuar a estudar música com a gente:</font></p>"
 					+ "<p><font face=\"arial\" size=\"2\">- Acesse <a href=\"https://" + resourceBundle.getString("email.url") + "\">" + resourceBundle.getString("email.url") + "</a></font></p>";
 					
