@@ -72,8 +72,10 @@ public class ScheduledTasks {
 		communication.setGroupcommunication(groupcommunication);
 		communication.setDtInc(new Date());
 		
-		// T019
-		communicationService.save(communication);
+		if (players != null && players.size() > 0) {
+			// T019
+			communicationService.save(communication);
+		}
 		
 		for (Player player : players) {
 			

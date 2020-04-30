@@ -135,7 +135,11 @@ public class PlayerServiceImpl implements IPlayerService {
 	}
 	
 	public Player prepareForRemovingCredits(Player player, int qtdCredits) {
-		player.setCredit(player.getCredit() - qtdCredits);
+		// If the player has zero credits, so we don't change that.
+		if (player.getCredit() > 0) {
+			player.setCredit(player.getCredit() - qtdCredits);
+		}
+		
 		return player;
 	}
 	
