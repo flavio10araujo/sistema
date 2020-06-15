@@ -262,9 +262,16 @@ public class ProfileController extends BaseController {
 		}
 		
 		List<Transaction> transactions = transactionService.findByPlayerAndStatus(player, 3);
+		List<Transaction> transactions4 = transactionService.findByPlayerAndStatus(player, 4); // PagSeguro
 		
 		if (transactions == null) {
 			transactions = new ArrayList<Transaction>();
+		}
+		
+		if (transactions4 != null) {
+			for (Transaction t : transactions4) {
+				transactions.add(t);
+			}
 		}
 		
 		model.addAttribute("player", player);

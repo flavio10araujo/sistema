@@ -54,7 +54,7 @@ public class PaymentController extends BaseController {
 		// If the player has not confirmed his e-mail yet.
 		if (!playerService.isEmailConfirmed(currentAuthenticatedUser().getUser())) {
 			model.addAttribute("codRegister", "2");
-			model.addAttribute("msg", "Para poder adquirir créditos é necessário primeiramente confirmar o seu e-mail.<br />No momento do seu cadastro, nós lhe enviamos um e-mail com um código de ativação.<br />Acesse seu email e verifique o código enviado.");
+			model.addAttribute("msg", "Para poder adquirir créditos é necessário primeiramente confirmar o seu e-mail.<br />No momento do seu cadastro, nós lhe enviamos um e-mail com um código de ativação.<br />Acesse seu email e verifique o código enviado.<br />Caso não tenha mais o código, clique <a href='/emailconfirmation'>aqui</a>.");
 			return URL_BUYCREDITS;
 		}
 		
@@ -193,8 +193,9 @@ public class PaymentController extends BaseController {
 		
 		transactionService.save(transaction);
 		
-		// If the status is PAID (3).
-		if (pagSeguroTransaction.getStatus().getValue() == 3) {
+		// If the status is: 
+		// PAID (3) OR AVAILABLE (4)
+		if (pagSeguroTransaction.getStatus().getValue() == 3 || pagSeguroTransaction.getStatus().getValue() == 4) {
 			// Add credits to the player.
 			playerService.addCreditsToPlayer(transaction.getPlayer().getId(), transaction.getQuantity());
 			
@@ -267,8 +268,9 @@ public class PaymentController extends BaseController {
 		
 		transactionService.save(tNew);
 		
-		// If the status is PAID (3).
-		if (pagSeguroTransaction.getStatus().getValue() == 3) {
+		// If the status is: 
+		// PAID (3) OR AVAILABLE (4)
+		if (pagSeguroTransaction.getStatus().getValue() == 3 || pagSeguroTransaction.getStatus().getValue() == 4) {
 			// Add credits to the player.
 			playerService.addCreditsToPlayer(transaction.getPlayer().getId(), transaction.getQuantity());
 			
