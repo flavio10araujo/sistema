@@ -246,8 +246,11 @@ public class EmailSendUtil {
 			from = resourceBundle.getString("email.general");
 			subject = "Sentimos sua falta na " + resourceBundle.getString("email.company") + "... Acesse sua conta para continuar a aprender música!";
 			
-			message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">"
-					+ "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
+			message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">";
+			
+			message = message + "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString("email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead>";
+					
+			message = message + "<tbody><tr><td>"
 					+ "<p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
 					+ "<p><font face=\"arial\" size=\"2\">Sentimos sua falta! Já faz tempo que você não acessa a " + resourceBundle.getString("email.company") + "! "
 					+ "<p><font face=\"arial\" size=\"2\">Estamos sempre melhorando nosso sistema e já temos cursos de trompete, violão, saxofone, flauta doce e teoria musical.</font></p>"
@@ -265,13 +268,20 @@ public class EmailSendUtil {
 					+ "<p><font face=\"arial\" size=\"2\">- - Clique no botão [ENVIAR] e você receberá um email com as instruções para a troca da senha.</font></p>";
 			}
 			
-			message = message + "<p><font face=\"arial\" size=\"2\"><br />Após acessar o sistema, escolha o curso de música que você deseja fazer e bons estudos!.</font></p>" 
-					+ "</td></tr><tr><td>"
-					+ "<font face=\"arial\" size=\"-1\"><br />Aguardamos você!<br />Equipe " + resourceBundle.getString("email.company") + "<br /><br /><strong>" + resourceBundle.getString("email.company") + "</strong> - " + resourceBundle.getString("email.company.slogan") + "</font>"
-					+ "</td></tr><tr><td align=\"center\">"
+			message = message + "<p><font face=\"arial\" size=\"2\"><br />Após acessar o sistema, escolha o curso de música que você deseja fazer e bons estudos!.</font></p></td></tr>";
+			
+			message = message + "<tr><td><font face=\"arial\" size=\"-1\"><br />Aguardamos você!<br />Equipe " + resourceBundle.getString("email.company") + "<br /><br /><strong>" + resourceBundle.getString("email.company") + "</strong> - " + resourceBundle.getString("email.company.slogan") + "</font></td></tr>";
+			
+			message = message + "<tr><td align=\"center\">"
 					+ "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"https://" + resourceBundle.getString("email.url") + "/#faq\">" + resourceBundle.getString("email.url") + "/#faq</a></font>"
-					+ "</td></tr><tr><td align=\"center\"><hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\"></font>"
-					+ "</td></tr></tbody></table>";
+					+ "</td></tr><tr><td align=\"center\"><hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\"></font></td></tr>";
+			
+			message = message + "<tr><td><p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Promoções e novidades:</b></font></p>"
+					+ "<p><font face=\"arial\" size=\"2\">Siga-nos nas redes sociais para aproveitar as promoções e poder fazer aulas de música de graça!</font></p>"
+					+ "<p><font face=\"arial\" size=\"2\"><a href=\"https://www.facebook.com/polifonooficial/\">Facebook</a> - <a href=\"https://www.youtube.com/c/PolifonoOficial\">Youtube</a> - <a href=\"https://www.instagram.com/polifono_music/\">Instagram</a></font></p>"
+					+ "</td></tr>";
+			
+			message = message + "</tbody></table>";
 			
 			message = replaceParamsMessage(message, args);
 		}

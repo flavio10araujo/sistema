@@ -35,6 +35,7 @@ import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.IPlayervideoService;
 import com.polifono.service.ITransactionService;
+import com.polifono.util.StringUtil;
 
 @Controller
 @RequestMapping("/profile")
@@ -344,8 +345,17 @@ public class ProfileController extends BaseController {
 		Player player = playerService.findOne(edit.getId());
 		
 		try  {
-			player.setName(edit.getName().trim());
-			player.setLastName(edit.getLastName().trim());
+			player.setName(StringUtil.formatNamePlayer(edit.getName().trim() + " " + edit.getLastName().trim()));
+			
+			String name = player.getName();
+			name = name.substring(0, name.indexOf(" "));
+			
+			String lastName = player.getName();
+			lastName = lastName.substring(lastName.indexOf(" ") + 1).trim();
+			
+			player.setLastName(lastName);
+			player.setName(name);
+			
 			player.setPhone(edit.getPhone());
 			player.setSex(edit.getSex());
 			player.setDtBirth(edit.getDtBirth());
