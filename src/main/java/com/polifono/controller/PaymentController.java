@@ -58,7 +58,6 @@ public class PaymentController extends BaseController {
 			return URL_BUYCREDITS;
 		}
 		
-		
 		// TEACHER and ADMIN don't have limitations to buy credits.
 		if (currentAuthenticatedUser().getUser().getRole().equals("USER")) {
 			int creditsBuyMin = Integer.parseInt(applicationResourceBundle.getString("credits.buy.min"));
@@ -114,7 +113,7 @@ public class PaymentController extends BaseController {
 			"0001", // Item's number.
 			applicationResourceBundle.getString("payment.nf.description"), // Item's name.
 			quantity, // Item's quantity.
-			new BigDecimal(applicationResourceBundle.getString("priceForEachUnity")), // Price for each unity.
+			this.getPriceForEachUnity(quantity), // Price for each unity.
 			new Long(0), // Weight.
 			null // ShippingCost
 		);
@@ -283,5 +282,27 @@ public class PaymentController extends BaseController {
 		}
 		
 		return URL_BUYCREDITS;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param quantity
+	 * @return
+	 */
+	private BigDecimal getPriceForEachUnity(int quantity) {
+		if (quantity <= 30) {
+			return new BigDecimal(applicationResourceBundle.getString("priceForEachUnityRange01"));
+		}
+		
+		if (quantity > 30 && quantity <= 60) {
+			return new BigDecimal(applicationResourceBundle.getString("priceForEachUnityRange02"));
+		}
+		
+		if (quantity > 60) {
+			return new BigDecimal(applicationResourceBundle.getString("priceForEachUnityRange03"));
+		}
+		
+		return new BigDecimal(applicationResourceBundle.getString("priceForEachUnityRange01"));
 	}
 }

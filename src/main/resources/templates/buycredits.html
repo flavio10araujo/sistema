@@ -9,7 +9,7 @@
 
 <body>
 	
-	<div layout:fragment="content" class="container">
+	<div layout:fragment="content" class="container" id="app">
 
 		<div class="mainbody container-fluid">
 		    
@@ -35,11 +35,17 @@
 		            
 		            	<div class="panel panel-default">
 			                <div class="panel-body">
-			                    <label for="quantity">Informe a quantidade de cr&#xE9;ditos desejada</label> <small><small sec:authorize="hasAuthority('USER')">(m&#xED;nimo: 5 m&#xE1;ximo: 85)</small></small>
-		                        
-		                        <input type="number" class="form-control" required="true" name="quantity" id="quantity" min="5" max="85" />
+			                    <label for="quantity">Informe a quantia de aulas desejada:</label> <small><small sec:authorize="hasAuthority('USER')">(m&#xED;nimo: 5 m&#xE1;ximo: 85)</small></small>
+		                        <input type="number" class="form-control" required="true" name="quantity" id="quantity" min="5" max="85" v-model.number="quantity" />
 		                        
 		                        <br />
+		                        <label>Custo por aula:</label> {{priceForEachUnity}}
+		                        
+		                        <br />
+		                        
+		                        <label>Custo total:</label> {{totalCost}}
+		                        
+		                        <br /><br />
 		                        
 		                        <a th:href="@{/}" class="btn btn-default"><i class="fa fa-fw fa-times" aria-hidden="true"></i> Voltar</a>
 			                	<button data-loading-text="Carregando..." class="btn btn-primary pull-right" id="btnBuy"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Comprar</button>
@@ -51,14 +57,44 @@
 					
 					<div class="panel panel-default">
 		                <div class="panel-body">
-                        	<p>A plataforma Polifono.com utiliza o sistema de pagamento <a href="https://pagseguro.uol.com.br" target="_blank" style="text-decoration:none">PagSeguro.com</a>, desenvolvido pela <a href="http://www.uol.com.br" target="_blank" style="text-decoration:none">UOL</a>.</p>
-                        	<br />
-                        	<p>
-                        	Informe a quantidade de cr&#xE9;ditos desejada e clique em [Comprar]. Voc&#xEA; ser&#xE1; direcionado para o sistema PagSeguro. Ap&#xF3;s efetuar o pagamento, o sistema PagSeguro retornar&#xE1; para essa p&#xE1;gina automaticamente. 
-                        	Os cr&#xE9;ditos ser&#xE3;o adicionados em sua conta apenas ap&#xF3;s a confirma&#xE7;&#xE3;o de pagamento feita pelo sistema PagSeguro. 
-                        	Pode ser necess&#xE1;rio sair do sistema e entrar novamente para que os cr&#xE9;ditos apare&#xE7;am na sua conta. O sistema PagSeguro lhe enviar&#xE1; um e-mail quando o pagamento for confirmado.
-                        	Cada cr&#xE9;dito custa 1 real. Cada aula custa 1 cr&#xE9;dito.
-                        	</p>
+                        	<h2 class="panel-title pull-left" style="font-size:25px">Como funciona?</h2>
+                        	
+                        	<br /><br />
+                        	
+                        	<p>A plataforma Polifono.com utiliza o sistema de pagamentos <a href="https://pagseguro.uol.com.br" target="_blank" style="text-decoration:none">PagSeguro.com</a>.</p>
+                        	
+                        	<p>Informe a quantidade de aulas que deseja e clique em [Comprar]. Voc&#xEA; ser&#xE1; direcionado para o sistema PagSeguro. Ap&#xF3;s efetuar o pagamento, o sistema PagSeguro retornar&#xE1; para essa p&#xE1;gina automaticamente. 
+                        	Os cr&#xE9;ditos ser&#xE3;o adicionados em sua conta apenas ap&#xF3;s a confirma&#xE7;&#xE3;o de pagamento feita pelo PagSeguro.
+                        	Os pagamentos por cartão de crédito são confirmados no mesmo momento. Os pagamentos por boleto levam até 3 dias úteis para serem confirmados. 
+                        	O sistema PagSeguro lhe enviar&#xE1; um e-mail quando o pagamento for confirmado.</p>
+                        </div>
+					</div>
+					
+					<div class="panel panel-default">
+		                <div class="panel-body">
+                        	<h2 class="panel-title pull-left" style="font-size:25px">Quanto custa?</h2>
+                        	
+                        	<br /><br />
+                        	
+                        	<p>Cada aula custa apenas <b>R$ 1 real</b> (ou menos... veja a promoção abaixo!).</p>
+                        	<p>O aluno pode comprar a partir de 5 aulas. Verifique quantas aulas existem no curso desejado para não comprar mais aulas do que o necessário. O aluno pode rever
+                        	a aula quantas vezes precisar durante um período de 2 anos. A aula comprada pode ser usada para qualquer curso. Portanto, ao comprar 20 aulas, o aluno pode fazer, por exemplo,
+                        	10 aulas de saxofone e 10 aulas de violão.</p>
+                        	
+                        	<h2 class="panel-title pull-left" style="font-size:25px">Promoção</h2>
+                        	
+                        	<br /><br />
+                        	
+                        	<p>Na compra de até 30 aulas, cada aula custa apenas R$ 1 real.<br/>
+                        	Na compra entre 31 e 60 aulas, cada aula custa somente <b>R$ 0,90 centavos</b>.<br/>
+                        	Na compra acima de 61 aulas, cada aula fica beeem baratinha: <b>R$ 0,85 centavos</b>.</p>
+                        	
+                        	<h2 class="panel-title pull-left" style="font-size:25px">Promoção relâmpago</h2>
+                        	
+                        	<br /><br />
+                        	
+                        	<p>Siga-nos no <a href="https://www.facebook.com/polifonooficial/" target="_blank">Facebook</a> e <a href="https://www.instagram.com/polifono_music/" target="_blank">Instagram</a> 
+                        	para ganhar aulas. De tempos em tempos, fazemos promoções válidas por 1 dia nas quais os participantes ganham uma quantidade de aulas. Não perca essa oportunidade de estudar música de graça!</p>
                         </div>
 					</div>
 					
@@ -115,6 +151,41 @@
 	  					if($("#quantity").val() >= 5 && $("#quantity").val() <= 85){$(this).button('loading');}
 	  				});
 	  			});
+				
+				var app = new Vue({
+                    el: '#app',
+                    data : {
+                    	quantity
+                    },
+                    computed : {
+                    	priceForEachUnity : function() {
+                    		if (this.quantity <= 30) {
+                        		return 'R$ 1,00 real';
+                        	} else if (this.quantity >= 31 && this.quantity <= 60) {
+                        		return 'R$ 0,90 centavos';
+                        	} else if (this.quantity >= 61) {
+                        		return 'R$ 0,85 centavos';
+                        	}
+                        	
+                        	return 'R$ 1,00 real';
+                    	},
+                    	totalCost() {
+                        	if (this.quantity <= 30) {
+                        		var total = this.quantity * 1;
+                        		return total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+                        	} else if (this.quantity >= 31 && this.quantity <= 60) {
+                        		var total = this.quantity * 0.9;
+                        		return total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+                        	} else if (this.quantity >= 61) {
+                        		var total = this.quantity * 0.85;
+                        		return total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+                        	}
+                        	
+                        	return 'R$ 0,00';
+                        }
+                    	
+                    }
+                })
 			/*]]>*/
 		</script>
 		
