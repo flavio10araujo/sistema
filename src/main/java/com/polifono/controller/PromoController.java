@@ -1,5 +1,8 @@
 package com.polifono.controller;
 
+import java.text.ParseException;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -7,18 +10,24 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.domain.Content;
 import com.polifono.domain.Game;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
+import com.polifono.domain.PlayerPromo;
+import com.polifono.domain.Promo;
 import com.polifono.service.IContentService;
 import com.polifono.service.IGameService;
 import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
+import com.polifono.service.IPlayerPromoService;
 import com.polifono.service.IPlayerService;
+import com.polifono.service.IPromoService;
 import com.polifono.util.ContentUtil;
+import com.polifono.util.DateUtil;
 
 @Controller
 public class PromoController extends BaseController {
@@ -38,6 +47,12 @@ public class PromoController extends BaseController {
 	
 	@Autowired
 	private IContentService contentService;
+	
+	@Autowired
+	private IPromoService promoService;
+	
+	@Autowired
+	private IPlayerPromoService playerPromoService;
 	
 	public static final String URL_PROMOS_REGISTER = "promos/register";
 	
@@ -61,17 +76,64 @@ public class PromoController extends BaseController {
 	
 	public static final String URL_PROMOS_PHASECONTENT_TESTE = "promos/phaseContent";
 	
+	public static final String URL_PROMO_SEARCH = "promoSearch";
+    public static final String URL_PROMOOPEN_SEARCH = "promoSearchOpen";
+	
 	public static final String REDIRECT_HOME = "redirect:/";
 
-	/**
-	 * 
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = {"/promos"}, method = RequestMethod.GET)
-	public final String redirectHome(final Model model) {
-		return REDIRECT_HOME;
-	}
+	@RequestMapping(value = {"/promo", "/promos"}, method = RequestMethod.GET)
+    public final String promo(final Model model) {
+    	// If the user is logged in.
+    	if (this.currentAuthenticatedUser() != null) {
+    		return URL_PROMO_SEARCH;
+		}
+		else {
+			return URL_PROMOOPEN_SEARCH;
+		}
+    }
+	
+	@RequestMapping(value = {"/promo"}, method = RequestMethod.POST)
+    public final String promoSearchSubmit(final Model model, @RequestParam(value = "code", defaultValue = "") String code) throws ParseException {
+    	
+		if (code == null || "".equals(code)) {
+			return URL_PROMO_SEARCH;
+		}
+
+		Date now = DateUtil.getCurrentDateWithHourAndSeconds();
+		Promo promo = promoService.findByCodeAndDate(code, now);
+		
+		if (promo != null) {
+			
+			Player player = currentAuthenticatedUser().getUser();
+			
+			PlayerPromo playerPromo = playerPromoService.findByPlayerAndPromo(player.getId(), promo.getId());
+			
+			// If the player has already used this promotional code.
+			if (playerPromo != null) {
+				model.addAttribute("message", "error");
+				model.addAttribute("messageContent", "Ooops! Você já utilizou esse código uma vez!");
+				return URL_PROMO_SEARCH;
+			}
+			
+			this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(player.getId(), promo.getPrize()));
+			
+			playerPromo = new PlayerPromo();
+			playerPromo.setPlayer(player);
+			playerPromo.setPromo(promo);
+			playerPromo.setDt(now);
+			playerPromoService.save(playerPromo);
+
+			model.addAttribute("message", "success");
+			model.addAttribute("promo", promo);
+		}
+		else {
+			model.addAttribute("message", "error");
+			model.addAttribute("messageContent", "Ooops! O código informado não existe ou está vencido.");
+			return URL_PROMO_SEARCH;
+		}
+    	
+    	return URL_PROMO_SEARCH;
+    }
 	
 	@RequestMapping(value = {"/promos/register"}, method = RequestMethod.GET)
 	public final String regiter(final Model model) {

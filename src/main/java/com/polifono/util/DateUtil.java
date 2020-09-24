@@ -96,4 +96,10 @@ public class DateUtil {
 		cal.add(Calendar.MONTH, (subtract * -1));
 		return cal.getTime();
 	}
+	
+	public static java.util.Date getCurrentDateWithHourAndSeconds() throws ParseException {
+		Calendar calendar = Calendar.getInstance();
+		//System.out.println(calendar.getTime());
+	    return calendar.getTime();
+	}
 }

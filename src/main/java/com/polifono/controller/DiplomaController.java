@@ -38,8 +38,8 @@ public class DiplomaController extends BaseController {
 	@Autowired
 	private IDiplomaService diplomaService;
 	
-	 @Autowired
-	 ServletContext context;
+	@Autowired
+	ServletContext context;
 	
 	public static final String URL_DIPLOMA_SEARCH = "diplomaSearch";
     public static final String URL_DIPLOMAOPEN_SEARCH = "diplomaSearchOpen";
