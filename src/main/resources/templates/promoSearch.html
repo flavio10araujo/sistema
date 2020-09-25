@@ -1,5 +1,5 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMainFb">
 
 <head>
 	<style type="text/css">
@@ -10,7 +10,7 @@
 <body>
 	<div layout:fragment="content">
 		
-		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-lg-push-4 col-md-push-4">
         
             <div class="panel panel-default">
             
@@ -32,6 +32,8 @@
 		  				
 		  				<a th:href="@{/}" class="btn btn-default"><i class="fa fa-fw fa-times" aria-hidden="true"></i> Voltar</a>
 						<button data-loading-text="Verificando..." class="btn btn-primary pull-right" id="btnDip"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Ganhar</button>
+						
+						<h5>Os códigos promocionais são divulgados em nossas redes sociais. Acompanhe o nosso Facebook e Instagram para estudar música de graça!</h5>
 					</form>
 		    	</div>
 		    	

@@ -98,6 +98,13 @@ public class PromoController extends BaseController {
 		if (code == null || "".equals(code)) {
 			return URL_PROMO_SEARCH;
 		}
+		
+		// If the player has not confirmed his e-mail yet.
+		if (!playerService.isEmailConfirmed(currentAuthenticatedUser().getUser())) {
+			model.addAttribute("message", "error");
+			model.addAttribute("messageContent", "Para poder participar das promoções, é necessário primeiramente confirmar o seu e-mail. No momento do seu cadastro, nós lhe enviamos um e-mail com um código de ativação. Acesse seu email e verifique o código enviado.<br />Caso não tenha mais o código, clique <a href='/emailconfirmation'>aqui</a>.");
+			return URL_PROMO_SEARCH;
+		}
 
 		Date now = DateUtil.getCurrentDateWithHourAndSeconds();
 		Promo promo = promoService.findByCodeAndDate(code, now);
