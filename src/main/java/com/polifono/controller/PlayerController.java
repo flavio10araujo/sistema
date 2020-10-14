@@ -55,7 +55,7 @@ public class PlayerController extends BaseController {
 	public static final String REDIRECT_CLASSINVITATION = "redirect:/classinvitation";
 	
 	@RequestMapping(value = {"/player/create"}, method = RequestMethod.POST)
-	public final String createPlayer(HttpServletRequest request, final Model model, @ModelAttribute("player") Player player) {
+	public final synchronized String createPlayer(HttpServletRequest request, final Model model, @ModelAttribute("player") Player player) {
 		
 		model.addAttribute("playerResend", new Player());
 		
@@ -389,7 +389,7 @@ public class PlayerController extends BaseController {
 	 * @throws IOException
 	 */
 	@RequestMapping("/loginfb")
-	public String loginfb(HttpServletRequest request, final Model model, String code) {
+	public final synchronized String loginfb(HttpServletRequest request, final Model model, String code) {
 		
 		try {
 			JSONObject resp = new JSONObject(Util.readURL(new URL("https://graph.facebook.com/v2.12/me?fields=email,first_name,last_name&access_token=" + code)));
@@ -400,7 +400,7 @@ public class PlayerController extends BaseController {
 				return URL_INDEX;
 			}
 			
-			// Get the ID of the playerFacebook and verify is he is already related to any player.
+			// Get the ID of the playerFacebook and verify if he is already related to any player.
 			Player player = playerService.findByIdFacebook(playerFacebook.getId());
 			
 			// If yes, log the player in.
