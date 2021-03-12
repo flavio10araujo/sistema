@@ -437,7 +437,7 @@ public class PlayerController extends BaseController {
 						player.setLastName(playerFacebook.getLastName());
 						player.setEmail(playerFacebook.getEmail());
 						player.setPassword(new RandomStringUtil(6).nextString());
-						player.setIndEmailConfirmed(true);
+						player.setIndEmailConfirmed(false);
 						
 						playerService.create(player);
 						
@@ -456,7 +456,7 @@ public class PlayerController extends BaseController {
 					player.setLastName(playerFacebook.getLastName());
 					player.setPassword(new RandomStringUtil(6).nextString());
 					player.setLogin(playerFacebook.getId()+"");
-					player.setIndEmailConfirmed(true);
+					player.setIndEmailConfirmed(false);
 					
 					playerService.create(player);
 					

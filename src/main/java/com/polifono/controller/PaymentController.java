@@ -51,15 +51,20 @@ public class PaymentController extends BaseController {
 	@RequestMapping(value = {"/buycredits"}, method = RequestMethod.POST)
 	public final String buycreditssubmit(final Model model, @RequestParam("quantity") Integer quantity) {
 
+		Player player = currentAuthenticatedUser().getUser();
+		
 		// If the player has not confirmed his e-mail yet.
-		if (!playerService.isEmailConfirmed(currentAuthenticatedUser().getUser())) {
+		// And the player has not informed his/her facebook.
+		if (!playerService.isEmailConfirmed(player)
+				&& player.getIdFacebook() == null) {
+			
 			model.addAttribute("codRegister", "2");
 			model.addAttribute("msg", "Para poder adquirir créditos é necessário primeiramente confirmar o seu e-mail.<br />No momento do seu cadastro, nós lhe enviamos um e-mail com um código de ativação.<br />Acesse seu email e verifique o código enviado.<br />Caso não tenha mais o código, clique <a href='/emailconfirmation'>aqui</a>.");
 			return URL_BUYCREDITS;
 		}
 		
 		// TEACHER and ADMIN don't have limitations to buy credits.
-		if (currentAuthenticatedUser().getUser().getRole().equals("USER")) {
+		if (player.getRole().equals("USER")) {
 			int creditsBuyMin = Integer.parseInt(applicationResourceBundle.getString("credits.buy.min"));
 			int creditsBuyMax = Integer.parseInt(applicationResourceBundle.getString("credits.buy.max"));
 		
@@ -69,8 +74,6 @@ public class PaymentController extends BaseController {
 				return URL_BUYCREDITS;
 			}
 		}
-		
-		Player player = currentAuthenticatedUser().getUser();
 		
 		// Register an item in T012_TRANSACTION.
 		// This item is not a transaction yet, but it already contain the player, the quantity of credits and the date.
