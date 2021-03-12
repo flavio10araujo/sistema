@@ -38,6 +38,7 @@ public interface IPlayerRepository extends JpaRepository<Player, Integer> {
 	@Query(value = "select * from t001_player t1 where "
 			+ "date(t1.c001_dt_inc) < date(:dateOneMonthAgo) and "
 			+ "t1.c001_active = 1 and "
+			+ "t1.c001_ind_email_confirmed = 1 and "
 			+ "t1.c001_role = 'user' and "
 			+ "t1.c001_id_creator is null and "
 			+ "t1.c001_email is not null and t1.c001_email != '' and "
