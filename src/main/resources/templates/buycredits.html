@@ -39,11 +39,10 @@
 		                        <input type="number" class="form-control" required="true" name="quantity" id="quantity" min="5" max="85" v-model.number="quantity" />
 		                        
 		                        <br />
-		                        <label>Custo por aula:</label> {{priceForEachUnity}}
+		                        <label>Custo total:</label> {{totalCost}}
 		                        
 		                        <br />
-		                        
-		                        <label>Custo total:</label> {{totalCost}}
+		                        <label>Custo por aula:</label> {{priceForEachUnity}}
 		                        
 		                        <br /><br />
 		                        
@@ -61,7 +60,7 @@
                         	
                         	<br /><br />
                         	
-                        	<p>Cada aula custa apenas <b>R$ 1 real</b> (ou menos... veja a promoção abaixo!).</p>
+                        	<p>O custo de cada aula depende da quantidade de aulas compradas.<br />Para compras acima de 50 aulas, cada aula custa apenas <b>R$ 1 real</b>.</p>
                         	<p>O aluno pode comprar a partir de 5 aulas. Verifique quantas aulas existem no curso desejado para não comprar mais aulas do que o necessário. O aluno pode rever
                         	a aula quantas vezes precisar durante um período de 2 anos. A aula comprada pode ser usada para qualquer curso. Portanto, ao comprar 20 aulas, o aluno pode fazer, por exemplo,
                         	10 aulas de saxofone e 10 aulas de violão.</p>
@@ -70,9 +69,9 @@
                         	
                         	<br /><br />
                         	
-                        	<p>Na compra de até 30 aulas, cada aula custa apenas R$ 1 real.<br/>
-                        	Na compra entre 31 e 60 aulas, cada aula custa somente <b>R$ 0,90 centavos</b>.<br/>
-                        	Na compra acima de 61 aulas, cada aula fica beeem baratinha: <b>R$ 0,85 centavos</b>.</p>
+                        	<p>Ao comprar 50 ou mais aulas, cada aula custa apenas <b>R$ 1 real</b>.<br/>
+                        	Na compra entre 21 e 49 aulas, cada aula custa <b>R$ 1,25 centavos</b>.<br/>
+                        	Ao comprar 20 ou menos aulas, cada aula custa: <b>R$ 1,50 centavos</b>.</p>
                         	
                         	<h2 class="panel-title pull-left" style="font-size:25px">Promoção relâmpago</h2>
                         	
@@ -159,25 +158,25 @@
                     },
                     computed : {
                     	priceForEachUnity : function() {
-                    		if (this.quantity <= 30) {
+                    		if (this.quantity <= 20) {
+                        		return 'R$ 1,50 centavos';
+                        	} else if (this.quantity >= 21 && this.quantity <= 49) {
+                        		return 'R$ 1,25 centavos';
+                        	} else if (this.quantity >= 50) {
                         		return 'R$ 1,00 real';
-                        	} else if (this.quantity >= 31 && this.quantity <= 60) {
-                        		return 'R$ 0,90 centavos';
-                        	} else if (this.quantity >= 61) {
-                        		return 'R$ 0,85 centavos';
                         	}
                         	
                         	return 'R$ 1,00 real';
                     	},
                     	totalCost() {
-                        	if (this.quantity <= 30) {
-                        		var total = this.quantity * 1;
+                        	if (this.quantity <= 20) {
+                        		var total = this.quantity * 1.50;
                         		return total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-                        	} else if (this.quantity >= 31 && this.quantity <= 60) {
-                        		var total = this.quantity * 0.9;
+                        	} else if (this.quantity >= 21 && this.quantity <= 49) {
+                        		var total = this.quantity * 1.25;
                         		return total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-                        	} else if (this.quantity >= 61) {
-                        		var total = this.quantity * 0.85;
+                        	} else if (this.quantity >= 50) {
+                        		var total = this.quantity * 1.00;
                         		return total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
                         	}
                         	
