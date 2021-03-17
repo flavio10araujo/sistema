@@ -26,4 +26,6 @@ public interface IPlayervideoService {
 	public List<Playervideo> findAllByPlayer(Player player, Pageable pageable);
 	
 	public Playervideo findByPlayerAndPhase(Player player, Phase phase);
+	
+	public List<Playervideo> findRandomWithRestriction(String restriction);
 }

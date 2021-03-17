@@ -35,7 +35,7 @@ public class PlayervideoController extends BaseController {
 	@Autowired
 	private IPlayerService playerService;
 	
-	@GetMapping(value="/playervideos")
+	/*@GetMapping(value="/playervideos")
 	@ResponseBody
     public List<PlayervideoDTO> playervideosGeneral(@RequestParam(value = "page") String pageStr, @RequestParam(value = "size") String sizeStr) {
 
@@ -55,7 +55,59 @@ public class PlayervideoController extends BaseController {
 		catch (Exception e) {
 			return new ArrayList<PlayervideoDTO>();
 		}
+    }*/
+	
+	@GetMapping(value="/playervideos")
+	@ResponseBody
+    public List<PlayervideoDTO> playervideosGeneral(@RequestParam(value = "restriction") String restriction) {
+
+		try {
+			// codigo provisorio
+			
+			if (restriction == null || "".equals(restriction)) {
+				restriction = "0";
+			}
+			
+			List<PlayervideoDTO> playervideoDTOList = convertToDto(playervideoService.findRandomWithRestriction(restriction));
+			
+			// adicionar IDs na lista de restriction
+			List<PlayervideoDTO> playervideoDTOReturn = new ArrayList<>();
+			
+			label : {
+				for (PlayervideoDTO p : playervideoDTOList) {
+					if (verifyRestriction(restriction, p.getId())) {
+						playervideoDTOReturn.add(p);
+					}
+					
+					if (playervideoDTOReturn.size() >= 3) {
+						break label;
+					}
+				}
+			}
+			
+			return playervideoDTOReturn;
+		}
+		catch (Exception e) {
+			return new ArrayList<PlayervideoDTO>();
+		}
     }
+	
+	public boolean verifyRestriction(String restriction, int id) {
+		
+		if (restriction == null || "".equals(restriction) || "0".equals(restriction)) {
+			return true;
+		}
+		
+		String[] restrictionArr = restriction.split(",");
+		
+		for (int i = 0; i < restrictionArr.length; i++) {
+			if (restrictionArr[i].equals(id+"")) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 	
 	@GetMapping(value="/playervideos/content/{contentId}")
 	@ResponseBody
@@ -115,6 +167,7 @@ public class PlayervideoController extends BaseController {
 		for (Playervideo playervideo : playervideoList) {
 			PlayervideoDTO dto = new PlayervideoDTO();
 			
+			dto.setId(playervideo.getId());
 			dto.setGameName(playervideo.getContent().getPhase().getMap().getGame().getName());
 			dto.setLevelName(playervideo.getContent().getPhase().getMap().getLevel().getName());
 			dto.setPhaseOrder(playervideo.getContent().getPhase().getOrder());
@@ -128,5 +181,4 @@ public class PlayervideoController extends BaseController {
 		
 		return dtoList;
 	}
-	
 }

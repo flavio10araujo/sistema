@@ -206,12 +206,14 @@
                                 page: 0,
                                 lastPage: false,
                                 msgNoVideos: "",
-                                videos: []
+                                videos: [],
+                                restriction: "0"
                             }
                         },
                         methods: {
                             getInitialVideos() {
-                            	axios.get("/playervideos?page="+this.page+"&size=3")
+                            	//axios.get("/playervideos?page="+this.page+"&size=3")
+                            	axios.get("/playervideos?restriction=0")
                                     .then(response => {
                                         if (response.data.length == 0) {
                                             this.lastPage = true;
@@ -219,8 +221,8 @@
                                         } else {
                                             for (i=0; i < response.data.length; i++) {
                                             	this.videos.push(response.data[i]);
+                                            	this.restriction = this.restriction + "," + response.data[i].id;
                                         	}
-                                            
                                         }
                                 });
                             },
@@ -233,7 +235,8 @@
 
                                         if (bottomOfWindow || bottomOfWindow1 || bottomOfWindow2) {
                                             this.page++;
-                                            axios.get("/playervideos?page="+this.page+"&size=3")
+                                            //axios.get("/playervideos?page="+this.page+"&size=3")
+                                            axios.get("/playervideos?restriction="+this.restriction)
                                             .then(response => {
                                                 if (response.data.length == 0) {
                                                     this.lastPage = true;
@@ -241,6 +244,7 @@
                                                 } else {
                                                 	for (i=0; i < response.data.length; i++) {
                                                     	this.videos.push(response.data[i]);
+                                                    	this.restriction = this.restriction + "," + response.data[i].id;
                                                 	}
                                                 }
                                             });

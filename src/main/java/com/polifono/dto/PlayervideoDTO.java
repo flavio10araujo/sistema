@@ -2,6 +2,7 @@ package com.polifono.dto;
 
 public class PlayervideoDTO {
 
+	private int id;
 	private String gameName;
 	private String levelName;
 	private int phaseOrder;
@@ -9,6 +10,14 @@ public class PlayervideoDTO {
 	private String playerFirstName;
 	private String playerLastName;
 	private String url;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getGameName() {
 		return gameName;

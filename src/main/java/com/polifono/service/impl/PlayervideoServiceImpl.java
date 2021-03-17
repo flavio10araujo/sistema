@@ -55,4 +55,9 @@ public class PlayervideoServiceImpl implements IPlayervideoService {
 	public Playervideo findByPlayerAndPhase(Player player, Phase phase) {
 		return repository.findByPlayerAndPhase(player.getId(), phase.getId());
 	}
+	
+	@Override
+	public List<Playervideo> findRandomWithRestriction(String restriction) {
+		return repository.findRandomWithRestriction();
+	}
 }
