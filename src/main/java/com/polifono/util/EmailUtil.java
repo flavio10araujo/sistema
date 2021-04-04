@@ -233,10 +233,11 @@ public class EmailUtil {
 		String gmailCom = "@gmail.com";
 		String hotmailCom = "@hotmail.com";
 		String hotmailComBr = "@hotmail.com.br";
-		String yahooComBr = "@yahoo.com.br";
 		String yahooCom = "@yahoo.com";
+		String yahooComBr = "@yahoo.com.br";
 		String bolComBr = "@bol.com.br";
 		String outlookCom = "@outlook.com";
+		String icloudCom = "@icloud.com";
 
 		//gmail.com
 		if (domain.equals("@gmail.com.br")) {
@@ -290,6 +291,45 @@ public class EmailUtil {
 		if (domain.equals("@g-mail.com")) {
 			return email.replaceAll("@g-mail.com", gmailCom);
 		}
+		if (domain.equals("@gemail.com")) {
+			return email.replaceAll("@gemail.com", gmailCom);
+		}
+		if (domain.equals("@gmail.cm")) {
+			return email.replaceAll("@gmail.cm", gmailCom);
+		}
+		if (domain.equals("@gmal.com")) {
+			return email.replaceAll("@gmal.com", gmailCom);
+		}
+		if (domain.equals("@gmaill.com")) {
+			return email.replaceAll("@gmaill.com", gmailCom);
+		}
+		if (domain.equals("@gmail.om")) {
+			return email.replaceAll("@gmail.om", gmailCom);
+		}
+		if (domain.equals("@gmail.org")) {
+			return email.replaceAll("@gmail.org", gmailCom);
+		}
+		if (domain.equals("@gmail.comk")) {
+			return email.replaceAll("@gmail.comk", gmailCom);
+		}
+		if (domain.equals("@gmail.ccom")) {
+			return email.replaceAll("@gmail.ccom", gmailCom);
+		}
+		if (domain.equals("@gmais.com")) {
+			return email.replaceAll("@gmais.com", gmailCom);
+		}
+		if (domain.equals("@gma.com")) {
+			return email.replaceAll("@gma.com", gmailCom);
+		}
+		if (domain.equals("@gmail.vom")) {
+			return email.replaceAll("@gmail.vom", gmailCom);
+		}
+		if (domain.equals("@fmail.com")) {
+			return email.replaceAll("@fmail.com", gmailCom);
+		}
+		if (domain.equals("@hmail.com")) {
+			return email.replaceAll("@hmail.com", gmailCom);
+		}
 
 		//hotmail.com
 		if (domain.equals("@hotmail.co")) {
@@ -336,6 +376,30 @@ public class EmailUtil {
 		}
 		if (domain.equals("@hotmil.com")) {
 			return email.replaceAll("@hotmil.com", hotmailCom);
+		}
+		if (domain.equals("@hotnail.com")) {
+			return email.replaceAll("@hotnail.com", hotmailCom);
+		}
+		if (domain.equals("@hotmal.com")) {
+			return email.replaceAll("@hotmal.com", hotmailCom);
+		}
+		if (domain.equals("@hotmaill.com")) {
+			return email.replaceAll("@hotmaill.com", hotmailCom);
+		}
+		if (domain.equals("@hotmailk.com")) {
+			return email.replaceAll("@hotmailk.com", hotmailCom);
+		}
+		if (domain.equals("@hormail.com")) {
+			return email.replaceAll("@hormail.com", hotmailCom);
+		}
+		if (domain.equals("@hotmaol.com")) {
+			return email.replaceAll("@hotmaol.com", hotmailCom);
+		}
+		if (domain.equals("@jotmail.com")) {
+			return email.replaceAll("@jotmail.com", hotmailCom);
+		}
+		if (domain.equals("@hotmai.com")) {
+			return email.replaceAll("@hotmai.com", hotmailCom);
 		}
 
 		//hotmail.com.br
@@ -389,6 +453,15 @@ public class EmailUtil {
 		if (domain.equals("@uahoo.com.br")) {
 			return email.replaceAll("@uahoo.com.br", yahooComBr);
 		}
+		if (domain.equals("@yahoo.co.br")) {
+			return email.replaceAll("@yahoo.co.br", yahooComBr);
+		}
+		if (domain.equals("@yahoo.vom.br")) {
+			return email.replaceAll("@yahoo.vom.br", yahooComBr);
+		}
+		if (domain.equals("@ahoo.com.br")) {
+			return email.replaceAll("@ahoo.com.br", yahooComBr);
+		}
 		
 		//yahoo.com
 		if (domain.equals("@yaho.com")) {
@@ -408,6 +481,9 @@ public class EmailUtil {
 		if (domain.equals("@bl.com.br")) {
 			return email.replaceAll("@bl.com.br", bolComBr);
 		}
+		if (domain.equals("@bol.co.br")) {
+			return email.replaceAll("@bol.co.br", bolComBr);
+		}
 
 		//outlook.com
 		if (domain.equals("@outllok.com")) {
@@ -418,6 +494,14 @@ public class EmailUtil {
 		}
 		if (domain.equals("@outluoock.com")) {
 			return email.replaceAll("@outluoock.com", outlookCom);
+		}
+		if (domain.equals("@otlook.com")) {
+			return email.replaceAll("@otlook.com", outlookCom);
+		}
+		
+		//icloud.com
+		if (domain.equals("@aiclod.com")) {
+			return email.replaceAll("@aiclod.com", icloudCom);
 		}
 
 		return email;
