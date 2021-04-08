@@ -65,7 +65,7 @@ public class EmailSendUtil {
 				
 				hm.addPart(message, org.apache.commons.mail.Email.TEXT_HTML);
 				
-				hm.send();
+				hm.send(); //(DES)COMENTAR AQUI E NO OUTRO TMB
 				
 				System.out.println("E-mail enviado!");
 			}
@@ -110,7 +110,7 @@ public class EmailSendUtil {
 				
 				hm.addPart(message, org.apache.commons.mail.Email.TEXT_HTML);
 				
-				hm.send();
+				hm.send(); //(DES)COMENTAR AQUI E NO OUTRO TMB
 				
 				System.out.println("E-mail enviado!");
 			}
