@@ -99,8 +99,11 @@ public class PromoController extends BaseController {
 			return URL_PROMO_SEARCH;
 		}
 		
+		Player player = currentAuthenticatedUser().getUser();
+		
 		// If the player has not confirmed his e-mail yet.
-		if (!playerService.isEmailConfirmed(currentAuthenticatedUser().getUser())) {
+		if (!playerService.isEmailConfirmed(player)
+				&& player.getIdFacebook() == null) {
 			model.addAttribute("message", "error");
 			model.addAttribute("messageContent", "Para poder participar das promoções, é necessário primeiramente confirmar o seu e-mail. No momento do seu cadastro, nós lhe enviamos um e-mail com um código de ativação. Acesse seu email e verifique o código enviado.<br />Caso não tenha mais o código, clique <a href='/emailconfirmation'>aqui</a>.");
 			return URL_PROMO_SEARCH;
@@ -110,8 +113,6 @@ public class PromoController extends BaseController {
 		Promo promo = promoService.findByCodeAndDate(code, now);
 		
 		if (promo != null) {
-			
-			Player player = currentAuthenticatedUser().getUser();
 			
 			PlayerPromo playerPromo = playerPromoService.findByPlayerAndPromo(player.getId(), promo.getId());
 			
