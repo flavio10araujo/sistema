@@ -49,13 +49,22 @@ public class EmailSendUtil {
 				hm.setTLS(true);
 				*/
 
-				// Integrator configuration.
+				/*
+				Integrator configuration.
 				hm.setHostName("localhost");
 				hm.setSmtpPort(Integer.parseInt("25"));
-
 				hm.setAuthentication(resourceBundle.getString("email.general"), resourceBundle.getString("email.general.password"));
-				
 				hm.setCharset("UTF-8");
+				hm.setSubject(subject);
+				hm.setFrom(senderAddress);
+				hm.addTo(recipientAddress);
+				*/
+				
+				// AWS configuration.
+				hm.setHostName(resourceBundle.getString("email.hostName"));
+				hm.setSmtpPort(Integer.parseInt(resourceBundle.getString("email.smtpPort")));
+				hm.setAuthentication(resourceBundle.getString("email.authentication.login"), resourceBundle.getString("email.authentication.password"));
+				hm.setCharset(resourceBundle.getString("email.charset"));
 				hm.setSubject(subject);
 				hm.setFrom(senderAddress);
 				hm.addTo(recipientAddress);
@@ -94,13 +103,22 @@ public class EmailSendUtil {
 			try	{
 				MultiPartEmail hm = new MultiPartEmail();
 				
-				// Integrator configuration.
+				/*
+				Integrator configuration.
 				hm.setHostName("localhost");
 				hm.setSmtpPort(Integer.parseInt("25"));
-				
 				hm.setAuthentication(resourceBundle.getString("email.general"), resourceBundle.getString("email.general.password"));
-				
 				hm.setCharset("UTF-8");
+				hm.setSubject(subject);
+				hm.setFrom(senderAddress);
+				hm.addTo(recipientAddress);
+				*/
+				
+				// AWS configuration.
+				hm.setHostName(resourceBundle.getString("email.hostName"));
+				hm.setSmtpPort(Integer.parseInt(resourceBundle.getString("email.smtpPort")));
+				hm.setAuthentication(resourceBundle.getString("email.authentication.login"), resourceBundle.getString("email.authentication.password"));
+				hm.setCharset(resourceBundle.getString("email.charset"));
 				hm.setSubject(subject);
 				hm.setFrom(senderAddress);
 				hm.addTo(recipientAddress);
