@@ -294,11 +294,11 @@ public class PaymentController extends BaseController {
 	 * @return
 	 */
 	private BigDecimal getPriceForEachUnity(int quantity) {
-		if (quantity <= 20) {
+		if (quantity <= 25) {
 			return new BigDecimal(applicationResourceBundle.getString("priceForEachUnityRange01"));
 		}
 		
-		if (quantity >= 21 && quantity <= 49) {
+		if (quantity >= 26 && quantity <= 49) {
 			return new BigDecimal(applicationResourceBundle.getString("priceForEachUnityRange02"));
 		}
 		

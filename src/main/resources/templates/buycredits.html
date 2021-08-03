@@ -70,8 +70,8 @@
                         	<br /><br />
                         	
                         	<p>Ao comprar 50 ou mais aulas, cada aula custa apenas <b>R$ 1 real</b>.<br/>
-                        	Na compra entre 21 e 49 aulas, cada aula custa <b>R$ 1,25 centavos</b>.<br/>
-                        	Ao comprar 20 ou menos aulas, cada aula custa: <b>R$ 1,50 centavos</b>.</p>
+                        	Na compra entre 26 e 49 aulas, cada aula custa <b>R$ 1,50 centavos</b>.<br/>
+                        	Ao comprar 25 ou menos aulas, cada aula custa: <b>R$ 2,00 reais</b>.</p>
                         	
                         	<h2 class="panel-title pull-left" style="font-size:25px">Promoção relâmpago</h2>
                         	
@@ -158,10 +158,10 @@
                     },
                     computed : {
                     	priceForEachUnity : function() {
-                    		if (this.quantity <= 20) {
+                    		if (this.quantity <= 25) {
+                        		return 'R$ 2,00 reais';
+                        	} else if (this.quantity >= 26 && this.quantity <= 49) {
                         		return 'R$ 1,50 centavos';
-                        	} else if (this.quantity >= 21 && this.quantity <= 49) {
-                        		return 'R$ 1,25 centavos';
                         	} else if (this.quantity >= 50) {
                         		return 'R$ 1,00 real';
                         	}
@@ -169,11 +169,11 @@
                         	return 'R$ 1,00 real';
                     	},
                     	totalCost() {
-                        	if (this.quantity <= 20) {
-                        		var total = this.quantity * 1.50;
+                        	if (this.quantity <= 25) {
+                        		var total = this.quantity * 2.00;
                         		return total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-                        	} else if (this.quantity >= 21 && this.quantity <= 49) {
-                        		var total = this.quantity * 1.25;
+                        	} else if (this.quantity >= 26 && this.quantity <= 49) {
+                        		var total = this.quantity * 1.50;
                         		return total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
                         	} else if (this.quantity >= 50) {
                         		var total = this.quantity * 1.00;
