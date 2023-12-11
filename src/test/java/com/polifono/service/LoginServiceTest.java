@@ -1,10 +1,15 @@
 package com.polifono.service;
 
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -81,29 +86,31 @@ public class LoginServiceTest extends AbstractTest {
     /* prepareForRegisterLogin - end */
 
     /* findByPlayer - begin */
-    /*@Test
+    @Test
+    @Ignore
     public void findByPlayer_WhenSearchByPlayerExistent_ReturnList() {
-    	List<Login> list = getEntityListStubData();
+        List<Login> list = getEntityListStubData();
 
-    	////DESCOMENTARwhen(repository.findByPlayer(PLAYER_ID_EXISTENT)).thenReturn(list);
+        ////DESCOMENTARwhen(repository.findByPlayer(PLAYER_ID_EXISTENT)).thenReturn(list);
 
-    	List<Login> listReturned = service.findByPlayer(PLAYER_ID_EXISTENT);
-    	Assert.assertNotNull("failure - not expected null", listReturned);
-    	Assert.assertNotEquals("failure - not size 0", 0, listReturned.size());
+        List<Login> listReturned = service.findByPlayer(PLAYER_ID_EXISTENT);
+        Assert.assertNotNull("failure - not expected null", listReturned);
+        Assert.assertNotEquals("failure - not size 0", 0, listReturned.size());
 
-    	////DESCOMENTARverify(repository, times(1)).findByPlayer(PLAYER_ID_EXISTENT);
+        ////DESCOMENTARverify(repository, times(1)).findByPlayer(PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
-    }*/
+    }
 
-    /*@Test
+    @Test
+    @Ignore
     public void findByPlayer_WhenSearchByPlayerInexistent_ReturnNull() {
-    	////DESCOMENTARwhen(repository.findByPlayer(PLAYER_ID_INEXISTENT)).thenReturn(null);
+        ////DESCOMENTARwhen(repository.findByPlayer(PLAYER_ID_INEXISTENT)).thenReturn(null);
 
-    	List<Login> listReturned = service.findByPlayer(PLAYER_ID_INEXISTENT);
-    	Assert.assertNull("failure - expected null", listReturned);
+        List<Login> listReturned = service.findByPlayer(PLAYER_ID_INEXISTENT);
+        Assert.assertNull("failure - expected null", listReturned);
 
-    	////DESCOMENTARverify(repository, times(1)).findByPlayer(PLAYER_ID_INEXISTENT);
+        ////DESCOMENTARverify(repository, times(1)).findByPlayer(PLAYER_ID_INEXISTENT);
         verifyNoMoreInteractions(repository);
-    }*/
+    }
     /* findByPlayer - end */
 }

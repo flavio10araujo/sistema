@@ -1,11 +1,22 @@
 package com.polifono.service.currentUser;
 
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.polifono.domain.Player;
+import com.polifono.domain.bean.CurrentUser;
+import com.polifono.domain.enums.Role;
 import com.polifono.repository.IPlayerRepository;
 import com.polifono.service.IPlayerGameService;
 import com.polifono.service.IPlayerService;
@@ -45,35 +56,37 @@ public class UserDetailsServiceTest {
     }
 
     /* loadUserByUsername - begin */
-    /*@Test(expected=UsernameNotFoundException.class)
+    @Test(expected = UsernameNotFoundException.class)
+    @Ignore
     public void loadUserByUsername_WhenUserNotFoundByEmailAndStatus_ThrowUsernameNotFoundException() {
-    	String email = PLAYER_EMAIL_INEXISTENT;
-    	when(userService.findByEmailAndStatusForLogin(email, true)).thenReturn(Optional.empty());
-    	service.loadUserByUsername(PLAYER_EMAIL_INEXISTENT);
-    }*/
+        String email = PLAYER_EMAIL_INEXISTENT;
+        when(userService.findByEmailAndStatusForLogin(email, true)).thenReturn(Optional.empty());
+        service.loadUserByUsername(PLAYER_EMAIL_INEXISTENT);
+    }
 
-    /*@Test
+    @Test
+    @Ignore
     public void loadUserByUsername_WhenUserIsFoundByEmailAndStatus_ReturnUser() {
-    	String email = PLAYER_EMAIL_EXISTENT;
+        String email = PLAYER_EMAIL_EXISTENT;
 
-    	Player player = new Player();
-    	player.setId(123);
-    	player.setRole(Role.USER);
-    	player.setEmail("test@email.com");
-    	player.setPassword("T12345");
-    	Optional<Player> returned = Optional.of(player);
+        Player player = new Player();
+        player.setId(123);
+        player.setRole(Role.USER);
+        player.setEmail("test@email.com");
+        player.setPassword("T12345");
+        Optional<Player> returned = Optional.of(player);
 
-    	when(userService.findByEmailAndStatusForLogin(email, true)).thenReturn(returned);
+        when(userService.findByEmailAndStatusForLogin(email, true)).thenReturn(returned);
 
-    	CurrentUser currentUser = service.loadUserByUsername(PLAYER_EMAIL_EXISTENT);
+        CurrentUser currentUser = service.loadUserByUsername(PLAYER_EMAIL_EXISTENT);
 
-    	Assert.assertNotNull(currentUser.getUser());
-    	Assert.assertTrue("failure - expected id user bigger than zero", currentUser.getId() > 0);
-    	Assert.assertTrue("failure - expected role user [ADMIN, USER or TEACHER]",
-    			(currentUser.getRole().toString().equals("ADMIN")) ||
-    			(currentUser.getRole().toString().equals("USER")) ||
-    			(currentUser.getRole().toString().equals("TEACHER"))
-    		);
-    }*/
+        Assert.assertNotNull(currentUser.getUser());
+        Assert.assertTrue("failure - expected id user bigger than zero", currentUser.getId() > 0);
+        Assert.assertTrue("failure - expected role user [ADMIN, USER or TEACHER]",
+                (currentUser.getRole().toString().equals("ADMIN")) ||
+                        (currentUser.getRole().toString().equals("USER")) ||
+                        (currentUser.getRole().toString().equals("TEACHER"))
+        );
+    }
     /* loadUserByUsername - end */
 }
