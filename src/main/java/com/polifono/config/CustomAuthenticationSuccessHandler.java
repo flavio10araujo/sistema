@@ -3,9 +3,6 @@ package com.polifono.config;
 import java.io.IOException;
 import java.util.Collection;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,89 +17,88 @@ import org.springframework.stereotype.Component;
 import com.polifono.domain.bean.CurrentUser;
 import com.polifono.service.impl.LoginServiceImpl;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-	
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomAuthenticationSuccessHandler.class);
- 
+
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-    
+
     @Autowired
-	private LoginServiceImpl loginService;
- 
+    private LoginServiceImpl loginService;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-    	registerLogin(authentication);
-    	handle(request, response, authentication);
-    	//clearAuthenticationAttributes(request);
+        registerLogin(authentication);
+        handle(request, response, authentication);
+        //clearAuthenticationAttributes(request);
     }
- 
+
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         SavedRequest savedRequest = (SavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
-    	
+
         if (savedRequest == null) {
-	        String targetUrl = determineTargetUrl(authentication);
-	 
-	        if (response.isCommitted()) {
-	        	LOGGER.debug("Response has already been committed. Unable to redirect to " + targetUrl);
-	            return;
-	        }
-	
-			redirectStrategy.sendRedirect(request, response, targetUrl);
-        }
-        else {
-        	redirectStrategy.sendRedirect(request, response, savedRequest.getRedirectUrl());
+            String targetUrl = determineTargetUrl(authentication);
+
+            if (response.isCommitted()) {
+                LOGGER.debug("Response has already been committed. Unable to redirect to " + targetUrl);
+                return;
+            }
+
+            redirectStrategy.sendRedirect(request, response, targetUrl);
+        } else {
+            redirectStrategy.sendRedirect(request, response, savedRequest.getRedirectUrl());
         }
     }
-    
+
     private final void registerLogin(Authentication authentication) {
-    	loginService.registerLogin(currentAuthenticatedUser(authentication).getUser());
+        loginService.registerLogin(currentAuthenticatedUser(authentication).getUser());
     }
-    
+
     private final CurrentUser currentAuthenticatedUser(Authentication authentication) {
-    	CurrentUser currentUser = null;
-        
+        CurrentUser currentUser = null;
+
         if (authentication != null && authentication.getPrincipal() instanceof CurrentUser) {
             currentUser = (CurrentUser) authentication.getPrincipal();
         }
-        
+
         return currentUser;
     }
- 
-    /** Builds the target URL according to the logic defined in the main class Javadoc. */
+
+    /**
+     * Builds the target URL according to the logic defined in the main class Javadoc.
+     */
     protected String determineTargetUrl(Authentication authentication) {
         boolean isUser = false, isTeacher = false, isAdmin = false;
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        
+
         for (GrantedAuthority grantedAuthority : authorities) {
-        	if (grantedAuthority.getAuthority().equals("USER")) {
+            if (grantedAuthority.getAuthority().equals("USER")) {
                 isUser = true;
                 break;
-            }
-        	else if (grantedAuthority.getAuthority().equals("TEACHER")) {
+            } else if (grantedAuthority.getAuthority().equals("TEACHER")) {
                 isTeacher = true;
                 break;
-            }
-        	else if (grantedAuthority.getAuthority().equals("ADMIN")) {
+            } else if (grantedAuthority.getAuthority().equals("ADMIN")) {
                 isAdmin = true;
                 break;
             }
         }
- 
+
         if (isUser) {
             return "/";
-        }
-        else if (isTeacher) {
+        } else if (isTeacher) {
             return "/teacher/report";
-        }
-        else if (isAdmin) {
+        } else if (isAdmin) {
             return "/admin";
-        }
-        else {
+        } else {
             throw new IllegalStateException();
         }
     }
- 
+
     /*protected void clearAuthenticationAttributes(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) {
@@ -110,11 +106,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         }
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
     }*/
- 
+
     /*public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
         this.redirectStrategy = redirectStrategy;
     }*/
-    
+
     /*protected RedirectStrategy getRedirectStrategy() {
         return redirectStrategy;
     }*/

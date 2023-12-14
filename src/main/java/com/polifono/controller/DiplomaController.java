@@ -9,9 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +21,8 @@ import com.polifono.domain.Diploma;
 import com.polifono.domain.Player;
 import com.polifono.service.IDiplomaService;
 
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -34,119 +33,113 @@ import net.sf.jasperreports.engine.util.JRLoader;
 
 @Controller
 public class DiplomaController extends BaseController {
-	
-	@Autowired
-	private IDiplomaService diplomaService;
-	
-	@Autowired
-	ServletContext context;
-	
-	public static final String URL_DIPLOMA_SEARCH = "diplomaSearch";
+
+    @Autowired
+    private IDiplomaService diplomaService;
+
+    @Autowired
+    ServletContext context;
+
+    public static final String URL_DIPLOMA_SEARCH = "diplomaSearch";
     public static final String URL_DIPLOMAOPEN_SEARCH = "diplomaSearchOpen";
 
-	@RequestMapping(value = {"/diploma"}, method = RequestMethod.GET)
+    @RequestMapping(value = { "/diploma" }, method = RequestMethod.GET)
     public final String diplomaSearch(final Model model) {
-    	// If the user is logged in.
-    	if (this.currentAuthenticatedUser() != null) {
-    		return URL_DIPLOMA_SEARCH;
-		}
-		else {
-			model.addAttribute("player", new Player());
-			model.addAttribute("playerResend", new Player());
-			return URL_DIPLOMAOPEN_SEARCH;
-		}
+        // If the user is logged in.
+        if (this.currentAuthenticatedUser() != null) {
+            return URL_DIPLOMA_SEARCH;
+        } else {
+            model.addAttribute("player", new Player());
+            model.addAttribute("playerResend", new Player());
+            return URL_DIPLOMAOPEN_SEARCH;
+        }
     }
-	
-	@RequestMapping(value = {"/diploma"}, method = RequestMethod.POST)
+
+    @RequestMapping(value = { "/diploma" }, method = RequestMethod.POST)
     public final String diplomaSearchSubmit(final Model model, @RequestParam(value = "code", defaultValue = "") String code) {
-    	
-		if (code == null || "".equals(code)) {
-			// If the user is logged in.
-	    	if (currentAuthenticatedUser() != null) {
-	    		return URL_DIPLOMA_SEARCH;
-	    	}
-			else {
-				model.addAttribute("player", new Player());
-				model.addAttribute("playerResend", new Player());
-				return URL_DIPLOMAOPEN_SEARCH;
-			}
-		}
 
-		Diploma diploma = diplomaService.findByCode(code);
-		
-		if (diploma != null) {
-			model.addAttribute("message", "success");
-			model.addAttribute("diploma", diploma);
-		}
-		else {
-			model.addAttribute("message", "error");
-			model.addAttribute("messageContent", "O certificado informado não existe.");
-		}
-    	
-    	// If the user is logged in.
-    	if (currentAuthenticatedUser() != null) {
-    		return URL_DIPLOMA_SEARCH;
-    	}
-		else {
-			model.addAttribute("player", new Player());
-			model.addAttribute("playerResend", new Player());
-			return URL_DIPLOMAOPEN_SEARCH;
-		}
+        if (code == null || "".equals(code)) {
+            // If the user is logged in.
+            if (currentAuthenticatedUser() != null) {
+                return URL_DIPLOMA_SEARCH;
+            } else {
+                model.addAttribute("player", new Player());
+                model.addAttribute("playerResend", new Player());
+                return URL_DIPLOMAOPEN_SEARCH;
+            }
+        }
+
+        Diploma diploma = diplomaService.findByCode(code);
+
+        if (diploma != null) {
+            model.addAttribute("message", "success");
+            model.addAttribute("diploma", diploma);
+        } else {
+            model.addAttribute("message", "error");
+            model.addAttribute("messageContent", "O certificado informado não existe.");
+        }
+
+        // If the user is logged in.
+        if (currentAuthenticatedUser() != null) {
+            return URL_DIPLOMA_SEARCH;
+        } else {
+            model.addAttribute("player", new Player());
+            model.addAttribute("playerResend", new Player());
+            return URL_DIPLOMAOPEN_SEARCH;
+        }
     }
-	
-	@RequestMapping(value = {"/diploma/{code}"}, method = RequestMethod.GET)
-	public final String diplomaGet(HttpServletResponse response, final Model model, @PathVariable("code") String code) throws JRException, IOException {
-		if (code == null || "".equals(code)) {
-			// If the user is logged in.
-	    	if (currentAuthenticatedUser() != null) {
-	    		return URL_DIPLOMA_SEARCH;
-	    	}
-			else {
-				model.addAttribute("player", new Player());
-				model.addAttribute("playerResend", new Player());
-				return URL_DIPLOMAOPEN_SEARCH;
-			}
-		}
-		
-		Diploma diploma = diplomaService.findByCode(code);
-		
-		if (diploma == null) {
-			model.addAttribute("message", "error");
-			
-			// If the user is logged in.
-	    	if (currentAuthenticatedUser() != null) {
-	    		return URL_DIPLOMA_SEARCH;
-	    	}
-			else {
-				model.addAttribute("player", new Player());
-				model.addAttribute("playerResend", new Player());
-				return URL_DIPLOMAOPEN_SEARCH;
-			}
-		}
-		
-		// Generate diploma.
-		List<Diploma> list = new ArrayList<Diploma>();
-		list.add(diploma);
-		
-		InputStream jasperStream = this.getClass().getResourceAsStream("/reports/compiled/diploma.jasper");
-	    
-		Map<String, Object> params = new HashMap<>();
 
-		params.put("company", messagesResourceBundle.getString("diploma.company"));
-	    params.put("url", messagesResourceBundle.getString("url") + "/diploma");
-	    params.put("img_selo", context.getRealPath("") + "img"+File.separator+"diploma"+File.separator+"selo.png");
-	    params.put("img_logo", context.getRealPath("") + "img"+File.separator+"diploma"+File.separator+"logo.png");
-	    params.put("img_assinatura", context.getRealPath("") + "img"+File.separator+"diploma"+File.separator+"assinatura.png");
-	    
-	    JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
-		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JRBeanCollectionDataSource(list));
+    @RequestMapping(value = { "/diploma/{code}" }, method = RequestMethod.GET)
+    public final String diplomaGet(HttpServletResponse response, final Model model, @PathVariable("code") String code) throws JRException, IOException {
+        if (code == null || "".equals(code)) {
+            // If the user is logged in.
+            if (currentAuthenticatedUser() != null) {
+                return URL_DIPLOMA_SEARCH;
+            } else {
+                model.addAttribute("player", new Player());
+                model.addAttribute("playerResend", new Player());
+                return URL_DIPLOMAOPEN_SEARCH;
+            }
+        }
 
-	    response.setContentType("application/x-pdf");
-	    response.setHeader("Content-disposition", "inline; filename=diploma.pdf");
+        Diploma diploma = diplomaService.findByCode(code);
 
-	    final OutputStream outStream = response.getOutputStream();
-	    JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
-		
-    	return null;
-	}
+        if (diploma == null) {
+            model.addAttribute("message", "error");
+
+            // If the user is logged in.
+            if (currentAuthenticatedUser() != null) {
+                return URL_DIPLOMA_SEARCH;
+            } else {
+                model.addAttribute("player", new Player());
+                model.addAttribute("playerResend", new Player());
+                return URL_DIPLOMAOPEN_SEARCH;
+            }
+        }
+
+        // Generate diploma.
+        List<Diploma> list = new ArrayList<Diploma>();
+        list.add(diploma);
+
+        InputStream jasperStream = this.getClass().getResourceAsStream("/reports/compiled/diploma.jasper");
+
+        Map<String, Object> params = new HashMap<>();
+
+        params.put("company", messagesResourceBundle.getString("diploma.company"));
+        params.put("url", messagesResourceBundle.getString("url") + "/diploma");
+        params.put("img_selo", context.getRealPath("") + "img" + File.separator + "diploma" + File.separator + "selo.png");
+        params.put("img_logo", context.getRealPath("") + "img" + File.separator + "diploma" + File.separator + "logo.png");
+        params.put("img_assinatura", context.getRealPath("") + "img" + File.separator + "diploma" + File.separator + "assinatura.png");
+
+        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JRBeanCollectionDataSource(list));
+
+        response.setContentType("application/x-pdf");
+        response.setHeader("Content-disposition", "inline; filename=diploma.pdf");
+
+        final OutputStream outStream = response.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+
+        return null;
+    }
 }
