@@ -2,6 +2,7 @@ package com.polifono.controller.teacher;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -63,7 +64,7 @@ public class ClassController extends BaseController {
             Model model) {
 
         // The teacher only can edit/delete/duplicate his own classes.
-        com.polifono.domain.Class current = classService.findOne(id.intValue());
+        com.polifono.domain.Class current = classService.findById(id.intValue()).get();
 
         if (current.getPlayer().getId() != this.currentAuthenticatedUser().getUser().getId())
             return REDIRECT_HOME;
@@ -75,10 +76,10 @@ public class ClassController extends BaseController {
                 redirectAttributes.addFlashAttribute("deletion", "unsuccess");
             }
         } else if (operation.equals("edit")) {
-            com.polifono.domain.Class edit = classService.findOne(id.intValue());
+            Optional<com.polifono.domain.Class> edit = classService.findById(id.intValue());
 
-            if (edit != null) {
-                model.addAttribute("class", edit);
+            if (edit.isPresent()) {
+                model.addAttribute("class", edit.get());
                 return URL_ADMIN_BASIC_EDIT;
             } else {
                 redirectAttributes.addFlashAttribute("status", "notfound");

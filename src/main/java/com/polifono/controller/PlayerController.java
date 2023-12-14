@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -346,11 +347,13 @@ public class PlayerController extends BaseController {
     public final String classinvitationsubmit(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes, final Model model) {
 
         try {
-            ClassPlayer current = classPlayerService.findOne(id.intValue());
+            Optional<ClassPlayer> currentOpt = classPlayerService.findById(id.intValue());
 
-            // If the classPlayer doesn't exist.
-            if (current == null)
+            if (!currentOpt.isPresent()) {
                 return REDIRECT_HOME;
+            }
+
+            ClassPlayer current = currentOpt.get();
 
             // Verifying if the student logged in is not the player of this classPlayer.
             if (current.getPlayer().getId() != currentAuthenticatedUser().getUser().getId())

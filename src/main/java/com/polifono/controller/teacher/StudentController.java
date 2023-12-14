@@ -84,7 +84,7 @@ public class StudentController extends BaseController {
             }
 
             // The teacher only can add players in his own classes.
-            com.polifono.domain.Class currentClass = classService.findOne(classPlayer.getClazz().getId());
+            com.polifono.domain.Class currentClass = classService.findById(classPlayer.getClazz().getId()).get();
 
             if (currentClass.getPlayer().getId() != currentAuthenticatedUser().getUser().getId())
                 return REDIRECT_HOME;
@@ -149,7 +149,7 @@ public class StudentController extends BaseController {
 
         try {
             // The teacher only can send email to students from his own classes.
-            ClassPlayer current = classPlayerService.findOne(id.intValue());
+            ClassPlayer current = classPlayerService.findById(id.intValue()).get();
 
             // If the classPlayer doesn't exist.
             if (current == null)
@@ -181,7 +181,7 @@ public class StudentController extends BaseController {
 
         try {
             // The teacher only can edit/delete his own classes.
-            ClassPlayer current = classPlayerService.findOne(id.intValue());
+            ClassPlayer current = classPlayerService.findById(id.intValue()).get();
 
             // If the classPlayer doesn't exist.
             if (current == null)
