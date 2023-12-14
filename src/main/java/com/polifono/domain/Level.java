@@ -1,70 +1,70 @@
 package com.polifono.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "t003_level")
 public class Level {
 
-	@Id
-	@Column(name = "c003_id")
-	@GeneratedValue
-	private int id;
-	
-	@Column(name = "c003_name")
-	private String name;
-	
-	@Column(name = "c003_order")
-	private int order;
-	
-	@Column(name = "c003_active")
-	private boolean active;
-	
-	@Transient
-	boolean opened = false;
+    @Id
+    @Column(name = "c003_id")
+    @GeneratedValue
+    private int id;
 
-	public int getId() {
-		return id;
-	}
+    @Column(name = "c003_name")
+    private String name;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(name = "c003_order")
+    private int order;
 
-	public String getName() {
-		return name;
-	}
+    @Column(name = "c003_active")
+    private boolean active;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Transient
+    boolean opened = false;
 
-	public int getOrder() {
-		return order;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setOrder(int order) {
-		this.order = order;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public boolean isOpened() {
-		return opened;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setOpened(boolean opened) {
-		this.opened = opened;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public int getOrder() {
+        return order;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public boolean isOpened() {
+        return opened;
+    }
+
+    public void setOpened(boolean opened) {
+        this.opened = opened;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

@@ -2,128 +2,128 @@ package com.polifono.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "t014_class")
 public class Class {
 
-	@Id
-	@Column(name = "c014_id")
-	@GeneratedValue
-	private int id;
-	
-	@ManyToOne
-	@JoinColumn(name = "c001_id")
-	private Player player;
-	
-	@Column(name = "c014_dt_inc")
-	private Date dtInc;
-	
-	@Column(name = "c014_active")
-	private boolean active;
-	
-	@Column(name = "c014_name")
-	private String name;
-	
-	@Column(name = "c014_description")
-	private String description;
-	
-	@Column(name = "c014_school")
-	private String school;
-	
-	@Column(name = "c014_year")
-	private int year;
-	
-	@Column(name = "c014_semester")
-	private int semester;
-	
-	@Column(name = "c014_grade")
-	private String grade;
+    @Id
+    @Column(name = "c014_id")
+    @GeneratedValue
+    private int id;
 
-	public int getId() {
-		return id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "c001_id")
+    private Player player;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(name = "c014_dt_inc")
+    private Date dtInc;
 
-	public Player getPlayer() {
-		return player;
-	}
+    @Column(name = "c014_active")
+    private boolean active;
 
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
+    @Column(name = "c014_name")
+    private String name;
 
-	public Date getDtInc() {
-		return dtInc;
-	}
+    @Column(name = "c014_description")
+    private String description;
 
-	public void setDtInc(Date dtInc) {
-		this.dtInc = dtInc;
-	}
+    @Column(name = "c014_school")
+    private String school;
 
-	public boolean isActive() {
-		return active;
-	}
+    @Column(name = "c014_year")
+    private int year;
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    @Column(name = "c014_semester")
+    private int semester;
 
-	public String getName() {
-		return name;
-	}
+    @Column(name = "c014_grade")
+    private String grade;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public Player getPlayer() {
+        return player;
+    }
 
-	public String getSchool() {
-		return school;
-	}
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
-	public void setSchool(String school) {
-		this.school = school;
-	}
+    public Date getDtInc() {
+        return dtInc;
+    }
 
-	public int getYear() {
-		return year;
-	}
+    public void setDtInc(Date dtInc) {
+        this.dtInc = dtInc;
+    }
 
-	public void setYear(int year) {
-		this.year = year;
-	}
+    public boolean isActive() {
+        return active;
+    }
 
-	public int getSemester() {
-		return semester;
-	}
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
-	public void setSemester(int semester) {
-		this.semester = semester;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getGrade() {
-		return grade;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setGrade(String grade) {
-		this.grade = grade;
-	}
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getSemester() {
+        return semester;
+    }
+
+    public void setSemester(int semester) {
+        this.semester = semester;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
 }

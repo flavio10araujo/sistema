@@ -3,271 +3,271 @@ package com.polifono.domain;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "t012_transaction")
 public class Transaction {
 
-	@Id
-	@Column(name = "c012_id")
-	@GeneratedValue
-	private int id;
-	
-	@ManyToOne
-	@JoinColumn(name = "c001_id")
-	private Player player;
-	
-	@Column(name = "c012_quantity")
-	private int quantity;
-	
-	@Column(name = "c012_dt_inc")
-	private Date dtInc;
-	
-	@Column(name = "c012_closed")
-	private boolean closed;
-	
-	@Column(name = "c012_code")
-	private String code;
-	
-	@Column(name = "c012_reference")
-	private String reference;
-	
-	@Column(name = "c012_date")
-	private Date date;
-	
-	@Column(name = "c012_lasteventdate")
-	private Date lastEventDate;
-	
-	@Column(name = "c012_type")
-	private int type;
-	
-	@Column(name = "c012_status")
-	private int status;
-	
-	@Column(name = "c012_paymentmethodtype")
-	private int paymentMethodType;
-	
-	@Column(name = "c012_paymentmethodcode")
-	private int paymentMethodCode;
+    @Id
+    @Column(name = "c012_id")
+    @GeneratedValue
+    private int id;
 
-	@Column(name = "c012_grossamount")
-	private BigDecimal grossAmount;
-	
-	@Column(name = "c012_discountamount")
-	private BigDecimal discountAmount;
-	
-	@Column(name = "c012_feeamount")
-	private BigDecimal feeAmount;
-	
-	@Column(name = "c012_netamount")
-	private BigDecimal netAmount;
-	
-	@Column(name = "c012_extraamount")
-	private BigDecimal extraAmount;
-	
-	@Column(name = "c012_installmentcount")
-	private int installmentCount;
-	
-	@Column(name = "c012_itemcount")
-	private int itemCount;
-	
-	@Column(name = "c012_escrowenddate")
-	private Date escrowEndDate;
-	
-	@Column(name = "c012_cancellationsource")
-	private String cancellationSource;
-	
-	@Column(name = "c012_paymentlink")
-	private String paymentLink;
+    @ManyToOne
+    @JoinColumn(name = "c001_id")
+    private Player player;
 
-	public int getId() {
-		return id;
-	}
+    @Column(name = "c012_quantity")
+    private int quantity;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(name = "c012_dt_inc")
+    private Date dtInc;
 
-	public Player getPlayer() {
-		return player;
-	}
+    @Column(name = "c012_closed")
+    private boolean closed;
 
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
+    @Column(name = "c012_code")
+    private String code;
 
-	public int getQuantity() {
-		return quantity;
-	}
+    @Column(name = "c012_reference")
+    private String reference;
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
+    @Column(name = "c012_date")
+    private Date date;
 
-	public Date getDtInc() {
-		return dtInc;
-	}
+    @Column(name = "c012_lasteventdate")
+    private Date lastEventDate;
 
-	public void setDtInc(Date dtInc) {
-		this.dtInc = dtInc;
-	}
+    @Column(name = "c012_type")
+    private int type;
 
-	public String getCode() {
-		return code;
-	}
+    @Column(name = "c012_status")
+    private int status;
 
-	public boolean isClosed() {
-		return closed;
-	}
+    @Column(name = "c012_paymentmethodtype")
+    private int paymentMethodType;
 
-	public void setClosed(boolean closed) {
-		this.closed = closed;
-	}
+    @Column(name = "c012_paymentmethodcode")
+    private int paymentMethodCode;
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    @Column(name = "c012_grossamount")
+    private BigDecimal grossAmount;
 
-	public String getReference() {
-		return reference;
-	}
+    @Column(name = "c012_discountamount")
+    private BigDecimal discountAmount;
 
-	public void setReference(String reference) {
-		this.reference = reference;
-	}
+    @Column(name = "c012_feeamount")
+    private BigDecimal feeAmount;
 
-	public Date getDate() {
-		return date;
-	}
+    @Column(name = "c012_netamount")
+    private BigDecimal netAmount;
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    @Column(name = "c012_extraamount")
+    private BigDecimal extraAmount;
 
-	public Date getLastEventDate() {
-		return lastEventDate;
-	}
+    @Column(name = "c012_installmentcount")
+    private int installmentCount;
 
-	public void setLastEventDate(Date lastEventDate) {
-		this.lastEventDate = lastEventDate;
-	}
+    @Column(name = "c012_itemcount")
+    private int itemCount;
 
-	public int getType() {
-		return type;
-	}
+    @Column(name = "c012_escrowenddate")
+    private Date escrowEndDate;
 
-	public void setType(int type) {
-		this.type = type;
-	}
+    @Column(name = "c012_cancellationsource")
+    private String cancellationSource;
 
-	public int getStatus() {
-		return status;
-	}
+    @Column(name = "c012_paymentlink")
+    private String paymentLink;
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public int getPaymentMethodType() {
-		return paymentMethodType;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setPaymentMethodType(int paymentMethodType) {
-		this.paymentMethodType = paymentMethodType;
-	}
+    public Player getPlayer() {
+        return player;
+    }
 
-	public int getPaymentMethodCode() {
-		return paymentMethodCode;
-	}
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
-	public void setPaymentMethodCode(int paymentMethodCode) {
-		this.paymentMethodCode = paymentMethodCode;
-	}
+    public int getQuantity() {
+        return quantity;
+    }
 
-	public BigDecimal getGrossAmount() {
-		return grossAmount;
-	}
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
-	public void setGrossAmount(BigDecimal grossAmount) {
-		this.grossAmount = grossAmount;
-	}
+    public Date getDtInc() {
+        return dtInc;
+    }
 
-	public BigDecimal getDiscountAmount() {
-		return discountAmount;
-	}
+    public void setDtInc(Date dtInc) {
+        this.dtInc = dtInc;
+    }
 
-	public void setDiscountAmount(BigDecimal discountAmount) {
-		this.discountAmount = discountAmount;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public BigDecimal getFeeAmount() {
-		return feeAmount;
-	}
+    public boolean isClosed() {
+        return closed;
+    }
 
-	public void setFeeAmount(BigDecimal feeAmount) {
-		this.feeAmount = feeAmount;
-	}
+    public void setClosed(boolean closed) {
+        this.closed = closed;
+    }
 
-	public BigDecimal getNetAmount() {
-		return netAmount;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setNetAmount(BigDecimal netAmount) {
-		this.netAmount = netAmount;
-	}
+    public String getReference() {
+        return reference;
+    }
 
-	public BigDecimal getExtraAmount() {
-		return extraAmount;
-	}
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
 
-	public void setExtraAmount(BigDecimal extraAmount) {
-		this.extraAmount = extraAmount;
-	}
+    public Date getDate() {
+        return date;
+    }
 
-	public int getInstallmentCount() {
-		return installmentCount;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	public void setInstallmentCount(int installmentCount) {
-		this.installmentCount = installmentCount;
-	}
+    public Date getLastEventDate() {
+        return lastEventDate;
+    }
 
-	public int getItemCount() {
-		return itemCount;
-	}
+    public void setLastEventDate(Date lastEventDate) {
+        this.lastEventDate = lastEventDate;
+    }
 
-	public void setItemCount(int itemCount) {
-		this.itemCount = itemCount;
-	}
+    public int getType() {
+        return type;
+    }
 
-	public Date getEscrowEndDate() {
-		return escrowEndDate;
-	}
+    public void setType(int type) {
+        this.type = type;
+    }
 
-	public void setEscrowEndDate(Date escrowEndDate) {
-		this.escrowEndDate = escrowEndDate;
-	}
+    public int getStatus() {
+        return status;
+    }
 
-	public String getCancellationSource() {
-		return cancellationSource;
-	}
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
-	public void setCancellationSource(String cancellationSource) {
-		this.cancellationSource = cancellationSource;
-	}
+    public int getPaymentMethodType() {
+        return paymentMethodType;
+    }
 
-	public String getPaymentLink() {
-		return paymentLink;
-	}
+    public void setPaymentMethodType(int paymentMethodType) {
+        this.paymentMethodType = paymentMethodType;
+    }
 
-	public void setPaymentLink(String paymentLink) {
-		this.paymentLink = paymentLink;
-	}
+    public int getPaymentMethodCode() {
+        return paymentMethodCode;
+    }
+
+    public void setPaymentMethodCode(int paymentMethodCode) {
+        this.paymentMethodCode = paymentMethodCode;
+    }
+
+    public BigDecimal getGrossAmount() {
+        return grossAmount;
+    }
+
+    public void setGrossAmount(BigDecimal grossAmount) {
+        this.grossAmount = grossAmount;
+    }
+
+    public BigDecimal getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(BigDecimal discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    public BigDecimal getFeeAmount() {
+        return feeAmount;
+    }
+
+    public void setFeeAmount(BigDecimal feeAmount) {
+        this.feeAmount = feeAmount;
+    }
+
+    public BigDecimal getNetAmount() {
+        return netAmount;
+    }
+
+    public void setNetAmount(BigDecimal netAmount) {
+        this.netAmount = netAmount;
+    }
+
+    public BigDecimal getExtraAmount() {
+        return extraAmount;
+    }
+
+    public void setExtraAmount(BigDecimal extraAmount) {
+        this.extraAmount = extraAmount;
+    }
+
+    public int getInstallmentCount() {
+        return installmentCount;
+    }
+
+    public void setInstallmentCount(int installmentCount) {
+        this.installmentCount = installmentCount;
+    }
+
+    public int getItemCount() {
+        return itemCount;
+    }
+
+    public void setItemCount(int itemCount) {
+        this.itemCount = itemCount;
+    }
+
+    public Date getEscrowEndDate() {
+        return escrowEndDate;
+    }
+
+    public void setEscrowEndDate(Date escrowEndDate) {
+        this.escrowEndDate = escrowEndDate;
+    }
+
+    public String getCancellationSource() {
+        return cancellationSource;
+    }
+
+    public void setCancellationSource(String cancellationSource) {
+        this.cancellationSource = cancellationSource;
+    }
+
+    public String getPaymentLink() {
+        return paymentLink;
+    }
+
+    public void setPaymentLink(String paymentLink) {
+        this.paymentLink = paymentLink;
+    }
 }

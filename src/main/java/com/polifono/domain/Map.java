@@ -1,96 +1,96 @@
 package com.polifono.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "t004_map")
 public class Map {
 
-	@Id
-	@Column(name = "c004_id")
-	@GeneratedValue
-	private int id;
-	
-	@Column(name = "c004_name")
-	private String name;
-	
-	@Column(name = "c004_order")
-	private int order;
-	
-	@ManyToOne
-	@JoinColumn(name = "c002_id")
-	private Game game;
-	
-	@ManyToOne
-	@JoinColumn(name = "c003_id")
-	private Level level;
-	
-	@Transient
-	boolean levelCompleted = false;
-	
-	@Transient
-	boolean gameCompleted = false;
+    @Id
+    @Column(name = "c004_id")
+    @GeneratedValue
+    private int id;
 
-	public int getId() {
-		return id;
-	}
+    @Column(name = "c004_name")
+    private String name;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(name = "c004_order")
+    private int order;
 
-	public String getName() {
-		return name;
-	}
+    @ManyToOne
+    @JoinColumn(name = "c002_id")
+    private Game game;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @ManyToOne
+    @JoinColumn(name = "c003_id")
+    private Level level;
 
-	public int getOrder() {
-		return order;
-	}
+    @Transient
+    boolean levelCompleted = false;
 
-	public void setOrder(int order) {
-		this.order = order;
-	}
+    @Transient
+    boolean gameCompleted = false;
 
-	public Game getGame() {
-		return game;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setGame(Game game) {
-		this.game = game;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public Level getLevel() {
-		return level;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setLevel(Level level) {
-		this.level = level;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public boolean isLevelCompleted() {
-		return levelCompleted;
-	}
+    public int getOrder() {
+        return order;
+    }
 
-	public void setLevelCompleted(boolean levelCompleted) {
-		this.levelCompleted = levelCompleted;
-	}
+    public void setOrder(int order) {
+        this.order = order;
+    }
 
-	public boolean isGameCompleted() {
-		return gameCompleted;
-	}
+    public Game getGame() {
+        return game;
+    }
 
-	public void setGameCompleted(boolean gameCompleted) {
-		this.gameCompleted = gameCompleted;
-	}
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public boolean isLevelCompleted() {
+        return levelCompleted;
+    }
+
+    public void setLevelCompleted(boolean levelCompleted) {
+        this.levelCompleted = levelCompleted;
+    }
+
+    public boolean isGameCompleted() {
+        return gameCompleted;
+    }
+
+    public void setGameCompleted(boolean gameCompleted) {
+        this.gameCompleted = gameCompleted;
+    }
 }
