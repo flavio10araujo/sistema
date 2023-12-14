@@ -1,6 +1,7 @@
 package com.polifono.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.polifono.domain.Game;
 import com.polifono.domain.Map;
@@ -9,28 +10,26 @@ import com.polifono.domain.PlayerPhase;
 
 public interface IMapService {
 
-	public Map save(Map o);
-	
-	public Boolean delete(Integer id);
-	
-	public Map findOne(int id);
+    public Map save(Map o);
 
-	public List<Map> findAll();
-	
-	
-	public List<Map> findMapsByGame(int gameId);
-	
-	public List<Map> findMapsByGameAndLevel(int gameId, int levelId);
-	
-	public Map findByGameAndLevel(int gameId, int levelId);
-	
-	public Map findByGameLevelAndOrder(int gameId, int levelId, int mapOrder);
-	
-	public Map findNextMapSameLevel(Map mapCurrent);
+    public Boolean delete(Integer id);
 
-	
-	public boolean playerCanAccessThisMap(Map map, Player user);
+    public Optional<Map> findById(int id);
 
-	public Map findCurrentMap(Game game, PlayerPhase playerPhase);
+    public List<Map> findAll();
+
+    public List<Map> findMapsByGame(int gameId);
+
+    public List<Map> findMapsByGameAndLevel(int gameId, int levelId);
+
+    public Map findByGameAndLevel(int gameId, int levelId);
+
+    public Map findByGameLevelAndOrder(int gameId, int levelId, int mapOrder);
+
+    public Map findNextMapSameLevel(Map mapCurrent);
+
+    public boolean playerCanAccessThisMap(Map map, Player user);
+
+    public Map findCurrentMap(Game game, PlayerPhase playerPhase);
 
 }
