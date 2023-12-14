@@ -106,8 +106,11 @@ public class PlayervideoController extends BaseController {
                 size = 10;
             }
 
-            Sort sort = new Sort(new Sort.Order(Direction.DESC, "dtInc"));
-            Pageable pageable = new PageRequest(page, size, sort);
+            List<Sort.Order> orders = new ArrayList<>();
+            orders.add(new Sort.Order(Direction.DESC, "dtInc"));
+            Sort sort = Sort.by(orders);
+
+            Pageable pageable = PageRequest.of(page, size, sort);
 
             return convertToDto(playervideoService.findAllByContent(content.get(), pageable));
         } catch (Exception e) {
@@ -135,8 +138,11 @@ public class PlayervideoController extends BaseController {
                 size = 10;
             }
 
-            Sort sort = new Sort(new Sort.Order(Direction.DESC, "dtInc"));
-            Pageable pageable = new PageRequest(page, size, sort);
+            List<Sort.Order> orders = new ArrayList<>();
+            orders.add(new Sort.Order(Direction.DESC, "dtInc"));
+            Sort sort = Sort.by(orders);
+
+            Pageable pageable = PageRequest.of(page, size, sort);
 
             return convertToDto(playervideoService.findAllByPlayer(player, pageable));
         } catch (Exception e) {

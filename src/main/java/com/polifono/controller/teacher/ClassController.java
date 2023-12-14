@@ -108,7 +108,7 @@ public class ClassController extends BaseController {
     @RequestMapping(value = "/class/update", method = RequestMethod.POST)
     public String update(@ModelAttribute("edit") com.polifono.domain.Class edit, final RedirectAttributes redirectAttributes) {
 
-        com.polifono.domain.Class current = classService.findOne(edit.getId());
+        com.polifono.domain.Class current = classService.findById(edit.getId()).get();
 
         // The teacher only can edit his own classes.
         if (current.getPlayer().getId() != currentAuthenticatedUser().getUser().getId())
