@@ -1,6 +1,7 @@
 package com.polifono.controller.admin.basic;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -120,10 +121,10 @@ public class PhaseController extends BaseController {
                 redirectAttributes.addFlashAttribute("deletion", "unsuccess");
             }
         } else if (operation.equals("edit")) {
-            Phase edit = phaseService.findOne(id.intValue());
+            Optional<Phase> edit = phaseService.findById(id.intValue());
 
-            if (edit != null) {
-                model.addAttribute("phase", edit);
+            if (edit.isPresent()) {
+                model.addAttribute("phase", edit.get());
                 model.addAttribute("maps", (ArrayList<Map>) mapService.findAll());
                 return URL_ADMIN_BASIC_EDIT;
             } else {

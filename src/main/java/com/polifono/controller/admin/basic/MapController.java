@@ -1,6 +1,7 @@
 package com.polifono.controller.admin.basic;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -96,10 +97,10 @@ public class MapController extends BaseController {
                 redirectAttributes.addFlashAttribute("deletion", "unsuccess");
             }
         } else if (operation.equals("edit")) {
-            Map edit = mapService.findOne(id.intValue());
+            Optional<Map> edit = mapService.findById(id.intValue());
 
-            if (edit != null) {
-                model.addAttribute("map", edit);
+            if (edit.isPresent()) {
+                model.addAttribute("map", edit.get());
                 model.addAttribute("games", (ArrayList<Game>) gameService.findAll());
                 model.addAttribute("levels", (ArrayList<Level>) levelService.findAll());
                 return URL_ADMIN_BASIC_EDIT;

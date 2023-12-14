@@ -1,6 +1,7 @@
 package com.polifono.controller.admin.basic;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -144,10 +145,10 @@ public class QuestionController extends BaseController {
                 redirectAttributes.addFlashAttribute("deletion", "unsuccess");
             }
         } else if (operation.equals("edit")) {
-            Question edit = questionService.findOne(id.intValue());
+            Optional<Question> edit = questionService.findById(id.intValue());
 
-            if (edit != null) {
-                model.addAttribute("question", edit);
+            if (edit.isPresent()) {
+                model.addAttribute("question", edit.get());
                 model.addAttribute("contents", (ArrayList<Content>) contentService.findAllTest());
                 return URL_ADMIN_BASIC_EDIT;
             } else {

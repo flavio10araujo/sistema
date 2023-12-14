@@ -399,7 +399,7 @@ public class GameController extends BaseController {
 
             model.addAttribute("score", playerPhase.getScore());
 
-            Player player = playerService.findOne(this.currentAuthenticatedUser().getUser().getId());
+            Player player = playerService.findById(this.currentAuthenticatedUser().getUser().getId()).get();
             player.setScore(this.calculatePlayerScoreAfterPassTheTest(player.getScore(), playerPhase.getScore()));
             player.setCoin(this.calculatePlayerCoinAfterPassTheTest(player.getCoin(), playerPhase.getScore()));
 
