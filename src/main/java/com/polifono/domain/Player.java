@@ -14,10 +14,9 @@ import com.polifono.util.MD5Util;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -31,7 +30,7 @@ public class Player {
 
     @Id
     @Column(name = "c001_id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "c001_dt_inc")
@@ -65,9 +64,8 @@ public class Player {
     @Column(name = "c001_coin")
     private int coin;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "c001_role")
-    private Role role;
+    private String role;
 
     @Column(name = "c001_ind_email_confirmed")
     private boolean indEmailConfirmed;
@@ -88,7 +86,7 @@ public class Player {
     private int sex;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    @Column(name = "c001_dt_birth")
+    @Column(name = "c001_dt_birth", columnDefinition = "DATE")
     private Date dtBirth;
 
     @Transient
@@ -201,11 +199,15 @@ public class Player {
     }
 
     public Role getRole() {
-        return role;
+        return Role.valueOf(role);
     }
 
     public void setRole(Role role) {
-        this.role = role;
+        if (role == null) {
+            this.role = null;
+        } else {
+            this.role = role.toString();
+        }
     }
 
     public String getPhone() {
@@ -460,7 +462,6 @@ public class Player {
      * From 21001 to 24000 points = Level 9 = Silver
      * From 24001 to infinity = Level 10 = Gold
      *
-     * @param score
      * @return
      */
     public Rank getRank() {
