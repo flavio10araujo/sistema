@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project
         xmlns="http://maven.apache.org/POM/4.0.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -5,18 +6,23 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.polifono</groupId>
-    <artifactId>polifono</artifactId>
-    <packaging>war</packaging>
-    <version>2.0.0</version>
-    <name>polifono Maven Webapp</name>
-    <url>http://maven.apache.org</url>
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.0</version>
+        <relativePath/>
     </parent>
+
+    <groupId>com.polifono</groupId>
+    <artifactId>polifono</artifactId>
+    <version>2.0.0</version>
+    <packaging>war</packaging>
+    <name>Polifono Webapp</name>
+    <description>Polifono Webapp</description>
+
+    <properties>
+        <java.version>17</java.version>
+    </properties>
 
     <dependencies>
 
@@ -42,8 +48,13 @@
 
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-springsecurity4</artifactId>
-            <version>3.0.4.RELEASE</version>
+            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -115,6 +126,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-core</artifactId>
             <version>1.6.5</version>
@@ -151,12 +168,8 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>17</source>
-                    <target>17</target>
-                </configuration>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
