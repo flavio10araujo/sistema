@@ -79,7 +79,7 @@ public class GameController extends BaseController {
     public static final String URL_BUYCREDITS = "buycredits";
 
     public static final String REDIRECT_HOME = "redirect:/";
-    public static final String REDIRECT_GAMES = "redirect:/games/";
+    public static final String REDIRECT_GAMES = "redirect:/games";
 
     /**
      * Show the index page of the games.
