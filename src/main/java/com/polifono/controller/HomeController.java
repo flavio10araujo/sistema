@@ -28,7 +28,7 @@ public class HomeController extends BaseController {
     public static final String URL_INDEX = "index";
     public static final String URL_CONTACT = "contact";
     public static final String URL_CONTACTOPEN = "index";
-    public static final String REDIRECT_GAMES = "redirect:/games/";
+    public static final String REDIRECT_GAMES = "redirect:/games";
 
     @Autowired RecaptchaService captchaService;
 

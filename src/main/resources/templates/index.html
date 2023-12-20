@@ -2,660 +2,722 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-	<head>
-		<title th:text="#{title}"></title>
-		<meta charset="utf-8" />
-    	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    	<meta name="description" content="Aula de música online. Escola de música online. Aprenda música sem sair de casa." />
-    	<meta name="author" content="Amonati" />
-    	<link rel="icon" th:href="@{/static/img/favicon.ico}" sizes="16x16" />
-    	
-    	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css' />
-    	
-    	<link id="theme-style" rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/tempo/assets/css/styles.minV20190522.css}" />
-		
-		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    	<!--[if lt IE 9]>
-      	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    	<![endif]-->
-    	
-    	<!-- Javascript -->
-		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/tempo/assets/js/mainHeader.minV20190522.js}"></script>
-		<script defer="defer" type="text/javascript" th:inline="javascript" th:src="@{/vendors/tempo/assets/js/mainFooter.minV20190522.js}"></script>
-    	
-    	<script async="true" src="https://www.googletagmanager.com/gtag/js?id=UA-91913532-1"></script>
-		<script>
-		  window.dataLayer = window.dataLayer || [];
-		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date());
-		  gtag('config', 'UA-91913532-1');
-		</script>
+<head>
+    <title th:text="#{title}"></title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Aula de música online. Escola de música online. Aprenda música sem sair de casa." />
+    <meta name="author" content="Amonati" />
+    <link rel="icon" th:href="@{/static/img/favicon.ico}" sizes="16x16" />
 
-	</head>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css' />
 
-	<body class="home-page" data-spy="scroll" data-target=".main-nav" data-offset="1">
-	
-		<div id="fb-root"></div>
-	    <script th:inline="javascript">
-			/*<![CDATA[*/
-			function statusChangeCallback(response) {
-				if (response.status==='connected') {
-					window.location="./loginfb?code="+response.authResponse.accessToken;
-				}
-			}
-			
-		  	function checkLoginState() {
-		  		FB.getLoginStatus(function(response) {
-		  			statusChangeCallback(response);
-		  		});
-		  	}
-		  	
-		  	window.fbAsyncInit = function() {
-		  		FB.init({appId:'324370751419847', cookie:true, xfbml:true, version:'v2.8'});
-		  	};
-		  	
-		  	$(window).bind("load", function() {
-		  		(function(d,s,id) {
-	            	var js, fjs = d.getElementsByTagName(s)[0];
-	            	if (d.getElementById(id)) return;
-	            	js = d.createElement(s);
-	            	js.id = id;
-	            	js.src = "https://connect.facebook.net/pt_BR/sdk/xfbml.customerchat.js";
-	            	fjs.parentNode.insertBefore(js, fjs);
-	          	}(document, 'script', 'facebook-jssdk'));
-		     });
-			/*]]>*/
-		</script>
-		
-		<div class="fb-customerchat" attribution="setup_tool" page_id="243859729372740" logged_in_greeting="Olá! Se tiver alguma dúvida, estamos aqui!" logged_out_greeting="Olá! Se tiver alguma dúvida, estamos aqui!"></div>
-	
-		<div class="wrapper">
-		
-			<!-- ******HEADER****** -->
-        	<header id="header" class="header">
-            	<div class="container">
-                	<h1 class="logo pull-left" style="margin: 0 0 0 0;padding: 0 0 0 0;">
-                    	<a class="navbar-left" th:href="@{/}"><i class="sprite sprite-logomarca"></i></a>
-                	</h1>
-                	
-	                <nav id="main-nav" class="main-nav navbar-right" role="navigation">
-	                    <div class="navbar-header">
-	                        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-collapse">
-	                            <span class="sr-only">Toggle navigation</span>
-	                            <span class="icon-bar"></span>
-	                            <span class="icon-bar"></span>
-	                            <span class="icon-bar"></span>
-	                        </button><!--//nav-toggle-->
-	                    </div><!--//navbar-header-->
-	                    <div class="navbar-collapse collapse" id="navbar-collapse">
-	                        <ul class="nav navbar-nav">
-	                            <li class="active nav-item"><a href="#promo">Início</a></li>
-	                            <li class="nav-item"><a href="#why">Como Funciona</a></li>
-	                            <li class="nav-item"><a href="#contact">Contato</a></li>                            
-	                            <li class="nav-item nav-item-cta last"><button type="button" class="btn btn-cta btn-cta-primary" data-toggle="modal" data-target="#login-modal">Entrar</button></li>
-	                        </ul><!--//nav-->
-	                    </div><!--//navabr-collapse-->
-	                </nav><!--//main-nav-->
-	            </div><!--//container-->
-	        </header><!--//header-->
+    <link id="theme-style" rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/tempo/assets/css/styles.minV20190522.css}" />
 
-			<!-- ******PROMO****** --> 
-	        <section id="promo" class="promo section">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
-				<div class="container intro" style="margin-bottom:40px;">
-	                <div class="col-md-5" style="margin-bottom:30px;">
-		                
-		                <input type="hidden" th:value="${codRegister}" id="alertCodRegister" />
-						<input type="hidden" th:value="${msgRegister}" id="alertMsgRegister" />
-						<input type="hidden" th:value="${error}" id="alertError" />
-						<input type="hidden" th:value="${message}" id="alertMessage" />
-						<input type="hidden" th:value="#{msg.emailSent}" id="alertMsgEmailSent" />
-						<input type="hidden" th:value="${messageContent}" id="alertMessageContent" />
-		                
-		                <h2 class="title">Cadastre-se</h2>
-		                
-		                <div class="login-form-container">
-	                        
-	                        <form class="login-form" th:object="${player}" th:action="@{/player/create}" action="#" method="post">
-	                            <div class="form-group">
-				    				<input type="text" th:field="*{name}" class="form-control" required="true" th:placeholder="#{app.full_name}" th:id="nameRegister" />
-				  				</div>
-	                            <div class="form-group">
-				    				<input type="text" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" th:id="emailRegister" />
-				  				</div>
-				  				<div class="form-group">
-				    				<input type="password" th:field="*{password}" th:id="create_password" class="form-control" required="true" th:placeholder="#{app.password}" data-toggle="tooltip" th:title="#{msg.rule.password}" />
-				  				</div>
-				  				<div class="checkbox">
-			  						<label><input type="checkbox" value="1" id="create_show_password" />Mostrar senha</label>
-								</div>
-	                            <div class="form-group">
-	                            	<input type="submit" data-loading-text="Cadastrando..." class="btn btn-cta btn-cta-secondary" id="btnSubmitRegister" value="Cadastrar" />
-	                            	<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="btn fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false">Facebook</fb:login-button>
-	                            </div>
-	                        </form>
-	                    </div><!--//login-form-container-->
-	                </div>
-	                <div class="col-md-7" style="margin-bottom:61px;">
-		                <h2 class="title">A vida sem música<br />seria um engano.</h2>
-		                <p class="summary">Somos uma plataforma de ensino que oferece aulas de música de qualidade, de forma fácil e objetiva, do básico ao avançado, de maneira organizada e crescente. Cadastre-se!</p>
-		                <a class="btn btn-cta btn-cta-secondary btnVerMais" href="#video">Ver mais</a>
-	                </div>
-	            </div><!--//intro-->
+    <!-- Javascript -->
+    <script type="text/javascript" th:inline="javascript" th:src="@{/vendors/tempo/assets/js/mainHeader.minV20190522.js}"></script>
+    <script defer="defer" type="text/javascript" th:inline="javascript" th:src="@{/vendors/tempo/assets/js/mainFooter.minV20190522.js}"></script>
 
-	            <div class="fixed-container">
-	                <div class="social text-center">
-	                    <div class="container">
-	                        <span class="line">Aprenda música sem sair de casa, comece hoje!</span>
-						</div>
-	                </div>
-	            </div>
-	            
-	            <div class="bg-slider-wrapper">
-	                <div id="bg-slider" class="flexslider bg-slider">
-	                    <ul class="slides">
-	                        <li class="slide slide-1"></li>
-	                    </ul>
-	                </div>
-	            </div><!--//bg-slider-wrapper-->
-	        </section><!--//promo-->
+    <script async="true" src="https://www.googletagmanager.com/gtag/js?id=UA-91913532-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
 
-			<!-- ******WHY****** -->
-	        <section id="why" class="why section">
-	            <div class="container">
-	                <h2 class="title text-center">Por que usar a Polifono.com?</h2>
-	                
-	                <p class="intro text-center">Veja alguns dos motivos para se juntar a nós</p>
-	                <div class="row">
-	                    <div class="benefits col-md-7 col-sm-6 col-xs-12">
-	                        
-	                        <div class="item clearfix">
-	                            <div class="icon col-md-3  col-xs-12 text-center">
-	                                <span class="fa fa-money"></span>
-	                            </div><!--//icon-->
-	                            <div class="content col-md-9 col-xs-12">
-	                                <h3 class="title">Apenas R$ 1,00 por aula</h3>
-	                                <p class="desc">Nosso sistema funciona a partir de créditos, como um celular pré-pago. Você coloca o número de créditos que quiser e então pode fazer as aulas que desejar.
-	                                Ou seja, não há necessidade de comprar o curso todo! Por exemplo, você pode comprar 10 créditos e fazer 10 aulas. Simples assim.</p>
-	                            </div><!--//content-->
-	                        </div><!--//item-->
-	                        
-	                        <div class="item clearfix">
-	                            <div class="icon col-md-3 col-xs-12 text-center">
-	                                <span class="fa fa-rocket"></span>
-	                            </div><!--//icon-->
-	                            <div class="content col-md-9 col-xs-12">
-	                                <h3 class="title">Do básico ao avançado</h3>
-	                                <p class="desc">Nosso conteúdo foi programado para atender às pessoas que não sabem absolutamente nada de música. 
-	                                E, a partir disso, evoluir passo a passo na teoria musical e na prática com um instrumento até atingir níveis de completo domínio do instrumento.</p>
-	                            </div><!--//content-->
-	                        </div><!--//item-->
-	                        
-	                        <div class="item clearfix">
-	                            <div class="icon col-md-3 col-xs-12 text-center">
-	                                <span class="fa fa-group"></span>
-	                            </div><!--//icon-->
-	                            <div class="content col-md-9 col-xs-12">
-	                                <h3 class="title">Excelente para as escolas</h3>
-	                                <p class="desc">A versão para escolas permite agrupar os alunos em salas de aula, além do professor possuir um acesso diferenciado que lhe permite
-	                                verificar as notas dos alunos, os acessos e tirar relatórios. Dessa forma, o professor pode acompanhar dia a dia a evolução dos seus alunos.</p>
-	                            </div><!--//content-->
-	                        </div><!--//item-->
-	                        
-	                        <div class="item clearfix">
-	                            <div class="icon col-md-3 col-xs-12 text-center">
-	                                <span class="fa fa-line-chart"></span>
-	                            </div><!--//icon-->
-	                            <div class="content col-md-9 col-xs-12">
-	                                <h3 class="title">Melhoria contínua</h3>
-	                                <p class="desc">Diferente de livros e demais materiais tradicionais, o conteúdo de nosso sistema está em constante evolução.
-	                                Dessa forma, as aulas são melhoradas continuamente, através do feedback de nossos clientes.
-	                                Novos instrumentos serão adicionados em breve, mais exercícios e até jogos musicais!</p>
-	                            </div><!--//content-->
-	                        </div><!--//item-->
-	                        
-	                        <div class="item last clearfix">
-	                            <div class="icon col-md-3  col-xs-12 text-center">
-	                                <span class="fa fa-heart-o"></span>
-	                            </div><!--//icon-->
-	                            <div class="content col-md-9 col-xs-12">
-	                                <h3 class="title">Amamos o que fazemos</h3>
-	                                <p class="desc">"Faça o que ama e não precisará trabalhar!". Esse é o nosso lema, dessa forma estamos constantemente pensando em como podemos
-	                                melhorar nosso sistema. A Polifono.com foi criada por uma equipe que ama música e pretende criar o maior sistema de ensino musical da Internet.</p>
-	                            </div><!--//content-->
-	                        </div><!--//item-->
-	                        
-	                        <div class="clearfix"></div>
-	                        <div class="text-center">
-	                            <a class="btn btn-cta btn-cta-secondary" href="#video">Veja como funciona</a>
-	                        </div>
-	                    </div> 
-	                    <div class="testimonials col-md-4 col-sm-5 col-md-offset-1 col-sm-offset-1 col-xs-12 col-xs-offset-0">
-	                        
-	                        <div class="item">
-	                            <div class="quote-box">
-	                                <blockquote class="quote">
-	                                	Sou professor de música há 15 anos, formado pela EMBAP e já fui proprietário de uma escola de música.
-	                                	Posso afirmar que o conteúdo disponível na Polifono.com é uma compilação do que há de melhor dos livros sobre música.
-	                                	O andamento do ensino é próprio para quem deseja aprender com calma e de forma verdadeira.
-	                                </blockquote><!--//quote-->
-	                                <p class="details">
-	                                    <span class="name">Leandro</span>
-	                                    <span class="title">Professor de música</span>
-	                                </p>
-	                                <i class="fa fa-quote-right"></i>
-	                            </div><!--//quote-box-->
-	                            <div align="center">
-	                                <i class="sprite sprite-people-1"></i>                       
-	                            </div><!--//people-->
-	                        </div><!--//item-->
-	                        
-	                        <div class="item last">
-	                            <div class="quote-box">
-	                                <blockquote class="quote">
-	                                	Utilizar o sistema Polifono.com nas escolas é uma forma inteligente de se adequar às novas exigências 
-	                                	de ensino do MEC de forma rápida e barata, mas mantendo a qualidade da educação.
-	                                	Os professores de artes passam a possuir um conhecimento de música que só seria possível com
-	                                	grandes investimentos em materiais e cursos. 
-	                                </blockquote>
-	                                <p class="details">
-	                                    <span class="name">Alessandro</span>
-	                                    <span class="title">Empresário</span>
-	                                </p> 
-	                                <i class="fa fa-quote-right"></i>                                
-	                            </div>
-	                            <div align="center">
-	                                <i class="sprite sprite-people-3"></i>                       
-	                            </div><!--//people-->
-	                        </div><!--//item-->
-	                    </div>
-	                </div><!--//row-->
-	            </div><!--//container-->
-	        </section><!--//why-->
-			
-			<!-- ******VIDEO****** -->
-	        <section id="video" class="video section">
-	            <div class="container">
-	                <h2 class="title">Aprenda música, comece hoje!</h2>
-	                <p class="summary">O fascinante e vasto mundo da música é um lugar mágico, onde encontramos paz e felicidade.
-	                Aprender um instrumento é abrir as portas desse mundo...</p>
-	                <div class="control text-center">
-	                    <button type="button" id="play-trigger" class="play-trigger" data-toggle="modal" data-target="#tour-video"><i class="fa fa-play"></i></button>
-	                    <p>Assistir vídeo</p>
-	                    
-	                    <!-- Video Modal -->
-	                    <div class="modal modal-video" id="tour-video" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel" aria-hidden="true">
-	                        <div class="modal-dialog">
-	                            <div class="modal-content">
-	                                <div class="modal-header">
-	                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	                                    <h4 id="videoModalLabel" class="modal-title">Como funciona?</h4>
-	                                </div>
-	                                <div class="modal-body">
-	                                    <div class="video-container">
-	                                        <iframe id="vimeo-video" src="//player.vimeo.com/video/199858396?color=ffffff&amp;wmode=transparent" width="720" height="405" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true"></iframe>
-	                                    </div><!--//video-container-->
-	                                </div><!--//modal-body-->
-	                            </div><!--//modal-content-->
-	                        </div><!--//modal-dialog-->
-	                    </div><!--//modal-->
-	                </div><!--//control-->
-	            </div>
-	        </section><!--//video-->
-			
-			<!-- ******FAQ****** -->
-	        <section id="faq" class="faq section has-bg-color">
-	            <div class="container">
-	                <h2 class="title text-center">Perguntas frequentes</h2>
-	                <div class="row">
-	                    <div class="col-md-6 col-sm-6 col-xs-12">
-	                        <div class="panel">
-	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion"
-	                                data-toggle="collapse" class="panel-toggle" href="#faq1"><i class="fa fa-plus-square"></i>Posso usar os créditos para fazer qualquer instrumento?</a></h4>
-	                            </div>
-	                
-	                            <div class="panel-collapse collapse" id="faq1">
-	                                <div class="panel-body">
-	                                    Sim. Se você comprar 30 créditos, poderá fazer 20 aulas de flauta doce e 10 aulas de saxofone, por exemplo. Exceto nos casos em que seu login está vinculado a uma escola e seus créditos foram comprados por essa escola. Nessa situação, você somente poderá gastar os créditos comprados pela escola no instrumento indicado pela escola.
-	                                </div>
-	                            </div>
-	                        </div><!--//panel-->
-	                        
-	                        <div class="panel">
-	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion"
-	                                data-toggle="collapse" class="panel-toggle" href="#faq2"><i class="fa fa-plus-square"></i>Qual o mínimo e máximo de créditos que posso comprar?</a></h4>
-	                            </div>
-	                
-	                            <div class="panel-collapse collapse" id="faq2">
-	                                <div class="panel-body">
-	                                    Para cada aluno, o valor mínimo de compra é de 5 créditos e o valor máximo é de 85 créditos.
-	                                </div>
-	                            </div>
-	                        </div><!--//panel-->
-	                        
-	                        <div class="panel">
-	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq3"><i class="fa fa-plus-square"></i>Quais as formas de pagamento aceitas?</a></h4>
-	                            </div>
-	                
-	                            <div class="panel-collapse collapse" id="faq3">
-	                                <div class="panel-body">
-	                                    Utilizamos o sistema de pagamento PagSeguro da UOL, portanto aceitamos diversos tipos de pagamento, como: cartão de crédito e boleto.
-	                                </div>
-	                            </div>
-	                        </div><!--//panel-->
-	                
-	                        <div class="panel">
-	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq4"><i class="fa fa-plus-square"></i>Eu receberei algum certificado?</a></h4>
-	                            </div>
-	                
-	                            <div class="panel-collapse collapse" id="faq4">
-	                                <div class="panel-body">
-	                                    Sim. Ao final de cada módulo você receberá um certificado virtual indicando o número de horas estudadas (30 minutos por aula) e o nível de estudo atingido.
-	                                    O certificado não possui um prazo de validade, porém recomendamos que sua validade moral seja de 2 anos. Após esse tempo, o aluno deverá retornar ao sistema Polifono.com para atualizar seus conhecimentos. 
-	                                    O certificado não é vinculado ao Ministério da Educação, mas poderá ser validado a qualquer momento através do link polifono.com/diploma .
-	                                </div>
-	                            </div>
-	                        </div><!--//panel-->
-	                
-	                        <div class="panel">
-	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq5"><i class="fa fa-plus-square"></i>Posso acessar o sistema sem usar a Internet?</a></h4>
-	                            </div>
-	                
-	                            <div class="panel-collapse collapse" id="faq5">
-	                                <div class="panel-body">
-	                                    Não. Para acessar as aulas é necessário possuir uma conexão com a Internet.
-	                                </div>
-	                            </div>
-	                        </div><!--//panel-->
-	                        
-	                        <div class="panel">
-	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq6"><i class="fa fa-plus-square"></i>Quais os requisitos técnicos para utilizar o sistema?</a></h4>
-	                            </div>
-	                
-	                            <div class="panel-collapse collapse" id="faq6">
-	                                <div class="panel-body">
-	                                    Nosso sistema é uma plataforma online, portanto é necessário possuir conexão com a Internet. Além disso, é necessário possuir algum navegador instalado em seu computador, tablet ou celular. Navegadores são programas utilizados para acessar a Internet, como o Google Chrome, Internet Explorer ou Firefox Mozilla. Se você está lendo esse texto é porque você está utilizando um navegador. Nossos vídeos ficam nos servidores da empresa vimeo.com, portanto se você acessar o endereço vimeo.com e conseguir assistir algum vídeo é porque seu computador está apto a utilizar a Polifono.com.
-	                                </div>
-	                            </div>
-	                        </div><!--//panel-->
-	                    </div>
-	                    <div class="col-md-6 col-sm-6 col-xs-12">
-	                        <div class="panel">
-	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq7"><i class="fa fa-plus-square"></i>Represento uma escola. Como faço para comprar os logins para meus alunos e professores?</a></h4>
-	                            </div>
-	                
-	                            <div class="panel-collapse collapse" id="faq7">
-	                                <div class="panel-body">
-	                                    Entre em contato pelo email polifono@polifono.com e informe seu email, telefone, endereço e nome da escola que entraremos em contato com você o mais breve possível.
-	                                </div>
-	                            </div>
-	                        </div><!--//panel-->
-	                
-	                        <div class="panel">
-	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq8"><i class="fa fa-plus-square"></i>Represento uma escola. Meus alunos poderão usar os créditos para qualquer instrumento?</a></h4>
-	                            </div>
-	                
-	                            <div class="panel-collapse collapse" id="faq8">
-	                                <div class="panel-body">
-	                                    Não. Para evitar que os alunos gastem os créditos com um instrumento diferente do instrumento utilizado em aula, os créditos comprados por escolas somente poderão ser utilizados pelos alunos pelo instrumento indicado pela escola. Ex.: Se a escola comprou 30 créditos para o aluno fazer aula de flauta doce, o aluno não poderá utilizar esses créditos para fazer aulas de violão.
-	                                </div>
-	                            </div>
-	                        </div><!--//panel-->
-	                
-	                        <div class="panel">
-	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq9"><i class="fa fa-plus-square"></i>Represento uma escola. O aluno precisa de um email para usar o sistema?</a></h4>
-	                            </div>
-	                
-	                            <div class="panel-collapse collapse" id="faq9">
-	                                <div class="panel-body">
-	                                    Depende. Se for um aluno particular, ou seja, que comprou seus próprios créditos, então é necessário possuir um email. Mas se for um aluno de alguma escola, ou seja, a escola está cadastrando o aluno e comprando seus créditos, não há necessidade do aluno possuir um email. O acesso desse aluno será através de um login. Por exemplo: joao10silva
-	                                </div>
-	                            </div>
-	                        </div><!--//panel-->
-	                        
-	                        <div class="panel">
-	                            <div class="panel-heading">
-	                                <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq10"><i class="fa fa-plus-square"></i>Quantas aulas o aluno deve fazer por ano escolar?</a></h4>
-	                            </div>
-	                
-	                            <div class="panel-collapse collapse" id="faq10">
-	                                <div class="panel-body">
-	                                    Se você é um estudante particular, ou seja, comprou seus próprios créditos, a frequência das aulas fica a seu critério. Porém, lembre-se de fazer todos os exercícios com bastante atenção e evoluir no sistema pouco a pouco, sem pressa. Se você é um professor de artes e pretende utilizar a Polifono.com para ensinar música aos seus alunos, recomendamos o estudo de 1 aula por semana. Dessa forma, seus alunos finalizarão 1 módulo por ano, sendo que cada módulo possui 30 aulas. No próximo ano letivo, seus alunos podem dar continuidade nos estudos a partir do próximo módulo.
-	                                </div>
-	                            </div>
-	                        </div><!--//panel-->
-	                        
-	                    </div>
-	                </div><!--//row-->
-	                <div class="more text-center">
-	                    <h4 class="title">Sua dúvida não está aqui?</h4>
-	                    <a class="btn btn-cta btn-cta-secondary" href="#contact">Entre em contato conosco</a>
-	                </div>
-	            </div><!--//container-->
-	        </section><!--//faq-->
-			
-			<!-- ******CONTACT****** --> 
-	        <section id="contact" class="signup">
-	            <div class="container text-center">
-	                
-	                <h2 class="title">Entre em contato conosco</h2>
-	                
-	                <p class="summary">Responderemos o mais breve possível.</p>
-	                
-	                <div th:if="${message eq 'success'}" class="alert alert-success alert-dismissible" role="alert">
-	 					<span th:text="#{msg.emailSent}"></span>
-					</div>
-					
-					<div th:if="${message eq 'error'}" class="alert alert-danger alert-dismissible" role="alert">
-	  					<span th:utext="${messageContent}"></span>
-					</div>
-	                
-	                <form class="formContact" id="formContact" th:action="@{/contact}" method="post">
+        function gtag() {
+            dataLayer.push(arguments);
+        }
 
-						<div class="form-group email">
-							<label class="sr-only" for="email" th:text="#{app.email}"></label>
-						  	<input type="email" th:name="email" th:id="email" class="form-control" required="true" th:placeholder="#{app.email}" />
-						</div>
-						
-						<div class="form-group message">
-							<label class="sr-only" for="message" th:text="#{app.message}"></label>
-						  	<textarea class="form-control" rows="5" th:name="message" th:id="message" required="true" th:placeholder="#{app.message}"></textarea>
-						</div>
-						
-						<div class="form-group">
-							<div class="g-recaptcha" data-sitekey="6LcW3XoUAAAAALSA0tnwIpHduEl2YpzmJUc_VYm7" data-callback="recaptchaCallback" data-expired-callback="recaptchaExpired" style="margin-top: 3rem;"></div>
-							<input id="hidden-grecaptcha" name="hidden-grecaptcha" type="text" style="opacity:0;position:absolute;top:0;left:0;height:1px;width:1px;" />
-						</div>
-						
-						<button type="submit" class="btn btn-cta btn-cta-primary button-register" disabled="true">Enviar</button>
+        gtag('js', new Date());
+        gtag('config', 'UA-91913532-1');
+    </script>
 
-					</form>
-				</div>
-	        </section><!--//contact-->
-	        
-		</div><!--//wrapper-->
-		
-		<!-- ******FOOTER****** --> 
-	    <footer class="footer">
-	        <div class="footer-content">
-	            <div class="container">
-	                <div class="row">
-	                    <div class="footer-col col-md-5 col-sm-7 col-sm-12 about">
-	                        <div class="footer-col-inner">
-	                            <h3 class="title">Sobre</h3>
-	                            <p>Somos amantes de música com o objetivo de difundir o ensino dessa arte para a maior quantidade de pessoas possível.
-	                            Empresa brasileira que trabalha desde 2009 na criação de soluções para a Internet.
-	                            </p>
-	                        </div><!--//footer-col-inner-->
-	                    </div><!--//foooter-col-->
-	                    <div class="footer-col col-md-3 col-sm-4 col-md-offset-1 links">
-	                        <div class="footer-col-inner">
-	                            <h3 class="title">Links</h3>
-	                            <ul class="list-unstyled">
-	                            	<li><a href="https://blog.polifono.com/"><i class="fa fa-caret-right"></i>Blog da Polifono</a></li>
-	                                <li><a href="/privacy"><i class="fa fa-caret-right"></i>Política de privacidade</a></li>
-	                            </ul>
-	                        </div><!--//footer-col-inner-->
-	                    </div><!--//foooter-col-->                 
-	                    <div class="footer-col col-md-3 col-sm-12 contact">
-	                        <div class="footer-col-inner">
-	                            <h3 class="title">Contato</h3>
-	                            <div class="row">
-	                                <p class="email col-md-12 col-sm-4"><i class="fa fa-envelope"></i><a href="#">polifono@polifono.com</a></p>
-	                            </div>
-	                        </div><!--//footer-col-inner-->
-	                    </div><!--//foooter-col-->
-	                </div><!--//row-->
-	            </div><!--//container-->
-	        </div><!--//footer-content-->
-	        <div class="bottom-bar">
-	            <div class="container">
-	                <div class="row">
-	                    <small class="copyright col-md-6 col-sm-6 col-xs-12">Copyright @ 2022 Polifono.com</small>
-	                    <ul class="social col-md-6 col-sm-6 col-xs-12 list-inline">
-	                        <li><a href="https://www.linkedin.com/company/polifono" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-	                        <li><a href="https://www.instagram.com/polifono_music/" target="_blank"><i class="fa fa-instagram"></i></a></li>
-	                        <li><a href="https://twitter.com/polifonooficial" target="_blank"><i class="fa fa-twitter"></i></a></li>
-	                        <li><a href="https://www.youtube.com/c/PolifonoOficial" target="_blank"><i class="fa fa-youtube"></i></a></li>
-	                        <li class="last"><a href="https://www.facebook.com/polifonooficial/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-	                    </ul><!--//social-->
-	                </div><!--//row-->
-	            </div><!--//container-->
-	        </div><!--//bottom-bar-->
-	    </footer><!--//footer-->
+</head>
 
-		<!-- Login Modal -->
-	    <div class="modal modal-login" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-	        <div class="modal-dialog">
-	            <div class="modal-content">
-	                <div class="modal-header">
-	                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	                    <h4 id="loginModalLabel" class="modal-title text-center">Acesse a sua conta</h4>
-	                </div>
-	                <div class="modal-body">
-	                    <div class="social-login text-center">                        
-	                        <ul class="list-unstyled social-login">
-	                            <li><fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-auto-logout-link="false" data-use-continue-as="false"></fb:login-button></li>
-	                        </ul>
-	                    </div>
-	                    <div class="divider"><span>Ou</span></div>
-	                    <div class="login-form-container">
-	                        
-	                        <form th:action="@{/login}" method="post" class="login-form" role="form">
-	                        	
-	                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	                            
-	                            <div class="form-group email">
-	                                <label class="sr-only" for="emailLogin">E-mail ou login</label>
-	                                <input type="text" name="email" id="emailLogin" class="form-control login-email" required="true" placeholder="E-mail ou login" />
-	                            </div>
-	                            
-	                            <div class="form-group password">
-	                                <label class="sr-only" for="passwordLogin">Senha</label>
-	                                <input type="password" name="password" id="passwordLogin" class="form-control login-password" required="true" th:placeholder="#{app.password}" />
-	                                
-	                                <p class="forgot-password">
-	                                    <a href="#" id="resetpass-link" data-toggle="modal" data-target="#resetpass-modal">Esqueci minha senha</a>
-	                                </p>
-	                            </div>
-	                            
-	                            <input type="submit" class="btn btn-block btn-cta-primary" th:value="#{log_in}" />
-	                            
-	                        </form>
-	                    </div><!--//login-form-container-->
-	                </div><!--//modal-body-->
-	                <div class="modal-footer">
-	                    <!--<p>New to Tempo? <a class="signup-link" id="signup-link" href="#">Sign up now</a></p> -->                    
-	                </div>
-	            </div><!--//modal-content-->
-	        </div><!--//modal-dialog-->
-	    </div><!--//modal-->
-		
-		<!-- Reset Password Modal -->
-	    <div class="modal modal-resetpass" id="resetpass-modal" tabindex="-1" role="dialog" aria-labelledby="resetpassModalLabel" aria-hidden="true">
-	        <div class="modal-dialog">
-	            <div class="modal-content">
-	                <div class="modal-header">
-	                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	                    <h4 id="resetpassModalLabel" class="modal-title text-center">Altera&#xE7;&#xE3;o de senha</h4>
-	                </div>
-	                
-	                <div class="modal-body">
-	                    <div class="resetpass-form-container">
-	                        
-	                        <p class="intro">Enviar c&#xF3;digo de altera&#xE7;&#xE3;o de senha por e-mail:</p>
-	                        
-	                        <form class="resetpass-form" th:object="${playerResend}" th:action="@{/passwordresetresend}" method="post">              
-	                            
-	                            <div class="form-group email">
-	                                <label class="sr-only" for="reg-email">E-mail ou login</label>
-	                                <input id="reg-email" name="reg-email" type="text" th:field="*{email}" class="form-control login-email" required="true" placeholder="E-mail ou login" />
-	                            </div>
-	                            
-	                            <button type="submit" class="btn btn-block btn-cta-primary">Enviar</button>
-	                        </form>
-	                        
-	                    </div>
-	                    
-	                    <div class="divider" style="margin-top:10px;"><span>Ou</span></div>
-	                    
-	                    <div class="resetpass-form-container">
-	                        
-	                        <p class="intro">Alterar a senha:</p>
-	                        
-	                        <form class="resetpass-form" th:object="${player}" th:action="@{/passwordreset}" method="post">             
-	                            
-	                            <div class="form-group email">
-	                                <label class="sr-only" for="reg-emailReset">E-mail ou login</label>
-	                                <input id="reg-emailReset" name="reg-email" type="text" th:field="*{email}" class="form-control login-email" required="true" placeholder="E-mail ou login" />
-	                            </div>
-	                            
-	                            <div class="form-group">
-	                                <label class="sr-only" for="reg-code">Código de alteração de senha recebido no e-mail</label>
-	                                <input id="reg-code" name="reg-code" type="text" th:field="*{passwordReset}" class="form-control" required="true" th:placeholder="#{msg.passwordreset.code}" />
-	                            </div>
-	                            
-	                            <div class="form-group password">
-	                                <label class="sr-only" for="reg-password">Nova senha</label>
-	                                <input id="reg-password" name="reg-password" type="password" th:field="*{password}" class="form-control login-password" required="true" placeholder="Nova senha" data-toggle="tooltip" th:title="#{msg.rule.password}" />
-	                            </div>
-	                            
-	                            <button type="submit" class="btn btn-block btn-cta-primary">Confirmar</button>
-	                        </form>
-	                        
-	                    </div>
-	                </div>
-	                
-	                <div class="modal-footer">
-	                    <p>Voltar para a <a class="back-to-login-link" id="back-to-login-link" href="#">página de login</a></p>                    
-	                </div><!--//modal-footer-->
-	            </div><!--//modal-content-->
-	        </div><!--//modal-dialog-->
-	    </div><!--//modal-->
-		
-	    <script async="async" defer="defer" src='https://www.google.com/recaptcha/api.js?hl=pt-BR'></script>
-	    
-	    <script th:inline="javascript">
-			/*<![CDATA[*/
-			$(document).ready(function(){
-				$("#btnSubmitRegister").click(function(){
-					if($("#nameRegister").val()!="" && $("#emailRegister").val()!="" && $("#create_password").val()!=""){
-						$(this).button('loading');
-					}
-				});
-			});
-			/*]]>*/
-		</script>
-	</body>
+<body class="home-page" data-spy="scroll" data-target=".main-nav" data-offset="1">
+
+<div id="fb-root"></div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    function statusChangeCallback(response) {
+        if (response.status === 'connected') {
+            window.location = "./loginfb?code=" + response.authResponse.accessToken;
+        }
+    }
+
+    function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+    }
+
+    window.fbAsyncInit = function () {
+        FB.init({appId: '324370751419847', cookie: true, xfbml: true, version: 'v2.8'});
+    };
+
+    $(window).bind("load", function () {
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://connect.facebook.net/pt_BR/sdk/xfbml.customerchat.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    });
+    /*]]>*/
+</script>
+
+<div class="fb-customerchat" attribution="setup_tool" page_id="243859729372740" logged_in_greeting="Olá! Se tiver alguma dúvida, estamos aqui!"
+     logged_out_greeting="Olá! Se tiver alguma dúvida, estamos aqui!"></div>
+
+<div class="wrapper">
+
+    <!-- ******HEADER****** -->
+    <header id="header" class="header">
+        <div class="container">
+            <h1 class="logo pull-left" style="margin: 0 0 0 0;padding: 0 0 0 0;">
+                <a class="navbar-left" th:href="@{/}"><i class="sprite sprite-logomarca"></i></a>
+            </h1>
+
+            <nav id="main-nav" class="main-nav navbar-right" role="navigation">
+                <div class="navbar-header">
+                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button><!--//nav-toggle-->
+                </div><!--//navbar-header-->
+                <div class="navbar-collapse collapse" id="navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active nav-item"><a href="#promo">Início</a></li>
+                        <li class="nav-item"><a href="#why">Como Funciona</a></li>
+                        <li class="nav-item"><a href="#contact">Contato</a></li>
+                        <li class="nav-item nav-item-cta last">
+                            <button type="button" class="btn btn-cta btn-cta-primary" data-toggle="modal" data-target="#login-modal">Entrar</button>
+                        </li>
+                    </ul><!--//nav-->
+                </div><!--//navabr-collapse-->
+            </nav><!--//main-nav-->
+        </div><!--//container-->
+    </header><!--//header-->
+
+    <!-- ******PROMO****** -->
+    <section id="promo" class="promo section">
+
+        <div class="container intro" style="margin-bottom:40px;">
+            <div class="col-md-5" style="margin-bottom:30px;">
+
+                <input type="hidden" th:value="${codRegister}" id="alertCodRegister" />
+                <input type="hidden" th:value="${msgRegister}" id="alertMsgRegister" />
+                <input type="hidden" th:value="${error}" id="alertError" />
+                <input type="hidden" th:value="${message}" id="alertMessage" />
+                <input type="hidden" th:value="#{msg.emailSent}" id="alertMsgEmailSent" />
+                <input type="hidden" th:value="${messageContent}" id="alertMessageContent" />
+
+                <h2 class="title">Cadastre-se</h2>
+
+                <div class="login-form-container">
+
+                    <form class="login-form" th:object="${player}" th:action="@{/player/create}" action="#" method="post">
+                        <div class="form-group">
+                            <input type="text" th:field="*{name}" class="form-control" required="true" th:placeholder="#{app.full_name}" th:id="nameRegister" />
+                        </div>
+                        <div class="form-group">
+                            <input type="text" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" th:id="emailRegister" />
+                        </div>
+                        <div class="form-group">
+                            <input type="password" th:field="*{password}" th:id="create_password" class="form-control" required="true"
+                                   th:placeholder="#{app.password}" data-toggle="tooltip" th:title="#{msg.rule.password}" />
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value="1" id="create_show_password" />Mostrar senha</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" data-loading-text="Cadastrando..." class="btn btn-cta btn-cta-secondary" id="btnSubmitRegister"
+                                   value="Cadastrar" />
+                            <fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="btn fb-login-button" data-max-rows="1"
+                                             data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false"
+                                             data-use-continue-as="false">Facebook
+                            </fb:login-button>
+                        </div>
+                    </form>
+                </div><!--//login-form-container-->
+            </div>
+            <div class="col-md-7" style="margin-bottom:61px;">
+                <h2 class="title">A vida sem música<br />seria um engano.</h2>
+                <p class="summary">Somos uma plataforma de ensino que oferece aulas de música de qualidade, de forma fácil e objetiva, do básico ao avançado, de
+                    maneira organizada e crescente. Cadastre-se!</p>
+                <a class="btn btn-cta btn-cta-secondary btnVerMais" href="#video">Ver mais</a>
+            </div>
+        </div><!--//intro-->
+
+        <div class="fixed-container">
+            <div class="social text-center">
+                <div class="container">
+                    <span class="line">Aprenda música sem sair de casa, comece hoje!</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-slider-wrapper">
+            <div id="bg-slider" class="flexslider bg-slider">
+                <ul class="slides">
+                    <li class="slide slide-1"></li>
+                </ul>
+            </div>
+        </div><!--//bg-slider-wrapper-->
+    </section><!--//promo-->
+
+    <!-- ******WHY****** -->
+    <section id="why" class="why section">
+        <div class="container">
+            <h2 class="title text-center">Por que usar a Polifono.com?</h2>
+
+            <p class="intro text-center">Veja alguns dos motivos para se juntar a nós</p>
+            <div class="row">
+                <div class="benefits col-md-7 col-sm-6 col-xs-12">
+
+                    <div class="item clearfix">
+                        <div class="icon col-md-3  col-xs-12 text-center">
+                            <span class="fa fa-money"></span>
+                        </div><!--//icon-->
+                        <div class="content col-md-9 col-xs-12">
+                            <h3 class="title">Apenas R$ 1,00 por aula</h3>
+                            <p class="desc">Nosso sistema funciona a partir de créditos, como um celular pré-pago. Você coloca o número de créditos que quiser e
+                                então pode fazer as aulas que desejar.
+                                Ou seja, não há necessidade de comprar o curso todo! Por exemplo, você pode comprar 10 créditos e fazer 10 aulas. Simples
+                                assim.</p>
+                        </div><!--//content-->
+                    </div><!--//item-->
+
+                    <div class="item clearfix">
+                        <div class="icon col-md-3 col-xs-12 text-center">
+                            <span class="fa fa-rocket"></span>
+                        </div><!--//icon-->
+                        <div class="content col-md-9 col-xs-12">
+                            <h3 class="title">Do básico ao avançado</h3>
+                            <p class="desc">Nosso conteúdo foi programado para atender às pessoas que não sabem absolutamente nada de música.
+                                E, a partir disso, evoluir passo a passo na teoria musical e na prática com um instrumento até atingir níveis de completo
+                                domínio do instrumento.</p>
+                        </div><!--//content-->
+                    </div><!--//item-->
+
+                    <div class="item clearfix">
+                        <div class="icon col-md-3 col-xs-12 text-center">
+                            <span class="fa fa-group"></span>
+                        </div><!--//icon-->
+                        <div class="content col-md-9 col-xs-12">
+                            <h3 class="title">Excelente para as escolas</h3>
+                            <p class="desc">A versão para escolas permite agrupar os alunos em salas de aula, além do professor possuir um acesso diferenciado
+                                que lhe permite
+                                verificar as notas dos alunos, os acessos e tirar relatórios. Dessa forma, o professor pode acompanhar dia a dia a evolução dos
+                                seus alunos.</p>
+                        </div><!--//content-->
+                    </div><!--//item-->
+
+                    <div class="item clearfix">
+                        <div class="icon col-md-3 col-xs-12 text-center">
+                            <span class="fa fa-line-chart"></span>
+                        </div><!--//icon-->
+                        <div class="content col-md-9 col-xs-12">
+                            <h3 class="title">Melhoria contínua</h3>
+                            <p class="desc">Diferente de livros e demais materiais tradicionais, o conteúdo de nosso sistema está em constante evolução.
+                                Dessa forma, as aulas são melhoradas continuamente, através do feedback de nossos clientes.
+                                Novos instrumentos serão adicionados em breve, mais exercícios e até jogos musicais!</p>
+                        </div><!--//content-->
+                    </div><!--//item-->
+
+                    <div class="item last clearfix">
+                        <div class="icon col-md-3  col-xs-12 text-center">
+                            <span class="fa fa-heart-o"></span>
+                        </div><!--//icon-->
+                        <div class="content col-md-9 col-xs-12">
+                            <h3 class="title">Amamos o que fazemos</h3>
+                            <p class="desc">"Faça o que ama e não precisará trabalhar!". Esse é o nosso lema, dessa forma estamos constantemente pensando em
+                                como podemos
+                                melhorar nosso sistema. A Polifono.com foi criada por uma equipe que ama música e pretende criar o maior sistema de ensino
+                                musical da Internet.</p>
+                        </div><!--//content-->
+                    </div><!--//item-->
+
+                    <div class="clearfix"></div>
+                    <div class="text-center">
+                        <a class="btn btn-cta btn-cta-secondary" href="#video">Veja como funciona</a>
+                    </div>
+                </div>
+                <div class="testimonials col-md-4 col-sm-5 col-md-offset-1 col-sm-offset-1 col-xs-12 col-xs-offset-0">
+
+                    <div class="item">
+                        <div class="quote-box">
+                            <blockquote class="quote">
+                                Sou professor de música há 15 anos, formado pela EMBAP e já fui proprietário de uma escola de música.
+                                Posso afirmar que o conteúdo disponível na Polifono.com é uma compilação do que há de melhor dos livros sobre música.
+                                O andamento do ensino é próprio para quem deseja aprender com calma e de forma verdadeira.
+                            </blockquote><!--//quote-->
+                            <p class="details">
+                                <span class="name">Leandro</span>
+                                <span class="title">Professor de música</span>
+                            </p>
+                            <i class="fa fa-quote-right"></i>
+                        </div><!--//quote-box-->
+                        <div align="center">
+                            <i class="sprite sprite-people-1"></i>
+                        </div><!--//people-->
+                    </div><!--//item-->
+
+                    <div class="item last">
+                        <div class="quote-box">
+                            <blockquote class="quote">
+                                Utilizar o sistema Polifono.com nas escolas é uma forma inteligente de se adequar às novas exigências
+                                de ensino do MEC de forma rápida e barata, mas mantendo a qualidade da educação.
+                                Os professores de artes passam a possuir um conhecimento de música que só seria possível com
+                                grandes investimentos em materiais e cursos.
+                            </blockquote>
+                            <p class="details">
+                                <span class="name">Alessandro</span>
+                                <span class="title">Empresário</span>
+                            </p>
+                            <i class="fa fa-quote-right"></i>
+                        </div>
+                        <div align="center">
+                            <i class="sprite sprite-people-3"></i>
+                        </div><!--//people-->
+                    </div><!--//item-->
+                </div>
+            </div><!--//row-->
+        </div><!--//container-->
+    </section><!--//why-->
+
+    <!-- ******VIDEO****** -->
+    <section id="video" class="video section">
+        <div class="container">
+            <h2 class="title">Aprenda música, comece hoje!</h2>
+            <p class="summary">O fascinante e vasto mundo da música é um lugar mágico, onde encontramos paz e felicidade.
+                Aprender um instrumento é abrir as portas desse mundo...</p>
+            <div class="control text-center">
+                <button type="button" id="play-trigger" class="play-trigger" data-toggle="modal" data-target="#tour-video"><i class="fa fa-play"></i></button>
+                <p>Assistir vídeo</p>
+
+                <!-- Video Modal -->
+                <div class="modal modal-video" id="tour-video" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 id="videoModalLabel" class="modal-title">Como funciona?</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="video-container">
+                                    <iframe id="vimeo-video" src="//player.vimeo.com/video/199858396?color=ffffff&amp;wmode=transparent" width="720"
+                                            height="405" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true"></iframe>
+                                </div><!--//video-container-->
+                            </div><!--//modal-body-->
+                        </div><!--//modal-content-->
+                    </div><!--//modal-dialog-->
+                </div><!--//modal-->
+            </div><!--//control-->
+        </div>
+    </section><!--//video-->
+
+    <!-- ******FAQ****** -->
+    <section id="faq" class="faq section has-bg-color">
+        <div class="container">
+            <h2 class="title text-center">Perguntas frequentes</h2>
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-parent="#accordion"
+                                                       data-toggle="collapse" class="panel-toggle" href="#faq1"><i class="fa fa-plus-square"></i>Posso usar os
+                                créditos para fazer qualquer instrumento?</a></h4>
+                        </div>
+
+                        <div class="panel-collapse collapse" id="faq1">
+                            <div class="panel-body">
+                                Sim. Se você comprar 30 créditos, poderá fazer 20 aulas de flauta doce e 10 aulas de saxofone, por exemplo. Exceto nos casos em
+                                que seu login está vinculado a uma escola e seus créditos foram comprados por essa escola. Nessa situação, você somente poderá
+                                gastar os créditos comprados pela escola no instrumento indicado pela escola.
+                            </div>
+                        </div>
+                    </div><!--//panel-->
+
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-parent="#accordion"
+                                                       data-toggle="collapse" class="panel-toggle" href="#faq2"><i class="fa fa-plus-square"></i>Qual o mínimo e
+                                máximo de créditos que posso comprar?</a></h4>
+                        </div>
+
+                        <div class="panel-collapse collapse" id="faq2">
+                            <div class="panel-body">
+                                Para cada aluno, o valor mínimo de compra é de 5 créditos e o valor máximo é de 85 créditos.
+                            </div>
+                        </div>
+                    </div><!--//panel-->
+
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq3"><i
+                                    class="fa fa-plus-square"></i>Quais as formas de pagamento aceitas?</a></h4>
+                        </div>
+
+                        <div class="panel-collapse collapse" id="faq3">
+                            <div class="panel-body">
+                                Utilizamos o sistema de pagamento PagSeguro da UOL, portanto aceitamos diversos tipos de pagamento, como: cartão de crédito e
+                                boleto.
+                            </div>
+                        </div>
+                    </div><!--//panel-->
+
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq4"><i
+                                    class="fa fa-plus-square"></i>Eu receberei algum certificado?</a></h4>
+                        </div>
+
+                        <div class="panel-collapse collapse" id="faq4">
+                            <div class="panel-body">
+                                Sim. Ao final de cada módulo você receberá um certificado virtual indicando o número de horas estudadas (30 minutos por aula) e
+                                o nível de estudo atingido.
+                                O certificado não possui um prazo de validade, porém recomendamos que sua validade moral seja de 2 anos. Após esse tempo, o
+                                aluno deverá retornar ao sistema Polifono.com para atualizar seus conhecimentos.
+                                O certificado não é vinculado ao Ministério da Educação, mas poderá ser validado a qualquer momento através do link
+                                polifono.com/diploma .
+                            </div>
+                        </div>
+                    </div><!--//panel-->
+
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq5"><i
+                                    class="fa fa-plus-square"></i>Posso acessar o sistema sem usar a Internet?</a></h4>
+                        </div>
+
+                        <div class="panel-collapse collapse" id="faq5">
+                            <div class="panel-body">
+                                Não. Para acessar as aulas é necessário possuir uma conexão com a Internet.
+                            </div>
+                        </div>
+                    </div><!--//panel-->
+
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq6"><i
+                                    class="fa fa-plus-square"></i>Quais os requisitos técnicos para utilizar o sistema?</a></h4>
+                        </div>
+
+                        <div class="panel-collapse collapse" id="faq6">
+                            <div class="panel-body">
+                                Nosso sistema é uma plataforma online, portanto é necessário possuir conexão com a Internet. Além disso, é necessário possuir
+                                algum navegador instalado em seu computador, tablet ou celular. Navegadores são programas utilizados para acessar a Internet,
+                                como o Google Chrome, Internet Explorer ou Firefox Mozilla. Se você está lendo esse texto é porque você está utilizando um
+                                navegador. Nossos vídeos ficam nos servidores da empresa vimeo.com, portanto se você acessar o endereço vimeo.com e conseguir
+                                assistir algum vídeo é porque seu computador está apto a utilizar a Polifono.com.
+                            </div>
+                        </div>
+                    </div><!--//panel-->
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq7"><i
+                                    class="fa fa-plus-square"></i>Represento uma escola. Como faço para comprar os logins para meus alunos e professores?</a>
+                            </h4>
+                        </div>
+
+                        <div class="panel-collapse collapse" id="faq7">
+                            <div class="panel-body">
+                                Entre em contato pelo email polifono@polifono.com e informe seu email, telefone, endereço e nome da escola que entraremos em
+                                contato com você o mais breve possível.
+                            </div>
+                        </div>
+                    </div><!--//panel-->
+
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq8"><i
+                                    class="fa fa-plus-square"></i>Represento uma escola. Meus alunos poderão usar os créditos para qualquer instrumento?</a>
+                            </h4>
+                        </div>
+
+                        <div class="panel-collapse collapse" id="faq8">
+                            <div class="panel-body">
+                                Não. Para evitar que os alunos gastem os créditos com um instrumento diferente do instrumento utilizado em aula, os créditos
+                                comprados por escolas somente poderão ser utilizados pelos alunos pelo instrumento indicado pela escola. Ex.: Se a escola
+                                comprou 30 créditos para o aluno fazer aula de flauta doce, o aluno não poderá utilizar esses créditos para fazer aulas de
+                                violão.
+                            </div>
+                        </div>
+                    </div><!--//panel-->
+
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq9"><i
+                                    class="fa fa-plus-square"></i>Represento uma escola. O aluno precisa de um email para usar o sistema?</a></h4>
+                        </div>
+
+                        <div class="panel-collapse collapse" id="faq9">
+                            <div class="panel-body">
+                                Depende. Se for um aluno particular, ou seja, que comprou seus próprios créditos, então é necessário possuir um email. Mas se
+                                for um aluno de alguma escola, ou seja, a escola está cadastrando o aluno e comprando seus créditos, não há necessidade do aluno
+                                possuir um email. O acesso desse aluno será através de um login. Por exemplo: joao10silva
+                            </div>
+                        </div>
+                    </div><!--//panel-->
+
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="panel-toggle" href="#faq10"><i
+                                    class="fa fa-plus-square"></i>Quantas aulas o aluno deve fazer por ano escolar?</a></h4>
+                        </div>
+
+                        <div class="panel-collapse collapse" id="faq10">
+                            <div class="panel-body">
+                                Se você é um estudante particular, ou seja, comprou seus próprios créditos, a frequência das aulas fica a seu critério. Porém,
+                                lembre-se de fazer todos os exercícios com bastante atenção e evoluir no sistema pouco a pouco, sem pressa. Se você é um
+                                professor de artes e pretende utilizar a Polifono.com para ensinar música aos seus alunos, recomendamos o estudo de 1 aula por
+                                semana. Dessa forma, seus alunos finalizarão 1 módulo por ano, sendo que cada módulo possui 30 aulas. No próximo ano letivo,
+                                seus alunos podem dar continuidade nos estudos a partir do próximo módulo.
+                            </div>
+                        </div>
+                    </div><!--//panel-->
+
+                </div>
+            </div><!--//row-->
+            <div class="more text-center">
+                <h4 class="title">Sua dúvida não está aqui?</h4>
+                <a class="btn btn-cta btn-cta-secondary" href="#contact">Entre em contato conosco</a>
+            </div>
+        </div><!--//container-->
+    </section><!--//faq-->
+
+    <!-- ******CONTACT****** -->
+    <section id="contact" class="signup">
+        <div class="container text-center">
+
+            <h2 class="title">Entre em contato conosco</h2>
+
+            <p class="summary">Responderemos o mais breve possível.</p>
+
+            <div th:if="${message eq 'success'}" class="alert alert-success alert-dismissible" role="alert">
+                <span th:text="#{msg.emailSent}"></span>
+            </div>
+
+            <div th:if="${message eq 'error'}" class="alert alert-danger alert-dismissible" role="alert">
+                <span th:utext="${messageContent}"></span>
+            </div>
+
+            <form class="formContact" id="formContact" th:action="@{/contact}" method="post">
+
+                <div class="form-group email">
+                    <label class="sr-only" for="email" th:text="#{app.email}"></label>
+                    <input type="email" th:name="email" th:id="email" class="form-control" required="true" th:placeholder="#{app.email}" />
+                </div>
+
+                <div class="form-group message">
+                    <label class="sr-only" for="message" th:text="#{app.message}"></label>
+                    <textarea class="form-control" rows="5" th:name="message" th:id="message" required="true" th:placeholder="#{app.message}"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <div class="g-recaptcha" data-sitekey="6LcW3XoUAAAAALSA0tnwIpHduEl2YpzmJUc_VYm7" data-callback="recaptchaCallback"
+                         data-expired-callback="recaptchaExpired" style="margin-top: 3rem;"></div>
+                    <input id="hidden-grecaptcha" name="hidden-grecaptcha" type="text" style="opacity:0;position:absolute;top:0;left:0;height:1px;width:1px;" />
+                </div>
+
+                <button type="submit" class="btn btn-cta btn-cta-primary button-register" disabled="true">Enviar</button>
+
+            </form>
+        </div>
+    </section><!--//contact-->
+
+</div><!--//wrapper-->
+
+<!-- ******FOOTER****** -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col col-md-5 col-sm-7 col-sm-12 about">
+                    <div class="footer-col-inner">
+                        <h3 class="title">Sobre</h3>
+                        <p>Somos amantes de música com o objetivo de difundir o ensino dessa arte para a maior quantidade de pessoas possível.
+                            Empresa brasileira que trabalha desde 2009 na criação de soluções para a Internet.
+                        </p>
+                    </div><!--//footer-col-inner-->
+                </div><!--//foooter-col-->
+                <div class="footer-col col-md-3 col-sm-4 col-md-offset-1 links">
+                    <div class="footer-col-inner">
+                        <h3 class="title">Links</h3>
+                        <ul class="list-unstyled">
+                            <li><a href="https://blog.polifono.com/"><i class="fa fa-caret-right"></i>Blog da Polifono</a></li>
+                            <li><a href="/privacy"><i class="fa fa-caret-right"></i>Política de privacidade</a></li>
+                        </ul>
+                    </div><!--//footer-col-inner-->
+                </div><!--//foooter-col-->
+                <div class="footer-col col-md-3 col-sm-12 contact">
+                    <div class="footer-col-inner">
+                        <h3 class="title">Contato</h3>
+                        <div class="row">
+                            <p class="email col-md-12 col-sm-4"><i class="fa fa-envelope"></i><a href="#">polifono@polifono.com</a></p>
+                        </div>
+                    </div><!--//footer-col-inner-->
+                </div><!--//foooter-col-->
+            </div><!--//row-->
+        </div><!--//container-->
+    </div><!--//footer-content-->
+    <div class="bottom-bar">
+        <div class="container">
+            <div class="row">
+                <small class="copyright col-md-6 col-sm-6 col-xs-12">Copyright @ 2024 Polifono.com</small>
+                <ul class="social col-md-6 col-sm-6 col-xs-12 list-inline">
+                    <li><a href="https://www.linkedin.com/company/polifono" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                    <li><a href="https://www.instagram.com/polifono_music/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                    <li><a href="https://twitter.com/polifonooficial" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="https://www.youtube.com/c/PolifonoOficial" target="_blank"><i class="fa fa-youtube"></i></a></li>
+                    <li class="last"><a href="https://www.facebook.com/polifonooficial/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                </ul><!--//social-->
+            </div><!--//row-->
+        </div><!--//container-->
+    </div><!--//bottom-bar-->
+</footer><!--//footer-->
+
+<!-- Login Modal -->
+<div class="modal modal-login" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="loginModalLabel" class="modal-title text-center">Acesse a sua conta</h4>
+            </div>
+            <div class="modal-body">
+                <div class="social-login text-center">
+                    <ul class="list-unstyled social-login">
+                        <li>
+                            <fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="fb-login-button" data-width="" data-size="large"
+                                             data-button-type="login_with" data-auto-logout-link="false" data-use-continue-as="false"></fb:login-button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="divider"><span>Ou</span></div>
+                <div class="login-form-container">
+
+                    <form th:action="@{/login}" method="post" class="login-form" role="form">
+
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+                        <div class="form-group email">
+                            <label class="sr-only" for="emailLogin">E-mail ou login</label>
+                            <input type="text" name="email" id="emailLogin" class="form-control login-email" required="true" placeholder="E-mail ou login" />
+                        </div>
+
+                        <div class="form-group password">
+                            <label class="sr-only" for="passwordLogin">Senha</label>
+                            <input type="password" name="password" id="passwordLogin" class="form-control login-password" required="true"
+                                   th:placeholder="#{app.password}" />
+
+                            <p class="forgot-password">
+                                <a href="#" id="resetpass-link" data-toggle="modal" data-target="#resetpass-modal">Esqueci minha senha</a>
+                            </p>
+                        </div>
+
+                        <input type="submit" class="btn btn-block btn-cta-primary" th:value="#{log_in}" />
+
+                    </form>
+                </div><!--//login-form-container-->
+            </div><!--//modal-body-->
+            <div class="modal-footer">
+                <!--<p>New to Tempo? <a class="signup-link" id="signup-link" href="#">Sign up now</a></p> -->
+            </div>
+        </div><!--//modal-content-->
+    </div><!--//modal-dialog-->
+</div><!--//modal-->
+
+<!-- Reset Password Modal -->
+<div class="modal modal-resetpass" id="resetpass-modal" tabindex="-1" role="dialog" aria-labelledby="resetpassModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="resetpassModalLabel" class="modal-title text-center">Altera&#xE7;&#xE3;o de senha</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="resetpass-form-container">
+
+                    <p class="intro">Enviar c&#xF3;digo de altera&#xE7;&#xE3;o de senha por e-mail:</p>
+
+                    <form class="resetpass-form" th:object="${playerResend}" th:action="@{/passwordresetresend}" method="post">
+
+                        <div class="form-group email">
+                            <label class="sr-only" for="reg-email">E-mail ou login</label>
+                            <input id="reg-email" name="reg-email" type="text" th:field="*{email}" class="form-control login-email" required="true"
+                                   placeholder="E-mail ou login" />
+                        </div>
+
+                        <button type="submit" class="btn btn-block btn-cta-primary">Enviar</button>
+                    </form>
+
+                </div>
+
+                <div class="divider" style="margin-top:10px;"><span>Ou</span></div>
+
+                <div class="resetpass-form-container">
+
+                    <p class="intro">Alterar a senha:</p>
+
+                    <form class="resetpass-form" th:object="${player}" th:action="@{/passwordreset}" method="post">
+
+                        <div class="form-group email">
+                            <label class="sr-only" for="reg-emailReset">E-mail ou login</label>
+                            <input id="reg-emailReset" name="reg-email" type="text" th:field="*{email}" class="form-control login-email" required="true"
+                                   placeholder="E-mail ou login" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="sr-only" for="reg-code">Código de alteração de senha recebido no e-mail</label>
+                            <input id="reg-code" name="reg-code" type="text" th:field="*{passwordReset}" class="form-control" required="true"
+                                   th:placeholder="#{msg.passwordreset.code}" />
+                        </div>
+
+                        <div class="form-group password">
+                            <label class="sr-only" for="reg-password">Nova senha</label>
+                            <input id="reg-password" name="reg-password" type="password" th:field="*{password}" class="form-control login-password"
+                                   required="true" placeholder="Nova senha" data-toggle="tooltip" th:title="#{msg.rule.password}" />
+                        </div>
+
+                        <button type="submit" class="btn btn-block btn-cta-primary">Confirmar</button>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <p>Voltar para a <a class="back-to-login-link" id="back-to-login-link" href="#">página de login</a></p>
+            </div><!--//modal-footer-->
+        </div><!--//modal-content-->
+    </div><!--//modal-dialog-->
+</div><!--//modal-->
+
+<script async="async" defer="defer" src='https://www.google.com/recaptcha/api.js?hl=pt-BR'></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function () {
+        $("#btnSubmitRegister").click(function () {
+            if ($("#nameRegister").val() != "" && $("#emailRegister").val() != "" && $("#create_password").val() != "") {
+                $(this).button('loading');
+            }
+        });
+    });
+    /*]]>*/
+</script>
+</body>
 </html>
