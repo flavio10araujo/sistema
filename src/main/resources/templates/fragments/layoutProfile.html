@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMainFb">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutMainFb :: layout(~{::section})}"
+      th:fragment="layout (contentTemplateProfile)">
 
 <head>
     <style type="text/css">
@@ -10,7 +12,7 @@
 </head>
 
 <body>
-<div layout:fragment="content" class="container">
+<section layout:fragment="contentTemplate" class="container">
 
     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
 
@@ -106,26 +108,26 @@
                 <hr />
 
                 <span class="pull-left">
-                        <a th:if="${editAvailable == false}" href="#" class="btn btn-link" style="text-decoration:none">Pontos <span class="badge"
-                                                                                                                                     th:text="${player.score}">1</span></a>
-                        <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/score|}" data-toggle="tooltip"
-                           title="Ver a pontuação obtida em cada fase" class="btn btn-link" style="text-decoration:none">Pontos <span class="badge"
-                                                                                                                                      th:text="${player.score}">1</span></a>
+                    <a th:if="${editAvailable == false}" href="#" class="btn btn-link" style="text-decoration:none">Pontos <span class="badge"
+                                                                                                                                 th:text="${player.score}">1</span></a>
+                    <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/score|}" data-toggle="tooltip"
+                       title="Ver a pontuação obtida em cada fase" class="btn btn-link" style="text-decoration:none">Pontos <span class="badge"
+                                                                                                                                  th:text="${player.score}">1</span></a>
 
-                        <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/attendance|}" data-toggle="tooltip"
-                           title="Ver a frequência no curso" class="btn btn-link" style="text-decoration:none">Frequência</a>
+                    <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/attendance|}" data-toggle="tooltip"
+                       title="Ver a frequência no curso" class="btn btn-link" style="text-decoration:none">Frequência</a>
 
-                        <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/credits|}" data-toggle="tooltip"
-                           title="Ver a quantidade de créditos adquiridos até o momento" class="btn btn-link" style="text-decoration:none">Créditos</a>
+                    <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/credits|}" data-toggle="tooltip"
+                       title="Ver a quantidade de créditos adquiridos até o momento" class="btn btn-link" style="text-decoration:none">Créditos</a>
 
-                        <a th:href="@{|/profile/player/${player.id}/videos|}" class="btn btn-link" style="text-decoration:none">Vídeos</a>
-                    </span>
+                    <a th:href="@{|/profile/player/${player.id}/videos|}" class="btn btn-link" style="text-decoration:none">Vídeos</a>
+                </span>
             </div>
         </div>
 
         <hr />
 
-        <div layout:fragment="contentProfile"></div>
+        <div th:replace="${contentTemplateProfile}"></div>
 
     </div>
 
@@ -153,7 +155,7 @@
         /*]]>*/
     </script>
 
-</div>
+</section>
 
 </body>
 </html>
