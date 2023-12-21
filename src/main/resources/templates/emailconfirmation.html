@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutLogin">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutLogin :: layout(~{::section})}">
 
 <head></head>
 
 <body>
 
-<div layout:fragment="content" class="container intro">
+<section layout:fragment="contentTemplate" class="container intro">
 
     <div class="col-sm-6 bg">
 
@@ -50,6 +51,6 @@
     <input type="hidden" th:value="${codRegister}" id="alertCodRegister" />
     <input type="hidden" th:value="${msgRegister}" id="alertMsgRegister" />
 
-</div>
+</section>
 </body>
 </html>
