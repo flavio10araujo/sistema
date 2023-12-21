@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutPromo">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutPromo :: layout(~{::section})}">
 
 <head></head>
 
 <body>
-<div layout:fragment="content">
+<section layout:fragment="contentTemplate">
     <style>
       .embed-container {
         position: relative;
@@ -53,7 +54,6 @@
         });
         /*]]>*/
     </script>
-
-</div>
+</section>
 </body>
 </html>
