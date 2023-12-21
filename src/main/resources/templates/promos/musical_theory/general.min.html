@@ -1442,7 +1442,7 @@
       }
     </style>
 
-    <script>/*<![CDATA[*/
+    <script th:inline="none">/*<![CDATA[*/
     !function (a, b) {
         "object" == typeof module && "object" == typeof module.exports ? module.exports = a.document ? b(a, !0) : function (a) {
             if (!a.document) throw new Error("jQuery requires a window with a document");
@@ -3896,7 +3896,7 @@
         }, b || (a.jQuery = a.$ = n), n
     });/*]]>*/</script>
 
-    <script>/*<![CDATA[*/
+    <script th:inline="none">/*<![CDATA[*/
     if ("undefined" == typeof jQuery) throw new Error("Bootstrap's JavaScript requires jQuery");
     +function (a) {
         "use strict";
