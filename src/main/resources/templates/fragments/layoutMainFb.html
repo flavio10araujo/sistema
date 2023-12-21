@@ -1,8 +1,9 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="layout (contentTemplate)">
 
 <head>
     <title th:text="#{title}"></title>
@@ -217,7 +218,7 @@
         <div style="padding-top:50px;"> </div>
 
         <div>
-            <div layout:fragment="content"></div>
+            <div th:replace="${contentTemplate}"></div>
         </div>
 
     </div>

@@ -1,107 +1,122 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
-	<meta name="author" content="Polifono.com" />
-   	<link rel="icon" th:href="@{/static/img/favicon.ico}" sizes="16x16" />
-	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-	<meta name="viewport" content="width=device-width,initial-scale=1" />
-	<meta name="robots" content="index, follow" />
-	<meta property="og:site_name" content="Polifono.com" />	
+    <meta name="author" content="Polifono.com" />
+    <link rel="icon" th:href="@{/static/img/favicon.ico}" sizes="16x16" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:site_name" content="Polifono.com" />
     <meta property="og:locale" content="pt_BR" />
-	
-	<title>Aprenda toda a teoria musical!</title>
-    <meta name="description" content="Curso para quem procura aprender a teoria musical, com leitura de partituras, criação de acordes, escalas e muito mais, evoluindo passo a passo até dominar todo o mundo da música." />
-    <meta name="keywords" content="teoria musical para iniciantes, teoria musical para leigos, aprendendo a ler partitura, como ler partituras, escalas musicais, aprender a formar acordes" />
+
+    <title>Aprenda toda a teoria musical!</title>
+    <meta name="description"
+          content="Curso para quem procura aprender a teoria musical, com leitura de partituras, criação de acordes, escalas e muito mais, evoluindo passo a passo até dominar todo o mundo da música." />
+    <meta name="keywords"
+          content="teoria musical para iniciantes, teoria musical para leigos, aprendendo a ler partitura, como ler partituras, escalas musicais, aprender a formar acordes" />
     <meta property="og:url" content="https://www.polifono.com/promos/musical_theory" />
     <meta property="og:title" content="Aprenda toda a teoria musical!" />
-    <meta property="og:description" content="Curso para quem procura aprender a teoria musical, com leitura de partituras, criação de acordes, escalas e muito mais, evoluindo passo a passo até dominar todo o mundo da música." />
+    <meta property="og:description"
+          content="Curso para quem procura aprender a teoria musical, com leitura de partituras, criação de acordes, escalas e muito mais, evoluindo passo a passo até dominar todo o mundo da música." />
     <meta property="og:image" content="https://media.polifono.com/img/recorder_3_1_085_1_01.png" />
-	<meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@polifonooficial"/>
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@polifonooficial" />
     <meta name="twitter:title" content="Aprenda toda a teoria musical!" />
-    <meta name="twitter:description" content="Curso para quem procura aprender a teoria musical, com leitura de partituras, criação de acordes, escalas e muito mais, evoluindo passo a passo até dominar todo o mundo da música." />
+    <meta name="twitter:description"
+          content="Curso para quem procura aprender a teoria musical, com leitura de partituras, criação de acordes, escalas e muito mais, evoluindo passo a passo até dominar todo o mundo da música." />
     <meta name="twitter:image:src" content="https://media.polifono.com/img/recorder_3_1_085_1_01.png" />
     <meta itemprop="name" content="Aprenda toda a teoria musical!" />
-    <meta itemprop="description" content="Curso para quem procura aprender a teoria musical, com leitura de partituras, criação de acordes, escalas e muito mais, evoluindo passo a passo até dominar todo o mundo da música." />
+    <meta itemprop="description"
+          content="Curso para quem procura aprender a teoria musical, com leitura de partituras, criação de acordes, escalas e muito mais, evoluindo passo a passo até dominar todo o mundo da música." />
     <meta itemprop="image" content="https://media.polifono.com/img/recorder_3_1_085_1_01.png" />
     <meta itemprop="url" content="https://www.polifono.com/promos/musical_theory" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-	<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" />
-	<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/magnific-popup/dist/magnific-popup.css}" />
-	<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
-	<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-	<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/beeker/bioep.min.js}"></script>
-	<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/magnific-popup/dist/jquery.magnific-popup.min.js}"></script>
-	
-	<!-- Global site tag (gtag.js) - Google Ads: 1067435224 -->
-	<script async="true" src="https://www.googletagmanager.com/gtag/js?id=AW-1067435224"></script>
-	<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
-	
-	  gtag('config', 'AW-1067435224');
-	</script>
-	
-	<script>
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-		ga('create','UA-91913532-1','auto');
-		ga('send','pageview');
-	</script>
-	
-	<script type="text/javascript">
-	    bioEp.init({
-	        html: '<div id="bio_ep_content">' +
-	                '<span id="txt01">Você ganhou um presente!</span>' +
-	                '<span id="txt02">Se cadastre agora e comece o curso sem pagar nada! <br /> Corre que a promoção logo vai acabar...</span>' +
-	                '<br />' +
-	                '<div class="social-login text-center">' +                        
-                    	'<ul class="list-unstyled social-login">' +
-                        	'<li><fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></fb:login-button></li>' +
-                    	'</ul>' +
-                	'</div>' +
-                	'<h2 class="title">ou Cadastre-se</h2>' +
-            		'<div style="margin-left:10px;margin-right:10px">' +
-            			'<form class="login-form" th:object="${player}" th:action="@{/player/create}" action="#" method="post">' +
-            				'<div class="form-group">' +
-               					'<input type="text" th:field="*{name}" class="form-control" required="true" th:placeholder="#{app.full_name}" />' +
-             				'</div>' +
-             				'<div class="form-group">' +
-               					'<input type="email" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" />' +
-             				'</div>' +
-             				'<div class="form-group">' +
-               					'<input type="password" th:field="*{password}" th:id="create_password" class="form-control" required="true" th:placeholder="#{app.password}" data-toggle="tooltip" th:title="#{msg.rule.password}" />' +
-             				'</div>' +
-             				'<div class="form-group">' +
-            					'<button type="submit" class="btn btn-warning btn-lg botao-inscreva-se">Cadastrar</button>' +
-            				'</div>' +
-            			'</form>' +
-            		'</div>' +
-	              '</div>',
-	        css:  '#bio_ep{width:400px;height:450px;color:#fff;background-color:#1a344d;text-align:center}' +
-	              '#bio_ep_content{padding:24px 0 0 0;font-family:"Titillium Web"}' +
-	              '#txt01{display:block;color:#fff;font-size:32px;font-weight:600}' +
-	              '#txt02{display:block;font-size:16px}',
-	        fonts: ['//fonts.googleapis.com/css?family=Titillium+Web:300,400,600'],
-	        cookieExp: 0
-	    });
-	</script>
-	
-	<style>
-		#content p{
-		margin-block-start:0px;
-    	margin-block-end:15px;
-    	}
-	</style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" />
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/magnific-popup/dist/magnific-popup.css}" />
+    <script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+    <script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <script type="text/javascript" th:inline="javascript" th:src="@{/vendors/beeker/bioep.min.js}"></script>
+    <script type="text/javascript" th:inline="javascript" th:src="@{/vendors/magnific-popup/dist/jquery.magnific-popup.min.js}"></script>
+
+    <!-- Global site tag (gtag.js) - Google Ads: 1067435224 -->
+    <script async="true" src="https://www.googletagmanager.com/gtag/js?id=AW-1067435224"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'AW-1067435224');
+    </script>
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-91913532-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+    <script type="text/javascript">
+        bioEp.init({
+            html: '<div id="bio_ep_content">' +
+                '<span id="txt01">Você ganhou um presente!</span>' +
+                '<span id="txt02">Se cadastre agora e comece o curso sem pagar nada! <br /> Corre que a promoção logo vai acabar...</span>' +
+                '<br />' +
+                '<div class="social-login text-center">' +
+                '<ul class="list-unstyled social-login">' +
+                '<li><fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></fb:login-button></li>' +
+                '</ul>' +
+                '</div>' +
+                '<h2 class="title">ou Cadastre-se</h2>' +
+                '<div style="margin-left:10px;margin-right:10px">' +
+                '<form class="login-form" th:object="${player}" th:action="@{/player/create}" action="#" method="post">' +
+                '<div class="form-group">' +
+                '<input type="text" th:field="*{name}" class="form-control" required="true" th:placeholder="#{app.full_name}" />' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<input type="email" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" />' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<input type="password" th:field="*{password}" th:id="create_password" class="form-control" required="true" th:placeholder="#{app.password}" data-toggle="tooltip" th:title="#{msg.rule.password}" />' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<button type="submit" class="btn btn-warning btn-lg botao-inscreva-se">Cadastrar</button>' +
+                '</div>' +
+                '</form>' +
+                '</div>' +
+                '</div>',
+            css: '#bio_ep{width:400px;height:450px;color:#fff;background-color:#1a344d;text-align:center}' +
+                '#bio_ep_content{padding:24px 0 0 0;font-family:"Titillium Web"}' +
+                '#txt01{display:block;color:#fff;font-size:32px;font-weight:600}' +
+                '#txt02{display:block;font-size:16px}',
+            fonts: ['//fonts.googleapis.com/css?family=Titillium+Web:300,400,600'],
+            cookieExp: 0
+        });
+    </script>
+
+    <style>
+      #content p {
+        margin-block-start: 0px;
+        margin-block-end: 15px;
+      }
+    </style>
 
 </head>
 
@@ -110,21 +125,35 @@
 <div id="fb-root"></div>
 
 <script th:inline="javascript">
-	/*<![CDATA[*/
-	function statusChangeCallback(response){if(response.status==='connected'){window.location="https://www.polifono.com/loginfb?code="+response.authResponse.accessToken;}}
-  	function checkLoginState(){FB.getLoginStatus(function(response){statusChangeCallback(response);});}
-  	window.fbAsyncInit=function(){FB.init({appId:'324370751419847',cookie:true,xfbml:true,version:'v2.8'});};
-  	(function(d,s,id){
-          var js,fjs=d.getElementsByTagName(s)[0];
-          if(d.getElementById(id)) return;
-          js=d.createElement(s);js.id=id;
-          js.src="https://connect.facebook.net/pt_BR/sdk/xfbml.customerchat.js";
-          fjs.parentNode.insertBefore(js,fjs);
-        	}(document,'script','facebook-jssdk'));
-	/*]]>*/
+    /*<![CDATA[*/
+    function statusChangeCallback(response) {
+        if (response.status === 'connected') {
+            window.location = "https://www.polifono.com/loginfb?code=" + response.authResponse.accessToken;
+        }
+    }
+
+    function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+    }
+
+    window.fbAsyncInit = function () {
+        FB.init({appId: '324370751419847', cookie: true, xfbml: true, version: 'v2.8'});
+    };
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/pt_BR/sdk/xfbml.customerchat.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    /*]]>*/
 </script>
 
-<div class="fb-customerchat" attribution="setup_tool" page_id="243859729372740" logged_in_greeting="Olá! Se tiver alguma dúvida, estamos aqui!" logged_out_greeting="Olá! Se tiver alguma dúvida, estamos aqui!"></div>
+<div class="fb-customerchat" attribution="setup_tool" page_id="243859729372740" logged_in_greeting="Olá! Se tiver alguma dúvida, estamos aqui!"
+     logged_out_greeting="Olá! Se tiver alguma dúvida, estamos aqui!"></div>
 
 <div class="jumbotron" style="padding-top:0px;padding-bottom:10px;margin-bottom:30px;background-color:#51a746;color:#fff">
     <div class="container text-center">
@@ -136,14 +165,23 @@
     <div class="container">
         <div class="row featurette">
             <div class="col-md-6">
-                <h2 class="featurette-heading" style="padding-top:0px;margin-top:0px;margin-bottom:20px"><i class="material-icons" style="font-size:25px">grain</i> Se voc&#xEA; procurava o melhor e mais completo curso de teoria musical da Internet, acaba de encontrar!</h2>
-                <p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Do b&#xE1;sico ao avan&#xE7;ado!</p>
-                <p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Curso com certificado!</p>
-                <p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Professor para tirar d&uacute;vidas!</p>
-                <p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Cadastro gratuito!</p>
+                <h2 class="featurette-heading" style="padding-top:0px;margin-top:0px;margin-bottom:20px"><i class="material-icons"
+                                                                                                            style="font-size:25px">grain</i> Se voc&#xEA;
+                    procurava o melhor e mais completo curso de teoria musical da Internet, acaba de encontrar!</h2>
+                <p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Do b&#xE1;sico ao
+                    avan&#xE7;ado!</p>
+                <p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Curso com
+                    certificado!</p>
+                <p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Professor para
+                    tirar d&uacute;vidas!</p>
+                <p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Cadastro
+                    gratuito!</p>
             </div>
             <div class="col-md-6">
-                <div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://player.vimeo.com/video/199858396?autoplay=1&amp;loop=0&amp;autopause=0" width="300" height="150" frameborder="0" allowfullscreen="allowfullscreen"></iframe></div>
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="https://player.vimeo.com/video/199858396?autoplay=1&amp;loop=0&amp;autopause=0" width="300"
+                            height="150" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+                </div>
                 <br /><br />
                 <p class="text-center"><a class="btn btn-warning btn-lg botao-inscreva-se" href="#register">Inscreva-se agora</a></p>
             </div>
@@ -153,170 +191,227 @@
 
 <div class="jumbotron" style="padding-top:0px;padding-bottom:0px;margin-bottom:20px;background-color:#fff;">
     <div class="container" style="width:100%;text-align: center;">
-		<img class="fr-dib fr-draggable img-responsive" style="display:inline;margin-bottom:3px;" th:src="@{/static/img/promos/aluno04.jpg}" />
-		<img class="fr-dib fr-draggable img-responsive" style="display:inline;margin-bottom:3px;" th:src="@{/static/img/promos/aluno02.jpg}" />
-		<img class="fr-dib fr-draggable img-responsive" style="display:inline" th:src="@{/static/img/promos/aluno03.jpg}" />
+        <img class="fr-dib fr-draggable img-responsive" style="display:inline;margin-bottom:3px;" th:src="@{/static/img/promos/aluno04.jpg}" />
+        <img class="fr-dib fr-draggable img-responsive" style="display:inline;margin-bottom:3px;" th:src="@{/static/img/promos/aluno02.jpg}" />
+        <img class="fr-dib fr-draggable img-responsive" style="display:inline" th:src="@{/static/img/promos/aluno03.jpg}" />
     </div>
 </div>
 
 <div class="jumbotron" style="padding-top:10px;padding-bottom:0px;margin-bottom:0px;background-color:#51a746;color:#fff">
     <div class="container">
-        <p class="site-heading" style="font-size:21px;"><i class="material-icons" style="font-size:20px">grain</i> Veja a seguir a primeira aula. 
-		Nesse curso, n&#xF3;s juntamos a teoria musical com a pr&#xE1;tica da flauta doce, assim, voc&#xEA; aprender&#xE1; toda a leitura musical usando um instrumento para entender na pr&#xE1;tica como funciona. Se gostar do curso (e n&#xF3;s sabemos que voc&#xEA; vai gostar!), fa&#xE7;a seu cadastro rapidinho para ver todas as 90 aulas. Não perca tempo e bons estudos! </p>
+        <p class="site-heading" style="font-size:21px;"><i class="material-icons" style="font-size:20px">grain</i> Veja a seguir a primeira aula.
+            Nesse curso, n&#xF3;s juntamos a teoria musical com a pr&#xE1;tica da flauta doce, assim, voc&#xEA; aprender&#xE1; toda a leitura musical usando um
+            instrumento para entender na pr&#xE1;tica como funciona. Se gostar do curso (e n&#xF3;s sabemos que voc&#xEA; vai gostar!), fa&#xE7;a seu cadastro
+            rapidinho para ver todas as 90 aulas. Não perca tempo e bons estudos! </p>
     </div>
 </div>
 
 <div class="jumbotron" style="padding-top:20px;padding-bottom:0px;margin-bottom:20px">
 
-	<div class="container">
-		
-		<style>
-		.embed-container{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;}
-		.embed-container iframe, .embed-container object, .embed-container embed{position:absolute;top:0;left:0;width:100%;height:100%;}
-		</style>
-		
-    	<div class="col-sm-12 bg">
-      		<div class="row" align="right" style="height:0px">
-				<a onClick="switchColor();" data-toggle="tooltip" title="Mudar cor de fundo" class="btn btn-primary" style="border:0px;height:42px;padding-top:10px;padding-right:6px;padding-left:6px"><span class="fa fa-adjust" style="font-size:20px"></span></a>
-				<a onClick="fontSize('a');" data-toggle="tooltip" title="Aumentar o texto" class="btn btn-primary" style="border:0px;height:42px;padding-top:10px;padding-right:6px;padding-left:6px"><span class="fa fa-plus-circle" style="font-size:20px"></span></a>
-				<a onClick="fontSize('d');" data-toggle="tooltip" title="Diminuir o texto" class="btn btn-primary" style="border:0px;height:42px;padding-top:10px;padding-right:6px;padding-left:6px;margin-right:8px"><span class="fa fa-minus-circle" style="font-size:20px"></span></a>
-			</div>
-      		<div class="row">
-				<div class="panel panel-primary">
-					<div class="panel-heading" th:text="${phase.name}"></div>
-					<div class="panel-body" th:utext="${content.content}" style="line-height:normal" id="content"></div>
-				</div>
-			</div>
-			<div class="row" align="right">
-				<a href="#register" class="btn btn-primary" role="button" data-loading-text="Aguardando o seu cadastro..." id="btnOk">Ver a próxima aula >></a>
-				<br /><br />
-			</div>
-    	</div>
-    	
-    	<script th:inline="javascript">
-	  		/*<![CDATA[*/	
-  			$(document).ready(function(){$("#btnOk").click(function(){$(this).button('loading');});});
-	  		/*]]>*/
-		</script>
-		
-	</div>
+    <div class="container">
+
+        <style>
+          .embed-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+          }
+
+          .embed-container iframe, .embed-container object, .embed-container embed {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+          }
+        </style>
+
+        <div class="col-sm-12 bg">
+            <div class="row" align="right" style="height:0px">
+                <a onClick="switchColor();" data-toggle="tooltip" title="Mudar cor de fundo" class="btn btn-primary"
+                   style="border:0px;height:42px;padding-top:10px;padding-right:6px;padding-left:6px"><span class="fa fa-adjust" style="font-size:20px"></span></a>
+                <a onClick="fontSize('a');" data-toggle="tooltip" title="Aumentar o texto" class="btn btn-primary"
+                   style="border:0px;height:42px;padding-top:10px;padding-right:6px;padding-left:6px"><span class="fa fa-plus-circle"
+                                                                                                            style="font-size:20px"></span></a>
+                <a onClick="fontSize('d');" data-toggle="tooltip" title="Diminuir o texto" class="btn btn-primary"
+                   style="border:0px;height:42px;padding-top:10px;padding-right:6px;padding-left:6px;margin-right:8px"><span class="fa fa-minus-circle"
+                                                                                                                             style="font-size:20px"></span></a>
+            </div>
+            <div class="row">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" th:text="${phase.name}"></div>
+                    <div class="panel-body" th:utext="${content.content}" style="line-height:normal" id="content"></div>
+                </div>
+            </div>
+            <div class="row" align="right">
+                <a href="#register" class="btn btn-primary" role="button" data-loading-text="Aguardando o seu cadastro..." id="btnOk">Ver a próxima aula >></a>
+                <br /><br />
+            </div>
+        </div>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            $(document).ready(function () {
+                $("#btnOk").click(function () {
+                    $(this).button('loading');
+                });
+            });
+            /*]]>*/
+        </script>
+
+    </div>
 </div>
 
 <div id="register" class="jumbotron" style="padding-top:0px;padding-bottom:20px;margin-bottom:0px;background-color:#fff">
     <div class="container">
-        
-		<p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Cadastre-se com seu Facebook:</p>
-		
-		<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></fb:login-button>
-		
-		<hr />
-		
-		<p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Ou cadastre-se com seu e-mail:</p>
 
-		<h2 class="title">Cadastre-se</h2>
-		
-		<div class="login-form-container">
-			
-			<form class="login-form" th:object="${player}" th:action="@{/player/create}" action="#" method="post">
-				<div class="form-group">
-   					<input type="text" th:field="*{name}" class="form-control" required="true" th:placeholder="#{app.full_name}" />
- 				</div>
- 				<div class="form-group">
-   					<input type="email" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" />
- 				</div>
- 				<div class="form-group">
-   					<input type="password" th:field="*{password}" th:id="create_password" class="form-control" required="true" th:placeholder="#{app.password}" data-toggle="tooltip" th:title="#{msg.rule.password}" />
- 				</div>
- 				<div class="checkbox">
-					<label><input type="checkbox" value="1" id="create_show_password" />Mostrar senha</label>
-				</div>
-				<div class="form-group">
-					<button type="submit" class="btn btn-warning btn-lg botao-inscreva-se">Cadastrar</button>
-				</div>
-			</form>
-		</div>
+        <p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Cadastre-se com seu
+            Facebook:</p>
+
+        <fb:login-button scope="public_profile,email" onlogin="checkLoginState();" class="fb-login-button" data-max-rows="1" data-size="large"
+                         data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></fb:login-button>
+
+        <hr />
+
+        <p style="font-size:20px;color:#51a746;font-weight:bold"><i class="material-icons" style="font-size:25px;color:green">done</i> Ou cadastre-se com seu
+            e-mail:</p>
+
+        <h2 class="title">Cadastre-se</h2>
+
+        <div class="login-form-container">
+
+            <form class="login-form" th:object="${player}" th:action="@{/player/create}" action="#" method="post">
+                <div class="form-group">
+                    <input type="text" th:field="*{name}" class="form-control" required="true" th:placeholder="#{app.full_name}" />
+                </div>
+                <div class="form-group">
+                    <input type="email" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" />
+                </div>
+                <div class="form-group">
+                    <input type="password" th:field="*{password}" th:id="create_password" class="form-control" required="true" th:placeholder="#{app.password}"
+                           data-toggle="tooltip" th:title="#{msg.rule.password}" />
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" value="1" id="create_show_password" />Mostrar senha</label>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-warning btn-lg botao-inscreva-se">Cadastrar</button>
+                </div>
+            </form>
+        </div>
 
     </div>
 </div>
 
 <div class="jumbotron" style="padding-top:30px;padding-bottom:30px;margin-bottom:0px;background-color:#51a746;color:#fff">
     <div class="container">
-        
+
     </div>
 </div>
 
 <script th:inline="javascript">
-/*<![CDATA[*/
-	$('#create_show_password').click(function(){if($('#create_show_password').prop('checked')){$('#create_password').attr('type','text');}else{$('#create_password').attr('type','password');}});
-	$(function(){$('[data-toggle="tooltip"]').tooltip()})
-	$(function(){$('[data-toggle="popover"]').popover()})
-/*]]>*/
+    /*<![CDATA[*/
+    $('#create_show_password').click(function () {
+        if ($('#create_show_password').prop('checked')) {
+            $('#create_password').attr('type', 'text');
+        } else {
+            $('#create_password').attr('type', 'password');
+        }
+    });
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+    /*]]>*/
 </script>
 
 <script th:inline="javascript">
-	/*<![CDATA[*/
-	$(document).ready(function(){
-		$('.image-popup-vertical-fit').magnificPopup({
-			type:'image',
-			closeOnContentClick: true,
-			mainClass:'mfp-img-mobile',
-			image:{verticalFit:true}
-		});
-		$('.image-popup-fit-width').magnificPopup({
-			type:'image',
-			closeOnContentClick:true,
-			image:{verticalFit:false}
-		});
-		$('.image-popup-no-margins').magnificPopup({
-			type:'image',
-			closeOnContentClick:true,
-			closeBtnInside:false,
-			fixedContentPos:true,
-			mainClass:'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
-			image:{verticalFit:true},
-			zoom:{
-				enabled:true,
-				duration:300 // don't foget to change the duration also in CSS
-			}
-		});
-	});
-	
-	var fontChange=0;
-	function fontSize(e){
-		var elemento24=$(".fontSize24px");
-		var fonte24 = elemento24.css('font-size');
-		var elemento20=$(".fontSize20px");
-		var fonte20 = elemento20.css('font-size');
-		var elemento16=$(".fontSize16px");
-		var fonte16 = elemento16.css('font-size');
-		var elemento14=$(".fontSize14px");
-		var fonte14 = elemento14.css('font-size');
-		
-		if(e=='a'){
-			if(fontChange<=10){
-				elemento24.css("fontSize",parseInt(fonte24)+1);
-				elemento20.css("fontSize",parseInt(fonte20)+1);
-				elemento16.css("fontSize",parseInt(fonte16)+1);
-				elemento14.css("fontSize",parseInt(fonte14)+1);
-				fontChange++;
-			}
-		}else if('d'){
-			if(fontChange>=-10){
-				elemento24.css("fontSize",parseInt(fonte24)-1);
-				elemento20.css("fontSize",parseInt(fonte20)-1);
-				elemento16.css("fontSize",parseInt(fonte16)-1);
-				elemento14.css("fontSize",parseInt(fonte14)-1);
-				fontChange--;
-			}
-		}
-	}
-	
-	//
- 	var switchColorControl=false;
-	function switchColor(){if(switchColorControl){switchWhite();}else{switchBlack();}}
-	function switchBlack(){switchColorControl=true;document.getElementById('content').style.backgroundColor='black';document.getElementById('content').style.color='white';}
-	function switchWhite(){switchColorControl=false;document.getElementById('content').style.backgroundColor='white';document.getElementById('content').style.color='black';}
-	/*]]>*/
+    /*<![CDATA[*/
+    $(document).ready(function () {
+        $('.image-popup-vertical-fit').magnificPopup({
+            type: 'image',
+            closeOnContentClick: true,
+            mainClass: 'mfp-img-mobile',
+            image: {verticalFit: true}
+        });
+        $('.image-popup-fit-width').magnificPopup({
+            type: 'image',
+            closeOnContentClick: true,
+            image: {verticalFit: false}
+        });
+        $('.image-popup-no-margins').magnificPopup({
+            type: 'image',
+            closeOnContentClick: true,
+            closeBtnInside: false,
+            fixedContentPos: true,
+            mainClass: 'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
+            image: {verticalFit: true},
+            zoom: {
+                enabled: true,
+                duration: 300 // don't foget to change the duration also in CSS
+            }
+        });
+    });
+
+    var fontChange = 0;
+
+    function fontSize(e) {
+        var elemento24 = $(".fontSize24px");
+        var fonte24 = elemento24.css('font-size');
+        var elemento20 = $(".fontSize20px");
+        var fonte20 = elemento20.css('font-size');
+        var elemento16 = $(".fontSize16px");
+        var fonte16 = elemento16.css('font-size');
+        var elemento14 = $(".fontSize14px");
+        var fonte14 = elemento14.css('font-size');
+
+        if (e == 'a') {
+            if (fontChange <= 10) {
+                elemento24.css("fontSize", parseInt(fonte24) + 1);
+                elemento20.css("fontSize", parseInt(fonte20) + 1);
+                elemento16.css("fontSize", parseInt(fonte16) + 1);
+                elemento14.css("fontSize", parseInt(fonte14) + 1);
+                fontChange++;
+            }
+        } else if ('d') {
+            if (fontChange >= -10) {
+                elemento24.css("fontSize", parseInt(fonte24) - 1);
+                elemento20.css("fontSize", parseInt(fonte20) - 1);
+                elemento16.css("fontSize", parseInt(fonte16) - 1);
+                elemento14.css("fontSize", parseInt(fonte14) - 1);
+                fontChange--;
+            }
+        }
+    }
+
+    //
+    var switchColorControl = false;
+
+    function switchColor() {
+        if (switchColorControl) {
+            switchWhite();
+        } else {
+            switchBlack();
+        }
+    }
+
+    function switchBlack() {
+        switchColorControl = true;
+        document.getElementById('content').style.backgroundColor = 'black';
+        document.getElementById('content').style.color = 'white';
+    }
+
+    function switchWhite() {
+        switchColorControl = false;
+        document.getElementById('content').style.backgroundColor = 'white';
+        document.getElementById('content').style.color = 'black';
+    }
+
+    /*]]>*/
 </script>
 
 </body>

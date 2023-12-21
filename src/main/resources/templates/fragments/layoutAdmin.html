@@ -1,75 +1,86 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="layout (contentTemplate)">
 
-	<head>
-		<title th:text="#{title}"></title>
-		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-		<meta name="viewport" content="width=device-width,initial-scale=1" />
-		
-		<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" />
-			
-		<style>.navbar-nav li a:hover{color:#1abc9c !important}</style>
-		
-		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
-		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
-	</head>
+<head>
+    <title th:text="#{title}"></title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-	<body>
-		<nav class="navbar navbar-inverse">
-	 		<div class="container-fluid">
-	   			<div class="navbar-header">
-	     			<a class="navbar-brand" th:href="@{/}" th:text="#{company}"></a>
-	   			</div>
-	   			<ul class="nav navbar-nav">
-	     			<li><a href="/admin" th:text="#{menu.admin.home}"></a></li>
-	     			<li class="dropdown">
-	       				<a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{menu.admin.basic}"><span class="caret"></span></a>
-	       				<ul class="dropdown-menu">
-	         				<li><a th:href="@{/admin/basic/map}" th:text="#{menu.admin.maps}"></a></li>
-	         				<li><a th:href="@{/admin/basic/phase}" th:text="#{menu.admin.phases}"></a></li>
-	         				<li><a th:href="@{/admin/basic/content}" th:text="#{menu.admin.contents_text}"></a></li>
-	         				<li><a th:href="@{/admin/basic/contentTest}" th:text="#{menu.admin.contents_test}"></a></li>
-	         				<li><a th:href="@{/admin/basic/question}" th:text="#{menu.admin.questions}"></a></li>
-	         				<li><a th:href="@{/admin/basic/answer}" th:text="#{menu.admin.answers}"></a></li>
-	       				</ul>
-	     			</li>
-	     			<li class="dropdown">
-	       				<a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{menu.admin.report}"><span class="caret"></span></a>
-	       				<ul class="dropdown-menu">
-	         				<li><a th:href="@{/admin/report/register}" th:text="#{menu.admin.report.register}"></a></li>
-	       				</ul>
-	     			</li>
-	     			<li class="dropdown">
-	       				<a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{menu.admin.message}"><span class="caret"></span></a>
-	       				<ul class="dropdown-menu">
-	         				<li><a href="#" th:text="#{menu.admin.message.group01}"></a></li>
-	         				<li><a href="#" th:text="#{menu.admin.message.group02}"></a></li>
-	         				<li><a href="#" th:text="#{menu.admin.message.group03}"></a></li>
-	         				<li><a th:href="@{/admin/message/group04}" th:text="#{menu.admin.message.group04}"></a></li>
-	         				<li><a th:href="@{/admin/message/group05}" th:text="#{menu.admin.message.group05}"></a></li>
-	       				</ul>
-	     			</li>
-	   			</ul>
-	   			<ul class="nav navbar-nav navbar-right">
-	     			<li th:title="#{app.profile}"><a href="#" sec:authentication="principal.user.name"></a></li>
-	     			<li th:title="#{log_out}"><a href="javascript:logout()"><span class="glyphicon glyphicon-log-out" th:text="' '+#{log_out}"></span></a></li>
-	   			</ul>
-	 		</div>
-		</nav>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" />
 
-		<div class="container">
-			<div layout:fragment="content"></div>
-		</div>
-		
-		<form name="f_logout" id="f_logout" th:action="@{/logout}" method="post" />
-	
-		<script>
-			function logout(){form=document.getElementById("f_logout");form.submit();}
-			function deleteItem(url){if(confirm("Are you sure to delete?")){location.href=url;}}
-		</script>
+    <style>.navbar-nav li a:hover {
+      color: #1abc9c !important
+    }</style>
 
-	</body>
+    <script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+    <script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}" th:text="#{company}"></a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/admin" th:text="#{menu.admin.home}"></a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{menu.admin.basic}"><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/admin/basic/map}" th:text="#{menu.admin.maps}"></a></li>
+                    <li><a th:href="@{/admin/basic/phase}" th:text="#{menu.admin.phases}"></a></li>
+                    <li><a th:href="@{/admin/basic/content}" th:text="#{menu.admin.contents_text}"></a></li>
+                    <li><a th:href="@{/admin/basic/contentTest}" th:text="#{menu.admin.contents_test}"></a></li>
+                    <li><a th:href="@{/admin/basic/question}" th:text="#{menu.admin.questions}"></a></li>
+                    <li><a th:href="@{/admin/basic/answer}" th:text="#{menu.admin.answers}"></a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{menu.admin.report}"><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/admin/report/register}" th:text="#{menu.admin.report.register}"></a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{menu.admin.message}"><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#" th:text="#{menu.admin.message.group01}"></a></li>
+                    <li><a href="#" th:text="#{menu.admin.message.group02}"></a></li>
+                    <li><a href="#" th:text="#{menu.admin.message.group03}"></a></li>
+                    <li><a th:href="@{/admin/message/group04}" th:text="#{menu.admin.message.group04}"></a></li>
+                    <li><a th:href="@{/admin/message/group05}" th:text="#{menu.admin.message.group05}"></a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li th:title="#{app.profile}"><a href="#" sec:authentication="principal.user.name"></a></li>
+            <li th:title="#{log_out}"><a href="javascript:logout()"><span class="glyphicon glyphicon-log-out" th:text="' '+#{log_out}"></span></a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div th:replace="${contentTemplate}"></div>
+</div>
+
+<form name="f_logout" id="f_logout" th:action="@{/logout}" method="post" />
+
+<script>
+    function logout() {
+        form = document.getElementById("f_logout");
+        form.submit();
+    }
+
+    function deleteItem(url) {
+        if (confirm("Are you sure to delete?")) {
+            location.href = url;
+        }
+    }
+</script>
+
+</body>
 </html>

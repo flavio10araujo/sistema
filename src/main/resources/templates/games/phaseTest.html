@@ -1,93 +1,122 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutMain :: layout(~{::section})}">
 
 <head></head>
 
 <body>
-	<div layout:fragment="content">
-    	
-    	<style>
-    	#clockdiv{font-family:sans-serif;color:#fff;display:inline-block;font-weight:100;text-align:center;font-size:20px;position:fixed;bottom:0;right:0;}
-		#clockdiv > div{padding:3px;border-radius:3px;background:#337AB7;display:inline-block;}
-		#clockdiv div > span{padding:3px;border-radius:3px;display:inline-block;}
-		</style>
+<section layout:fragment="contentTemplate">
 
-    	<div class="col-sm-12 bg">
-      		<div class="row">
-      			<br />
-      			<ol class="breadcrumb">
-					<li>Cursos</li>
-					<li th:text="${game.name}"></li>
-					<li th:text="${map.level.name}"></li>
-					<!--<li th:text="${map.name}"></li>-->
-					<li th:text="#{app.phase}+' '+${phase.order}"></li>
-					<li th:text="#{app.test}" class="active"></li>
-				</ol>
-      		</div>
-      		<div class="row">
-				<div class="panel panel-primary">
-					<div class="panel-heading" th:text="#{app.test}"></div>
-					<div class="panel-body">
-						<div id="clockdiv" data-toggle="tooltip" title="Tempo restante para o término do teste.">
-							<div>
+    <style>
+      #clockdiv {
+        font-family: sans-serif;
+        color: #fff;
+        display: inline-block;
+        font-weight: 100;
+        text-align: center;
+        font-size: 20px;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+      }
+
+      #clockdiv > div {
+        padding: 3px;
+        border-radius: 3px;
+        background: #337AB7;
+        display: inline-block;
+      }
+
+      #clockdiv div > span {
+        padding: 3px;
+        border-radius: 3px;
+        display: inline-block;
+      }
+    </style>
+
+    <div class="col-sm-12 bg">
+        <div class="row">
+            <br />
+            <ol class="breadcrumb">
+                <li>Cursos</li>
+                <li th:text="${game.name}"></li>
+                <li th:text="${map.level.name}"></li>
+                <!--<li th:text="${map.name}"></li>-->
+                <li th:text="#{app.phase}+' '+${phase.order}"></li>
+                <li th:text="#{app.test}" class="active"></li>
+            </ol>
+        </div>
+        <div class="row">
+            <div class="panel panel-primary">
+                <div class="panel-heading" th:text="#{app.test}"></div>
+                <div class="panel-body">
+                    <div id="clockdiv" data-toggle="tooltip" title="Tempo restante para o término do teste.">
+                        <div>
 								<span>
 									<label class="minutes" />:<label class="seconds" />
 								</span>
-							</div>
-						</div>
-						<form id="f_test" th:action="@{/games/result}" action="#" method="post">
+                        </div>
+                    </div>
+                    <form id="f_test" th:action="@{/games/result}" action="#" method="post">
 							<span style="margin-left:10px" th:each="question : ${questions}">
 			           			<br />
 			           			<b><span th:text="${question.order}+' - '+${question.name}"></span></b><br />
 			           			<span style="margin-left:10px" th:each="answer : ${question.answers}">
-			           				<label><input type="radio" th:name="${question.id}" th:value="${answer.id}" /> <span th:text="${answer.name}" /></label><br />
+			           				<label><input type="radio" th:name="${question.id}" th:value="${answer.id}" /> <span
+                                            th:text="${answer.name}" /></label><br />
 			           			</span>
 			           		</span>
-			           		<br />
-			           		<input type="submit" data-loading-text="Calculando nota..." class="btn btn-primary" id="btnSubmit" value="Enviar respostas" />
-		           		</form>
-					</div>
-				</div>
-			</div>
-    	</div>
-    	
-    	<script th:inline="javascript">
-			/*<![CDATA[*/
-			$(document).ready(function(){$("#btnSubmit").click(function(){$(this).button('loading');});});
-			
-			function submitForm(){
-				form=document.getElementById("f_test");
-				form.submit();
-			}
-			
-    		function getTimeRemaining(endtime){
-				var t=Date.parse(endtime) - Date.parse(new Date());
-				var seconds=Math.floor((t / 1000) % 60);
-				var minutes=Math.floor((t / 1000 / 60) % 60);
-				return{'total':t,'minutes':minutes,'seconds':seconds};
-			}
-			
-			function initializeClock(id,endtime){
-				var clock=document.getElementById(id);
-				var minutesSpan=clock.querySelector('.minutes');
-				var secondsSpan=clock.querySelector('.seconds');
-				function updateClock(){
-					var t=getTimeRemaining(endtime);
-					minutesSpan.innerHTML=('0'+t.minutes).slice(-2);
-					secondsSpan.innerHTML=('0'+t.seconds).slice(-2);
-					if(t.total <= 0){
-						clearInterval(timeinterval);
-						submitForm();
-					}
-				}
-				updateClock();
-				var timeinterval=setInterval(updateClock, 1000);
-			}
-			
-			var deadline=new Date(Date.parse(new Date()) + 5 * 60 * 1000);
-			initializeClock('clockdiv', deadline);
-    		/*]]>*/
-		</script>
-	</div>
+                        <br />
+                        <input type="submit" data-loading-text="Calculando nota..." class="btn btn-primary" id="btnSubmit" value="Enviar respostas" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function () {
+            $("#btnSubmit").click(function () {
+                $(this).button('loading');
+            });
+        });
+
+        function submitForm() {
+            form = document.getElementById("f_test");
+            form.submit();
+        }
+
+        function getTimeRemaining(endtime) {
+            var t = Date.parse(endtime) - Date.parse(new Date());
+            var seconds = Math.floor((t / 1000) % 60);
+            var minutes = Math.floor((t / 1000 / 60) % 60);
+            return {'total': t, 'minutes': minutes, 'seconds': seconds};
+        }
+
+        function initializeClock(id, endtime) {
+            var clock = document.getElementById(id);
+            var minutesSpan = clock.querySelector('.minutes');
+            var secondsSpan = clock.querySelector('.seconds');
+
+            function updateClock() {
+                var t = getTimeRemaining(endtime);
+                minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+                secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+                if (t.total <= 0) {
+                    clearInterval(timeinterval);
+                    submitForm();
+                }
+            }
+
+            updateClock();
+            var timeinterval = setInterval(updateClock, 1000);
+        }
+
+        var deadline = new Date(Date.parse(new Date()) + 5 * 60 * 1000);
+        initializeClock('clockdiv', deadline);
+        /*]]>*/
+    </script>
+</section>
 </body>
 </html>

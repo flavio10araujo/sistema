@@ -1,10 +1,11 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutMain :: layout(~{::section})}">
 
 <head></head>
 
 <body>
-<div layout:fragment="content">
+<section layout:fragment="contentTemplate">
     <div class="row">
         <br />
         <ol class="breadcrumb">
@@ -67,6 +68,6 @@
         /*]]>*/
     </script>
 
-</div>
+</section>
 </body>
 </html>

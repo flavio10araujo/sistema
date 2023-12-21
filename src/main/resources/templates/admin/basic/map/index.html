@@ -1,144 +1,146 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutAdmin">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutAdmin :: layout(~{::section})}">
 
 <head></head>
 
 <body>
 
-	<div layout:fragment="content">
-		<div class="row">
-			<div class="col-md-offset-2 col-md-8">
-				<!-- Save Alert Messages -->
-				<div th:if="${save eq 'unsuccess'}">
-          			<div class="alert alert-danger alert-dismissible" role="alert">
-  						<strong>Error!</strong> Data Not Saved.
-					</div>
-       			</div>
-       			<div th:if="${save eq 'success'}">
-          			<div class="alert alert-success alert-dismissible" role="alert">
-  						<strong>Success!</strong> Data Saved Successfully.
-					</div>
-       			</div>
+<section layout:fragment="contentTemplate">
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+            <!-- Save Alert Messages -->
+            <div th:if="${save eq 'unsuccess'}">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <strong>Error!</strong> Data Not Saved.
+                </div>
+            </div>
+            <div th:if="${save eq 'success'}">
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <strong>Success!</strong> Data Saved Successfully.
+                </div>
+            </div>
 
-				<!-- Deletion Alert Messages -->
-        		<div th:if="${deletion eq 'unsuccess'}">
-          			<div class="alert alert-danger alert-dismissible" role="alert">
-  						<strong>Error!</strong> Data Not Deleted.
-					</div>
-       			</div>
-       			<div th:if="${deletion eq 'success'}">
-          			<div class="alert alert-success alert-dismissible" role="alert">
-  						<strong>Success!</strong> Data Deleted Successfully.
-					</div>
-       			</div>
+            <!-- Deletion Alert Messages -->
+            <div th:if="${deletion eq 'unsuccess'}">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <strong>Error!</strong> Data Not Deleted.
+                </div>
+            </div>
+            <div th:if="${deletion eq 'success'}">
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <strong>Success!</strong> Data Deleted Successfully.
+                </div>
+            </div>
 
-				<!-- Edit Alert Message -->
-    			<div th:if="${status eq 'notfound'}">
-          			<div class="alert alert-danger alert-dismissible" role="alert">
-  						<strong>Error!</strong> Invalid item.
-					</div>
-       			</div>
-       			<div th:if="${edit eq 'unsuccess'}">
-          			<div class="alert alert-danger alert-dismissible" role="alert">
-  						<strong>Error!</strong> Data Not Edited.
-					</div>
-       			</div>
-       			<div th:if="${edit eq 'success'}">
-          			<div class="alert alert-success alert-dismissible" role="alert">
-  						<strong>Success!</strong> Data Edited Successfully.
-					</div>
-       			</div>
+            <!-- Edit Alert Message -->
+            <div th:if="${status eq 'notfound'}">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <strong>Error!</strong> Invalid item.
+                </div>
+            </div>
+            <div th:if="${edit eq 'unsuccess'}">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <strong>Error!</strong> Data Not Edited.
+                </div>
+            </div>
+            <div th:if="${edit eq 'success'}">
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <strong>Success!</strong> Data Edited Successfully.
+                </div>
+            </div>
 
-				<div class="panel panel-success">
-					<div class="panel-heading">
-  						<h3 class="panel-title">Add Map</h3>
-					</div>
-   					<div class="panel-body">
-    					<form th:object="${map}" th:action="@{/admin/basic/map/save}" action="#" method="post">
-       						
-       						<div class="form-group">
-								<label for="gameId">Game:</label>
-							  	<select class="form-control" th:field="*{game.id}" th:id="gameId" required="true">
-							    	<option value="0"></option>
-  									<option th:each="game : ${games}" th:value="${game.id}" th:text="${game.name}"></option>
-							  	</select>
-							</div>
-       						
-       						<div class="form-group">
-								<label for="levelId">Level:</label>
-							  	<select class="form-control" th:field="*{level.id}" th:id="levelId" required="true">
-							    	<option value="0"></option>
-  									<option th:each="level : ${levels}" th:value="${level.id}" th:text="${level.order} + '. ' + ${level.name}"></option>
-							  	</select>
-							</div>
-							
-       						<div class="form-group">
-       							<label for="name">Name:</label>
-       							<input type="text" th:field="*{name}" th:id="name" class="form-control" required="true" />
-       						</div>
-       						
-       						<div class="form-group">
-       							<label for="order">Order:</label>
-       							<input type="number" th:field="*{order}" th:id="order" class="form-control" required="true" min="1" />
-       						</div>
-							
-							<input type="submit" class="btn btn-danger pull-right" th:value="#{app.save}" />
-							
- 						</form>
-					</div>
-				</div>
-			</div>
-		</div>
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Add Map</h3>
+                </div>
+                <div class="panel-body">
+                    <form th:object="${map}" th:action="@{/admin/basic/map/save}" action="#" method="post">
 
-		<div class="row" style="margin-bottom:50px;">
-			<div class="col-md-offset-2 col-md-8">
-				<div class="panel panel-success">
-					<div class="panel-heading">
-						<h3 class="panel-title">All Maps</h3>
-					</div>
-					<div class="panel-body">
-    					<form th:object="${mapGame}" th:action="@{/admin/basic/map}" method="post">
-       						<div class="form-group">
-								<label for="gameId">Game:</label>
-							  	<select class="form-control" th:field="*{id}" th:id="gameId" required="true">
-							    	<option value="0"></option>
-  									<option th:each="game : ${games}" th:value="${game.id}" th:text="${game.name}"></option>
-							  	</select>
-							</div>
-							<input type="submit" class="btn btn-default pull-right" th:value="#{app.filter}" />
-						</form>
-					</div>
-					<div class="panel-body">
-						<table class="table table-bordered">
-							<thead>
-								<tr class="btn-success">
-									<th>Game</th>
-									<th>Level</th>
-									<th>Map</th>
-									<th th:text="#{app.operation}">Operation</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr th:if="${#lists.isEmpty(maps)}" class="btn-warning">
-									<td colspan="4" align="center">No Item Registered Yet!</td> 
-								</tr>
-								<tr th:each="item : ${maps}">
-									<td th:text="${item.game.name}"></td>
-									<td th:text="${item.level.order} + '. ' + ${item.level.name}"></td>
-									<td th:text="${item.order} + '. ' + ${item.name}"></td>
-									<td align="center">
-										<a th:href="@{/admin/basic/map/edit/{id}(id=${item.id})}"><span class="glyphicon glyphicon-edit"></span></a> &nbsp; &nbsp;
-										<a th:href="'javascript:deleteItem(\'/admin/basic/map/delete/' + ${item.id} + '\')'"><span class="glyphicon glyphicon-trash"></span></a>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                        <div class="form-group">
+                            <label for="gameId">Game:</label>
+                            <select class="form-control" th:field="*{game.id}" th:id="gameId" required="true">
+                                <option value="0"></option>
+                                <option th:each="game : ${games}" th:value="${game.id}" th:text="${game.name}"></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="levelId">Level:</label>
+                            <select class="form-control" th:field="*{level.id}" th:id="levelId" required="true">
+                                <option value="0"></option>
+                                <option th:each="level : ${levels}" th:value="${level.id}" th:text="${level.order} + '. ' + ${level.name}"></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" th:field="*{name}" th:id="name" class="form-control" required="true" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="order">Order:</label>
+                            <input type="number" th:field="*{order}" th:id="order" class="form-control" required="true" min="1" />
+                        </div>
+
+                        <input type="submit" class="btn btn-danger pull-right" th:value="#{app.save}" />
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom:50px;">
+        <div class="col-md-offset-2 col-md-8">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">All Maps</h3>
+                </div>
+                <div class="panel-body">
+                    <form th:object="${mapGame}" th:action="@{/admin/basic/map}" method="post">
+                        <div class="form-group">
+                            <label for="gameId">Game:</label>
+                            <select class="form-control" th:field="*{id}" th:id="gameId" required="true">
+                                <option value="0"></option>
+                                <option th:each="game : ${games}" th:value="${game.id}" th:text="${game.name}"></option>
+                            </select>
+                        </div>
+                        <input type="submit" class="btn btn-default pull-right" th:value="#{app.filter}" />
+                    </form>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr class="btn-success">
+                            <th>Game</th>
+                            <th>Level</th>
+                            <th>Map</th>
+                            <th th:text="#{app.operation}">Operation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${#lists.isEmpty(maps)}" class="btn-warning">
+                            <td colspan="4" align="center">No Item Registered Yet!</td>
+                        </tr>
+                        <tr th:each="item : ${maps}">
+                            <td th:text="${item.game.name}"></td>
+                            <td th:text="${item.level.order} + '. ' + ${item.level.name}"></td>
+                            <td th:text="${item.order} + '. ' + ${item.name}"></td>
+                            <td align="center">
+                                <a th:href="@{/admin/basic/map/edit/{id}(id=${item.id})}"><span class="glyphicon glyphicon-edit"></span></a> &nbsp; &nbsp;
+                                <a th:href="'javascript:deleteItem(\'/admin/basic/map/delete/' + ${item.id} + '\')'"><span
+                                        class="glyphicon glyphicon-trash"></span></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 </body>
 </html>

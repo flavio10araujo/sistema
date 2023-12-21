@@ -1,81 +1,88 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutProfile">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutProfile :: layout(~{::section})}">
 
 <body>
-	<div layout:fragment="contentProfile">
+<section layout:fragment="contentProfile">
 
-		<div class="panel panel-default">
+    <div class="panel panel-default">
 
-    		<div class="panel-body">
-        
-        		<div class="pull-left"><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" class="btn btn-link" style="text-decoration:none" aria-controls="collapseInstrument" href="#collapseInstrument"><i class="fa fa-music fa-1x" aria-hidden="true"></i></a></div>
+        <div class="panel-body">
 
-				<h4><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" style="text-decoration:none" aria-controls="collapseInstrument" href="#collapseInstrument"><strong>Instrumentos</strong></a></h4>
-               
-               	<div id="collapseInstrument" class="collapse in">
-               
-                	<hr />
-                
-                	<div class="post-content" th:if="${#lists.isEmpty(phases)}">
-                		<p>Nenhum instrumento estudado até o momento.</p>
-					</div>
-                
-                	<div class="post-content" th:each="phase : ${phases}">
-                		<ul>
-                			<li>
-                  				<span th:text="${phase.map.game.name}"></span>
-                  				<br />
-        						<span th:text="${phase.map.level.name}"></span>
-        						<br />
-       							Última fase concluída: <span th:text="${phase.order}"></span>
-       						</li>
-       					</ul>
-					</div>
+            <div class="pull-left"><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" class="btn btn-link" style="text-decoration:none"
+                                      aria-controls="collapseInstrument" href="#collapseInstrument"><i class="fa fa-music fa-1x" aria-hidden="true"></i></a>
+            </div>
 
-				</div>
-               
-			</div>
-           
-		</div>
-       
-		<hr />
-            
-		<div class="panel panel-default">
-    
-	    	<div class="panel-body">
-	        
-	        	<div class="pull-left"><a href="#collapseCertificate" class="btn btn-link" data-toggle="collapse" data-parent="#accordion" aria-expanded="false" style="text-decoration:none" aria-controls="collapseCertificate"><i class="fa fa-certificate" aria-hidden="true"></i></a></div>
-	        
-	        	<h4><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" style="text-decoration:none" shape="rect" aria-controls="collapseCertificate" href="#collapseCertificate"><strong>Certificados</strong></a></h4>
-	               
-				<div id="collapseCertificate" class="collapse in">
-	               
-	                <hr />
-	                
-	                <div class="post-content" th:if="${#lists.isEmpty(diplomas)}">
-	                	<p>Nenhum certificado obtido até o momento.</p>
-					</div>
-	                
-	                <div class="post-content" th:each="diploma : ${diplomas}">
-						<ul>
-							<li>
-	            				<span th:text="${diploma.game.name}"></span> - <span th:text="${diploma.level.name}"></span>
-	            				<br />
-	            				<span th:text="${diploma.dtStr}"></span>
-	            				<br />
-	            				
-	            				<a th:href="@{'/diploma/'+${diploma.code}}"><i class="fa fa-download" aria-hidden="true"></i> Baixar</a>
-	  						</li>
-						</ul>
-					</div>
-	
-				</div>
-	               
-			</div>
-	           
-		</div>
-            
-	</div>
+            <h4><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" style="text-decoration:none" aria-controls="collapseInstrument"
+                   href="#collapseInstrument"><strong>Instrumentos</strong></a></h4>
+
+            <div id="collapseInstrument" class="collapse in">
+
+                <hr />
+
+                <div class="post-content" th:if="${#lists.isEmpty(phases)}">
+                    <p>Nenhum instrumento estudado até o momento.</p>
+                </div>
+
+                <div class="post-content" th:each="phase : ${phases}">
+                    <ul>
+                        <li>
+                            <span th:text="${phase.map.game.name}"></span>
+                            <br />
+                            <span th:text="${phase.map.level.name}"></span>
+                            <br />
+                            Última fase concluída: <span th:text="${phase.order}"></span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <hr />
+
+    <div class="panel panel-default">
+
+        <div class="panel-body">
+
+            <div class="pull-left"><a href="#collapseCertificate" class="btn btn-link" data-toggle="collapse" data-parent="#accordion" aria-expanded="false"
+                                      style="text-decoration:none" aria-controls="collapseCertificate"><i class="fa fa-certificate" aria-hidden="true"></i></a>
+            </div>
+
+            <h4><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" style="text-decoration:none" shape="rect"
+                   aria-controls="collapseCertificate" href="#collapseCertificate"><strong>Certificados</strong></a></h4>
+
+            <div id="collapseCertificate" class="collapse in">
+
+                <hr />
+
+                <div class="post-content" th:if="${#lists.isEmpty(diplomas)}">
+                    <p>Nenhum certificado obtido até o momento.</p>
+                </div>
+
+                <div class="post-content" th:each="diploma : ${diplomas}">
+                    <ul>
+                        <li>
+                            <span th:text="${diploma.game.name}"></span> - <span th:text="${diploma.level.name}"></span>
+                            <br />
+                            <span th:text="${diploma.dtStr}"></span>
+                            <br />
+
+                            <a th:href="@{'/diploma/'+${diploma.code}}"><i class="fa fa-download" aria-hidden="true"></i> Baixar</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
 </body>
 </html>

@@ -1,55 +1,55 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutLogin">
 
 <head></head>
 
 <body>
 
-   	<div layout:fragment="content" class="container intro">
-		
-	    	<div class="col-sm-6 bg">
-	    	
-	    		<h2 class="title">Confirmação de cadastro</h2>
-	    		<p class="summary">Informe seu e-mail e o código de ativação recebido em seu e-mail:</p>
-	      		
-	      		<div class="login-form-container">
-		      		
-		      		<form class="login-form" th:object="${player}" th:action="@{/emailconfirmation}" method="post">
-		  				<div class="form-group">
-		    				<input type="email" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" />
-		  				</div>
-		  				
-		  				<div class="form-group">
-		    				<input type="text" th:field="*{emailConfirmed}" class="form-control" required="true" placeholder="Código de ativação recebido" />
-		  				</div>
-		  				
-		  				<input type="submit" class="btn btn-cta btn-cta-secondary" value="Confirmar" />
-					</form>
-					
-				</div>
-	    	</div>
-	    	
-	    	<div class="col-sm-6 bg">
-	    		<h2 class="title">Reenvio do código</h2>
-	    		<p class="summary">Caso não tenha recebido o código de ativação em seu e-mail, utilize essa seção para reenviar o código:</p>
-	    		
-	    		<div class="login-form-container">
-	    		
-		    		<form class="login-form" th:object="${playerResend}" th:action="@{/emailconfirmationresend}" method="post">
-		  				
-		  				<div class="form-group">
-		    				<input type="email" th:field="*{email}" class="form-control" required="true" placeholder="Informe seu e-mail" />
-		  				</div>
-		  				
-		  				<input type="submit" class="btn btn-cta btn-cta-secondary" value="Reenviar" />
-					</form>
-					
-				</div>
-	    	</div>
-	    	
-	    	<input type="hidden" th:value="${codRegister}" id="alertCodRegister" />
-	    	<input type="hidden" th:value="${msgRegister}" id="alertMsgRegister" />
-	  	
-	</div>
+<div layout:fragment="content" class="container intro">
+
+    <div class="col-sm-6 bg">
+
+        <h2 class="title">Confirmação de cadastro</h2>
+        <p class="summary">Informe seu e-mail e o código de ativação recebido em seu e-mail:</p>
+
+        <div class="login-form-container">
+
+            <form class="login-form" th:object="${player}" th:action="@{/emailconfirmation}" method="post">
+                <div class="form-group">
+                    <input type="email" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}" />
+                </div>
+
+                <div class="form-group">
+                    <input type="text" th:field="*{emailConfirmed}" class="form-control" required="true" placeholder="Código de ativação recebido" />
+                </div>
+
+                <input type="submit" class="btn btn-cta btn-cta-secondary" value="Confirmar" />
+            </form>
+
+        </div>
+    </div>
+
+    <div class="col-sm-6 bg">
+        <h2 class="title">Reenvio do código</h2>
+        <p class="summary">Caso não tenha recebido o código de ativação em seu e-mail, utilize essa seção para reenviar o código:</p>
+
+        <div class="login-form-container">
+
+            <form class="login-form" th:object="${playerResend}" th:action="@{/emailconfirmationresend}" method="post">
+
+                <div class="form-group">
+                    <input type="email" th:field="*{email}" class="form-control" required="true" placeholder="Informe seu e-mail" />
+                </div>
+
+                <input type="submit" class="btn btn-cta btn-cta-secondary" value="Reenviar" />
+            </form>
+
+        </div>
+    </div>
+
+    <input type="hidden" th:value="${codRegister}" id="alertCodRegister" />
+    <input type="hidden" th:value="${msgRegister}" id="alertMsgRegister" />
+
+</div>
 </body>
 </html>

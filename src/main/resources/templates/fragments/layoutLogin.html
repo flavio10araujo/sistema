@@ -1,6 +1,6 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:fragment="layout (contentTemplate)">
 
 <head>
     <title th:text="#{title}"></title>
@@ -71,7 +71,7 @@
     <!-- ******PROMO****** -->
     <section id="promo" class="promo section">
 
-        <div layout:fragment="content"></div>
+        <div th:replace="${contentTemplate}"></div>
 
         <div class="bg-slider-wrapper">
             <div id="bg-slider" class="flexslider bg-slider">

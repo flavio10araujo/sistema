@@ -1,15 +1,15 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutAdmin">
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" th:replace="~{fragments/layoutAdmin :: layout(~{::section})}">
 
 <head></head>
 
 <body>
-	<div layout:fragment="content">
-		<div class="container-fluid">
-			<div class="row bg">
-		    	<h1>Área restrita para usuário do tipo ADMIN.</h1>
-		  	</div>
-		</div>
-	</div>
+<sectionv layout:fragment="contentTemplate">
+    <div class="container-fluid">
+        <div class="row bg">
+            <h1>Área restrita para usuário do tipo ADMIN.</h1>
+        </div>
+    </div>
+</sectionv>
 </body>
 </html>

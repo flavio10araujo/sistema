@@ -1,42 +1,46 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
-	<meta name="author" content="Polifono.com" />
-   	<link rel="icon" th:href="@{/static/img/favicon.ico}" sizes="16x16" />
-	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-	<meta name="viewport" content="width=device-width,initial-scale=1" />
-	<meta name="robots" content="index, follow" />
-	<meta property="og:site_name" content="Polifono.com" />	
+    <meta name="author" content="Polifono.com" />
+    <link rel="icon" th:href="@{/static/img/favicon.ico}" sizes="16x16" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:site_name" content="Polifono.com" />
     <meta property="og:locale" content="pt_BR" />
-	
-	<title>Aprenda a tocar saxofone hoje!</title>
-    <meta name="description" content="Curso para quem procura aprender a tocar saxofone de maneira fácil, evoluindo passo a passo até dominar todo o instrumento." />
-    <meta name="keywords" content="como tocar saxofone, aula de saxofone, aulas de saxofone, aula de saxofone para iniciantes, aprendendo a tocar saxofone, como aprender a tocar saxofone sozinho, notas do saxofone, como tocar saxofone pela primeira vez, vídeo aula de saxofone, apostila de saxofone, curso completo de saxofone" />
+
+    <title>Aprenda a tocar saxofone hoje!</title>
+    <meta name="description"
+          content="Curso para quem procura aprender a tocar saxofone de maneira fácil, evoluindo passo a passo até dominar todo o instrumento." />
+    <meta name="keywords"
+          content="como tocar saxofone, aula de saxofone, aulas de saxofone, aula de saxofone para iniciantes, aprendendo a tocar saxofone, como aprender a tocar saxofone sozinho, notas do saxofone, como tocar saxofone pela primeira vez, vídeo aula de saxofone, apostila de saxofone, curso completo de saxofone" />
     <meta property="og:url" content="https://www.polifono.com/promos/saxophone" />
     <meta property="og:title" content="Aprenda a tocar saxofone hoje!" />
-    <meta property="og:description" content="Curso para quem procura aprender a tocar saxofone de maneira fácil, evoluindo passo a passo até dominar todo o instrumento." />
+    <meta property="og:description"
+          content="Curso para quem procura aprender a tocar saxofone de maneira fácil, evoluindo passo a passo até dominar todo o instrumento." />
     <meta property="og:image" content="https://media.polifono.com/img/sax_1_1_002_1_01.png" />
-	<meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@polifonooficial"/>
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@polifonooficial" />
     <meta name="twitter:title" content="Aprenda a tocar saxofone hoje!" />
-    <meta name="twitter:description" content="Curso para quem procura aprender a tocar saxofone de maneira fácil, evoluindo passo a passo até dominar todo o instrumento." />
+    <meta name="twitter:description"
+          content="Curso para quem procura aprender a tocar saxofone de maneira fácil, evoluindo passo a passo até dominar todo o instrumento." />
     <meta name="twitter:image:src" content="https://media.polifono.com/img/sax_1_1_002_1_01.png" />
     <meta itemprop="name" content="Aprenda a tocar saxofone hoje!" />
-    <meta itemprop="description" content="Curso para quem procura aprender a tocar saxofone de maneira fácil, evoluindo passo a passo até dominar todo o instrumento." />
+    <meta itemprop="description"
+          content="Curso para quem procura aprender a tocar saxofone de maneira fácil, evoluindo passo a passo até dominar todo o instrumento." />
     <meta itemprop="image" content="https://media.polifono.com/img/sax_1_1_002_1_01.png" />
     <meta itemprop="url" content="https://media.polifono.com/img/sax_1_1_002_1_01.png" />
-	
-	<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" />
-	<!--<link rel="stylesheet" type="text/css" media="all" th:href="@{/static/css/promos.css}" /> -->
-	<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
-	<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-	<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/beeker/bioep.min.js}"></script>
+
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" />
+    <!--<link rel="stylesheet" type="text/css" media="all" th:href="@{/static/css/promos.css}" /> -->
+    <script type="text/javascript" th:inline="javascript" th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+    <script type="text/javascript" th:inline="javascript" th:src="@{/vendors/bootstrap/dist/js/bootstrap.min.js}"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <script type="text/javascript" th:inline="javascript" th:src="@{/vendors/beeker/bioep.min.js}"></script>
 
 </head>
 
@@ -44,27 +48,40 @@
 
 <div class="jumbotron" style="padding-top:20px;padding-bottom:0px;margin-bottom:20px">
 
-	<div class="container">
-		
-		<style>
-		.embed-container{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;}
-		.embed-container iframe, .embed-container object, .embed-container embed{position:absolute;top:0;left:0;width:100%;height:100%;}
-		</style>
-		
-    	<div class="col-sm-12 bg">
-      		<div class="row">
-				<div class="panel panel-primary">
-					<div class="panel-heading" th:text="${phase.name}"></div>
-					<div class="panel-body" th:utext="${content.content}" style="color:black;line-height:normal;"></div>
-				</div>
-			</div>
-			<div class="row" align="right">
-				<a href="#register" class="btn btn-primary" role="button" data-loading-text="Aguardando o seu cadastro..." id="btnOk">Ver a próxima aula >></a>
-				<br /><br />
-			</div>
-    	</div>
-    	
-	</div>
+    <div class="container">
+
+        <style>
+          .embed-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+          }
+
+          .embed-container iframe, .embed-container object, .embed-container embed {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+          }
+        </style>
+
+        <div class="col-sm-12 bg">
+            <div class="row">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" th:text="${phase.name}"></div>
+                    <div class="panel-body" th:utext="${content.content}" style="color:black;line-height:normal;"></div>
+                </div>
+            </div>
+            <div class="row" align="right">
+                <a href="#register" class="btn btn-primary" role="button" data-loading-text="Aguardando o seu cadastro..." id="btnOk">Ver a próxima aula >></a>
+                <br /><br />
+            </div>
+        </div>
+
+    </div>
 </div>
 
 </body>
