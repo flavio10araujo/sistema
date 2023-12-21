@@ -34,6 +34,6 @@ public interface IPhaseRepository extends JpaRepository<Phase, Integer> {
     @Query("SELECT phase FROM PlayerPhase playerPhase, Phase phase, Map map, Game game WHERE playerPhase.phase.id = phase.id AND phase.map.id = map.id AND map.game.id = game.id AND playerPhase.player.id = :playerId ORDER BY game.id, phase.id DESC")
     public List<Phase> findGamesForProfile(@Param("playerId") int playerId);
 
-    @Query("SELECT phase FROM Content content, Phase phase, Map map, Game game, PlayerPhase playerPhase WHERE content.phase.id = phase.id AND phase.map.id = map.id AND map.game.id = game.id AND phase.id = playerPhase.phase.id AND playerPhase.phasestatus = :phasestatus AND playerPhase.player.id = :playerId AND content.content LIKE :q ORDER BY game.name, phase.order ASC")
+    @Query("SELECT phase FROM Content content, Phase phase, Map map, Game game, PlayerPhase playerPhase WHERE content.phase.id = phase.id AND phase.map.id = map.id AND map.game.id = game.id AND phase.id = playerPhase.phase.id AND playerPhase.phasestatus.id = :phasestatus AND playerPhase.player.id = :playerId AND content.content LIKE :q ORDER BY game.name, phase.order ASC")
     public List<Phase> findPhasesBySearchAndUser(@Param("q") String q, @Param("playerId") int playerId, @Param("phasestatus") int phasestatus);
 }
