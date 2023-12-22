@@ -2,15 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       th:replace="~{fragments/layoutMainFb :: layout(~{::section})}">
 
-<head>
-    <style type="text/css">
-      .mainbody {
-        background: #f0f0f0
-      }
-    </style>
-    <title>Page Title</title>
-</head>
-
 <body>
 <section layout:fragment="contentTemplate">
 
@@ -20,9 +11,11 @@
 
             <div class="panel-body">
 
-                <div class="pull-left"><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" class="btn btn-link"
-                                          style="text-decoration:none" aria-controls="collapseInstruments" href="#collapseInstruments"><i
-                        class="fa fa-music fa-1x" aria-hidden="true"></i></a></div>
+                <div class="pull-left">
+                    <a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" class="btn btn-link"
+                       style="text-decoration:none" aria-controls="collapseInstruments" href="#collapseInstruments"><i class="fa fa-music fa-1x"
+                                                                                                                       aria-hidden="true"></i></a>
+                </div>
 
                 <h4><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" style="text-decoration:none" aria-controls="collapseInstruments"
                        href="#collapseInstruments"><strong>Instrumentos</strong></a></h4>
