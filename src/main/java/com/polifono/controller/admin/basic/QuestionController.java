@@ -108,9 +108,9 @@ public class QuestionController extends BaseController {
             // Form
             model.addAttribute("questionFilterForm", new QuestionFilterForm());
             // Filter
-            model.addAttribute("contents", (ArrayList<Content>) contentService.findAllTest());
+            model.addAttribute("contents", new ArrayList<Content>());
             // List
-            model.addAttribute("questions", (ArrayList<Question>) questionService.findAll());
+            model.addAttribute("questions", new ArrayList<Question>());
         }
 
         return URL_ADMIN_BASIC_INDEX;

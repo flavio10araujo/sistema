@@ -114,9 +114,9 @@ public class AnswerController extends BaseController {
             // Form
             model.addAttribute("answerFilterForm", new AnswerFilterForm());
             // Filter
-            model.addAttribute("questions", (ArrayList<Question>) questionService.findAll());
+            model.addAttribute("questions", new ArrayList<Question>());
             // List
-            model.addAttribute("answers", (ArrayList<Answer>) answerService.findAll());
+            model.addAttribute("answers", new ArrayList<Answer>());
         }
 
         return URL_ADMIN_BASIC_INDEX;
