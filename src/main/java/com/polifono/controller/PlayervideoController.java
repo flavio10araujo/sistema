@@ -36,7 +36,7 @@ public class PlayervideoController extends BaseController {
     @Autowired
     private IPlayerService playerService;
 
-    @GetMapping(value = "/playervideos")
+    @GetMapping(value = "/playervideos", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public List<PlayervideoDTO> playervideosGeneral(@RequestParam(value = "restriction") String restriction) {
 
@@ -88,7 +88,7 @@ public class PlayervideoController extends BaseController {
         return true;
     }
 
-    @GetMapping(value = "/playervideos/content/{contentId}")
+    @GetMapping(value = "/playervideos/content/{contentId}", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public List<PlayervideoDTO> playervideosByContent(@PathVariable("contentId") Integer contentId, @RequestParam(value = "page") String pageStr,
             @RequestParam(value = "size") String sizeStr) {
@@ -118,7 +118,7 @@ public class PlayervideoController extends BaseController {
         }
     }
 
-    @GetMapping(value = "/playervideos/player/{playerId}")
+    @GetMapping(value = "/playervideos/player/{playerId}", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public List<PlayervideoDTO> playervideosByPlayer(@PathVariable("playerId") Integer playerId, @RequestParam(value = "page") String pageStr,
             @RequestParam(value = "size") String sizeStr) {
