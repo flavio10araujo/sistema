@@ -147,7 +147,7 @@
                                 <td align="center">
                                     <a th:href="@{/admin/basic/content/edit/{id}(id=${item.id})}"><span class="glyphicon glyphicon-edit"></span></a> &nbsp;
                                     &nbsp;
-                                    <a th:href="@{'javascript:deleteItem(\'/admin/basic/content/delete/' + ${item.id} + '\')'}"><span
+                                    <a href="#" th:onclick="'deleteItem(\'/admin/basic/content/delete/' + ${item.id} + '\');'"><span
                                             class="glyphicon glyphicon-trash"></span></a>
                                 </td>
                             </tr>
