@@ -7,11 +7,12 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,93 +24,92 @@ import com.polifono.service.impl.LevelServiceImpl;
 
 /**
  * Unit test methods for the LevelService.
- * 
  */
 public class LevelServiceTest extends AbstractTest {
 
-	@Autowired
+    @Autowired
     private ILevelService service;
-	
-	@Mock
-	private ILevelRepository repository;
-	
-	private final Integer GAME_ID_EXISTENT = 1;
-	private final Integer GAME_ID_INEXISTENT = Integer.MAX_VALUE;
 
-    @Before
+    @Mock
+    private ILevelRepository repository;
+
+    private final Integer GAME_ID_EXISTENT = 1;
+    private final Integer GAME_ID_INEXISTENT = Integer.MAX_VALUE;
+
+    @BeforeEach
     public void setUp() {
         // Do something before each test method.
-    	MockitoAnnotations.initMocks(this);
-    	service = new LevelServiceImpl(repository);
+        MockitoAnnotations.initMocks(this);
+        service = new LevelServiceImpl(repository);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         // Clean up after each test method.
     }
-    
+
     /* stubs - begin */
-    private Level getEntityStubData() {
-    	Level level = new Level();
-    	return level;
+    private Optional<Level> getEntityStubData() {
+        Level level = new Level();
+        return Optional.of(level);
     }
-    
+
     private List<Level> getEntityListStubData() {
-    	List<Level> list = new ArrayList<Level>();
-    	
-    	Level entity1 = getEntityStubData();
-    	Level entity2 = getEntityStubData();
-    	
-    	list.add(entity1);
-    	list.add(entity2);
-    	
-    	return list;
-    } 
+        List<Level> list = new ArrayList<Level>();
+
+        Level entity1 = getEntityStubData().get();
+        Level entity2 = getEntityStubData().get();
+
+        list.add(entity1);
+        list.add(entity2);
+
+        return list;
+    }
     /* stubs - end */
-    
+
     /* findAll - begin */
     @Test
     public void findAll_WhenListAllLevels_ReturnList() {
-    	List<Level> list = getEntityListStubData();
-    	
-    	when(repository.findAll()).thenReturn(list);
-    	
-    	List<Level> listReturned = service.findAll();
-    	Assert.assertNotNull("failure - expected not null", listReturned);
-    	Assert.assertNotEquals("failure - not expected list size 0", 0, listReturned.size());
-    	
-    	verify(repository, times(1)).findAll();
+        List<Level> list = getEntityListStubData();
+
+        when(repository.findAll()).thenReturn(list);
+
+        List<Level> listReturned = service.findAll();
+        Assertions.assertNotNull(listReturned, "failure - expected not null");
+        Assertions.assertNotEquals(0, listReturned.size(), "failure - not expected list size 0");
+
+        verify(repository, times(1)).findAll();
         verifyNoMoreInteractions(repository);
     }
     /* findAll - end */
-    
+
     /* findByGame - begin */
     @Test
     public void findByGame_WhenSearchByGameExistent_ReturnLevel() {
-    	List<Level> list = getEntityListStubData();
-    	
-    	when(repository.findByGame(GAME_ID_EXISTENT)).thenReturn(list);
-    	
-    	List<Level> listReturned = service.findByGame(GAME_ID_EXISTENT);
-    	Assert.assertNotNull("failure - expected not null", listReturned);
-    	Assert.assertNotEquals("failure - not expected list size 0", 0, listReturned.size());
-    	
-    	verify(repository, times(1)).findByGame(GAME_ID_EXISTENT);
+        List<Level> list = getEntityListStubData();
+
+        when(repository.findByGame(GAME_ID_EXISTENT)).thenReturn(list);
+
+        List<Level> listReturned = service.findByGame(GAME_ID_EXISTENT);
+        Assertions.assertNotNull(listReturned, "failure - expected not null");
+        Assertions.assertNotEquals(0, listReturned.size(), "failure - not expected list size 0");
+
+        verify(repository, times(1)).findByGame(GAME_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
     }
-    
+
     @Test
     public void findByGame_WhenSearchByGameInexistent_ReturnEmptyList() {
-    	when(repository.findByGame(GAME_ID_INEXISTENT)).thenReturn(new ArrayList<Level>());
-    	
-    	List<Level> listReturned = service.findByGame(GAME_ID_INEXISTENT);
-    	Assert.assertEquals("failure - expected list size 0", 0, listReturned.size());
-    	
-    	verify(repository, times(1)).findByGame(GAME_ID_INEXISTENT);
+        when(repository.findByGame(GAME_ID_INEXISTENT)).thenReturn(new ArrayList<Level>());
+
+        List<Level> listReturned = service.findByGame(GAME_ID_INEXISTENT);
+        Assertions.assertEquals(0, listReturned.size(), "failure - expected list size 0");
+
+        verify(repository, times(1)).findByGame(GAME_ID_INEXISTENT);
         verifyNoMoreInteractions(repository);
     }
     /* findByGame - end */
-    
+
     /* flagLevelsToOpenedOrNot - begin */
     /* flagLevelsToOpenedOrNot - end */
 }

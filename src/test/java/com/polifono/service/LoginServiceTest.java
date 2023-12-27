@@ -4,12 +4,13 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -31,30 +32,30 @@ public class LoginServiceTest extends AbstractTest {
     private final Integer PLAYER_ID_EXISTENT = 1;
     private final Integer PLAYER_ID_INEXISTENT = Integer.MAX_VALUE;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // Do something before each test method.
         MockitoAnnotations.initMocks(this);
         service = new LoginServiceImpl(repository);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         // Clean up after each test method.
     }
 
     /* stubs - begin */
-    private Login getEntityStubData() {
+    private Optional<Login> getEntityStubData() {
         Login entity = new Login();
         entity.setId(2);
-        return entity;
+        return Optional.of(entity);
     }
 
     private List<Login> getEntityListStubData() {
         List<Login> list = new ArrayList<Login>();
 
-        Login entity1 = getEntityStubData();
-        Login entity2 = getEntityStubData();
+        Login entity1 = getEntityStubData().get();
+        Login entity2 = getEntityStubData().get();
 
         list.add(entity1);
         list.add(entity2);
@@ -75,7 +76,7 @@ public class LoginServiceTest extends AbstractTest {
 
     	Login entityReturned = service.registerLogin(player);
 
-    	Assert.assertNotEquals("failure - not expected ID equals 0", 0, entityReturned.getId());
+    	Assertions.assertNotEquals("failure - not expected ID equals 0", 0, entityReturned.getId());
 
     	verify(repository, times(1)).save(entity);
         verifyNoMoreInteractions(repository);
@@ -87,27 +88,27 @@ public class LoginServiceTest extends AbstractTest {
 
     /* findByPlayer - begin */
     @Test
-    @Ignore
+    @Disabled
     public void findByPlayer_WhenSearchByPlayerExistent_ReturnList() {
         List<Login> list = getEntityListStubData();
 
         ////DESCOMENTARwhen(repository.findByPlayer(PLAYER_ID_EXISTENT)).thenReturn(list);
 
         List<Login> listReturned = service.findByPlayer(PLAYER_ID_EXISTENT);
-        Assert.assertNotNull("failure - not expected null", listReturned);
-        Assert.assertNotEquals("failure - not size 0", 0, listReturned.size());
+        Assertions.assertNotNull(listReturned, "failure - not expected null");
+        Assertions.assertNotEquals(0, listReturned.size(), "failure - not size 0");
 
         ////DESCOMENTARverify(repository, times(1)).findByPlayer(PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void findByPlayer_WhenSearchByPlayerInexistent_ReturnNull() {
         ////DESCOMENTARwhen(repository.findByPlayer(PLAYER_ID_INEXISTENT)).thenReturn(null);
 
         List<Login> listReturned = service.findByPlayer(PLAYER_ID_INEXISTENT);
-        Assert.assertNull("failure - expected null", listReturned);
+        Assertions.assertNull(listReturned, "failure - expected null");
 
         ////DESCOMENTARverify(repository, times(1)).findByPlayer(PLAYER_ID_INEXISTENT);
         verifyNoMoreInteractions(repository);

@@ -4,11 +4,11 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,7 +42,7 @@ public class UserDetailsServiceTest {
     private final String PLAYER_EMAIL_EXISTENT = "flavio10araujo@yahoo.com.br";
     private final String PLAYER_EMAIL_INEXISTENT = "email_inexistent";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // Do something before each test method.
         MockitoAnnotations.initMocks(this);
@@ -50,22 +50,25 @@ public class UserDetailsServiceTest {
         service = new UserDetailsServiceImpl(userService);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         // Clean up after each test method.
     }
 
     /* loadUserByUsername - begin */
-    @Test(expected = UsernameNotFoundException.class)
-    @Ignore
+    @Test
+    @Disabled
     public void loadUserByUsername_WhenUserNotFoundByEmailAndStatus_ThrowUsernameNotFoundException() {
         String email = PLAYER_EMAIL_INEXISTENT;
         when(userService.findByEmailAndStatusForLogin(email, true)).thenReturn(Optional.empty());
-        service.loadUserByUsername(PLAYER_EMAIL_INEXISTENT);
+
+        Assertions.assertThrows(UsernameNotFoundException.class, () -> {
+            service.loadUserByUsername(PLAYER_EMAIL_INEXISTENT);
+        });
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void loadUserByUsername_WhenUserIsFoundByEmailAndStatus_ReturnUser() {
         String email = PLAYER_EMAIL_EXISTENT;
 
@@ -80,13 +83,13 @@ public class UserDetailsServiceTest {
 
         CurrentUser currentUser = service.loadUserByUsername(PLAYER_EMAIL_EXISTENT);
 
-        Assert.assertNotNull(currentUser.getUser());
-        Assert.assertTrue("failure - expected id user bigger than zero", currentUser.getId() > 0);
-        Assert.assertTrue("failure - expected role user [ADMIN, USER or TEACHER]",
+        Assertions.assertNotNull(currentUser.getUser());
+        Assertions.assertTrue(currentUser.getId() > 0, "failure - expected id user bigger than zero");
+        Assertions.assertTrue(
                 (currentUser.getRole().toString().equals("ADMIN")) ||
                         (currentUser.getRole().toString().equals("USER")) ||
                         (currentUser.getRole().toString().equals("TEACHER"))
-        );
+                , "failure - expected role user [ADMIN, USER or TEACHER]");
     }
     /* loadUserByUsername - end */
 }
