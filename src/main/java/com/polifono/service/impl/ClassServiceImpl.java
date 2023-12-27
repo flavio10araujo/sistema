@@ -27,7 +27,7 @@ public class ClassServiceImpl implements IClassService {
     public Boolean delete(Integer id) {
         Optional<com.polifono.domain.Class> temp = repository.findById(id);
 
-        if (!temp.isPresent()) {
+        if (temp.isPresent()) {
             try {
                 repository.save(prepareClassForChangingStatus(temp.get(), false));
             } catch (Exception e) {

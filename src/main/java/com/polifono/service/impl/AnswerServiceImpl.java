@@ -29,7 +29,7 @@ public class AnswerServiceImpl implements IAnswerService {
     public Boolean delete(Integer id) {
         Optional<Answer> temp = repository.findById(id);
 
-        if (!temp.isPresent()) {
+        if (temp.isPresent()) {
             try {
                 repository.delete(temp.get());
             } catch (Exception e) {
