@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -48,20 +48,20 @@ public class PlayerServiceTest extends AbstractTest {
 
     private final Integer GAME_ID_EXISTENT = 2;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // Do something before each test method.
         MockitoAnnotations.initMocks(this);
         service = new PlayerServiceImpl(repository, playerGameService);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         // Clean up after each test method.
     }
 
     /* stubs - begin */
-    private Player getEntityStubData() {
+    private Optional<Player> getEntityStubData() {
         List<PlayerGame> playerGameList = new ArrayList<PlayerGame>();
 
         Player entity = new Player();
@@ -73,14 +73,14 @@ public class PlayerServiceTest extends AbstractTest {
 
         entity.setPlayerGameList(playerGameList);
 
-        return entity;
+        return Optional.of(entity);
     }
 
     private List<Player> getEntityListStubData() {
         List<Player> list = new ArrayList<Player>();
 
-        Player entity1 = getEntityStubData();
-        Player entity2 = getEntityStubData();
+        Player entity1 = getEntityStubData().get();
+        Player entity2 = getEntityStubData().get();
 
         list.add(entity1);
         list.add(entity2);
@@ -123,28 +123,28 @@ public class PlayerServiceTest extends AbstractTest {
     /* create - begin */
     /*@Test
     public void create_WhenCreatePlayer_ReturnPlayerCreated() {
-        Player entity = getEntityStubData();
+        Optional<Player> entity = getEntityStubData();
 
         when(repository.save(entity)).thenReturn(entity);
 
         Player entityReturned = service.create(entity);
 
-        Assert.assertEquals("failure - expected name attribute match", entity.getName(), entityReturned.getName());
-        Assert.assertEquals("failure - expected email attribute match", entity.getEmail(), entityReturned.getEmail());
-        //Assert.assertEquals("failure - expected password attribute match", service.encryptPassword(entity.getPassword()), newEntity.getPassword());
+        Assertions.assertEquals("failure - expected name attribute match", entity.getName(), entityReturned.getName());
+        Assertions.assertEquals("failure - expected email attribute match", entity.getEmail(), entityReturned.getEmail());
+        //Assertions.assertEquals("failure - expected password attribute match", service.encryptPassword(entity.getPassword()), newEntity.getPassword());
 
-        Assert.assertEquals("failure - expected dtInc attribute match", 0, entity.getDtInc().compareTo(entityReturned.getDtInc()));
-        Assert.assertEquals("failure - expected active attribute match", true, entityReturned.isActive());
-        Assert.assertEquals("failure - expected credit attribute match", 30, entityReturned.getCredit());
-        Assert.assertEquals("failure - expected role attribute match", Role.USER, entityReturned.getRole());
+        Assertions.assertEquals("failure - expected dtInc attribute match", 0, entity.getDtInc().compareTo(entityReturned.getDtInc()));
+        Assertions.assertEquals("failure - expected active attribute match", true, entityReturned.isActive());
+        Assertions.assertEquals("failure - expected credit attribute match", 30, entityReturned.getCredit());
+        Assertions.assertEquals("failure - expected role attribute match", Role.USER, entityReturned.getRole());
 
-        Assert.assertEquals("failure - expected score attribute match", 0, entityReturned.getScore());
-        Assert.assertEquals("failure - expected indEmailConfirmed attribute match", false, entityReturned.isIndEmailConfirmed());
-        Assert.assertNotNull("failure - expected emailConfirmed attribute not null", entityReturned.getEmailConfirmed());
-        Assert.assertNull("failure - expected passwordReset attribute null", entityReturned.getPasswordReset());
-        Assert.assertNull("failure - expected phone attribute null", entityReturned.getPhone());
-        Assert.assertEquals("failure - expected sex attribute match", 0, entityReturned.getSex());
-        Assert.assertNull("failure - expected address attribute null", entityReturned.getAddress());
+        Assertions.assertEquals("failure - expected score attribute match", 0, entityReturned.getScore());
+        Assertions.assertEquals("failure - expected indEmailConfirmed attribute match", false, entityReturned.isIndEmailConfirmed());
+        Assertions.assertNotNull("failure - expected emailConfirmed attribute not null", entityReturned.getEmailConfirmed());
+        Assertions.assertNull("failure - expected passwordReset attribute null", entityReturned.getPasswordReset());
+        Assertions.assertNull("failure - expected phone attribute null", entityReturned.getPhone());
+        Assertions.assertEquals("failure - expected sex attribute match", 0, entityReturned.getSex());
+        Assertions.assertNull("failure - expected address attribute null", entityReturned.getAddress());
 
         verify(repository, times(1)).save(entity);
         verifyNoMoreInteractions(repository);
@@ -157,27 +157,27 @@ public class PlayerServiceTest extends AbstractTest {
     /* save - begin */
     @Test
     public void save_WhenSavePlayer_ReturnPlayerSaved() {
-        Player entity = getEntityStubData();
+        Player entity = getEntityStubData().get();
 
         when(repository.save(entity)).thenReturn(entity);
 
         Player entityReturned = service.save(entity);
 
-        Assert.assertEquals("failure - expected name attribute match", entity.getName(), entityReturned.getName());
-        Assert.assertEquals("failure - expected email attribute match", entity.getEmail(), entityReturned.getEmail());
-        //Assert.assertEquals("failure - expected password attribute match", service.encryptPassword(auxEntity.getPassword()), updatedEntity.getPassword());
+        Assertions.assertEquals(entity.getName(), entityReturned.getName(), "failure - expected name attribute match");
+        Assertions.assertEquals(entity.getEmail(), entityReturned.getEmail(), "failure - expected email attribute match");
+        //Assertions.assertEquals("failure - expected password attribute match", service.encryptPassword(auxEntity.getPassword()), updatedEntity.getPassword());
 
-        Assert.assertEquals("failure - expected active attribute match", entity.isActive(), entityReturned.isActive());
-        Assert.assertEquals("failure - expected credit attribute match", entity.getCredit(), entityReturned.getCredit());
-        Assert.assertEquals("failure - expected role attribute match", entity.getRole(), entityReturned.getRole());
+        Assertions.assertEquals(entity.isActive(), entityReturned.isActive(), "failure - expected active attribute match");
+        Assertions.assertEquals(entity.getCredit(), entityReturned.getCredit(), "failure - expected credit attribute match");
+        Assertions.assertEquals(entity.getRole(), entityReturned.getRole(), "failure - expected role attribute match");
 
-        Assert.assertEquals("failure - expected score attribute match", entity.getScore(), entityReturned.getScore());
-        Assert.assertEquals("failure - expected indEmailConfirmed attribute match", entity.isIndEmailConfirmed(), entityReturned.isIndEmailConfirmed());
-        Assert.assertEquals("failure - expected emailConfirmed attribute match", entity.getEmailConfirmed(), entityReturned.getEmailConfirmed());
-        Assert.assertEquals("failure - expected passwordReset attribute match", entity.getPasswordReset(), entityReturned.getPasswordReset());
-        Assert.assertEquals("failure - expected phone attribute match", entity.getPhone(), entityReturned.getPhone());
-        Assert.assertEquals("failure - expected sex attribute match", entity.getSex(), entityReturned.getSex());
-        Assert.assertEquals("failure - expected address attribute match", entity.getAddress(), entityReturned.getAddress());
+        Assertions.assertEquals(entity.getScore(), entityReturned.getScore(), "failure - expected score attribute match");
+        Assertions.assertEquals(entity.isIndEmailConfirmed(), entityReturned.isIndEmailConfirmed(), "failure - expected indEmailConfirmed attribute match");
+        Assertions.assertEquals(entity.getEmailConfirmed(), entityReturned.getEmailConfirmed(), "failure - expected emailConfirmed attribute match");
+        Assertions.assertEquals(entity.getPasswordReset(), entityReturned.getPasswordReset(), "failure - expected passwordReset attribute match");
+        Assertions.assertEquals(entity.getPhone(), entityReturned.getPhone(), "failure - expected phone attribute match");
+        Assertions.assertEquals(entity.getSex(), entityReturned.getSex(), "failure - expected sex attribute match");
+        Assertions.assertEquals(entity.getAddress(), entityReturned.getAddress(), "failure - expected address attribute match");
 
         verify(repository, times(1)).save(entity);
         verifyNoMoreInteractions(repository);
@@ -187,26 +187,26 @@ public class PlayerServiceTest extends AbstractTest {
     /* findOne - begin */
     @Test
     public void findOne_WhenPlayerIsExistent_ReturnPlayer() {
-        Player entity = getEntityStubData();
+        Optional<Player> entity = getEntityStubData();
 
-        when(repository.findOne(PLAYER_ID_EXISTENT)).thenReturn(entity);
+        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(entity);
 
-        Player entityReturned = service.findOne(PLAYER_ID_EXISTENT);
-        Assert.assertNotNull("failure - expected not null", entityReturned);
-        Assert.assertEquals("failure - expected id attribute match", PLAYER_ID_EXISTENT.intValue(), entityReturned.getId());
+        Optional<Player> entityReturned = service.findById(PLAYER_ID_EXISTENT);
+        Assertions.assertNotNull(entityReturned, "failure - expected not null");
+        Assertions.assertEquals(PLAYER_ID_EXISTENT.intValue(), entityReturned.get().getId(), "failure - expected id attribute match");
 
-        verify(repository, times(1)).findOne(PLAYER_ID_EXISTENT);
+        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
     }
 
     @Test
     public void findOne_WhenPlayerIsInexistent_ReturnNull() {
-        when(repository.findOne(PLAYER_ID_INEXISTENT)).thenReturn(null);
+        when(repository.findById(PLAYER_ID_INEXISTENT)).thenReturn(null);
 
-        Player entityReturned = service.findOne(PLAYER_ID_INEXISTENT);
-        Assert.assertNull("failure - expected null", entityReturned);
+        Optional<Player> entityReturned = service.findById(PLAYER_ID_INEXISTENT);
+        Assertions.assertNull(entityReturned, "failure - expected null");
 
-        verify(repository, times(1)).findOne(PLAYER_ID_INEXISTENT);
+        verify(repository, times(1)).findById(PLAYER_ID_INEXISTENT);
         verifyNoMoreInteractions(repository);
     }
     /* findOne - end */
@@ -219,8 +219,8 @@ public class PlayerServiceTest extends AbstractTest {
         when(repository.findAll()).thenReturn(list);
 
         List<Player> listReturned = service.findAll();
-        Assert.assertNotNull("failure - expected not null", listReturned);
-        Assert.assertNotEquals("failure - not expected list size 0", 0, listReturned.size());
+        Assertions.assertNotNull(listReturned, "failure - expected not null");
+        Assertions.assertNotEquals(0, listReturned.size(), "failure - not expected list size 0");
 
         verify(repository, times(1)).findAll();
         verifyNoMoreInteractions(repository);
@@ -230,23 +230,23 @@ public class PlayerServiceTest extends AbstractTest {
     /* findByEmail - begin */
     @Test
     public void findByEmail_WhenSearchByPlayerExistent_ReturnPlayer() {
-        Player entity = getEntityStubData();
+        Optional<Player> entity = getEntityStubData();
 
-        when(repository.findByEmail(PLAYER_EMAIL_EXISTENT)).thenReturn(entity);
+        when(repository.findByEmail(PLAYER_EMAIL_EXISTENT)).thenReturn(entity.get());
 
         Player entityReturned = service.findByEmail(PLAYER_EMAIL_EXISTENT);
 
-        Assert.assertNotNull("failure - expected not null", entityReturned);
-        Assert.assertEquals("failure - expected email attribute match", PLAYER_EMAIL_EXISTENT, entityReturned.getEmail());
-        Assert.assertTrue("failure - expected id attribute greater than 0", entityReturned.getId() > 0);
-        Assert.assertNotNull("failure - expected active not null", entityReturned.isActive());
-        Assert.assertNotNull("failure - expected password not null", entityReturned.getPassword());
-        Assert.assertNotNull("failure - expected name not null", entityReturned.getName());
-        Assert.assertNotNull("failure - expected score not null", entityReturned.getScore());
-        Assert.assertNotNull("failure - expected credit not null", entityReturned.getCredit());
-        Assert.assertNotNull("failure - expected role not null", entityReturned.getRole());
-        Assert.assertNotNull("failure - expected indEmailConfirmed not null", entityReturned.isIndEmailConfirmed());
-        Assert.assertNotNull("failure - expected sex not null", entityReturned.getSex());
+        Assertions.assertNotNull(entityReturned, "failure - expected not null");
+        Assertions.assertEquals(PLAYER_EMAIL_EXISTENT, entityReturned.getEmail(), "failure - expected email attribute match");
+        Assertions.assertTrue(entityReturned.getId() > 0, "failure - expected id attribute greater than 0");
+        Assertions.assertNotNull(entityReturned.isActive(), "failure - expected active not null");
+        Assertions.assertNotNull(entityReturned.getPassword(), "failure - expected password not null");
+        Assertions.assertNotNull(entityReturned.getName(), "failure - expected name not null");
+        Assertions.assertNotNull(entityReturned.getScore(), "failure - expected score not null");
+        Assertions.assertNotNull(entityReturned.getCredit(), "failure - expected credit not null");
+        Assertions.assertNotNull(entityReturned.getRole(), "failure - expected role not null");
+        Assertions.assertNotNull(entityReturned.isIndEmailConfirmed(), "failure - expected indEmailConfirmed not null");
+        Assertions.assertNotNull(entityReturned.getSex(), "failure - expected sex not null");
 
         verify(repository, times(1)).findByEmail(PLAYER_EMAIL_EXISTENT);
         verifyNoMoreInteractions(repository);
@@ -257,7 +257,7 @@ public class PlayerServiceTest extends AbstractTest {
         when(repository.findByEmail(PLAYER_EMAIL_INEXISTENT)).thenReturn(null);
 
         Player entityReturned = service.findByEmail(PLAYER_EMAIL_INEXISTENT);
-        Assert.assertNull("failure - expected null", entityReturned);
+        Assertions.assertNull(entityReturned, "failure - expected null");
 
         verify(repository, times(1)).findByEmail(PLAYER_EMAIL_INEXISTENT);
         verifyNoMoreInteractions(repository);
@@ -267,23 +267,23 @@ public class PlayerServiceTest extends AbstractTest {
     /* findByEmailAndStatus - begin */
     @Test
     public void findByEmailAndStatus_WhenSearchByPlayerExistentAndByRightStatus_ReturnPlayer() {
-        Player entity = getEntityStubData();
+        Optional<Player> entity = getEntityStubData();
 
-        when(repository.findByEmailAndActive(PLAYER_EMAIL_EXISTENT, true)).thenReturn(entity);
+        when(repository.findByEmailAndActive(PLAYER_EMAIL_EXISTENT, true)).thenReturn(entity.get());
 
         Player entityReturned = service.findByEmailAndStatus(PLAYER_EMAIL_EXISTENT, true);
 
-        Assert.assertNotNull("failure - expected not null", entityReturned);
-        Assert.assertEquals("failure - expected email attribute match", PLAYER_EMAIL_EXISTENT, entityReturned.getEmail());
-        Assert.assertTrue("failure - expected id attribute greater than 0", entityReturned.getId() > 0);
-        Assert.assertNotNull("failure - expected active not null", entityReturned.isActive());
-        Assert.assertNotNull("failure - expected password not null", entityReturned.getPassword());
-        Assert.assertNotNull("failure - expected name not null", entityReturned.getName());
-        Assert.assertNotNull("failure - expected score not null", entityReturned.getScore());
-        Assert.assertNotNull("failure - expected credit not null", entityReturned.getCredit());
-        Assert.assertNotNull("failure - expected role not null", entityReturned.getRole());
-        Assert.assertNotNull("failure - expected indEmailConfirmed not null", entityReturned.isIndEmailConfirmed());
-        Assert.assertNotNull("failure - expected sex not null", entityReturned.getSex());
+        Assertions.assertNotNull(entityReturned, "failure - expected not null");
+        Assertions.assertEquals(PLAYER_EMAIL_EXISTENT, entityReturned.getEmail(), "failure - expected email attribute match");
+        Assertions.assertTrue(entityReturned.getId() > 0, "failure - expected id attribute greater than 0");
+        Assertions.assertNotNull(entityReturned.isActive(), "failure - expected active not null");
+        Assertions.assertNotNull(entityReturned.getPassword(), "failure - expected password not null");
+        Assertions.assertNotNull(entityReturned.getName(), "failure - expected name not null");
+        Assertions.assertNotNull(entityReturned.getScore(), "failure - expected score not null");
+        Assertions.assertNotNull(entityReturned.getCredit(), "failure - expected credit not null");
+        Assertions.assertNotNull(entityReturned.getRole(), "failure - expected role not null");
+        Assertions.assertNotNull(entityReturned.isIndEmailConfirmed(), "failure - expected indEmailConfirmed not null");
+        Assertions.assertNotNull(entityReturned.getSex(), "failure - expected sex not null");
 
         verify(repository, times(1)).findByEmailAndActive(PLAYER_EMAIL_EXISTENT, true);
         verifyNoMoreInteractions(repository);
@@ -294,7 +294,7 @@ public class PlayerServiceTest extends AbstractTest {
         when(repository.findByEmailAndActive(PLAYER_EMAIL_EXISTENT, false)).thenReturn(null);
 
         Player entityReturned = service.findByEmailAndStatus(PLAYER_EMAIL_EXISTENT, false);
-        Assert.assertNull("failure - expected null", entityReturned);
+        Assertions.assertNull(entityReturned, "failure - expected null");
 
         verify(repository, times(1)).findByEmailAndActive(PLAYER_EMAIL_EXISTENT, false);
         verifyNoMoreInteractions(repository);
@@ -305,7 +305,7 @@ public class PlayerServiceTest extends AbstractTest {
         when(repository.findByEmailAndActive(PLAYER_EMAIL_INEXISTENT, true)).thenReturn(null);
 
         Player entityReturned = service.findByEmailAndStatus(PLAYER_EMAIL_INEXISTENT, true);
-        Assert.assertNull("failure - expected null", entityReturned);
+        Assertions.assertNull(entityReturned, "failure - expected null");
 
         verify(repository, times(1)).findByEmailAndActive(PLAYER_EMAIL_INEXISTENT, true);
         verifyNoMoreInteractions(repository);
@@ -315,23 +315,23 @@ public class PlayerServiceTest extends AbstractTest {
     /* findByEmailAndStatusForLogin - begin */
     @Test
     public void findByEmailAndStatusForLogin_WhenSearchByPlayerExistentAndActive_ReturnPlayer() {
-        Optional<Player> entity = Optional.of(getEntityStubData());
+        Optional<Player> entity = getEntityStubData();
 
         when(repository.findByEmailAndStatusForLogin(PLAYER_EMAIL_EXISTENT, true)).thenReturn(entity);
 
         Player entityReturned = service.findByEmailAndStatusForLogin(PLAYER_EMAIL_EXISTENT, true).orElse(new Player());
 
-        Assert.assertNotNull("failure - expected not null", entityReturned);
-        Assert.assertEquals("failure - expected email attribute match", PLAYER_EMAIL_EXISTENT, entityReturned.getEmail());
-        Assert.assertTrue("failure - expected id attribute greater than 0", entityReturned.getId() > 0);
-        Assert.assertNotNull("failure - expected active not null", entityReturned.isActive());
-        Assert.assertNotNull("failure - expected password not null", entityReturned.getPassword());
-        Assert.assertNotNull("failure - expected name not null", entityReturned.getName());
-        Assert.assertNotNull("failure - expected score not null", entityReturned.getScore());
-        Assert.assertNotNull("failure - expected credit not null", entityReturned.getCredit());
-        Assert.assertNotNull("failure - expected role not null", entityReturned.getRole());
-        Assert.assertNotNull("failure - expected indEmailConfirmed not null", entityReturned.isIndEmailConfirmed());
-        Assert.assertNotNull("failure - expected sex not null", entityReturned.getSex());
+        Assertions.assertNotNull(entityReturned, "failure - expected not null");
+        Assertions.assertEquals(PLAYER_EMAIL_EXISTENT, entityReturned.getEmail(), "failure - expected email attribute match");
+        Assertions.assertTrue(entityReturned.getId() > 0, "failure - expected id attribute greater than 0");
+        Assertions.assertNotNull(entityReturned.isActive(), "failure - expected active not null");
+        Assertions.assertNotNull(entityReturned.getPassword(), "failure - expected password not null");
+        Assertions.assertNotNull(entityReturned.getName(), "failure - expected name not null");
+        Assertions.assertNotNull(entityReturned.getScore(), "failure - expected score not null");
+        Assertions.assertNotNull(entityReturned.getCredit(), "failure - expected credit not null");
+        Assertions.assertNotNull(entityReturned.getRole(), "failure - expected role not null");
+        Assertions.assertNotNull(entityReturned.isIndEmailConfirmed(), "failure - expected indEmailConfirmed not null");
+        Assertions.assertNotNull(entityReturned.getSex(), "failure - expected sex not null");
 
         verify(repository, times(1)).findByEmailAndStatusForLogin(PLAYER_EMAIL_EXISTENT, true);
         verifyNoMoreInteractions(repository);
@@ -342,7 +342,7 @@ public class PlayerServiceTest extends AbstractTest {
         when(repository.findByEmailAndStatusForLogin(PLAYER_EMAIL_EXISTENT, false)).thenReturn(Optional.empty());
 
         Player entity = service.findByEmailAndStatusForLogin(PLAYER_EMAIL_EXISTENT, false).orElse(null);
-        Assert.assertNull("failure - expected null", entity);
+        Assertions.assertNull("failure - expected null", entity);
 
         verify(repository, times(1)).findByEmailAndStatusForLogin(PLAYER_EMAIL_EXISTENT, false);
         verifyNoMoreInteractions(repository);
@@ -353,7 +353,7 @@ public class PlayerServiceTest extends AbstractTest {
         when(repository.findByEmailAndStatusForLogin(PLAYER_EMAIL_INEXISTENT, true)).thenReturn(Optional.empty());
 
         Player entityReturned = service.findByEmailAndStatusForLogin(PLAYER_EMAIL_INEXISTENT, true).orElse(null);
-        Assert.assertNull("failure - expected null", entityReturned);
+        Assertions.assertNull("failure - expected null", entityReturned);
 
         verify(repository, times(1)).findByEmailAndStatusForLogin(PLAYER_EMAIL_INEXISTENT, true);
         verifyNoMoreInteractions(repository);
@@ -365,26 +365,26 @@ public class PlayerServiceTest extends AbstractTest {
     public void encryptPassword_WhenEverythingIsOK_ReturnTextEncrypted() {
         String rawPassword = "12345";
         String ret = StringUtil.encryptPassword(rawPassword);
-        Assert.assertNotNull("failure - expected not null", ret);
-        Assert.assertTrue("failure - expected size bigger than 0", ret.length() > 0);
+        Assertions.assertNotNull("failure - expected not null", ret);
+        Assertions.assertTrue(ret.length() > 0, "failure - expected size bigger than 0");
     }
     /* encryptPassword - end */
 
     /* addCreditsToPlayer - begin */
     @Test
     public void addCreditsToPlayer_WhenEverythingIsOK_ReturnPlayerWithMoreCredits() {
-        Player entity = getEntityStubData();
+        Optional<Player> entity = getEntityStubData();
 
-        when(repository.findOne(PLAYER_ID_EXISTENT)).thenReturn(entity);
-        when(repository.save(entity)).thenReturn(entity);
+        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(entity);
+        when(repository.save(entity.get())).thenReturn(entity.get());
 
         Player entityReturned = service.addCreditsToPlayer(PLAYER_ID_EXISTENT, 10);
 
-        Assert.assertNotNull("failure - expected null", entityReturned);
-        Assert.assertEquals("failure - expected id attribute match", PLAYER_ID_EXISTENT.intValue(), entityReturned.getId());
+        Assertions.assertNotNull(entityReturned, "failure - expected null");
+        Assertions.assertEquals(PLAYER_ID_EXISTENT.intValue(), entityReturned.getId(), "failure - expected id attribute match");
 
-        verify(repository, times(1)).findOne(PLAYER_ID_EXISTENT);
-        verify(repository, times(1)).save(entity);
+        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
+        verify(repository, times(1)).save(entity.get());
         verifyNoMoreInteractions(repository);
     }
     /* addCreditsToPlayer - end */
@@ -395,18 +395,18 @@ public class PlayerServiceTest extends AbstractTest {
     /* removeCreditsFromPlayer - begin */
     @Test
     public void removeCreditsFromPlayer_WhenEverythingIsOK_ReturnPlayerWithLessCredits() {
-        Player entity = getEntityStubData();
+        Optional<Player> entity = getEntityStubData();
 
-        when(repository.findOne(PLAYER_ID_EXISTENT)).thenReturn(entity);
-        when(repository.save(entity)).thenReturn(entity);
+        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(entity);
+        when(repository.save(entity.get())).thenReturn(entity.get());
 
         Player entityReturned = service.removeCreditsFromPlayer(PLAYER_ID_EXISTENT, 5);
 
-        Assert.assertNotNull("failure - expected null", entityReturned);
-        Assert.assertEquals("failure - expected id attribute match", PLAYER_ID_EXISTENT.intValue(), entityReturned.getId());
+        Assertions.assertNotNull(entityReturned, "failure - expected null");
+        Assertions.assertEquals(PLAYER_ID_EXISTENT.intValue(), entityReturned.getId(), "failure - expected id attribute match");
 
-        verify(repository, times(1)).findOne(PLAYER_ID_EXISTENT);
-        verify(repository, times(1)).save(entity);
+        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
+        verify(repository, times(1)).save(entity.get());
         verifyNoMoreInteractions(repository);
     }
     /* removeCreditsFromPlayer - end */
@@ -425,36 +425,36 @@ public class PlayerServiceTest extends AbstractTest {
         PlayerGame playerGame = entity.getPlayerGameList().get(0);
 
         when(playerGameService.removeCreditsFromPlayer(playerGame, 1)).thenReturn(playerGame);
-        when(repository.findOne(PLAYER_ID_EXISTENT)).thenReturn(entity);
+        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(entity));
 
         Player entityReturned = service.removeOneCreditFromPlayer(entity, game);
 
-        Assert.assertNotNull("failure - expected not null", entityReturned);
-        Assert.assertEquals("failure - expected id attribute match", PLAYER_ID_EXISTENT.intValue(), entityReturned.getId());
+        Assertions.assertNotNull(entityReturned, "failure - expected not null");
+        Assertions.assertEquals(PLAYER_ID_EXISTENT.intValue(), entityReturned.getId(), "failure - expected id attribute match");
 
         verify(playerGameService, times(1)).removeCreditsFromPlayer(playerGame, 1);
         verifyNoMoreInteractions(playerGameService);
-        verify(repository, times(1)).findOne(PLAYER_ID_EXISTENT);
+        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
     }
 
     @Test
     public void removeOneCreditFromPlayer_WhenThePlayerDoesntHaveSpecificCreditsOfTheGame_ReturnPlayerWithOneGenericCreditLess() {
-        Player entity = getEntityStubData();
+        Optional<Player> entity = getEntityStubData();
 
         Game game = new Game();
         game.setId(GAME_ID_EXISTENT);
 
-        when(repository.findOne(PLAYER_ID_EXISTENT)).thenReturn(entity);
-        when(repository.save(entity)).thenReturn(entity);
+        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(entity);
+        when(repository.save(entity.get())).thenReturn(entity.get());
 
-        Player entityReturned = service.removeOneCreditFromPlayer(entity, game);
+        Player entityReturned = service.removeOneCreditFromPlayer(entity.get(), game);
 
-        Assert.assertNotNull("failure - expected not null", entityReturned);
-        Assert.assertEquals("failure - expected id attribute match", PLAYER_ID_EXISTENT.intValue(), entityReturned.getId());
+        Assertions.assertNotNull(entityReturned, "failure - expected not null");
+        Assertions.assertEquals(PLAYER_ID_EXISTENT.intValue(), entityReturned.getId(), "failure - expected id attribute match");
 
-        verify(repository, times(1)).findOne(PLAYER_ID_EXISTENT);
-        verify(repository, times(1)).save(entity);
+        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
+        verify(repository, times(1)).save(entity.get());
         verifyNoMoreInteractions(repository);
     }
     /* removeOneCreditFromPlayer - end */
@@ -470,9 +470,9 @@ public class PlayerServiceTest extends AbstractTest {
 
         Phase phase = new Phase();
 
-        when(repository.findOne(id)).thenReturn(player);
+        when(repository.findById(id)).thenReturn(Optional.of(player));
 
-        Assert.assertTrue(service.playerHasCredits(player, phase));
+        Assertions.assertTrue(service.playerHasCredits(player, phase));
     }
 
     @Test
@@ -480,11 +480,11 @@ public class PlayerServiceTest extends AbstractTest {
         Player entity = getPlayerWithSpecificCreditsStubData();
         entity.setCredit(0); // Assuring that the player has no generic credits.
 
-        when(repository.findOne(PLAYER_ID_EXISTENT)).thenReturn(entity);
+        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(entity));
 
-        Assert.assertTrue(service.playerHasCredits(entity, getPhaseStubData()));
+        Assertions.assertTrue(service.playerHasCredits(entity, getPhaseStubData()));
 
-        verify(repository, times(1)).findOne(PLAYER_ID_EXISTENT);
+        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
     }
 
@@ -493,24 +493,24 @@ public class PlayerServiceTest extends AbstractTest {
         Player entity = getPlayerWithSpecificCreditsStubData();
         entity.setCredit(30); // Assuring that the player has generic credits.
 
-        when(repository.findOne(PLAYER_ID_EXISTENT)).thenReturn(entity);
+        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(entity));
 
-        Assert.assertTrue(service.playerHasCredits(entity, getPhaseStubData()));
+        Assertions.assertTrue(service.playerHasCredits(entity, getPhaseStubData()));
 
-        verify(repository, times(1)).findOne(PLAYER_ID_EXISTENT);
+        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
     }
 
     @Test
     public void playerHasCredits_WhenPlayerHasNotCredits_ReturnFalse() {
-        Player entity = getEntityStubData();
-        entity.setCredit(0); // Assuring that the player has no generic credits.
+        Optional<Player> entity = getEntityStubData();
+        entity.get().setCredit(0); // Assuring that the player has no generic credits.
 
-        when(repository.findOne(PLAYER_ID_EXISTENT)).thenReturn(entity);
+        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(entity);
 
-        Assert.assertFalse(service.playerHasCredits(entity, getPhaseStubData()));
+        Assertions.assertFalse(service.playerHasCredits(entity.get(), getPhaseStubData()));
 
-        verify(repository, times(1)).findOne(PLAYER_ID_EXISTENT);
+        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
     }
     /* playerHasCredits - end */
@@ -518,27 +518,27 @@ public class PlayerServiceTest extends AbstractTest {
     /* isEmailConfirmed - begin */
     @Test
     public void isEmailConfirmed_WhenEmailIsConfirmed_ReturnTrue() {
-        Player entity = getEntityStubData();
-        entity.setIndEmailConfirmed(true);
+        Optional<Player> entity = getEntityStubData();
+        entity.get().setIndEmailConfirmed(true);
 
-        when(repository.findOne(PLAYER_ID_EXISTENT)).thenReturn(entity);
+        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(entity);
 
-        Assert.assertTrue(service.isEmailConfirmed(entity));
+        Assertions.assertTrue(service.isEmailConfirmed(entity.get()));
 
-        verify(repository, times(1)).findOne(PLAYER_ID_EXISTENT);
+        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
     }
 
     @Test
     public void isEmailConfirmed_WhenEmailIsNotConfirmed_ReturnFalse() {
-        Player entity = getEntityStubData();
-        entity.setIndEmailConfirmed(false);
+        Optional<Player> entity = getEntityStubData();
+        entity.get().setIndEmailConfirmed(false);
 
-        when(repository.findOne(PLAYER_ID_EXISTENT)).thenReturn(entity);
+        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(entity);
 
-        Assert.assertFalse(service.isEmailConfirmed(entity));
+        Assertions.assertFalse(service.isEmailConfirmed(entity.get()));
 
-        verify(repository, times(1)).findOne(PLAYER_ID_EXISTENT);
+        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
     }
     /* isEmailConfirmed - end */
@@ -551,7 +551,7 @@ public class PlayerServiceTest extends AbstractTest {
         player.setEmail("email@test.com");
         player.setPassword("password123");
 
-        Assert.assertEquals("failure - expected msg returned equals", "", service.validateCreatePlayer(player));
+        Assertions.assertEquals("failure - expected msg returned equals", "", service.validateCreatePlayer(player));
     }
 
     @Test
@@ -561,13 +561,13 @@ public class PlayerServiceTest extends AbstractTest {
         player.setEmail("email@test.com");
         player.setPassword("password123");
 
-        Assert.assertEquals("failure - expected msg returned equals", "<br />O nome precisa ser informado.", service.validateCreatePlayer(player));
+        Assertions.assertEquals("failure - expected msg returned equals", "<br />O nome precisa ser informado.", service.validateCreatePlayer(player));
 
         player.setName("");
         player.setEmail("email@test.com");
         player.setPassword("password123");
 
-        Assert.assertEquals("failure - expected msg returned equals", "<br />O nome precisa ser informado.", service.validateCreatePlayer(player));
+        Assertions.assertEquals("failure - expected msg returned equals", "<br />O nome precisa ser informado.", service.validateCreatePlayer(player));
     }
 
     @Test
@@ -577,13 +577,13 @@ public class PlayerServiceTest extends AbstractTest {
         player.setEmail(null);
         player.setPassword("password123");
 
-        Assert.assertEquals("failure - expected msg returned equals", "<br />O e-mail precisa ser informado.", service.validateCreatePlayer(player));
+        Assertions.assertEquals("failure - expected msg returned equals", "<br />O e-mail precisa ser informado.", service.validateCreatePlayer(player));
 
         player.setName("Name Completed");
         player.setEmail("");
         player.setPassword("password123");
 
-        Assert.assertEquals("failure - expected msg returned equals", "<br />O e-mail precisa ser informado.", service.validateCreatePlayer(player));
+        Assertions.assertEquals("failure - expected msg returned equals", "<br />O e-mail precisa ser informado.", service.validateCreatePlayer(player));
     }
 
     @Test
@@ -593,7 +593,7 @@ public class PlayerServiceTest extends AbstractTest {
         player.setEmail("invalid_email");
         player.setPassword("password123");
 
-        Assert.assertEquals("failure - expected msg returned equals", "<br />O e-mail informado não é válido.", service.validateCreatePlayer(player));
+        Assertions.assertEquals("failure - expected msg returned equals", "<br />O e-mail informado não é válido.", service.validateCreatePlayer(player));
     }
 
     @Test
@@ -603,13 +603,13 @@ public class PlayerServiceTest extends AbstractTest {
         player.setEmail("email@test.com");
         player.setPassword(null);
 
-        Assert.assertEquals("failure - expected msg returned equals", "<br />A senha precisa ser informada.", service.validateCreatePlayer(player));
+        Assertions.assertEquals("failure - expected msg returned equals", "<br />A senha precisa ser informada.", service.validateCreatePlayer(player));
 
         player.setName("Name Completed");
         player.setEmail("email@test.com");
         player.setPassword("");
 
-        Assert.assertEquals("failure - expected msg returned equals", "<br />A senha precisa ser informada.", service.validateCreatePlayer(player));
+        Assertions.assertEquals("failure - expected msg returned equals", "<br />A senha precisa ser informada.", service.validateCreatePlayer(player));
     }
 
     @Test
@@ -619,14 +619,14 @@ public class PlayerServiceTest extends AbstractTest {
         player.setEmail("email@test.com");
         player.setPassword("12345");
 
-        Assert.assertEquals("failure - expected msg returned equals", "<br />A senha precisa possuir entre 6 e 20 caracteres.",
+        Assertions.assertEquals("failure - expected msg returned equals", "<br />A senha precisa possuir entre 6 e 20 caracteres.",
                 service.validateCreatePlayer(player));
 
         player.setName("Name Completed");
         player.setEmail("email@test.com");
         player.setPassword("123456");
 
-        Assert.assertEquals("failure - expected msg returned equals", "<br />A senha precisa possuir ao menos 1 número e ao menos 1 letra.",
+        Assertions.assertEquals("failure - expected msg returned equals", "<br />A senha precisa possuir ao menos 1 número e ao menos 1 letra.",
                 service.validateCreatePlayer(player));
     }
 
@@ -639,7 +639,7 @@ public class PlayerServiceTest extends AbstractTest {
 
         String msg = "<br />O nome precisa ser informado.<br />O e-mail precisa ser informado.<br />A senha precisa ser informada.";
 
-        Assert.assertEquals("failure - expected msg returned equals", msg, service.validateCreatePlayer(player));
+        Assertions.assertEquals("failure - expected msg returned equals", msg, service.validateCreatePlayer(player));
     }
     /* validateCreatePlayer - end */
 
@@ -648,17 +648,17 @@ public class PlayerServiceTest extends AbstractTest {
     public void validateUpdateProfile_WhenNoDataIsMissing_ReturnMsgEmpty() {
         Player player = new Player();
         player.setName("Name Completed");
-        Assert.assertEquals("failure - expected msg returned equals", "", service.validateUpdateProfile(player));
+        Assertions.assertEquals("failure - expected msg returned equals", "", service.validateUpdateProfile(player));
     }*/
 
     /*@Test
     public void validateUpdateProfile_WhenFieldNameIsMissing_ReturnMsgNameMissing() {
         Player player = new Player();
         player.setName(null);
-        Assert.assertEquals("failure - expected msg returned equals", "O nome precisa ser informado.<br />", service.validateUpdateProfile(player));
+        Assertions.assertEquals("failure - expected msg returned equals", "O nome precisa ser informado.<br />", service.validateUpdateProfile(player));
 
         player.setName("");
-        Assert.assertEquals("failure - expected msg returned equals", "O nome precisa ser informado.<br />", service.validateUpdateProfile(player));
+        Assertions.assertEquals("failure - expected msg returned equals", "O nome precisa ser informado.<br />", service.validateUpdateProfile(player));
     }*/
     /* validateUpdateProfile - end */
 }
