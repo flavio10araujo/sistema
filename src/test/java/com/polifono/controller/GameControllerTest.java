@@ -20,17 +20,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -60,7 +61,7 @@ import com.polifono.service.IQuestionService;
 /**
  * Unit tests for the GameController using Spring MVC Mocks.
  */
-@RunWith(PowerMockRunner.class)
+@ExtendWith(MockitoExtension.class)
 @PrepareForTest({ SecurityContextHolder.class }) // For emulating a logged in user.
 public class GameControllerTest extends AbstractControllerTest {
 
@@ -97,7 +98,7 @@ public class GameControllerTest extends AbstractControllerTest {
     private final Integer PLAYER_ID_EXISTENT = 25;
     private final Integer MAP_ID_EXISTENT = 1;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // Initialize Mockito annotated components
         MockitoAnnotations.initMocks(this);
@@ -1788,7 +1789,7 @@ public class GameControllerTest extends AbstractControllerTest {
 
         when(gameService.calculateScore(playerPhase.getNumAttempts(), grade)).thenReturn(65);
 
-        when(playerService.findOne(PLAYER_ID_EXISTENT)).thenReturn(player);
+        when(playerService.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(player));
 
         when(playerService.removeOneCreditFromPlayer(player, currentPhase.getMap().getGame())).thenReturn(player);
 
