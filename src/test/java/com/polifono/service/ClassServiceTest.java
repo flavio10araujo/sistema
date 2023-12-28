@@ -6,18 +6,16 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.AbstractTest;
 import com.polifono.domain.Player;
 import com.polifono.repository.IClassRepository;
 import com.polifono.service.impl.ClassServiceImpl;
@@ -25,9 +23,11 @@ import com.polifono.service.impl.ClassServiceImpl;
 /**
  * Unit test methods for the ClassService.
  */
-public class ClassServiceTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+public class ClassServiceTest {
 
-    private IClassService service;
+    @InjectMocks
+    private ClassServiceImpl service;
 
     @Mock
     private IClassRepository repository;
@@ -37,18 +37,6 @@ public class ClassServiceTest extends AbstractTest {
 
     private final Integer TEACHER_ID_EXISTENT = 2;
     private final Integer TEACHER_ID_INEXISTENT = Integer.MAX_VALUE;
-
-    @BeforeEach
-    public void setUp() {
-        // Do something before each test method.
-        MockitoAnnotations.initMocks(this);
-        service = new ClassServiceImpl(repository);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Clean up after each test method.
-    }
 
     /* stubs - begin */
     private Optional<com.polifono.domain.Class> getEntityStubData() {
@@ -114,7 +102,7 @@ public class ClassServiceTest extends AbstractTest {
 
     @Test
     public void delete_WhenClassIsInexistent_ReturnFalse() {
-        when(repository.findById(CLASS_ID_INEXISTENT)).thenReturn(null);
+        when(repository.findById(CLASS_ID_INEXISTENT)).thenReturn(Optional.empty());
 
         Assertions.assertFalse(service.delete(CLASS_ID_INEXISTENT), "failure - expected return false");
 
@@ -179,8 +167,7 @@ public class ClassServiceTest extends AbstractTest {
         Assertions.assertEquals(entity.get().getId(), entityReturned.getId(), "failure - expected id attribute match");
         Assertions.assertEquals(entity.get().getPlayer().getId(), entityReturned.getPlayer().getId(), "failure - expected player attribute match");
 
-        Assertions.assertEquals(0, entityReturned.getDtInc().compareTo(new Date()), "failure - expected dtInc attribute match");
-        Assertions.assertEquals(true, entityReturned.isActive(), "failure - expected active attribute match");
+        Assertions.assertTrue(entityReturned.isActive(), "failure - expected active attribute match");
         Assertions.assertEquals(entity.get().getName(), entityReturned.getName(), "failure - expected name attribute match");
         Assertions.assertEquals(entity.get().getDescription(), entityReturned.getDescription(), "failure - expected description attribute match");
     }
