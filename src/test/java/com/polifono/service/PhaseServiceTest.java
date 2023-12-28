@@ -6,15 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.AbstractTest;
 import com.polifono.domain.Game;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
@@ -26,10 +24,11 @@ import com.polifono.service.impl.PhaseServiceImpl;
 /**
  * Unit test methods for the PhaseService.
  */
-@Transactional
-public class PhaseServiceTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+public class PhaseServiceTest {
 
-    private IPhaseService service;
+    @InjectMocks
+    private PhaseServiceImpl service;
 
     @Mock
     private IPhaseRepository repository;
@@ -50,18 +49,6 @@ public class PhaseServiceTest extends AbstractTest {
     private final Integer ORDER_INEXISTENT = Integer.MAX_VALUE;
 
     private final Integer PLAYER_ID_EXISTENT = 1;
-
-    @BeforeEach
-    public void setUp() {
-        // Do something before each test method.
-        MockitoAnnotations.initMocks(this);
-        service = new PhaseServiceImpl(repository);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Clean up after each test method.
-    }
 
     /* save - begin */
     @Test
@@ -101,7 +88,7 @@ public class PhaseServiceTest extends AbstractTest {
         // Get the entity in the database with the changes.
         Optional<Phase> updatedEntity = service.findById(changedEntity.getId());
 
-        Assertions.assertEquals("failure - expected name attribute match", entity.get().getName(), updatedEntity.get().getName());
+        Assertions.assertEquals(entity.get().getName(), updatedEntity.get().getName(), "failure - expected name attribute match");
         Assertions.assertEquals(entity.get().getOrder(), updatedEntity.get().getOrder(), "failure - expected order attribute match");
         Assertions.assertEquals(entity.get().getMap().getId(), updatedEntity.get().getMap().getId(), "failure - expected game attribute match");
     }
@@ -124,7 +111,7 @@ public class PhaseServiceTest extends AbstractTest {
 
     @Test
     public void delete_WhenPhaseIsInexistent_ReturnFalse() {
-        when(repository.findById(PHASE_ID_INEXISTENT)).thenReturn(null);
+        when(repository.findById(PHASE_ID_INEXISTENT)).thenReturn(Optional.empty());
         Assertions.assertFalse(service.delete(PHASE_ID_INEXISTENT), "failure - expected return false");
     }
     /* delete - end */
@@ -351,7 +338,7 @@ public class PhaseServiceTest extends AbstractTest {
     @Test
     public void findNextPhaseInThisMap_WhenNextPhaseInThisMapIsExistent_ReturnNextPhase() {
         int mapId = MAP_ID_EXISTENT;
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         Phase item = new Phase();
         item.setOrder(10);
         Map map = new Map();
@@ -378,7 +365,7 @@ public class PhaseServiceTest extends AbstractTest {
     @Test
     public void findNextPhaseInThisMap_WhenNextPhaseInThisMapIsInexistent_ReturnNull() {
         int mapId = MAP_ID_EXISTENT;
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         Phase item = new Phase();
         item.setOrder(10);
         Map map = new Map();
@@ -388,11 +375,9 @@ public class PhaseServiceTest extends AbstractTest {
         when(repository.findByMap(mapId)).thenReturn(listReturned);
 
         List<Phase> list = service.findByMap(MAP_ID_EXISTENT);
-
         Phase firstPhase = list.get(list.size() - 1);
 
-        int phaseOrder = (firstPhase.getOrder() + 1);
-        when(repository.findNextPhaseInThisMap(mapId, phaseOrder)).thenReturn(null);
+        when(repository.findNextPhaseInThisMap(firstPhase.getMap().getId(), firstPhase.getOrder() + 1)).thenReturn(null);
 
         Phase entity = service.findNextPhaseInThisMap(firstPhase.getMap().getId(), firstPhase.getOrder() + 1);
 
