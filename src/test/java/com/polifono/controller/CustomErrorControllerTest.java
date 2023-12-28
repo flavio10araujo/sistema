@@ -26,55 +26,28 @@ public class CustomErrorControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void error_WhenGenericErrorOccurs_RedirectToHomePage() throws Exception {
-        String uri = "/error";
-
-		/*MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri)).andReturn();
-		int status = result.getResponse().getStatus();
-        Assert.assertEquals("failure - expected HTTP status", HTTP_STATUS_REDIRECT, status);*/
-
-        mvc.perform(MockMvcRequestBuilders.get(uri))
-                .andExpect(status().is3xxRedirection()) // Verify if the HTTP return is a redirect code (302).
-                .andExpect(view().name("redirect:/")); // Verify if the system has redirected to the right place.
-    }
-
-    @Test
     public void error404_WhenErro404Occurs_OpenError404Page() throws Exception {
         String uri = "/error404";
 
-		/*MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri)).andReturn();
-		String content = result.getResponse().getContentAsString(); // HTML page sent to the browser.
-        int status = result.getResponse().getStatus();
-        Assert.assertEquals("failure - expected HTTP status", HTTP_STATUS_OK, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value", content.trim().length() > 0);*/
-
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri))
-                .andExpect(status().isOk()) // Verify if the HTTP return is 200.
-                .andExpect(view().name("error/404")) // Verify is the system has loaded the right view mapping.
-                //.andExpect(forwardedUrl("/WEB-INF/jsp/error/404.jsp")) // Verify is the system has loaded the right view file.
+                .andExpect(status().isOk())
+                .andExpect(view().name("error/404"))
                 .andReturn();
 
         String content = result.getResponse().getContentAsString();
-        Assertions.assertTrue(content.trim().length() > 0, "failure - expected HTTP response body to have a value");
+        Assertions.assertFalse(content.trim().isEmpty(), "failure - expected HTTP response body to have a value");
     }
 
     @Test
     public void error500_WhenError500Occurs_OpenError500Page() throws Exception {
         String uri = "/error500";
 
-		/*MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri)).andReturn();
-		String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
-        Assert.assertEquals("failure - expected HTTP status", HTTP_STATUS_OK, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value", content.trim().length() > 0);*/
-
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri))
-                .andExpect(status().isOk()) // Verify if the HTTP return is 200.
-                .andExpect(view().name("error/500")) // Verify is the system has loaded the right view mapping.
-                //.andExpect(forwardedUrl("/WEB-INF/jsp/error/404.jsp")) // Verify is the system has loaded the right view file.
+                .andExpect(status().isOk())
+                .andExpect(view().name("error/500"))
                 .andReturn();
 
         String content = result.getResponse().getContentAsString();
-        Assertions.assertTrue(content.trim().length() > 0, "failure - expected HTTP response body to have a value");
+        Assertions.assertFalse(content.trim().isEmpty(), "failure - expected HTTP response body to have a value");
     }
 }

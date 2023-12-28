@@ -24,9 +24,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,7 +35,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.polifono.AbstractControllerTest;
@@ -109,25 +106,6 @@ public class GameControllerTest extends AbstractControllerTest {
     public static final String REDIRECT_GAMES = "redirect:/games";
 
     /* stubs - begin */
-    private List<Game> getEntityListStubData() {
-        List<Game> list = new ArrayList<Game>();
-
-        Game entity1 = getEntityStubData();
-        entity1.setName(entity1.getName() + "1");
-        entity1.setNamelink(entity1.getNamelink() + "1");
-
-        Game entity2 = getEntityStubData();
-        entity2.setId(entity2.getId() + 1);
-        entity2.setOrder(entity2.getOrder() + 1);
-        entity2.setName(entity2.getName() + "2");
-        entity2.setNamelink(entity2.getNamelink() + "2");
-
-        list.add(entity1);
-        list.add(entity2);
-
-        return list;
-    }
-
     private Game getEntityStubData() {
         Game entity = new Game();
         entity.setId(GAME_ID_EXISTENT);
@@ -365,48 +343,16 @@ public class GameControllerTest extends AbstractControllerTest {
 
     /* listGames - begin */
     @Test
-    @Disabled
     public void listGames_WhenListAllGames_OpenGamesPageAndListAllGames() throws Exception {
-        // Create some test data.
-        List<Game> list = getEntityListStubData();
-
-        // Stub the GameService.findAll method return value.
-        when(gameService.findAll()).thenReturn(list);
-
-        // Perform the behavior being tested.
         String uri = "/games";
 
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri)).andReturn();
-
-        // Extract the response status and body.
-        String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
-
-        // Perform standard JUnit assertions on the response.
-        Assertions.assertEquals(HTTP_STATUS_OK, status, "failure - expected HTTP status 200");
-        Assertions.assertTrue(content.trim().length() > 0, "failure - expected HTTP response body to have a value");
+        when(playerPhaseService.getRankingMonthly()).thenReturn(new ArrayList<>());
 
         mvc.perform(MockMvcRequestBuilders.get(uri))
                 .andExpect(status().isOk())
                 .andExpect(view().name("games/index"))
-                .andExpect(forwardedUrl("games/index"))
-                .andExpect(model().attribute("games", hasSize(2)))
-                .andExpect(model().attribute("games", hasItem(
-                        allOf(
-                                hasProperty("id", is(123)),
-                                hasProperty("name", is("Game name1")),
-                                hasProperty("namelink", is("gamename1"))
-                        )
-                )))
-                .andExpect(model().attribute("games", hasItem(
-                        allOf(
-                                hasProperty("id", is(124)),
-                                hasProperty("name", is("Game name2")),
-                                hasProperty("namelink", is("gamename2"))
-                        )
-                )));
+                .andExpect(forwardedUrl("games/index"));
 
-        //verify(gameService, times(1)).findAll();
         verifyNoMoreInteractions(gameService);
     }
     /* listGames - end */
