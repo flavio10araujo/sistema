@@ -2,7 +2,6 @@ package com.polifono.controller;
 
 import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +80,7 @@ public class HomeController extends BaseController {
 
         String captchaVerifyMessage = captchaService.verifyRecaptcha(request.getRemoteAddr(), recaptchaResponse);
 
-        if (StringUtils.isNotEmpty(captchaVerifyMessage)) {
+        if (captchaVerifyMessage != null && !captchaVerifyMessage.isEmpty()) {
             //Map<String, Object> response = new HashMap<>();
             //response.put("message", captchaVerifyMessage);
             //return ResponseEntity.badRequest().body(response);
