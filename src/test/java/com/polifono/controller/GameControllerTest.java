@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -23,22 +24,26 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.polifono.AbstractControllerTest;
 import com.polifono.domain.Answer;
 import com.polifono.domain.Content;
+import com.polifono.domain.Diploma;
 import com.polifono.domain.Game;
 import com.polifono.domain.Level;
 import com.polifono.domain.Map;
@@ -49,6 +54,7 @@ import com.polifono.domain.Question;
 import com.polifono.domain.bean.CurrentUser;
 import com.polifono.domain.enums.Role;
 import com.polifono.service.IContentService;
+import com.polifono.service.IDiplomaService;
 import com.polifono.service.IGameService;
 import com.polifono.service.ILevelService;
 import com.polifono.service.IMapService;
@@ -61,8 +67,10 @@ import com.polifono.service.IQuestionService;
  * Unit tests for the GameController using Spring MVC Mocks.
  */
 @ExtendWith(MockitoExtension.class)
-@PrepareForTest({ SecurityContextHolder.class }) // For emulating a logged in user.
 public class GameControllerTest extends AbstractControllerTest {
+
+    @InjectMocks
+    private GameController controller;
 
     @Mock
     private IGameService gameService;
@@ -88,8 +96,8 @@ public class GameControllerTest extends AbstractControllerTest {
     @Mock
     private IQuestionService questionService;
 
-    @InjectMocks
-    private GameController controller; // All the Mock object are injected in the InjectMocks object.
+    @Mock
+    private IDiplomaService diplomaService;
 
     private final Integer GAME_ID_EXISTENT = 123;
     private final Integer GAME_ORDER_EXISTENT = 3;
@@ -97,13 +105,8 @@ public class GameControllerTest extends AbstractControllerTest {
     private final Integer PLAYER_ID_EXISTENT = 25;
     private final Integer MAP_ID_EXISTENT = 1;
 
-    @BeforeEach
-    public void setUp() {
-        // Initialize Mockito annotated components
-        MockitoAnnotations.initMocks(this);
-        // Prepare the Spring MVC Mock components for standalone testing
-        super.setUp(controller);
-    }
+    public static final String REDIRECT_HOME = "redirect:/";
+    public static final String REDIRECT_GAMES = "redirect:/games";
 
     /* stubs - begin */
     private List<Game> getEntityListStubData() {
@@ -336,21 +339,16 @@ public class GameControllerTest extends AbstractControllerTest {
         return questionsId;
     }
 
-    /*private java.util.Map<String, String> getPlayerAnswersStubData() {
-    	java.util.Map<String, String> playerAnswers = new HashMap<String, String>();
-    	playerAnswers.put("101", "201");
-    	playerAnswers.put("102", "202");
-    	playerAnswers.put("103", "203");
-    	playerAnswers.put("104", "204");
-    	playerAnswers.put("105", "205");
-    	return playerAnswers;
-    }*/
-
     private Phase getPhaseOfTheTestStubData() {
         Game game = new Game();
         game.setId(GAME_ID_EXISTENT);
+
+        Level level = new Level();
+        level.setId(2);
+
         Map map = new Map();
         map.setGame(game);
+        map.setLevel(level);
 
         Phase phaseOfTheTest = new Phase();
         phaseOfTheTest.setId(40);
@@ -360,8 +358,14 @@ public class GameControllerTest extends AbstractControllerTest {
     }
     /* stubs - end */
 
+    @BeforeEach
+    public void setUp() {
+        super.setUp(controller);
+    }
+
     /* listGames - begin */
-    /*@Test
+    @Test
+    @Disabled
     public void listGames_WhenListAllGames_OpenGamesPageAndListAllGames() throws Exception {
         // Create some test data.
         List<Game> list = getEntityListStubData();
@@ -378,12 +382,9 @@ public class GameControllerTest extends AbstractControllerTest {
         String content = result.getResponse().getContentAsString();
         int status = result.getResponse().getStatus();
 
-        // Verify the GameService.findAll method was invoked once.
-        verify(gameService, times(1)).findAll();
-
         // Perform standard JUnit assertions on the response.
-        Assert.assertEquals("failure - expected HTTP status 200", HTTP_STATUS_OK, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value", content.trim().length() > 0);
+        Assertions.assertEquals(HTTP_STATUS_OK, status, "failure - expected HTTP status 200");
+        Assertions.assertTrue(content.trim().length() > 0, "failure - expected HTTP response body to have a value");
 
         mvc.perform(MockMvcRequestBuilders.get(uri))
                 .andExpect(status().isOk())
@@ -405,9 +406,9 @@ public class GameControllerTest extends AbstractControllerTest {
                         )
                 )));
 
-        verify(gameService, times(1)).findAll();
+        //verify(gameService, times(1)).findAll();
         verifyNoMoreInteractions(gameService);
-    }*/
+    }
     /* listGames - end */
 
     /* listLevelsOfTheGame - begin */
@@ -420,7 +421,7 @@ public class GameControllerTest extends AbstractControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.get(uri, gameName))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name(REDIRECT_HOME));
     }
 
     @Test
@@ -431,55 +432,55 @@ public class GameControllerTest extends AbstractControllerTest {
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
 
-        // Emulating a logged in user.
-        SecurityContext securityContextMock = mock(SecurityContext.class);
-        Authentication authenticationMock = mock(Authentication.class);
-        ////PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-        when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-        when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-        when(authenticationMock.getPrincipal()).thenReturn(getCurrentUserStubData());
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            when(authenticationMock.getPrincipal()).thenReturn(getCurrentUserStubData());
 
-        when(playerPhaseService.findLastPhaseCompleted(PLAYER_ID_EXISTENT, GAME_ID_EXISTENT)).thenReturn(null);
+            when(playerPhaseService.findLastPhaseCompleted(PLAYER_ID_EXISTENT, GAME_ID_EXISTENT)).thenReturn(null);
 
-        when(levelService.flagLevelsToOpenedOrNot(GAME_ID_EXISTENT, 1)).thenReturn(getLevelListStubData());
+            when(levelService.flagLevelsToOpenedOrNot(GAME_ID_EXISTENT, 1)).thenReturn(getLevelListStubData());
 
-        mvc.perform(MockMvcRequestBuilders.get(uri, gameName))
-                .andExpect(status().isOk())
-                .andExpect(view().name("games/level"))
-                .andExpect(forwardedUrl("games/level"))
-                .andExpect(model().attribute("game", hasProperty("id", is(GAME_ID_EXISTENT))))
-                .andExpect(model().attribute("levels", hasSize(5)))
-                .andExpect(model().attribute("levels", hasItem(
-                        allOf(
-                                hasProperty("order", is(1)),
-                                hasProperty("opened", is(true))
-                        )
-                )))
-                .andExpect(model().attribute("levels", hasItem(
-                        allOf(
-                                hasProperty("order", is(2)),
-                                hasProperty("opened", is(false))
-                        )
-                )))
-                .andExpect(model().attribute("levels", hasItem(
-                        allOf(
-                                hasProperty("order", is(3)),
-                                hasProperty("opened", is(false))
-                        )
-                )))
-                .andExpect(model().attribute("levels", hasItem(
-                        allOf(
-                                hasProperty("order", is(4)),
-                                hasProperty("opened", is(false))
-                        )
-                )))
-                .andExpect(model().attribute("levels", hasItem(
-                        allOf(
-                                hasProperty("order", is(5)),
-                                hasProperty("opened", is(false))
-                        )
-                )));
+            mvc.perform(MockMvcRequestBuilders.get(uri, gameName))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("games/level"))
+                    .andExpect(forwardedUrl("games/level"))
+                    .andExpect(model().attribute("game", hasProperty("id", is(GAME_ID_EXISTENT))))
+                    .andExpect(model().attribute("levels", hasSize(5)))
+                    .andExpect(model().attribute("levels", hasItem(
+                            allOf(
+                                    hasProperty("order", is(1)),
+                                    hasProperty("opened", is(true))
+                            )
+                    )))
+                    .andExpect(model().attribute("levels", hasItem(
+                            allOf(
+                                    hasProperty("order", is(2)),
+                                    hasProperty("opened", is(false))
+                            )
+                    )))
+                    .andExpect(model().attribute("levels", hasItem(
+                            allOf(
+                                    hasProperty("order", is(3)),
+                                    hasProperty("opened", is(false))
+                            )
+                    )))
+                    .andExpect(model().attribute("levels", hasItem(
+                            allOf(
+                                    hasProperty("order", is(4)),
+                                    hasProperty("opened", is(false))
+                            )
+                    )))
+                    .andExpect(model().attribute("levels", hasItem(
+                            allOf(
+                                    hasProperty("order", is(5)),
+                                    hasProperty("opened", is(false))
+                            )
+                    )));
+        }
     }
 
     @Test
@@ -490,118 +491,122 @@ public class GameControllerTest extends AbstractControllerTest {
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
 
-        // Emulating a logged in user.
-        SecurityContext securityContextMock = mock(SecurityContext.class);
-        Authentication authenticationMock = mock(Authentication.class);
-        ////PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-        when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-        when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-        when(authenticationMock.getPrincipal()).thenReturn(getCurrentUserStubData());
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            when(authenticationMock.getPrincipal()).thenReturn(getCurrentUserStubData());
 
-        when(playerPhaseService.findLastPhaseCompleted(PLAYER_ID_EXISTENT, GAME_ID_EXISTENT)).thenReturn(getLastPhaseCompletedStubData());
+            when(playerPhaseService.findLastPhaseCompleted(PLAYER_ID_EXISTENT, GAME_ID_EXISTENT)).thenReturn(getLastPhaseCompletedStubData());
 
-        when(phaseService.findLastPhaseOfTheLevel(GAME_ID_EXISTENT, 1)).thenReturn(getLastPhaseOfTheLevelStubData());
+            when(phaseService.findLastPhaseOfTheLevel(GAME_ID_EXISTENT, 1)).thenReturn(getLastPhaseOfTheLevelStubData());
 
-        when(levelService.flagLevelsToOpenedOrNot(GAME_ID_EXISTENT, 1)).thenReturn(getLevelListStubData());
+            when(levelService.flagLevelsToOpenedOrNot(GAME_ID_EXISTENT, 1)).thenReturn(getLevelListStubData());
 
-        mvc.perform(MockMvcRequestBuilders.get(uri, gameName))
-                .andExpect(status().isOk())
-                .andExpect(view().name("games/level"))
-                .andExpect(forwardedUrl("games/level"))
-                .andExpect(model().attribute("game", hasProperty("id", is(GAME_ID_EXISTENT))))
-                .andExpect(model().attribute("levels", hasSize(5)))
-                .andExpect(model().attribute("levels", hasItem(
-                        allOf(
-                                hasProperty("order", is(1)),
-                                hasProperty("opened", is(true))
-                        )
-                )))
-                /*.andExpect(model().attribute("levels", hasItem(
-                        allOf(
-                                hasProperty("order", is(2)),
-                                hasProperty("opened", is(true))
-                        )
-                )))*/
-                .andExpect(model().attribute("levels", hasItem(
-                        allOf(
-                                hasProperty("order", is(3)),
-                                hasProperty("opened", is(false))
-                        )
-                )))
-                .andExpect(model().attribute("levels", hasItem(
-                        allOf(
-                                hasProperty("order", is(4)),
-                                hasProperty("opened", is(false))
-                        )
-                )))
-                .andExpect(model().attribute("levels", hasItem(
-                        allOf(
-                                hasProperty("order", is(5)),
-                                hasProperty("opened", is(false))
-                        )
-                )));
+            mvc.perform(MockMvcRequestBuilders.get(uri, gameName))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("games/level"))
+                    .andExpect(forwardedUrl("games/level"))
+                    .andExpect(model().attribute("game", hasProperty("id", is(GAME_ID_EXISTENT))))
+                    .andExpect(model().attribute("levels", hasSize(5)))
+                    .andExpect(model().attribute("levels", hasItem(
+                            allOf(
+                                    hasProperty("order", is(1)),
+                                    hasProperty("opened", is(true))
+                            )
+                    )))
+                    .andExpect(model().attribute("levels", hasItem(
+                            allOf(
+                                    hasProperty("order", is(2)),
+                                    hasProperty("opened", is(false))
+                            )
+                    )))
+                    .andExpect(model().attribute("levels", hasItem(
+                            allOf(
+                                    hasProperty("order", is(3)),
+                                    hasProperty("opened", is(false))
+                            )
+                    )))
+                    .andExpect(model().attribute("levels", hasItem(
+                            allOf(
+                                    hasProperty("order", is(4)),
+                                    hasProperty("opened", is(false))
+                            )
+                    )))
+                    .andExpect(model().attribute("levels", hasItem(
+                            allOf(
+                                    hasProperty("order", is(5)),
+                                    hasProperty("opened", is(false))
+                            )
+                    )));
+        }
     }
 
     @Test
-    public void listLevelsOfTheGame_WhenThePlayerHasPlayedTheLastPhaseOfTheALevel_OpenLevelsPageListLevelsAndShowTheNextLevelAsOpened() throws Exception {
+    public void listLevelsOfTheGame_WhenThePlayerHasPlayedTheLastPhaseOfTheLevel_OpenLevelsPageListLevelsAndShowTheNextLevelAsOpened() throws Exception {
         String uri = "/games/{gameName}";
         String gameName = GAME_NAME_EXISTENT;
 
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
 
-        // Emulating a logged in user.
-        SecurityContext securityContextMock = mock(SecurityContext.class);
-        Authentication authenticationMock = mock(Authentication.class);
-        ////PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-        when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-        when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-        when(authenticationMock.getPrincipal()).thenReturn(getCurrentUserStubData());
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            when(authenticationMock.getPrincipal()).thenReturn(getCurrentUserStubData());
 
-        when(playerPhaseService.findLastPhaseCompleted(PLAYER_ID_EXISTENT, GAME_ID_EXISTENT)).thenReturn(getLastPhaseCompletedLastPhaseOfTheLevelStubData());
+            when(playerPhaseService.findLastPhaseCompleted(PLAYER_ID_EXISTENT, GAME_ID_EXISTENT)).thenReturn(
+                    getLastPhaseCompletedLastPhaseOfTheLevelStubData());
 
-        when(phaseService.findLastPhaseOfTheLevel(GAME_ID_EXISTENT, 1)).thenReturn(getLastPhaseOfTheLevelStubData());
+            when(phaseService.findLastPhaseOfTheLevel(GAME_ID_EXISTENT, 1)).thenReturn(getLastPhaseOfTheLevelStubData());
 
-        when(levelService.flagLevelsToOpenedOrNot(GAME_ID_EXISTENT, 2)).thenReturn(getLevelListStubData());
+            List<Level> levels = getLevelListStubData();
+            levels.get(1).setOpened(true);
 
-        mvc.perform(MockMvcRequestBuilders.get(uri, gameName))
-                .andExpect(status().isOk())
-                .andExpect(view().name("games/level"))
-                .andExpect(forwardedUrl("games/level"))
-                .andExpect(model().attribute("game", hasProperty("id", is(GAME_ID_EXISTENT))))
-                .andExpect(model().attribute("levels", hasSize(5)))
-                .andExpect(model().attribute("levels", hasItem(
-                        allOf(
-                                hasProperty("order", is(1)),
-                                hasProperty("opened", is(true))
-                        )
-                )))
-                /*.andExpect(model().attribute("levels", hasItem(
-                        allOf(
-                                hasProperty("order", is(2)),
-                                hasProperty("opened", is(true))
-                        )
-                )))*/
-                .andExpect(model().attribute("levels", hasItem(
-                        allOf(
-                                hasProperty("order", is(3)),
-                                hasProperty("opened", is(false))
-                        )
-                )))
-                .andExpect(model().attribute("levels", hasItem(
-                        allOf(
-                                hasProperty("order", is(4)),
-                                hasProperty("opened", is(false))
-                        )
-                )))
-                .andExpect(model().attribute("levels", hasItem(
-                        allOf(
-                                hasProperty("order", is(5)),
-                                hasProperty("opened", is(false))
-                        )
-                )));
+            when(levelService.flagLevelsToOpenedOrNot(GAME_ID_EXISTENT, 2)).thenReturn(levels);
+
+            mvc.perform(MockMvcRequestBuilders.get(uri, gameName))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("games/level"))
+                    .andExpect(forwardedUrl("games/level"))
+                    .andExpect(model().attribute("game", hasProperty("id", is(GAME_ID_EXISTENT))))
+                    .andExpect(model().attribute("levels", hasSize(5)))
+                    .andExpect(model().attribute("levels", hasItem(
+                            allOf(
+                                    hasProperty("order", is(1)),
+                                    hasProperty("opened", is(true))
+                            )
+                    )))
+                    .andExpect(model().attribute("levels", hasItem(
+                            allOf(
+                                    hasProperty("order", is(2)),
+                                    hasProperty("opened", is(true))
+                            )
+                    )))
+                    .andExpect(model().attribute("levels", hasItem(
+                            allOf(
+                                    hasProperty("order", is(3)),
+                                    hasProperty("opened", is(false))
+                            )
+                    )))
+                    .andExpect(model().attribute("levels", hasItem(
+                            allOf(
+                                    hasProperty("order", is(4)),
+                                    hasProperty("opened", is(false))
+                            )
+                    )))
+                    .andExpect(model().attribute("levels", hasItem(
+                            allOf(
+                                    hasProperty("order", is(5)),
+                                    hasProperty("opened", is(false))
+                            )
+                    )));
+        }
     }
     /* listLevelsOfTheGame - end */
 
@@ -617,7 +622,7 @@ public class GameControllerTest extends AbstractControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name(REDIRECT_HOME));
 
         verify(gameService, times(1)).findByNamelink(gameName);
         verifyNoMoreInteractions(gameService);
@@ -627,14 +632,14 @@ public class GameControllerTest extends AbstractControllerTest {
     public void listPhasesOfTheMap_WhenTheLevelDoesntExist_RedirectToHomePage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}";
         String gameName = GAME_NAME_EXISTENT;
-        Integer levelOrder = 0; // Level inexistent.
+        int levelOrder = 0; // Level inexistent.
         Integer mapOrder = 1;
 
         when(gameService.findByNamelink(gameName)).thenReturn(getEntityStubData());
 
         mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name(REDIRECT_HOME));
 
         verify(gameService, times(1)).findByNamelink(gameName);
 
@@ -642,15 +647,15 @@ public class GameControllerTest extends AbstractControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name(REDIRECT_HOME));
     }
 
     @Test
     public void listPhasesOfTheMap_WhenTheMapDoesntExist_RedirectToHomePage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}";
         String gameName = GAME_NAME_EXISTENT;
-        Integer levelOrder = 1;
-        Integer mapOrder = 0; // Map inexistent.
+        int levelOrder = 1;
+        int mapOrder = 0; // Map inexistent.
 
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
@@ -659,7 +664,7 @@ public class GameControllerTest extends AbstractControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name(REDIRECT_HOME));
 
         verify(gameService, times(1)).findByNamelink(gameName);
         verifyNoMoreInteractions(gameService);
@@ -671,8 +676,8 @@ public class GameControllerTest extends AbstractControllerTest {
     public void listPhasesOfTheMap_WhenThereAreNotPhasesInTheMap_RedirectToHomePage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}";
         String gameName = GAME_NAME_EXISTENT;
-        Integer levelOrder = 1;
-        Integer mapOrder = 1;
+        int levelOrder = 1;
+        int mapOrder = 1;
 
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
@@ -680,40 +685,40 @@ public class GameControllerTest extends AbstractControllerTest {
         Map map = new Map();
         when(mapService.findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder)).thenReturn(map);
 
-        // Emulating a logged in user.
-        SecurityContext securityContextMock = mock(SecurityContext.class);
-        Authentication authenticationMock = mock(Authentication.class);
-        ////PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-        when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-        when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-        when(authenticationMock.getPrincipal()).thenReturn(getCurrentUserStubData());
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            when(authenticationMock.getPrincipal()).thenReturn(getCurrentUserStubData());
 
-        PlayerPhase lastPhaseCompleted = new PlayerPhase();
-        when(playerPhaseService.findLastPhaseCompleted(PLAYER_ID_EXISTENT, entity.getId())).thenReturn(lastPhaseCompleted);
+            PlayerPhase lastPhaseCompleted = new PlayerPhase();
+            when(playerPhaseService.findLastPhaseCompleted(PLAYER_ID_EXISTENT, entity.getId())).thenReturn(lastPhaseCompleted);
 
-        when(phaseService.findPhasesCheckedByMap(map, lastPhaseCompleted)).thenReturn(null);
+            when(phaseService.findPhasesCheckedByMap(map, lastPhaseCompleted)).thenReturn(null);
 
-        mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+            mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(view().name(REDIRECT_HOME));
 
-        verify(gameService, times(1)).findByNamelink(gameName);
-        verifyNoMoreInteractions(gameService);
-        verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
-        verifyNoMoreInteractions(mapService);
-        verify(playerPhaseService, times(1)).findLastPhaseCompleted(PLAYER_ID_EXISTENT, entity.getId());
-        verifyNoMoreInteractions(playerPhaseService);
-        verify(phaseService, times(1)).findPhasesCheckedByMap(map, lastPhaseCompleted);
-        verifyNoMoreInteractions(phaseService);
+            verify(gameService, times(1)).findByNamelink(gameName);
+            verifyNoMoreInteractions(gameService);
+            verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
+            verifyNoMoreInteractions(mapService);
+            verify(playerPhaseService, times(1)).findLastPhaseCompleted(PLAYER_ID_EXISTENT, entity.getId());
+            verifyNoMoreInteractions(playerPhaseService);
+            verify(phaseService, times(1)).findPhasesCheckedByMap(map, lastPhaseCompleted);
+            verifyNoMoreInteractions(phaseService);
+        }
     }
 
     @Test
     public void listPhasesOfTheMap_WhenPlayerCanNotAccessTheMap_RedirectToHomePage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}";
         String gameName = GAME_NAME_EXISTENT;
-        Integer levelOrder = 1;
-        Integer mapOrder = 1;
+        int levelOrder = 1;
+        int mapOrder = 1;
 
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
@@ -721,44 +726,44 @@ public class GameControllerTest extends AbstractControllerTest {
         Map map = new Map();
         when(mapService.findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder)).thenReturn(map);
 
-        // Emulating a logged in user.
-        SecurityContext securityContextMock = mock(SecurityContext.class);
-        Authentication authenticationMock = mock(Authentication.class);
-        ////PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-        when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-        when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-        CurrentUser currentUser = getCurrentUserStubData();
-        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            CurrentUser currentUser = getCurrentUserStubData();
+            when(authenticationMock.getPrincipal()).thenReturn(currentUser);
 
-        PlayerPhase lastPhaseCompleted = new PlayerPhase();
-        when(playerPhaseService.findLastPhaseCompleted(PLAYER_ID_EXISTENT, entity.getId())).thenReturn(lastPhaseCompleted);
+            PlayerPhase lastPhaseCompleted = new PlayerPhase();
+            when(playerPhaseService.findLastPhaseCompleted(PLAYER_ID_EXISTENT, entity.getId())).thenReturn(lastPhaseCompleted);
 
-        when(phaseService.findPhasesCheckedByMap(map, lastPhaseCompleted)).thenReturn(getPhasesCheckedByMapStubData());
+            when(phaseService.findPhasesCheckedByMap(map, lastPhaseCompleted)).thenReturn(getPhasesCheckedByMapStubData());
 
-        when(mapService.playerCanAccessThisMap(map, currentUser.getUser())).thenReturn(false);
+            when(mapService.playerCanAccessThisMap(map, currentUser.getUser())).thenReturn(false);
 
-        mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+            mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(view().name(REDIRECT_HOME));
 
-        verify(gameService, times(1)).findByNamelink(gameName);
-        verifyNoMoreInteractions(gameService);
-        verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
-        verify(playerPhaseService, times(1)).findLastPhaseCompleted(PLAYER_ID_EXISTENT, entity.getId());
-        verifyNoMoreInteractions(playerPhaseService);
-        verify(phaseService, times(1)).findPhasesCheckedByMap(map, lastPhaseCompleted);
-        verifyNoMoreInteractions(phaseService);
-        verify(mapService, times(1)).playerCanAccessThisMap(map, currentUser.getUser());
-        verifyNoMoreInteractions(mapService);
+            verify(gameService, times(1)).findByNamelink(gameName);
+            verifyNoMoreInteractions(gameService);
+            verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
+            verify(playerPhaseService, times(1)).findLastPhaseCompleted(PLAYER_ID_EXISTENT, entity.getId());
+            verifyNoMoreInteractions(playerPhaseService);
+            verify(phaseService, times(1)).findPhasesCheckedByMap(map, lastPhaseCompleted);
+            verifyNoMoreInteractions(phaseService);
+            verify(mapService, times(1)).playerCanAccessThisMap(map, currentUser.getUser());
+            verifyNoMoreInteractions(mapService);
+        }
     }
 
     @Test
     public void listPhasesOfTheMap_WhenEverythingIsOK_OpenMapPage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}";
         String gameName = GAME_NAME_EXISTENT;
-        Integer levelOrder = 1;
-        Integer mapOrder = 1;
+        int levelOrder = 1;
+        int mapOrder = 1;
 
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
@@ -767,30 +772,30 @@ public class GameControllerTest extends AbstractControllerTest {
         map.setId(MAP_ID_EXISTENT);
         when(mapService.findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder)).thenReturn(map);
 
-        // Emulating a logged in user.
-        SecurityContext securityContextMock = mock(SecurityContext.class);
-        Authentication authenticationMock = mock(Authentication.class);
-        ////PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-        when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-        when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-        CurrentUser currentUser = getCurrentUserStubData();
-        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            CurrentUser currentUser = getCurrentUserStubData();
+            when(authenticationMock.getPrincipal()).thenReturn(currentUser);
 
-        PlayerPhase lastPhaseCompleted = new PlayerPhase();
-        when(playerPhaseService.findLastPhaseCompleted(PLAYER_ID_EXISTENT, entity.getId())).thenReturn(lastPhaseCompleted);
+            PlayerPhase lastPhaseCompleted = new PlayerPhase();
+            when(playerPhaseService.findLastPhaseCompleted(PLAYER_ID_EXISTENT, entity.getId())).thenReturn(lastPhaseCompleted);
 
-        when(phaseService.findPhasesCheckedByMap(map, lastPhaseCompleted)).thenReturn(getPhasesCheckedByMapStubData());
+            when(phaseService.findPhasesCheckedByMap(map, lastPhaseCompleted)).thenReturn(getPhasesCheckedByMapStubData());
 
-        when(mapService.playerCanAccessThisMap(map, currentUser.getUser())).thenReturn(true);
+            when(mapService.playerCanAccessThisMap(map, currentUser.getUser())).thenReturn(true);
 
-        mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder))
-                .andExpect(status().isOk())
-                .andExpect(view().name("games/map"))
-                .andExpect(forwardedUrl("games/map"))
-                .andExpect(model().attribute("game", hasProperty("id", is(GAME_ID_EXISTENT))))
-                .andExpect(model().attribute("map", hasProperty("id", is(MAP_ID_EXISTENT))))
-                .andExpect(model().attribute("phases", hasSize(30)));
+            mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("games/map"))
+                    .andExpect(forwardedUrl("games/map"))
+                    .andExpect(model().attribute("game", hasProperty("id", is(GAME_ID_EXISTENT))))
+                    .andExpect(model().attribute("map", hasProperty("id", is(MAP_ID_EXISTENT))))
+                    .andExpect(model().attribute("phases", hasSize(30)));
+        }
     }
     /* listPhasesOfTheMap - end */
 
@@ -799,15 +804,15 @@ public class GameControllerTest extends AbstractControllerTest {
     public void initPhase_WhenTheGameDoesntExist_RedirectToHomePage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}";
         String gameName = "inexistent";
-        Integer levelOrder = 1;
-        Integer mapOrder = 1;
-        Integer phaseOrder = 1;
+        int levelOrder = 1;
+        int mapOrder = 1;
+        int phaseOrder = 1;
 
         when(gameService.findByNamelink(gameName)).thenReturn(null);
 
         mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name(REDIRECT_HOME));
 
         verify(gameService, times(1)).findByNamelink(gameName);
         verifyNoMoreInteractions(gameService);
@@ -817,9 +822,9 @@ public class GameControllerTest extends AbstractControllerTest {
     public void initPhase_WhenTheMapDoesntExist_RedirectToHomePage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}";
         String gameName = GAME_NAME_EXISTENT;
-        Integer levelOrder = 1;
-        Integer mapOrder = 0; // Map inexistent.
-        Integer phaseOrder = 1;
+        int levelOrder = 1;
+        int mapOrder = 0; // Map inexistent.
+        int phaseOrder = 1;
 
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
@@ -828,7 +833,7 @@ public class GameControllerTest extends AbstractControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name(REDIRECT_HOME));
 
         verify(gameService, times(1)).findByNamelink(gameName);
         verifyNoMoreInteractions(gameService);
@@ -840,9 +845,9 @@ public class GameControllerTest extends AbstractControllerTest {
     public void initPhase_WhenThePhaseDoesntExist_RedirectToHomePage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}";
         String gameName = GAME_NAME_EXISTENT;
-        Integer levelOrder = 1;
-        Integer mapOrder = 1;
-        Integer phaseOrder = 0; // Phase inexistent.
+        int levelOrder = 1;
+        int mapOrder = 1;
+        int phaseOrder = 0; // Phase inexistent.
 
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
@@ -854,7 +859,7 @@ public class GameControllerTest extends AbstractControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name(REDIRECT_HOME));
 
         verify(gameService, times(1)).findByNamelink(gameName);
         verifyNoMoreInteractions(gameService);
@@ -868,9 +873,9 @@ public class GameControllerTest extends AbstractControllerTest {
     public void initPhase_WhenThePlayerDoesntHavePermissionToAccessThePhase_RedirectToHomePage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}";
         String gameName = GAME_NAME_EXISTENT;
-        Integer levelOrder = 1;
-        Integer mapOrder = 1;
-        Integer phaseOrder = 1;
+        int levelOrder = 1;
+        int mapOrder = 1;
+        int phaseOrder = 1;
 
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
@@ -881,268 +886,272 @@ public class GameControllerTest extends AbstractControllerTest {
         Phase phase = new Phase();
         when(phaseService.findByMapAndOrder(map.getId(), phaseOrder)).thenReturn(phase);
 
-        // Emulating a logged in user.
-        SecurityContext securityContextMock = mock(SecurityContext.class);
-        Authentication authenticationMock = mock(Authentication.class);
-        ////PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-        when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-        when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-        CurrentUser currentUser = getCurrentUserStubData();
-        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            CurrentUser currentUser = getCurrentUserStubData();
+            when(authenticationMock.getPrincipal()).thenReturn(currentUser);
 
-        when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(false);
+            when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(false);
 
-        mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+            mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(view().name(REDIRECT_HOME));
 
-        verify(gameService, times(1)).findByNamelink(gameName);
-        verifyNoMoreInteractions(gameService);
-        verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
-        verifyNoMoreInteractions(mapService);
-        verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
-        verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
-        verifyNoMoreInteractions(phaseService);
+            verify(gameService, times(1)).findByNamelink(gameName);
+            verifyNoMoreInteractions(gameService);
+            verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
+            verifyNoMoreInteractions(mapService);
+            verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
+            verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
+            verifyNoMoreInteractions(phaseService);
+        }
     }
 
-	/*@Test
-	public void initPhase_WhenTheContentDoesntExist_RedirectToHomePage() throws Exception {
-		String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}";
-		String gameName = GAME_NAME_EXISTENT;
-		Integer levelOrder = 1;
-		Integer mapOrder = 1;
-		Integer phaseOrder = 1;
+    @Test
+    public void initPhase_WhenTheContentDoesntExist_RedirectToHomePage() throws Exception {
+        String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}";
+        String gameName = GAME_NAME_EXISTENT;
+        int levelOrder = 1;
+        int mapOrder = 1;
+        int phaseOrder = 1;
 
-		Game entity = getEntityStubData();
-		when(gameService.findByNamelink(gameName)).thenReturn(entity);
+        Game entity = getEntityStubData();
+        when(gameService.findByNamelink(gameName)).thenReturn(entity);
 
-		Map map = new Map();
-		when(mapService.findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder)).thenReturn(map);
+        Map map = new Map();
+        when(mapService.findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder)).thenReturn(map);
 
-		Phase phase = new Phase();
-		when(phaseService.findByMapAndOrder(map.getId(), phaseOrder)).thenReturn(phase);
+        Phase phase = new Phase();
+        when(phaseService.findByMapAndOrder(map.getId(), phaseOrder)).thenReturn(phase);
 
-		// Emulating a logged in user.
-		SecurityContext securityContextMock = mock(SecurityContext.class);
-		Authentication authenticationMock = mock(Authentication.class);
-		PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-		when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-		when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-		CurrentUser currentUser = getCurrentUserStubData();
-		when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            CurrentUser currentUser = getCurrentUserStubData();
+            when(authenticationMock.getPrincipal()).thenReturn(currentUser);
 
-		when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(true);
+            when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(true);
 
-		when(contentService.findByPhaseAndOrder(phase.getId(), 1)).thenReturn(null);
+            when(contentService.findByPhaseAndOrder(phase.getId(), 1)).thenReturn(null);
 
-		mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
-        	.andExpect(status().is3xxRedirection())
-        	.andExpect(view().name("redirect:/"));
+            mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(view().name(REDIRECT_HOME));
 
-		verify(gameService, times(1)).findByNamelink(gameName);
-		verifyNoMoreInteractions(gameService);
-		verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
-        verifyNoMoreInteractions(mapService);
-        verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
-        verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
-        verifyNoMoreInteractions(phaseService);
-        verify(contentService, times(1)).findByPhaseAndOrder(phase.getId(), 1);
-        verifyNoMoreInteractions(contentService);
-	}*/
+            verify(gameService, times(1)).findByNamelink(gameName);
+            verifyNoMoreInteractions(gameService);
+            verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
+            verifyNoMoreInteractions(mapService);
+            verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
+            verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
+            verifyNoMoreInteractions(phaseService);
+            verify(contentService, times(1)).findByPhaseAndOrder(phase.getId(), 1);
+            verifyNoMoreInteractions(contentService);
+        }
+    }
 
-	/*@Test
-	public void initPhase_WhenThePlayerDoesntHaveCreditsAndHeIsNotTryingToAccessAPhaseThatHeHasAlreadyFinished_OpenBuyCreditsPageAndShowMessage() throws Exception {
-		String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}";
-		String gameName = GAME_NAME_EXISTENT;
-		Integer levelOrder = 1;
-		Integer mapOrder = 1;
-		Integer phaseOrder = 1;
+    @Test
+    public void initPhase_WhenThePlayerDoesntHaveCreditsAndHeIsNotTryingToAccessAPhaseThatHeHasAlreadyFinished_OpenBuyCreditsPageAndShowMessage()
+            throws Exception {
+        String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}";
+        String gameName = GAME_NAME_EXISTENT;
+        int levelOrder = 1;
+        int mapOrder = 1;
+        int phaseOrder = 1;
 
-		Game entity = getEntityStubData();
-		when(gameService.findByNamelink(gameName)).thenReturn(entity);
+        Game entity = getEntityStubData();
+        when(gameService.findByNamelink(gameName)).thenReturn(entity);
 
-		Map map = new Map();
-		map.setGame(entity);
-		when(mapService.findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder)).thenReturn(map);
+        Map map = new Map();
+        map.setGame(entity);
+        when(mapService.findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder)).thenReturn(map);
 
-		Phase phase = new Phase();
-		phase.setOrder(5);
-		phase.setMap(map);
+        Phase phase = new Phase();
+        phase.setOrder(5);
+        phase.setMap(map);
 
-		when(phaseService.findByMapAndOrder(map.getId(), phaseOrder)).thenReturn(phase);
+        when(phaseService.findByMapAndOrder(map.getId(), phaseOrder)).thenReturn(phase);
 
-		// Emulating a logged in user.
-		SecurityContext securityContextMock = mock(SecurityContext.class);
-		Authentication authenticationMock = mock(Authentication.class);
-		PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-		when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-		when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-		CurrentUser currentUser = getCurrentUserStubData();
-		when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            CurrentUser currentUser = getCurrentUserStubData();
+            when(authenticationMock.getPrincipal()).thenReturn(currentUser);
 
-		when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(true);
+            when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(true);
 
-		Content content = new Content();
-		content.setId(378);
-		when(contentService.findByPhaseAndOrder(phase.getId(), 1)).thenReturn(content);
+            Content content = new Content();
+            content.setId(378);
+            content.setContent("<p>Content 01</p>");
+            when(contentService.findByPhaseAndOrder(phase.getId(), 1)).thenReturn(content);
 
-		when(playerService.playerHasCredits(currentUser.getUser(), phase)).thenReturn(false);
+            when(playerService.playerHasCredits(currentUser.getUser(), phase)).thenReturn(false);
 
-		Phase lastPhaseDone = new Phase();
-		lastPhaseDone.setOrder(4);
-		when(phaseService.findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, phase.getMap().getGame().getId())).thenReturn(lastPhaseDone);
+            Phase lastPhaseDone = new Phase();
+            lastPhaseDone.setOrder(4);
+            when(phaseService.findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, phase.getMap().getGame().getId())).thenReturn(lastPhaseDone);
 
-		ResourceBundle messagesResourceBundle = ResourceBundle.getBundle("messages/messages", Locale.getDefault());
+            ResourceBundle messagesResourceBundle = ResourceBundle.getBundle("messages/messages", Locale.getDefault());
 
-		mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
-        	.andExpect(status().isOk())
-        	.andExpect(view().name("buycredits"))
-        	.andExpect(model().attribute("msg", messagesResourceBundle.getString("msg.credits.insufficient")));
+            mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("buycredits"))
+                    .andExpect(model().attribute("msg", messagesResourceBundle.getString("msg.credits.insufficient")));
 
-		verify(gameService, times(1)).findByNamelink(gameName);
-		verifyNoMoreInteractions(gameService);
-		verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
-        verifyNoMoreInteractions(mapService);
-        verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
-        verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
-        verify(contentService, times(1)).findByPhaseAndOrder(phase.getId(), 1);
-        verifyNoMoreInteractions(contentService);
-        verify(playerService, times(1)).playerHasCredits(currentUser.getUser(), phase);
-        verifyNoMoreInteractions(playerService);
-        verify(phaseService, times(1)).findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, phase.getMap().getGame().getId());
-        verifyNoMoreInteractions(phaseService);
-	}*/
+            verify(gameService, times(1)).findByNamelink(gameName);
+            verifyNoMoreInteractions(gameService);
+            verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
+            verifyNoMoreInteractions(mapService);
+            verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
+            verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
+            verify(contentService, times(1)).findByPhaseAndOrder(phase.getId(), 1);
+            verifyNoMoreInteractions(contentService);
+            verify(playerService, times(1)).playerHasCredits(currentUser.getUser(), phase);
+            verifyNoMoreInteractions(playerService);
+            verify(phaseService, times(1)).findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, phase.getMap().getGame().getId());
+            verifyNoMoreInteractions(phaseService);
+        }
+    }
 
-	/*@Test
-	public void initPhase_WhenThePlayerDoesntHaveCreditsButHeIsTryingToAccessAPhaseThatHeHasAlreadyFinished_OpenPhaseContentPage() throws Exception {
-		String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}";
-		String gameName = GAME_NAME_EXISTENT;
-		Integer levelOrder = 1;
-		Integer mapOrder = 1;
-		Integer phaseOrder = 1;
+    @Test
+    public void initPhase_WhenThePlayerDoesntHaveCreditsButHeIsTryingToAccessAPhaseThatHeHasAlreadyFinished_OpenPhaseContentPage() throws Exception {
+        String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}";
+        String gameName = GAME_NAME_EXISTENT;
+        int levelOrder = 1;
+        int mapOrder = 1;
+        int phaseOrder = 1;
 
-		Game entity = getEntityStubData();
-		when(gameService.findByNamelink(gameName)).thenReturn(entity);
+        Game entity = getEntityStubData();
+        when(gameService.findByNamelink(gameName)).thenReturn(entity);
 
-		Map map = new Map();
-		map.setId(52);
-		map.setGame(entity);
-		when(mapService.findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder)).thenReturn(map);
+        Map map = new Map();
+        map.setId(52);
+        map.setGame(entity);
+        when(mapService.findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder)).thenReturn(map);
 
-		Phase phase = new Phase();
-		phase.setId(23);
-		phase.setOrder(5); // The player is trying to access this phase.
-		phase.setMap(map);
+        Phase phase = new Phase();
+        phase.setId(23);
+        phase.setOrder(5); // The player is trying to access this phase.
+        phase.setMap(map);
 
-		when(phaseService.findByMapAndOrder(map.getId(), phaseOrder)).thenReturn(phase);
+        when(phaseService.findByMapAndOrder(map.getId(), phaseOrder)).thenReturn(phase);
 
-		// Emulating a logged in user.
-		SecurityContext securityContextMock = mock(SecurityContext.class);
-		Authentication authenticationMock = mock(Authentication.class);
-		PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-		when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-		when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-		CurrentUser currentUser = getCurrentUserStubData();
-		when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            CurrentUser currentUser = getCurrentUserStubData();
+            when(authenticationMock.getPrincipal()).thenReturn(currentUser);
 
-		when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(true);
+            when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(true);
 
-		Content content = new Content();
-		content.setId(378);
-		when(contentService.findByPhaseAndOrder(phase.getId(), 1)).thenReturn(content);
+            Content content = new Content();
+            content.setId(378);
+            content.setContent("<p>Content 01</p>");
+            when(contentService.findByPhaseAndOrder(phase.getId(), 1)).thenReturn(content);
 
-		when(playerService.playerHasCredits(currentUser.getUser(), phase)).thenReturn(false);
+            when(playerService.playerHasCredits(currentUser.getUser(), phase)).thenReturn(false);
 
-		Phase lastPhaseDone = new Phase();
-		lastPhaseDone.setOrder(5); // Last phase done by this player.
-		when(phaseService.findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, phase.getMap().getGame().getId())).thenReturn(lastPhaseDone);
+            Phase lastPhaseDone = new Phase();
+            lastPhaseDone.setOrder(5); // Last phase done by this player.
+            when(phaseService.findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, phase.getMap().getGame().getId())).thenReturn(lastPhaseDone);
 
-		mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
-        	.andExpect(status().isOk())
-        	.andExpect(view().name("games/phaseContent"))
-        	.andExpect(model().attribute("game", hasProperty("id", is(GAME_ID_EXISTENT))))
-        	.andExpect(model().attribute("map", hasProperty("id", is(map.getId()))))
-        	.andExpect(model().attribute("phase", hasProperty("id", is(phase.getId()))))
-        	.andExpect(model().attribute("content", hasProperty("id", is(content.getId()))));
+            mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("games/phaseContent"))
+                    .andExpect(model().attribute("game", hasProperty("id", is(GAME_ID_EXISTENT))))
+                    .andExpect(model().attribute("map", hasProperty("id", is(map.getId()))))
+                    .andExpect(model().attribute("phase", hasProperty("id", is(phase.getId()))))
+                    .andExpect(model().attribute("content", hasProperty("id", is(content.getId()))));
 
-		verify(gameService, times(1)).findByNamelink(gameName);
-		verifyNoMoreInteractions(gameService);
-		verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
-        verifyNoMoreInteractions(mapService);
-        verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
-        verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
-        verify(contentService, times(1)).findByPhaseAndOrder(phase.getId(), 1);
-        verifyNoMoreInteractions(contentService);
-        verify(playerService, times(1)).playerHasCredits(currentUser.getUser(), phase);
-        verifyNoMoreInteractions(playerService);
-        verify(phaseService, times(1)).findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, phase.getMap().getGame().getId());
-        verifyNoMoreInteractions(phaseService);
-	}*/
+            verify(gameService, times(1)).findByNamelink(gameName);
+            verifyNoMoreInteractions(gameService);
+            verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
+            verifyNoMoreInteractions(mapService);
+            verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
+            verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
+            verify(contentService, times(1)).findByPhaseAndOrder(phase.getId(), 1);
+            verifyNoMoreInteractions(contentService);
+            verify(playerService, times(1)).playerHasCredits(currentUser.getUser(), phase);
+            verifyNoMoreInteractions(playerService);
+            verify(phaseService, times(1)).findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, phase.getMap().getGame().getId());
+            verifyNoMoreInteractions(phaseService);
+        }
+    }
 
-	/*@Test
-	public void initPhase_WhenEverythingIsOK_OpenPhaseContentPage() throws Exception {
-		String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}";
-		String gameName = GAME_NAME_EXISTENT;
-		Integer levelOrder = 1;
-		Integer mapOrder = 1;
-		Integer phaseOrder = 1;
+    @Test
+    public void initPhase_WhenEverythingIsOK_OpenPhaseContentPage() throws Exception {
+        String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}";
+        String gameName = GAME_NAME_EXISTENT;
+        int levelOrder = 1;
+        int mapOrder = 1;
+        int phaseOrder = 1;
 
-		Game entity = getEntityStubData();
-		when(gameService.findByNamelink(gameName)).thenReturn(entity);
+        Game entity = getEntityStubData();
+        when(gameService.findByNamelink(gameName)).thenReturn(entity);
 
-		Map map = new Map();
-		map.setId(52);
-		map.setGame(entity);
-		when(mapService.findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder)).thenReturn(map);
+        Map map = new Map();
+        map.setId(52);
+        map.setGame(entity);
+        when(mapService.findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder)).thenReturn(map);
 
-		Phase phase = new Phase();
-		phase.setId(23);
-		phase.setOrder(5); // The player is trying to access this phase.
-		phase.setMap(map);
+        Phase phase = new Phase();
+        phase.setId(23);
+        phase.setOrder(5); // The player is trying to access this phase.
+        phase.setMap(map);
 
-		when(phaseService.findByMapAndOrder(map.getId(), phaseOrder)).thenReturn(phase);
+        when(phaseService.findByMapAndOrder(map.getId(), phaseOrder)).thenReturn(phase);
 
-		// Emulating a logged in user.
-		SecurityContext securityContextMock = mock(SecurityContext.class);
-		Authentication authenticationMock = mock(Authentication.class);
-		PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-		when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-		when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-		CurrentUser currentUser = getCurrentUserStubData();
-		when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            CurrentUser currentUser = getCurrentUserStubData();
+            when(authenticationMock.getPrincipal()).thenReturn(currentUser);
 
-		when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(true);
+            when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(true);
 
-		Content content = new Content();
-		content.setId(378);
-		when(contentService.findByPhaseAndOrder(phase.getId(), 1)).thenReturn(content);
+            Content content = new Content();
+            content.setId(378);
+            content.setContent("<p>Content 01</p>");
+            when(contentService.findByPhaseAndOrder(phase.getId(), 1)).thenReturn(content);
 
-		when(playerService.playerHasCredits(currentUser.getUser(), phase)).thenReturn(true);
+            when(playerService.playerHasCredits(currentUser.getUser(), phase)).thenReturn(true);
 
-		mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
-        	.andExpect(status().isOk())
-        	.andExpect(view().name("games/phaseContent"))
-        	.andExpect(model().attribute("game", hasProperty("id", is(GAME_ID_EXISTENT))))
-        	.andExpect(model().attribute("map", hasProperty("id", is(map.getId()))))
-        	.andExpect(model().attribute("phase", hasProperty("id", is(phase.getId()))))
-        	.andExpect(model().attribute("content", hasProperty("id", is(content.getId()))));
+            mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("games/phaseContent"))
+                    .andExpect(model().attribute("game", hasProperty("id", is(GAME_ID_EXISTENT))))
+                    .andExpect(model().attribute("map", hasProperty("id", is(map.getId()))))
+                    .andExpect(model().attribute("phase", hasProperty("id", is(phase.getId()))))
+                    .andExpect(model().attribute("content", hasProperty("id", is(content.getId()))));
 
-		verify(gameService, times(1)).findByNamelink(gameName);
-		verifyNoMoreInteractions(gameService);
-		verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
-        verifyNoMoreInteractions(mapService);
-        verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
-        verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
-        verify(contentService, times(1)).findByPhaseAndOrder(phase.getId(), 1);
-        verifyNoMoreInteractions(contentService);
-        verify(playerService, times(1)).playerHasCredits(currentUser.getUser(), phase);
-        verifyNoMoreInteractions(playerService);
-	}*/
+            verify(gameService, times(1)).findByNamelink(gameName);
+            verifyNoMoreInteractions(gameService);
+            verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
+            verifyNoMoreInteractions(mapService);
+            verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
+            verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
+            verify(contentService, times(1)).findByPhaseAndOrder(phase.getId(), 1);
+            verifyNoMoreInteractions(contentService);
+            verify(playerService, times(1)).playerHasCredits(currentUser.getUser(), phase);
+            verifyNoMoreInteractions(playerService);
+        }
+    }
     /* initPhase - end */
 
     /* initTest - begin */
@@ -1150,15 +1159,15 @@ public class GameControllerTest extends AbstractControllerTest {
     public void initTest_WhenTheGameDoesntExist_RedirectToHomePage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}/test";
         String gameName = "inexistent";
-        Integer levelOrder = 1;
-        Integer mapOrder = 1;
-        Integer phaseOrder = 1;
+        int levelOrder = 1;
+        int mapOrder = 1;
+        int phaseOrder = 1;
 
         when(gameService.findByNamelink(gameName)).thenReturn(null);
 
         mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name(REDIRECT_HOME));
 
         verify(gameService, times(1)).findByNamelink(gameName);
         verifyNoMoreInteractions(gameService);
@@ -1168,9 +1177,9 @@ public class GameControllerTest extends AbstractControllerTest {
     public void initTest_WhenTheMapDoesntExist_RedirectToHomePage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}/test";
         String gameName = GAME_NAME_EXISTENT;
-        Integer levelOrder = 1;
-        Integer mapOrder = 0; // Map inexistent.
-        Integer phaseOrder = 1;
+        int levelOrder = 1;
+        int mapOrder = 0; // Map inexistent.
+        int phaseOrder = 1;
 
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
@@ -1179,7 +1188,7 @@ public class GameControllerTest extends AbstractControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name(REDIRECT_HOME));
 
         verify(gameService, times(1)).findByNamelink(gameName);
         verifyNoMoreInteractions(gameService);
@@ -1191,9 +1200,9 @@ public class GameControllerTest extends AbstractControllerTest {
     public void initTest_WhenThePhaseDoesntExist_RedirectToHomePage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}/test";
         String gameName = GAME_NAME_EXISTENT;
-        Integer levelOrder = 1;
-        Integer mapOrder = 1;
-        Integer phaseOrder = 0; // Phase inexistent.
+        int levelOrder = 1;
+        int mapOrder = 1;
+        int phaseOrder = 0; // Phase inexistent.
 
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
@@ -1205,7 +1214,7 @@ public class GameControllerTest extends AbstractControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name(REDIRECT_HOME));
 
         verify(gameService, times(1)).findByNamelink(gameName);
         verifyNoMoreInteractions(gameService);
@@ -1219,9 +1228,9 @@ public class GameControllerTest extends AbstractControllerTest {
     public void initTest_WhenThePlayerHasAlreadyPassedTheTest_RedirectToGamePage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}/test";
         String gameName = GAME_NAME_EXISTENT;
-        Integer levelOrder = 1;
-        Integer mapOrder = 1;
-        Integer phaseOrder = 1;
+        int levelOrder = 1;
+        int mapOrder = 1;
+        int phaseOrder = 1;
 
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
@@ -1232,39 +1241,39 @@ public class GameControllerTest extends AbstractControllerTest {
         Phase phase = new Phase();
         when(phaseService.findByMapAndOrder(map.getId(), phaseOrder)).thenReturn(phase);
 
-        // Emulating a logged in user.
-        SecurityContext securityContextMock = mock(SecurityContext.class);
-        Authentication authenticationMock = mock(Authentication.class);
-        ////PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-        when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-        when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-        CurrentUser currentUser = getCurrentUserStubData();
-        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            CurrentUser currentUser = getCurrentUserStubData();
+            when(authenticationMock.getPrincipal()).thenReturn(currentUser);
 
-        when(playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser())).thenReturn(true);
+            when(playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser())).thenReturn(true);
 
-        mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/games/" + gameName));
+            mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(view().name(REDIRECT_GAMES + "/" + gameName));
 
-        verify(gameService, times(1)).findByNamelink(gameName);
-        verifyNoMoreInteractions(gameService);
-        verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
-        verifyNoMoreInteractions(mapService);
-        verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
-        verifyNoMoreInteractions(phaseService);
-        verify(playerPhaseService, times(1)).isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser());
-        verifyNoMoreInteractions(playerPhaseService);
+            verify(gameService, times(1)).findByNamelink(gameName);
+            verifyNoMoreInteractions(gameService);
+            verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
+            verifyNoMoreInteractions(mapService);
+            verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
+            verifyNoMoreInteractions(phaseService);
+            verify(playerPhaseService, times(1)).isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser());
+            verifyNoMoreInteractions(playerPhaseService);
+        }
     }
 
     @Test
     public void initTest_WhenThePlayerDoesntHavePermissionToAccessThePhase_RedirectToHomePage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}/test";
         String gameName = GAME_NAME_EXISTENT;
-        Integer levelOrder = 1;
-        Integer mapOrder = 1;
-        Integer phaseOrder = 1;
+        int levelOrder = 1;
+        int mapOrder = 1;
+        int phaseOrder = 1;
 
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
@@ -1275,33 +1284,33 @@ public class GameControllerTest extends AbstractControllerTest {
         Phase phase = new Phase();
         when(phaseService.findByMapAndOrder(map.getId(), phaseOrder)).thenReturn(phase);
 
-        // Emulating a logged in user.
-        SecurityContext securityContextMock = mock(SecurityContext.class);
-        Authentication authenticationMock = mock(Authentication.class);
-        ////PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-        when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-        when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-        CurrentUser currentUser = getCurrentUserStubData();
-        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            CurrentUser currentUser = getCurrentUserStubData();
+            when(authenticationMock.getPrincipal()).thenReturn(currentUser);
 
-        when(playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser())).thenReturn(false);
+            when(playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser())).thenReturn(false);
 
-        when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(false);
+            when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(false);
 
-        mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+            mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(view().name(REDIRECT_HOME));
 
-        verify(gameService, times(1)).findByNamelink(gameName);
-        verifyNoMoreInteractions(gameService);
-        verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
-        verifyNoMoreInteractions(mapService);
-        verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
-        verify(playerPhaseService, times(1)).isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser());
-        verifyNoMoreInteractions(playerPhaseService);
-        verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
-        verifyNoMoreInteractions(phaseService);
+            verify(gameService, times(1)).findByNamelink(gameName);
+            verifyNoMoreInteractions(gameService);
+            verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
+            verifyNoMoreInteractions(mapService);
+            verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
+            verify(playerPhaseService, times(1)).isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser());
+            verifyNoMoreInteractions(playerPhaseService);
+            verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
+            verifyNoMoreInteractions(phaseService);
+        }
     }
 
     @Test
@@ -1309,9 +1318,9 @@ public class GameControllerTest extends AbstractControllerTest {
             throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}/test";
         String gameName = GAME_NAME_EXISTENT;
-        Integer levelOrder = 1;
-        Integer mapOrder = 1;
-        Integer phaseOrder = 1;
+        int levelOrder = 1;
+        int mapOrder = 1;
+        int phaseOrder = 1;
 
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
@@ -1327,54 +1336,54 @@ public class GameControllerTest extends AbstractControllerTest {
 
         when(phaseService.findByMapAndOrder(map.getId(), phaseOrder)).thenReturn(phase);
 
-        // Emulating a logged in user.
-        SecurityContext securityContextMock = mock(SecurityContext.class);
-        Authentication authenticationMock = mock(Authentication.class);
-        ////PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-        when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-        when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-        CurrentUser currentUser = getCurrentUserStubData();
-        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            CurrentUser currentUser = getCurrentUserStubData();
+            when(authenticationMock.getPrincipal()).thenReturn(currentUser);
 
-        when(playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser())).thenReturn(false);
+            when(playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser())).thenReturn(false);
 
-        when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(true);
+            when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(true);
 
-        when(playerService.playerHasCredits(currentUser.getUser(), phase)).thenReturn(false);
+            when(playerService.playerHasCredits(currentUser.getUser(), phase)).thenReturn(false);
 
-        Phase lastPhaseDone = new Phase();
-        lastPhaseDone.setOrder(4); // Last phase done by this player.
-        when(phaseService.findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, phase.getMap().getGame().getId())).thenReturn(lastPhaseDone);
+            Phase lastPhaseDone = new Phase();
+            lastPhaseDone.setOrder(4); // Last phase done by this player.
+            when(phaseService.findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, phase.getMap().getGame().getId())).thenReturn(lastPhaseDone);
 
-        ResourceBundle messagesResourceBundle = ResourceBundle.getBundle("messages/messages", Locale.getDefault());
+            ResourceBundle messagesResourceBundle = ResourceBundle.getBundle("messages/messages", Locale.getDefault());
 
-        mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
-                .andExpect(status().isOk())
-                .andExpect(view().name("buycredits"))
-                .andExpect(model().attribute("msg", messagesResourceBundle.getString("msg.credits.insufficient")));
+            mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("buycredits"))
+                    .andExpect(model().attribute("msg", messagesResourceBundle.getString("msg.credits.insufficient")));
 
-        verify(gameService, times(1)).findByNamelink(gameName);
-        verifyNoMoreInteractions(gameService);
-        verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
-        verifyNoMoreInteractions(mapService);
-        verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
-        verify(playerPhaseService, times(1)).isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser());
-        verifyNoMoreInteractions(playerPhaseService);
-        verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
-        verify(playerService, times(1)).playerHasCredits(currentUser.getUser(), phase);
-        verifyNoMoreInteractions(playerService);
-        verify(phaseService, times(1)).findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, phase.getMap().getGame().getId());
-        verifyNoMoreInteractions(phaseService);
+            verify(gameService, times(1)).findByNamelink(gameName);
+            verifyNoMoreInteractions(gameService);
+            verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
+            verifyNoMoreInteractions(mapService);
+            verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
+            verify(playerPhaseService, times(1)).isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser());
+            verifyNoMoreInteractions(playerPhaseService);
+            verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
+            verify(playerService, times(1)).playerHasCredits(currentUser.getUser(), phase);
+            verifyNoMoreInteractions(playerService);
+            verify(phaseService, times(1)).findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, phase.getMap().getGame().getId());
+            verifyNoMoreInteractions(phaseService);
+        }
     }
 
     @Test
     public void initTest_WhenThePlayerDoesntHaveCreditsButHeIsTryingToAccessAPhaseThatHeHasAlreadyFinished_OpenPhaseTestPage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}/test";
         String gameName = GAME_NAME_EXISTENT;
-        Integer levelOrder = 1;
-        Integer mapOrder = 1;
-        Integer phaseOrder = 1;
+        int levelOrder = 1;
+        int mapOrder = 1;
+        int phaseOrder = 1;
 
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
@@ -1390,110 +1399,110 @@ public class GameControllerTest extends AbstractControllerTest {
 
         when(phaseService.findByMapAndOrder(map.getId(), phaseOrder)).thenReturn(phase);
 
-        // Emulating a logged in user.
-        SecurityContext securityContextMock = mock(SecurityContext.class);
-        Authentication authenticationMock = mock(Authentication.class);
-        ////PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-        when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-        when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-        CurrentUser currentUser = getCurrentUserStubData();
-        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            CurrentUser currentUser = getCurrentUserStubData();
+            when(authenticationMock.getPrincipal()).thenReturn(currentUser);
 
-        when(playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser())).thenReturn(false);
+            when(playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser())).thenReturn(false);
 
-        when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(true);
+            when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(true);
 
-        when(playerService.playerHasCredits(currentUser.getUser(), phase)).thenReturn(false);
+            when(playerService.playerHasCredits(currentUser.getUser(), phase)).thenReturn(false);
 
-        Phase lastPhaseDone = new Phase();
-        lastPhaseDone.setOrder(6); // Last phase done by this player.
-        when(phaseService.findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, phase.getMap().getGame().getId())).thenReturn(lastPhaseDone);
+            Phase lastPhaseDone = new Phase();
+            lastPhaseDone.setOrder(6); // Last phase done by this player.
+            when(phaseService.findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, phase.getMap().getGame().getId())).thenReturn(lastPhaseDone);
 
-        when(playerPhaseService.setTestAttempt(currentUser.getUser(), phase)).thenReturn(new PlayerPhase());
+            when(playerPhaseService.setTestAttempt(currentUser.getUser(), phase)).thenReturn(new PlayerPhase());
 
-        Content content = new Content();
-        content.setId(224);
-        when(contentService.findByPhaseAndOrder(phase.getId(), 0)).thenReturn(content);
+            Content content = new Content();
+            content.setId(224);
+            when(contentService.findByPhaseAndOrder(phase.getId(), 0)).thenReturn(content);
 
-        when(questionService.findByContent(content.getId())).thenReturn(getQuestionsByContentStubData());
+            when(questionService.findByContent(content.getId())).thenReturn(getQuestionsByContentStubData());
 
-        mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
-                .andExpect(status().isOk())
-                .andExpect(view().name("games/phaseTest"))
-                .andExpect(model().attribute("game", hasProperty("id", is(GAME_ID_EXISTENT))))
-                .andExpect(model().attribute("map", hasProperty("id", is(map.getId()))))
-                .andExpect(model().attribute("phase", hasProperty("id", is(phase.getId()))))
-                .andExpect(model().attribute("questions", hasSize(5)))
-                .andExpect(model().attribute("questions", hasItem(
-                        allOf(
-                                hasProperty("id", is(101)),
-                                hasProperty("name", is("Question 01")),
-                                hasProperty("order", is(1)),
-                                hasProperty("answers", hasSize(4))
-                        )
-                )))
-                .andExpect(model().attribute("questions", hasItem(
-                        allOf(
-                                hasProperty("id", is(102)),
-                                hasProperty("name", is("Question 02")),
-                                hasProperty("order", is(2))
-                        )
-                )))
-                .andExpect(model().attribute("questions", hasItem(
-                        allOf(
-                                hasProperty("id", is(103)),
-                                hasProperty("name", is("Question 03")),
-                                hasProperty("order", is(3))
-                        )
-                )))
-                .andExpect(model().attribute("questions", hasItem(
-                        allOf(
-                                hasProperty("id", is(104)),
-                                hasProperty("name", is("Question 04")),
-                                hasProperty("order", is(4))
-                        )
-                )))
-                .andExpect(model().attribute("questions", hasItem(
-                        allOf(
-                                hasProperty("id", is(105)),
-                                hasProperty("name", is("Question 05")),
-                                hasProperty("order", is(5))
-                        )
-                )))
-                .andExpect(request().sessionAttribute("questionsId", hasSize(5)))
-                .andExpect(request().sessionAttribute("questionsId", hasItem(101)))
-                .andExpect(request().sessionAttribute("questionsId", hasItem(102)))
-                .andExpect(request().sessionAttribute("questionsId", hasItem(103)))
-                .andExpect(request().sessionAttribute("questionsId", hasItem(104)))
-                .andExpect(request().sessionAttribute("questionsId", hasItem(105)));
+            mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("games/phaseTest"))
+                    .andExpect(model().attribute("game", hasProperty("id", is(GAME_ID_EXISTENT))))
+                    .andExpect(model().attribute("map", hasProperty("id", is(map.getId()))))
+                    .andExpect(model().attribute("phase", hasProperty("id", is(phase.getId()))))
+                    .andExpect(model().attribute("questions", hasSize(5)))
+                    .andExpect(model().attribute("questions", hasItem(
+                            allOf(
+                                    hasProperty("id", is(101)),
+                                    hasProperty("name", is("Question 01")),
+                                    hasProperty("order", is(1)),
+                                    hasProperty("answers", hasSize(4))
+                            )
+                    )))
+                    .andExpect(model().attribute("questions", hasItem(
+                            allOf(
+                                    hasProperty("id", is(102)),
+                                    hasProperty("name", is("Question 02")),
+                                    hasProperty("order", is(2))
+                            )
+                    )))
+                    .andExpect(model().attribute("questions", hasItem(
+                            allOf(
+                                    hasProperty("id", is(103)),
+                                    hasProperty("name", is("Question 03")),
+                                    hasProperty("order", is(3))
+                            )
+                    )))
+                    .andExpect(model().attribute("questions", hasItem(
+                            allOf(
+                                    hasProperty("id", is(104)),
+                                    hasProperty("name", is("Question 04")),
+                                    hasProperty("order", is(4))
+                            )
+                    )))
+                    .andExpect(model().attribute("questions", hasItem(
+                            allOf(
+                                    hasProperty("id", is(105)),
+                                    hasProperty("name", is("Question 05")),
+                                    hasProperty("order", is(5))
+                            )
+                    )))
+                    .andExpect(request().sessionAttribute("questionsId", hasSize(5)))
+                    .andExpect(request().sessionAttribute("questionsId", hasItem(101)))
+                    .andExpect(request().sessionAttribute("questionsId", hasItem(102)))
+                    .andExpect(request().sessionAttribute("questionsId", hasItem(103)))
+                    .andExpect(request().sessionAttribute("questionsId", hasItem(104)))
+                    .andExpect(request().sessionAttribute("questionsId", hasItem(105)));
 
-        verify(gameService, times(1)).findByNamelink(gameName);
-        verifyNoMoreInteractions(gameService);
-        verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
-        verifyNoMoreInteractions(mapService);
-        verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
-        verify(playerPhaseService, times(1)).isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser());
-        verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
-        verify(playerService, times(1)).playerHasCredits(currentUser.getUser(), phase);
-        verifyNoMoreInteractions(playerService);
-        verify(phaseService, times(1)).findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, phase.getMap().getGame().getId());
-        verifyNoMoreInteractions(phaseService);
-        verify(playerPhaseService).setTestAttempt(currentUser.getUser(), phase);
-        verifyNoMoreInteractions(playerPhaseService);
-        verify(contentService, times(1)).findByPhaseAndOrder(phase.getId(), 0);
-        verifyNoMoreInteractions(contentService);
-        verify(questionService, times(1)).findByContent(content.getId());
-        verifyNoMoreInteractions(questionService);
+            verify(gameService, times(1)).findByNamelink(gameName);
+            verifyNoMoreInteractions(gameService);
+            verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
+            verifyNoMoreInteractions(mapService);
+            verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
+            verify(playerPhaseService, times(1)).isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser());
+            verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
+            verify(playerService, times(1)).playerHasCredits(currentUser.getUser(), phase);
+            verifyNoMoreInteractions(playerService);
+            verify(phaseService, times(1)).findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, phase.getMap().getGame().getId());
+            verifyNoMoreInteractions(phaseService);
+            verify(playerPhaseService).setTestAttempt(currentUser.getUser(), phase);
+            verifyNoMoreInteractions(playerPhaseService);
+            verify(contentService, times(1)).findByPhaseAndOrder(phase.getId(), 0);
+            verifyNoMoreInteractions(contentService);
+            verify(questionService, times(1)).findByContent(content.getId());
+            verifyNoMoreInteractions(questionService);
+        }
     }
 
     @Test
     public void initTest_WhenEverythingIsOK_OpenPhaseTestPage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}/test";
         String gameName = GAME_NAME_EXISTENT;
-        Integer levelOrder = 1;
-        Integer mapOrder = 1;
-        Integer phaseOrder = 1;
+        int levelOrder = 1;
+        int mapOrder = 1;
+        int phaseOrder = 1;
 
         Game entity = getEntityStubData();
         when(gameService.findByNamelink(gameName)).thenReturn(entity);
@@ -1509,96 +1518,96 @@ public class GameControllerTest extends AbstractControllerTest {
 
         when(phaseService.findByMapAndOrder(map.getId(), phaseOrder)).thenReturn(phase);
 
-        // Emulating a logged in user.
-        SecurityContext securityContextMock = mock(SecurityContext.class);
-        Authentication authenticationMock = mock(Authentication.class);
-        ////PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-        when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-        when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-        CurrentUser currentUser = getCurrentUserStubData();
-        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            CurrentUser currentUser = getCurrentUserStubData();
+            when(authenticationMock.getPrincipal()).thenReturn(currentUser);
 
-        when(playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser())).thenReturn(false);
+            when(playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser())).thenReturn(false);
 
-        when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(true);
+            when(phaseService.playerCanAccessThisPhase(phase, currentUser.getUser())).thenReturn(true);
 
-        when(playerService.playerHasCredits(currentUser.getUser(), phase)).thenReturn(true);
+            when(playerService.playerHasCredits(currentUser.getUser(), phase)).thenReturn(true);
 
-        when(playerPhaseService.setTestAttempt(currentUser.getUser(), phase)).thenReturn(new PlayerPhase());
+            when(playerPhaseService.setTestAttempt(currentUser.getUser(), phase)).thenReturn(new PlayerPhase());
 
-        Content content = new Content();
-        content.setId(224);
-        when(contentService.findByPhaseAndOrder(phase.getId(), 0)).thenReturn(content);
+            Content content = new Content();
+            content.setId(224);
+            when(contentService.findByPhaseAndOrder(phase.getId(), 0)).thenReturn(content);
 
-        when(questionService.findByContent(content.getId())).thenReturn(getQuestionsByContentStubData());
+            when(questionService.findByContent(content.getId())).thenReturn(getQuestionsByContentStubData());
 
-        mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
-                .andExpect(status().isOk())
-                .andExpect(view().name("games/phaseTest"))
-                .andExpect(model().attribute("game", hasProperty("id", is(GAME_ID_EXISTENT))))
-                .andExpect(model().attribute("map", hasProperty("id", is(map.getId()))))
-                .andExpect(model().attribute("phase", hasProperty("id", is(phase.getId()))))
-                .andExpect(model().attribute("questions", hasSize(5)))
-                .andExpect(model().attribute("questions", hasItem(
-                        allOf(
-                                hasProperty("id", is(101)),
-                                hasProperty("name", is("Question 01")),
-                                hasProperty("order", is(1)),
-                                hasProperty("answers", hasSize(4))
-                        )
-                )))
-                .andExpect(model().attribute("questions", hasItem(
-                        allOf(
-                                hasProperty("id", is(102)),
-                                hasProperty("name", is("Question 02")),
-                                hasProperty("order", is(2))
-                        )
-                )))
-                .andExpect(model().attribute("questions", hasItem(
-                        allOf(
-                                hasProperty("id", is(103)),
-                                hasProperty("name", is("Question 03")),
-                                hasProperty("order", is(3))
-                        )
-                )))
-                .andExpect(model().attribute("questions", hasItem(
-                        allOf(
-                                hasProperty("id", is(104)),
-                                hasProperty("name", is("Question 04")),
-                                hasProperty("order", is(4))
-                        )
-                )))
-                .andExpect(model().attribute("questions", hasItem(
-                        allOf(
-                                hasProperty("id", is(105)),
-                                hasProperty("name", is("Question 05")),
-                                hasProperty("order", is(5))
-                        )
-                )))
-                .andExpect(request().sessionAttribute("questionsId", hasSize(5)))
-                .andExpect(request().sessionAttribute("questionsId", hasItem(101)))
-                .andExpect(request().sessionAttribute("questionsId", hasItem(102)))
-                .andExpect(request().sessionAttribute("questionsId", hasItem(103)))
-                .andExpect(request().sessionAttribute("questionsId", hasItem(104)))
-                .andExpect(request().sessionAttribute("questionsId", hasItem(105)));
+            mvc.perform(MockMvcRequestBuilders.get(uri, gameName, levelOrder, mapOrder, phaseOrder))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("games/phaseTest"))
+                    .andExpect(model().attribute("game", hasProperty("id", is(GAME_ID_EXISTENT))))
+                    .andExpect(model().attribute("map", hasProperty("id", is(map.getId()))))
+                    .andExpect(model().attribute("phase", hasProperty("id", is(phase.getId()))))
+                    .andExpect(model().attribute("questions", hasSize(5)))
+                    .andExpect(model().attribute("questions", hasItem(
+                            allOf(
+                                    hasProperty("id", is(101)),
+                                    hasProperty("name", is("Question 01")),
+                                    hasProperty("order", is(1)),
+                                    hasProperty("answers", hasSize(4))
+                            )
+                    )))
+                    .andExpect(model().attribute("questions", hasItem(
+                            allOf(
+                                    hasProperty("id", is(102)),
+                                    hasProperty("name", is("Question 02")),
+                                    hasProperty("order", is(2))
+                            )
+                    )))
+                    .andExpect(model().attribute("questions", hasItem(
+                            allOf(
+                                    hasProperty("id", is(103)),
+                                    hasProperty("name", is("Question 03")),
+                                    hasProperty("order", is(3))
+                            )
+                    )))
+                    .andExpect(model().attribute("questions", hasItem(
+                            allOf(
+                                    hasProperty("id", is(104)),
+                                    hasProperty("name", is("Question 04")),
+                                    hasProperty("order", is(4))
+                            )
+                    )))
+                    .andExpect(model().attribute("questions", hasItem(
+                            allOf(
+                                    hasProperty("id", is(105)),
+                                    hasProperty("name", is("Question 05")),
+                                    hasProperty("order", is(5))
+                            )
+                    )))
+                    .andExpect(request().sessionAttribute("questionsId", hasSize(5)))
+                    .andExpect(request().sessionAttribute("questionsId", hasItem(101)))
+                    .andExpect(request().sessionAttribute("questionsId", hasItem(102)))
+                    .andExpect(request().sessionAttribute("questionsId", hasItem(103)))
+                    .andExpect(request().sessionAttribute("questionsId", hasItem(104)))
+                    .andExpect(request().sessionAttribute("questionsId", hasItem(105)));
 
-        verify(gameService, times(1)).findByNamelink(gameName);
-        verifyNoMoreInteractions(gameService);
-        verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
-        verifyNoMoreInteractions(mapService);
-        verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
-        verify(playerPhaseService, times(1)).isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser());
-        verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
-        verifyNoMoreInteractions(phaseService);
-        verify(playerService, times(1)).playerHasCredits(currentUser.getUser(), phase);
-        verifyNoMoreInteractions(playerService);
-        verify(playerPhaseService).setTestAttempt(currentUser.getUser(), phase);
-        verifyNoMoreInteractions(playerPhaseService);
-        verify(contentService, times(1)).findByPhaseAndOrder(phase.getId(), 0);
-        verifyNoMoreInteractions(contentService);
-        verify(questionService, times(1)).findByContent(content.getId());
-        verifyNoMoreInteractions(questionService);
+            verify(gameService, times(1)).findByNamelink(gameName);
+            verifyNoMoreInteractions(gameService);
+            verify(mapService, times(1)).findByGameLevelAndOrder(entity.getId(), levelOrder, mapOrder);
+            verifyNoMoreInteractions(mapService);
+            verify(phaseService, times(1)).findByMapAndOrder(map.getId(), phaseOrder);
+            verify(playerPhaseService, times(1)).isPhaseAlreadyCompletedByPlayer(phase, currentUser.getUser());
+            verify(phaseService, times(1)).playerCanAccessThisPhase(phase, currentUser.getUser());
+            verifyNoMoreInteractions(phaseService);
+            verify(playerService, times(1)).playerHasCredits(currentUser.getUser(), phase);
+            verifyNoMoreInteractions(playerService);
+            verify(playerPhaseService).setTestAttempt(currentUser.getUser(), phase);
+            verifyNoMoreInteractions(playerPhaseService);
+            verify(contentService, times(1)).findByPhaseAndOrder(phase.getId(), 0);
+            verifyNoMoreInteractions(contentService);
+            verify(questionService, times(1)).findByContent(content.getId());
+            verifyNoMoreInteractions(questionService);
+        }
     }
     /* initTest - end */
 
@@ -1610,7 +1619,7 @@ public class GameControllerTest extends AbstractControllerTest {
         // questionsId is null.
         mvc.perform(MockMvcRequestBuilders.post(uri))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name(REDIRECT_HOME));
 
         // questionsId is not null, but is empty.
         mvc.perform(
@@ -1618,7 +1627,7 @@ public class GameControllerTest extends AbstractControllerTest {
                                 .sessionAttr("questionsId", new ArrayList<Integer>())
                 )
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name(REDIRECT_HOME));
     }
 
     @Test
@@ -1626,7 +1635,7 @@ public class GameControllerTest extends AbstractControllerTest {
         String uri = "/games/result";
 
         List<Integer> questionsId = getQuestionsIdStubData();
-        java.util.Map<String, String> playerAnswers = new HashMap<String, String>(); //getPlayerAnswersStubData();
+        java.util.Map<String, String> playerAnswers = new HashMap<>(); //getPlayerAnswersStubData();
 
         when(gameService.calculateGrade(questionsId, playerAnswers)).thenReturn(50);
 
@@ -1644,13 +1653,13 @@ public class GameControllerTest extends AbstractControllerTest {
                 .andExpect(model().attribute("phase", currentPhase));
     }
 
-    /*@Test
+    @Test
     public void showResultTest_WhenGradeIsEnoughAndThePlayerHasJustFinishedTheLastPhaseOfTheLastMapOfTheLevel_OpenEndoflevelPageAndShowPlayersGrade()
             throws Exception {
         String uri = "/games/result";
 
         List<Integer> questionsId = getQuestionsIdStubData();
-        java.util.Map<String, String> playerAnswers = new HashMap<String, String>(); //getPlayerAnswersStubData();
+        java.util.Map<String, String> playerAnswers = new HashMap<>(); //getPlayerAnswersStubData();
 
         int grade = 80;
         when(gameService.calculateGrade(questionsId, playerAnswers)).thenReturn(grade);
@@ -1658,49 +1667,53 @@ public class GameControllerTest extends AbstractControllerTest {
         Phase currentPhase = getPhaseOfTheTestStubData();
         when(gameService.getPhaseOfTheTest(questionsId)).thenReturn(currentPhase);
 
-        // Emulating a logged in user.
-        SecurityContext securityContextMock = mock(SecurityContext.class);
-        Authentication authenticationMock = mock(Authentication.class);
-        PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-        when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-        when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-        CurrentUser currentUser = getCurrentUserStubData();
-        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
-        Player player = currentUser.getUser();
-        player.setScore(100);
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            CurrentUser currentUser = getCurrentUserStubData();
+            when(authenticationMock.getPrincipal()).thenReturn(currentUser);
 
-        PlayerPhase playerPhase = new PlayerPhase();
-        playerPhase.setNumAttempts(2);
-        when(playerPhaseService.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, currentPhase.getId(), 2)).thenReturn(playerPhase);
+            Player player = currentUser.getUser();
+            player.setScore(100);
 
-        when(gameService.calculateScore(playerPhase.getNumAttempts(), grade)).thenReturn(65);
+            PlayerPhase playerPhase = new PlayerPhase();
+            playerPhase.setNumAttempts(2);
+            when(playerPhaseService.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, currentPhase.getId(), 2)).thenReturn(playerPhase);
 
-        when(playerService.findOne(PLAYER_ID_EXISTENT)).thenReturn(player);
+            when(gameService.calculateScore(playerPhase.getNumAttempts(), grade)).thenReturn(65);
 
-        when(playerService.removeOneCreditFromPlayer(player, currentPhase.getMap().getGame())).thenReturn(player);
+            when(playerService.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(player));
 
-        when(playerPhaseService.save(playerPhase)).thenReturn(playerPhase);
+            when(playerService.removeOneCreditFromPlayer(player, currentPhase.getMap().getGame())).thenReturn(player);
 
-        Map map = new Map();
-        map.setLevelCompleted(true);
-        when(mapService.findCurrentMap(currentPhase.getMap().getGame(), playerPhase)).thenReturn(map);
+            when(playerPhaseService.save(playerPhase)).thenReturn(playerPhase);
 
-        ResourceBundle applicationResourceBundle = ResourceBundle.getBundle("application", Locale.getDefault());
-        when(playerService.addCreditsToPlayer(PLAYER_ID_EXISTENT, Integer.parseInt(applicationResourceBundle.getString("credits.levelCompleted")))).thenReturn(
-                player);
+            Map map = new Map();
+            map.setLevelCompleted(true);
+            when(mapService.findCurrentMap(currentPhase.getMap().getGame(), playerPhase)).thenReturn(map);
 
-        mvc.perform(
-                        MockMvcRequestBuilders.post(uri)
-                                .sessionAttr("questionsId", questionsId)
-                        //.param("playerAnswers", mapToJson(playerAnswers))
-                )
-                .andExpect(status().isOk())
-                .andExpect(view().name("games/endoflevel"))
-                .andExpect(model().attribute("grade", grade));
-    }*/
+            ResourceBundle applicationResourceBundle = ResourceBundle.getBundle("application", Locale.getDefault());
+            when(playerService.addCreditsToPlayer(PLAYER_ID_EXISTENT,
+                    Integer.parseInt(applicationResourceBundle.getString("credits.levelCompleted")))).thenReturn(
+                    player);
 
-    /*@Test
+            when(diplomaService.save(any())).thenReturn(new Diploma());
+
+            mvc.perform(
+                            MockMvcRequestBuilders.post(uri)
+                                    .sessionAttr("questionsId", questionsId)
+                            //.param("playerAnswers", mapToJson(playerAnswers))
+                    )
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("games/endoflevel"))
+                    .andExpect(model().attribute("grade", grade));
+        }
+    }
+
+    @Test
     public void showResultTest_WhenGradeIsEnoughAndThePlayerHasJustFinishedTheLastPhaseOfTheLastMapOfTheLastLevelOfTheGame_OpenEndofgamePageAndShowPlayersGrade()
             throws Exception {
         String uri = "/games/result";
@@ -1714,48 +1727,50 @@ public class GameControllerTest extends AbstractControllerTest {
         Phase currentPhase = getPhaseOfTheTestStubData();
         when(gameService.getPhaseOfTheTest(questionsId)).thenReturn(currentPhase);
 
-        // Emulating a logged in user.
-        SecurityContext securityContextMock = mock(SecurityContext.class);
-        Authentication authenticationMock = mock(Authentication.class);
-        PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-        when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-        when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-        CurrentUser currentUser = getCurrentUserStubData();
-        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
-        Player player = currentUser.getUser();
-        player.setScore(100);
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            CurrentUser currentUser = getCurrentUserStubData();
+            when(authenticationMock.getPrincipal()).thenReturn(currentUser);
 
-        PlayerPhase playerPhase = new PlayerPhase();
-        playerPhase.setNumAttempts(2);
-        when(playerPhaseService.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, currentPhase.getId(), 2)).thenReturn(playerPhase);
+            Player player = currentUser.getUser();
+            player.setScore(100);
 
-        when(gameService.calculateScore(playerPhase.getNumAttempts(), grade)).thenReturn(65);
+            PlayerPhase playerPhase = new PlayerPhase();
+            playerPhase.setNumAttempts(2);
+            when(playerPhaseService.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, currentPhase.getId(), 2)).thenReturn(playerPhase);
 
-        when(playerService.findOne(PLAYER_ID_EXISTENT)).thenReturn(player);
+            when(gameService.calculateScore(playerPhase.getNumAttempts(), grade)).thenReturn(65);
 
-        when(playerService.removeOneCreditFromPlayer(player, currentPhase.getMap().getGame())).thenReturn(player);
+            when(playerService.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(player));
 
-        when(playerPhaseService.save(playerPhase)).thenReturn(playerPhase);
+            when(playerService.removeOneCreditFromPlayer(player, currentPhase.getMap().getGame())).thenReturn(player);
 
-        Map map = new Map();
-        map.setLevelCompleted(false);
-        map.setGameCompleted(true);
-        when(mapService.findCurrentMap(currentPhase.getMap().getGame(), playerPhase)).thenReturn(map);
+            when(playerPhaseService.save(playerPhase)).thenReturn(playerPhase);
 
-        ResourceBundle applicationResourceBundle = ResourceBundle.getBundle("application", Locale.getDefault());
-        when(playerService.addCreditsToPlayer(PLAYER_ID_EXISTENT, Integer.parseInt(applicationResourceBundle.getString("credits.gameCompleted")))).thenReturn(
-                player);
+            Map map = new Map();
+            map.setLevelCompleted(false);
+            map.setGameCompleted(true);
+            when(mapService.findCurrentMap(currentPhase.getMap().getGame(), playerPhase)).thenReturn(map);
 
-        mvc.perform(
-                        MockMvcRequestBuilders.post(uri)
-                                .sessionAttr("questionsId", questionsId)
-                        //.param("playerAnswers", mapToJson(playerAnswers))
-                )
-                .andExpect(status().isOk())
-                .andExpect(view().name("games/endofgame"))
-                .andExpect(model().attribute("grade", grade));
-    }*/
+            ResourceBundle applicationResourceBundle = ResourceBundle.getBundle("application", Locale.getDefault());
+            when(playerService.addCreditsToPlayer(PLAYER_ID_EXISTENT,
+                    Integer.parseInt(applicationResourceBundle.getString("credits.gameCompleted")))).thenReturn(
+                    player);
+
+            mvc.perform(
+                            MockMvcRequestBuilders.post(uri)
+                                    .sessionAttr("questionsId", questionsId)
+                            //.param("playerAnswers", mapToJson(playerAnswers))
+                    )
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("games/endofgame"))
+                    .andExpect(model().attribute("grade", grade));
+        }
+    }
 
     @Test
     public void showResultTest_WhenGradeIsEnough_OpenResultTestPageAndShowPlayersGrade() throws Exception {
@@ -1770,46 +1785,47 @@ public class GameControllerTest extends AbstractControllerTest {
         Phase currentPhase = getPhaseOfTheTestStubData();
         when(gameService.getPhaseOfTheTest(questionsId)).thenReturn(currentPhase);
 
-        // Emulating a logged in user.
-        SecurityContext securityContextMock = mock(SecurityContext.class);
-        Authentication authenticationMock = mock(Authentication.class);
-        ////PowerMockito.mockStatic(SecurityContextHolder.class);
+        try (MockedStatic<SecurityContextHolder> mocked = Mockito.mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContextMock = mock(SecurityContext.class);
+            Authentication authenticationMock = mock(Authentication.class);
 
-        when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
-        when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
-        CurrentUser currentUser = getCurrentUserStubData();
-        when(authenticationMock.getPrincipal()).thenReturn(currentUser);
-        Player player = currentUser.getUser();
-        player.setScore(100);
+            mocked.when(SecurityContextHolder::getContext).thenReturn(securityContextMock);
+            when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+            CurrentUser currentUser = getCurrentUserStubData();
+            when(authenticationMock.getPrincipal()).thenReturn(currentUser);
 
-        PlayerPhase playerPhase = new PlayerPhase();
-        playerPhase.setNumAttempts(2);
-        when(playerPhaseService.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, currentPhase.getId(), 2)).thenReturn(playerPhase);
+            Player player = currentUser.getUser();
+            player.setScore(100);
 
-        when(gameService.calculateScore(playerPhase.getNumAttempts(), grade)).thenReturn(65);
+            PlayerPhase playerPhase = new PlayerPhase();
+            playerPhase.setNumAttempts(2);
+            when(playerPhaseService.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, currentPhase.getId(), 2)).thenReturn(playerPhase);
 
-        when(playerService.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(player));
+            when(gameService.calculateScore(playerPhase.getNumAttempts(), grade)).thenReturn(65);
 
-        when(playerService.removeOneCreditFromPlayer(player, currentPhase.getMap().getGame())).thenReturn(player);
+            when(playerService.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(player));
 
-        when(playerPhaseService.save(playerPhase)).thenReturn(playerPhase);
+            when(playerService.removeOneCreditFromPlayer(player, currentPhase.getMap().getGame())).thenReturn(player);
 
-        Map map = new Map();
-        map.setLevelCompleted(false);
-        map.setGameCompleted(false);
-        when(mapService.findCurrentMap(currentPhase.getMap().getGame(), playerPhase)).thenReturn(map);
+            when(playerPhaseService.save(playerPhase)).thenReturn(playerPhase);
 
-        when(phaseService.findPhasesCheckedByMap(map, playerPhase)).thenReturn(getPhasesCheckedByMapStubData());
+            Map map = new Map();
+            map.setLevelCompleted(false);
+            map.setGameCompleted(false);
+            when(mapService.findCurrentMap(currentPhase.getMap().getGame(), playerPhase)).thenReturn(map);
 
-        mvc.perform(
-                        MockMvcRequestBuilders.post(uri)
-                                .sessionAttr("questionsId", questionsId)
-                        //.param("playerAnswers", mapToJson(playerAnswers))
-                )
-                .andExpect(status().isOk())
-                .andExpect(view().name("games/resultTest"))
-                .andExpect(model().attribute("grade", grade))
-                .andExpect(model().attribute("phase", hasProperty("id", is(2))));
+            when(phaseService.findPhasesCheckedByMap(map, playerPhase)).thenReturn(getPhasesCheckedByMapStubData());
+
+            mvc.perform(
+                            MockMvcRequestBuilders.post(uri)
+                                    .sessionAttr("questionsId", questionsId)
+                            //.param("playerAnswers", mapToJson(playerAnswers))
+                    )
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("games/resultTest"))
+                    .andExpect(model().attribute("grade", grade))
+                    .andExpect(model().attribute("phase", hasProperty("id", is(2))));
+        }
     }
     /* showResultTest - end */
 
