@@ -37,14 +37,14 @@ public class LoginServiceImpl implements ILoginService {
     public List<Login> findByPlayer(int playerId) {
         List<Date> listDates = repository.findByPlayer(playerId, PageRequest.of(0, 30));
 
-        List<Login> list = new ArrayList<Login>();
+        List<Login> list = new ArrayList<>();
         for (Date s : listDates) {
             Login l = new Login();
             l.setDtLogin(s);
             list.add(l);
         }
 
-        if (list == null || list.size() == 0) {
+        if (list.isEmpty()) {
             return null;
         }
 
