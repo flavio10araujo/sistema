@@ -30,7 +30,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -435,7 +434,7 @@ public class GameControllerTest extends AbstractControllerTest {
         // Emulating a logged in user.
         SecurityContext securityContextMock = mock(SecurityContext.class);
         Authentication authenticationMock = mock(Authentication.class);
-        PowerMockito.mockStatic(SecurityContextHolder.class);
+        ////PowerMockito.mockStatic(SecurityContextHolder.class);
 
         when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
         when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
@@ -494,7 +493,7 @@ public class GameControllerTest extends AbstractControllerTest {
         // Emulating a logged in user.
         SecurityContext securityContextMock = mock(SecurityContext.class);
         Authentication authenticationMock = mock(Authentication.class);
-        PowerMockito.mockStatic(SecurityContextHolder.class);
+        ////PowerMockito.mockStatic(SecurityContextHolder.class);
 
         when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
         when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
@@ -555,7 +554,7 @@ public class GameControllerTest extends AbstractControllerTest {
         // Emulating a logged in user.
         SecurityContext securityContextMock = mock(SecurityContext.class);
         Authentication authenticationMock = mock(Authentication.class);
-        PowerMockito.mockStatic(SecurityContextHolder.class);
+        ////PowerMockito.mockStatic(SecurityContextHolder.class);
 
         when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
         when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
@@ -684,7 +683,7 @@ public class GameControllerTest extends AbstractControllerTest {
         // Emulating a logged in user.
         SecurityContext securityContextMock = mock(SecurityContext.class);
         Authentication authenticationMock = mock(Authentication.class);
-        PowerMockito.mockStatic(SecurityContextHolder.class);
+        ////PowerMockito.mockStatic(SecurityContextHolder.class);
 
         when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
         when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
@@ -725,7 +724,7 @@ public class GameControllerTest extends AbstractControllerTest {
         // Emulating a logged in user.
         SecurityContext securityContextMock = mock(SecurityContext.class);
         Authentication authenticationMock = mock(Authentication.class);
-        PowerMockito.mockStatic(SecurityContextHolder.class);
+        ////PowerMockito.mockStatic(SecurityContextHolder.class);
 
         when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
         when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
@@ -771,7 +770,7 @@ public class GameControllerTest extends AbstractControllerTest {
         // Emulating a logged in user.
         SecurityContext securityContextMock = mock(SecurityContext.class);
         Authentication authenticationMock = mock(Authentication.class);
-        PowerMockito.mockStatic(SecurityContextHolder.class);
+        ////PowerMockito.mockStatic(SecurityContextHolder.class);
 
         when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
         when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
@@ -885,7 +884,7 @@ public class GameControllerTest extends AbstractControllerTest {
         // Emulating a logged in user.
         SecurityContext securityContextMock = mock(SecurityContext.class);
         Authentication authenticationMock = mock(Authentication.class);
-        PowerMockito.mockStatic(SecurityContextHolder.class);
+        ////PowerMockito.mockStatic(SecurityContextHolder.class);
 
         when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
         when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
@@ -1236,7 +1235,7 @@ public class GameControllerTest extends AbstractControllerTest {
         // Emulating a logged in user.
         SecurityContext securityContextMock = mock(SecurityContext.class);
         Authentication authenticationMock = mock(Authentication.class);
-        PowerMockito.mockStatic(SecurityContextHolder.class);
+        ////PowerMockito.mockStatic(SecurityContextHolder.class);
 
         when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
         when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
@@ -1279,7 +1278,7 @@ public class GameControllerTest extends AbstractControllerTest {
         // Emulating a logged in user.
         SecurityContext securityContextMock = mock(SecurityContext.class);
         Authentication authenticationMock = mock(Authentication.class);
-        PowerMockito.mockStatic(SecurityContextHolder.class);
+        ////PowerMockito.mockStatic(SecurityContextHolder.class);
 
         when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
         when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
@@ -1331,7 +1330,7 @@ public class GameControllerTest extends AbstractControllerTest {
         // Emulating a logged in user.
         SecurityContext securityContextMock = mock(SecurityContext.class);
         Authentication authenticationMock = mock(Authentication.class);
-        PowerMockito.mockStatic(SecurityContextHolder.class);
+        ////PowerMockito.mockStatic(SecurityContextHolder.class);
 
         when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
         when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
@@ -1394,7 +1393,7 @@ public class GameControllerTest extends AbstractControllerTest {
         // Emulating a logged in user.
         SecurityContext securityContextMock = mock(SecurityContext.class);
         Authentication authenticationMock = mock(Authentication.class);
-        PowerMockito.mockStatic(SecurityContextHolder.class);
+        ////PowerMockito.mockStatic(SecurityContextHolder.class);
 
         when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
         when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
@@ -1513,7 +1512,7 @@ public class GameControllerTest extends AbstractControllerTest {
         // Emulating a logged in user.
         SecurityContext securityContextMock = mock(SecurityContext.class);
         Authentication authenticationMock = mock(Authentication.class);
-        PowerMockito.mockStatic(SecurityContextHolder.class);
+        ////PowerMockito.mockStatic(SecurityContextHolder.class);
 
         when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
         when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
@@ -1774,7 +1773,7 @@ public class GameControllerTest extends AbstractControllerTest {
         // Emulating a logged in user.
         SecurityContext securityContextMock = mock(SecurityContext.class);
         Authentication authenticationMock = mock(Authentication.class);
-        PowerMockito.mockStatic(SecurityContextHolder.class);
+        ////PowerMockito.mockStatic(SecurityContextHolder.class);
 
         when(SecurityContextHolder.getContext()).thenReturn(securityContextMock);
         when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
