@@ -10,14 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.AbstractTest;
 import com.polifono.domain.Answer;
 import com.polifono.domain.Question;
 import com.polifono.repository.IAnswerRepository;
@@ -26,9 +25,11 @@ import com.polifono.service.impl.AnswerServiceImpl;
 /**
  * Unit test methods for the AnswerService.
  */
-public class AnswerServiceTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+public class AnswerServiceTest {
 
-    private IAnswerService service;
+    @InjectMocks
+    private AnswerServiceImpl service;
 
     @Mock
     private IAnswerRepository repository;
@@ -50,18 +51,6 @@ public class AnswerServiceTest extends AbstractTest {
 
     private final Integer ANSWER_ID_EXISTENT = 1;
     private final Integer ANSWER_ID_INEXISTENT = Integer.MAX_VALUE;
-
-    @BeforeEach
-    public void setUp() {
-        // Do something before each test method.
-        MockitoAnnotations.initMocks(this);
-        service = new AnswerServiceImpl(repository);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Clean up after each test method.
-    }
 
     /* stubs - begin */
     private Optional<Answer> getEntityStubData() {
@@ -135,7 +124,7 @@ public class AnswerServiceTest extends AbstractTest {
 
     @Test
     public void delete_WhenAnswerIsInexistent_ReturnFalse() {
-        when(repository.findById(ANSWER_ID_INEXISTENT)).thenReturn(null);
+        when(repository.findById(ANSWER_ID_INEXISTENT)).thenReturn(Optional.empty());
 
         Assertions.assertFalse(service.delete(ANSWER_ID_INEXISTENT), "failure - expected return false");
     }
