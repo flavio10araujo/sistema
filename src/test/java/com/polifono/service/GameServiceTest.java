@@ -9,15 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.AbstractTest;
 import com.polifono.domain.Game;
 import com.polifono.repository.IGameRepository;
 import com.polifono.service.impl.GameServiceImpl;
@@ -25,27 +23,16 @@ import com.polifono.service.impl.GameServiceImpl;
 /**
  * Unit test methods for the GameService.
  */
-public class GameServiceTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+public class GameServiceTest {
 
-    @Autowired
-    private IGameService service;
+    @InjectMocks
+    private GameServiceImpl service;
 
     @Mock
     private IGameRepository repository;
 
     private final String NAME_LINK = "recorder";
-
-    @BeforeEach
-    public void setUp() {
-        // Do something before each test method.
-        MockitoAnnotations.initMocks(this);
-        service = new GameServiceImpl(repository);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Clean up after each test method.
-    }
 
     /* stubs - begin */
     public Optional<Game> getEntityStubData() {

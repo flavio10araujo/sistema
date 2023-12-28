@@ -7,14 +7,13 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.AbstractTest;
 import com.polifono.domain.PlayerGame;
 import com.polifono.repository.IPlayerGameRepository;
 import com.polifono.service.impl.PlayerGameServiceImpl;
@@ -22,27 +21,17 @@ import com.polifono.service.impl.PlayerGameServiceImpl;
 /**
  * Unit test methods for the PlayerGameService.
  */
-public class PlayerGameServiceTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+public class PlayerGameServiceTest {
 
-    private IPlayerGameService service;
+    @InjectMocks
+    private PlayerGameServiceImpl service;
 
     @Mock
     private IPlayerGameRepository repository;
 
     private final Integer PLAYERGAME_ID_EXISTENT = 1;
     private final Integer PLAYERGAME_ID_INEXISTENT = Integer.MAX_VALUE;
-
-    @BeforeEach
-    public void setUp() {
-        // Do something before each test method.
-        MockitoAnnotations.initMocks(this);
-        service = new PlayerGameServiceImpl(repository);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Clean up after each test method.
-    }
 
     /* stubs - begin */
     private Optional<PlayerGame> getEntityStubData() {

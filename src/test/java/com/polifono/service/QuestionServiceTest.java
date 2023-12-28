@@ -10,14 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.AbstractTest;
 import com.polifono.domain.Content;
 import com.polifono.domain.Question;
 import com.polifono.repository.IQuestionRepository;
@@ -26,9 +25,11 @@ import com.polifono.service.impl.QuestionServiceImpl;
 /**
  * Unit test methods for the QuestionService.
  */
-public class QuestionServiceTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+public class QuestionServiceTest {
 
-    private IQuestionService service;
+    @InjectMocks
+    private QuestionServiceImpl service;
 
     @Mock
     private IQuestionRepository repository;
@@ -50,18 +51,6 @@ public class QuestionServiceTest extends AbstractTest {
 
     private final Integer QUESTION_ID_EXISTENT = 1;
     private final Integer QUESTION_ID_INEXISTENT = Integer.MAX_VALUE;
-
-    @BeforeEach
-    public void setUp() {
-        // Do something before each test method.
-        MockitoAnnotations.initMocks(this);
-        service = new QuestionServiceImpl(repository);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Clean up after each test method.
-    }
 
     /* stubs - begin */
     private Optional<Question> getEntityStubData() {
@@ -127,7 +116,7 @@ public class QuestionServiceTest extends AbstractTest {
 
     @Test
     public void delete_WhenQuestionIsInexistent_ReturnFalse() {
-        when(repository.findById(QUESTION_ID_INEXISTENT)).thenReturn(null);
+        when(repository.findById(QUESTION_ID_INEXISTENT)).thenReturn(Optional.empty());
 
         Assertions.assertFalse(service.delete(QUESTION_ID_INEXISTENT), "failure - expected return false");
 

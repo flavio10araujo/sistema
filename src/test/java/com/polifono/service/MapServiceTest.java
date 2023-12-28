@@ -10,14 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.AbstractTest;
 import com.polifono.domain.Game;
 import com.polifono.domain.Level;
 import com.polifono.domain.Map;
@@ -30,8 +29,10 @@ import com.polifono.service.impl.MapServiceImpl;
 /**
  * Unit test methods for the MapService.
  */
-public class MapServiceTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+public class MapServiceTest {
 
+    @InjectMocks
     private MapServiceImpl service;
 
     @Mock
@@ -48,18 +49,6 @@ public class MapServiceTest extends AbstractTest {
 
     private final Integer LEVEL_ID_EXISTENT = 3;
     private final Integer LEVEL_ID_INEXISTENT = Integer.MAX_VALUE;
-
-    @BeforeEach
-    public void setUp() {
-        // Do something before each test method.
-        MockitoAnnotations.initMocks(this);
-        service = new MapServiceImpl(repository, phaseService);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Clean up after each test method.
-    }
 
     /* stubs - begin */
     private Optional<Map> getEntityStubData() {
@@ -129,7 +118,7 @@ public class MapServiceTest extends AbstractTest {
 
     @Test
     public void delete_WhenMapIsInexistent_ReturnFalse() {
-        when(repository.findById(MAP_ID_EXISTENT)).thenReturn(null);
+        when(repository.findById(MAP_ID_EXISTENT)).thenReturn(Optional.empty());
 
         Assertions.assertFalse(service.delete(MAP_ID_EXISTENT), "failure - expected return false");
 

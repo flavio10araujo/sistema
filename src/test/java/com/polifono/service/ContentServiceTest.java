@@ -10,14 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.AbstractTest;
 import com.polifono.domain.Content;
 import com.polifono.domain.Contenttype;
 import com.polifono.domain.Game;
@@ -30,9 +29,11 @@ import com.polifono.service.impl.ContentServiceImpl;
 /**
  * Unit test methods for the ContentService.
  */
-public class ContentServiceTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+public class ContentServiceTest {
 
-    private IContentService service;
+    @InjectMocks
+    private ContentServiceImpl service;
 
     @Mock
     private IContentRepository repository;
@@ -54,18 +55,6 @@ public class ContentServiceTest extends AbstractTest {
 
     private final Integer MAP_ID_EXISTENT = 1;
     //private final Integer MAP_ID_INEXISTENT = Integer.MAX_VALUE;
-
-    @BeforeEach
-    public void setUp() {
-        // Do something before each test method.
-        MockitoAnnotations.initMocks(this);
-        service = new ContentServiceImpl(repository);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Clean up after each test method.
-    }
 
     /* stubs - begin */
     private Optional<Content> getEntityStubData() {
@@ -208,7 +197,7 @@ public class ContentServiceTest extends AbstractTest {
 
     @Test
     public void delete_WhenContentIsInexistent_ReturnFalse() {
-        when(repository.findById(CONTENT_ID_INEXISTENT)).thenReturn(null);
+        when(repository.findById(CONTENT_ID_INEXISTENT)).thenReturn(Optional.empty());
 
         Assertions.assertFalse(service.delete(CONTENT_ID_INEXISTENT), "failure - expected return false");
 

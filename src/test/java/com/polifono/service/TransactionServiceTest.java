@@ -10,14 +10,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.AbstractTest;
 import com.polifono.domain.Player;
 import com.polifono.domain.Transaction;
 import com.polifono.repository.ITransactionRepository;
@@ -26,9 +25,11 @@ import com.polifono.service.impl.TransactionServiceImpl;
 /**
  * Unit test methods for the TransactionService.
  */
-public class TransactionServiceTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+public class TransactionServiceTest {
 
-    private ITransactionService service;
+    @InjectMocks
+    private TransactionServiceImpl service;
 
     @Mock
     private ITransactionRepository repository;
@@ -40,18 +41,6 @@ public class TransactionServiceTest extends AbstractTest {
 
     private final String CODE_EXISTENT = "F5456E04-2474-4DC5-B188-319183075F04";
     private final String CODE_INEXISTENT = "-1";
-
-    @BeforeEach
-    public void setUp() {
-        // Do something before each test method.
-        MockitoAnnotations.initMocks(this);
-        service = new TransactionServiceImpl(repository);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Clean up after each test method.
-    }
 
     /* stubs - begin */
     private Optional<Transaction> getEntityStubData() {

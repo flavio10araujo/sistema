@@ -9,14 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.AbstractTest;
 import com.polifono.domain.Game;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
@@ -30,9 +29,11 @@ import com.polifono.util.StringUtil;
 /**
  * Unit test methods for the PlayerService.
  */
-public class PlayerServiceTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+public class PlayerServiceTest {
 
-    private IPlayerService service;
+    @InjectMocks
+    private PlayerServiceImpl service;
 
     @Mock
     private IPlayerRepository repository;
@@ -47,18 +48,6 @@ public class PlayerServiceTest extends AbstractTest {
     private final String PLAYER_EMAIL_INEXISTENT = "email_inexistent";
 
     private final Integer GAME_ID_EXISTENT = 2;
-
-    @BeforeEach
-    public void setUp() {
-        // Do something before each test method.
-        MockitoAnnotations.initMocks(this);
-        service = new PlayerServiceImpl(repository, playerGameService);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Clean up after each test method.
-    }
 
     /* stubs - begin */
     private Optional<Player> getEntityStubData() {

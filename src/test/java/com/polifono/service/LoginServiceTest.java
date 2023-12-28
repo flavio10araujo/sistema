@@ -6,15 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.AbstractTest;
 import com.polifono.domain.Login;
 import com.polifono.repository.ILoginRepository;
 import com.polifono.service.impl.LoginServiceImpl;
@@ -22,27 +21,17 @@ import com.polifono.service.impl.LoginServiceImpl;
 /**
  * Unit test methods for the LoginService.
  */
-public class LoginServiceTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+public class LoginServiceTest {
 
-    private ILoginService service;
+    @InjectMocks
+    private LoginServiceImpl service;
 
     @Mock
     private ILoginRepository repository;
 
     private final Integer PLAYER_ID_EXISTENT = 1;
     private final Integer PLAYER_ID_INEXISTENT = Integer.MAX_VALUE;
-
-    @BeforeEach
-    public void setUp() {
-        // Do something before each test method.
-        MockitoAnnotations.initMocks(this);
-        service = new LoginServiceImpl(repository);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Clean up after each test method.
-    }
 
     /* stubs - begin */
     private Optional<Login> getEntityStubData() {

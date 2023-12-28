@@ -10,16 +10,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.AbstractTest;
 import com.polifono.domain.Game;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Phasestatus;
@@ -32,10 +30,11 @@ import com.polifono.service.impl.PlayerPhaseServiceImpl;
 /**
  * Unit test methods for the PlayerPhaseService.
  */
-@Transactional
-public class PlayerPhaseServiceTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+public class PlayerPhaseServiceTest {
 
-    private IPlayerPhaseService service;
+    @InjectMocks
+    private PlayerPhaseServiceImpl service;
 
     @Mock
     private IPlayerPhaseRepository repository;
@@ -51,18 +50,6 @@ public class PlayerPhaseServiceTest extends AbstractTest {
 
     private final Integer PHASESTATUS_ONGOING = 2;
     private final Integer PHASESTATUS_CONCLUDED = 3;
-
-    @BeforeEach
-    public void setUp() {
-        // Do something before each test method.
-        MockitoAnnotations.initMocks(this);
-        service = new PlayerPhaseServiceImpl(repository);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Clean up after each test method.
-    }
 
     /* stubs - begin */
     private Optional<PlayerPhase> getEntityStubData() {

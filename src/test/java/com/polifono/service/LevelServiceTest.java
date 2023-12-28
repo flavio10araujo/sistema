@@ -9,15 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.AbstractTest;
 import com.polifono.domain.Level;
 import com.polifono.repository.ILevelRepository;
 import com.polifono.service.impl.LevelServiceImpl;
@@ -25,28 +23,17 @@ import com.polifono.service.impl.LevelServiceImpl;
 /**
  * Unit test methods for the LevelService.
  */
-public class LevelServiceTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+public class LevelServiceTest {
 
-    @Autowired
-    private ILevelService service;
+    @InjectMocks
+    private LevelServiceImpl service;
 
     @Mock
     private ILevelRepository repository;
 
     private final Integer GAME_ID_EXISTENT = 1;
     private final Integer GAME_ID_INEXISTENT = Integer.MAX_VALUE;
-
-    @BeforeEach
-    public void setUp() {
-        // Do something before each test method.
-        MockitoAnnotations.initMocks(this);
-        service = new LevelServiceImpl(repository);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Clean up after each test method.
-    }
 
     /* stubs - begin */
     private Optional<Level> getEntityStubData() {
