@@ -9,14 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.AbstractTest;
 import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
 import com.polifono.repository.IClassPlayerRepository;
@@ -25,9 +24,11 @@ import com.polifono.service.impl.ClassPlayerServiceImpl;
 /**
  * Unit test methods for the ClassPlayerService.
  */
-public class ClassPlayerServiceTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+public class ClassPlayerServiceTest {
 
-    private IClassPlayerService service;
+    @InjectMocks
+    private ClassPlayerServiceImpl service;
 
     @Mock
     private IClassPlayerRepository repository;
@@ -49,18 +50,6 @@ public class ClassPlayerServiceTest extends AbstractTest {
 
     private final Integer STUDENT_ID_EXISTENT = 1;
     private final Integer STUDENT_ID_INEXISTENT = Integer.MAX_VALUE;
-
-    @BeforeEach
-    public void setUp() {
-        // Do something before each test method.
-        MockitoAnnotations.initMocks(this);
-        service = new ClassPlayerServiceImpl(repository);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Clean up after each test method.
-    }
 
     /* stubs - begin */
     private Optional<ClassPlayer> getEntityStubData() {
@@ -128,7 +117,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
 
     @Test
     public void delete_WhenClassPlayerIsInexistent_ReturnFalse() {
-        when(repository.findById(CLASSPLAYER_ID_INEXISTENT)).thenReturn(null);
+        when(repository.findById(CLASSPLAYER_ID_INEXISTENT)).thenReturn(Optional.empty());
 
         Assertions.assertFalse(service.delete(CLASSPLAYER_ID_INEXISTENT), "failure - expected return false");
     }
@@ -151,10 +140,10 @@ public class ClassPlayerServiceTest extends AbstractTest {
 
     @Test
     public void findOne_WhenClassPlayerIsInexistent_ReturnNull() {
-        when(repository.findById(CLASSPLAYER_ID_EXISTENT)).thenReturn(null);
+        when(repository.findById(CLASSPLAYER_ID_INEXISTENT)).thenReturn(Optional.empty());
 
         Optional<ClassPlayer> entityReturned = service.findById(CLASSPLAYER_ID_INEXISTENT);
-        Assertions.assertNull(entityReturned, "failure - expected null");
+        Assertions.assertFalse(entityReturned.isPresent(), "failure - expected null");
 
         verify(repository, times(1)).findById(CLASSPLAYER_ID_INEXISTENT);
         verifyNoMoreInteractions(repository);
@@ -215,7 +204,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
 
     @Test
     public void changeStatus_WhenClassPlayerIsInexistent_ReturnFalse() {
-        when(repository.findById(CLASSPLAYER_ID_INEXISTENT)).thenReturn(null);
+        when(repository.findById(CLASSPLAYER_ID_INEXISTENT)).thenReturn(Optional.empty());
 
         Assertions.assertFalse(service.changeStatus(CLASSPLAYER_ID_INEXISTENT.intValue(), STATUS_CONFIRMED), "failure - expected false");
     }
@@ -327,7 +316,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
 
     @Test
     public void findClassPlayersByClassAndStatus_WhenSearchByClassAndStatusInexistents_ReturnEmptyList() {
-        when(repository.findByClassAndStatus(CLASS_ID_INEXISTENT, 0)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByClassAndStatus(CLASS_ID_INEXISTENT, 0)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByClassAndStatus(CLASS_ID_INEXISTENT, 0);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -338,7 +327,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
 
     @Test
     public void findClassPlayersByClassAndStatus_WhenSearchByClassExistentButStatusInexistent_ReturnEmptyList() {
-        when(repository.findByClassAndStatus(CLASS_ID_INEXISTENT, 0)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByClassAndStatus(CLASS_ID_EXISTENT, 0)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByClassAndStatus(CLASS_ID_EXISTENT, 0);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
