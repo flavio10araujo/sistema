@@ -540,7 +540,7 @@ public class PlayerServiceTest {
         player.setEmail("email@test.com");
         player.setPassword("password123");
 
-        Assertions.assertEquals("failure - expected msg returned equals", "", service.validateCreatePlayer(player));
+        Assertions.assertEquals("", service.validateCreatePlayer(player), "failure - expected msg returned equals");
     }
 
     @Test
@@ -550,13 +550,13 @@ public class PlayerServiceTest {
         player.setEmail("email@test.com");
         player.setPassword("password123");
 
-        Assertions.assertEquals("failure - expected msg returned equals", "<br />O nome precisa ser informado.", service.validateCreatePlayer(player));
+        Assertions.assertEquals("<br />O nome precisa ser informado.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
 
         player.setName("");
         player.setEmail("email@test.com");
         player.setPassword("password123");
 
-        Assertions.assertEquals("failure - expected msg returned equals", "<br />O nome precisa ser informado.", service.validateCreatePlayer(player));
+        Assertions.assertEquals("<br />O nome precisa ser informado.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
     }
 
     @Test
@@ -566,13 +566,13 @@ public class PlayerServiceTest {
         player.setEmail(null);
         player.setPassword("password123");
 
-        Assertions.assertEquals("failure - expected msg returned equals", "<br />O e-mail precisa ser informado.", service.validateCreatePlayer(player));
+        Assertions.assertEquals("<br />O e-mail precisa ser informado.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
 
         player.setName("Name Completed");
         player.setEmail("");
         player.setPassword("password123");
 
-        Assertions.assertEquals("failure - expected msg returned equals", "<br />O e-mail precisa ser informado.", service.validateCreatePlayer(player));
+        Assertions.assertEquals("<br />O e-mail precisa ser informado.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
     }
 
     @Test
@@ -582,7 +582,7 @@ public class PlayerServiceTest {
         player.setEmail("invalid_email");
         player.setPassword("password123");
 
-        Assertions.assertEquals("failure - expected msg returned equals", "<br />O e-mail informado não é válido.", service.validateCreatePlayer(player));
+        Assertions.assertEquals("<br />O e-mail informado não é válido.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
     }
 
     @Test
@@ -592,13 +592,13 @@ public class PlayerServiceTest {
         player.setEmail("email@test.com");
         player.setPassword(null);
 
-        Assertions.assertEquals("failure - expected msg returned equals", "<br />A senha precisa ser informada.", service.validateCreatePlayer(player));
+        Assertions.assertEquals("<br />A senha precisa ser informada.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
 
         player.setName("Name Completed");
         player.setEmail("email@test.com");
         player.setPassword("");
 
-        Assertions.assertEquals("failure - expected msg returned equals", "<br />A senha precisa ser informada.", service.validateCreatePlayer(player));
+        Assertions.assertEquals("<br />A senha precisa ser informada.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
     }
 
     @Test
@@ -608,15 +608,15 @@ public class PlayerServiceTest {
         player.setEmail("email@test.com");
         player.setPassword("12345");
 
-        Assertions.assertEquals("failure - expected msg returned equals", "<br />A senha precisa possuir entre 6 e 20 caracteres.",
-                service.validateCreatePlayer(player));
+        Assertions.assertEquals("<br />A senha precisa possuir entre 6 e 20 caracteres.",
+                service.validateCreatePlayer(player), "failure - expected msg returned equals");
 
         player.setName("Name Completed");
         player.setEmail("email@test.com");
         player.setPassword("123456");
 
-        Assertions.assertEquals("failure - expected msg returned equals", "<br />A senha precisa possuir ao menos 1 número e ao menos 1 letra.",
-                service.validateCreatePlayer(player));
+        Assertions.assertEquals("<br />A senha precisa possuir ao menos 1 número e ao menos 1 letra.",
+                service.validateCreatePlayer(player), "failure - expected msg returned equals");
     }
 
     @Test
@@ -628,7 +628,7 @@ public class PlayerServiceTest {
 
         String msg = "<br />O nome precisa ser informado.<br />O e-mail precisa ser informado.<br />A senha precisa ser informada.";
 
-        Assertions.assertEquals("failure - expected msg returned equals", msg, service.validateCreatePlayer(player));
+        Assertions.assertEquals(msg, service.validateCreatePlayer(player), "failure - expected msg returned equals");
     }
     /* validateCreatePlayer - end */
 
