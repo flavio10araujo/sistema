@@ -1,12 +1,11 @@
 package com.polifono.service.currentUser;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.AbstractTest;
 import com.polifono.domain.Player;
 import com.polifono.domain.bean.CurrentUser;
 import com.polifono.domain.enums.Role;
@@ -14,22 +13,13 @@ import com.polifono.domain.enums.Role;
 /**
  * Unit test methods for the CurrentUserServiceImpl.
  */
-public class CurrentUserServiceTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+public class CurrentUserServiceTest {
 
-    @Autowired
-    private ICurrentUserService service;
+    @InjectMocks
+    private CurrentUserServiceImpl service;
 
     private final Integer PLAYER_ID_EXISTENT = 1;
-
-    @BeforeEach
-    public void setUp() {
-        // Do something before each test method.
-    }
-
-    @AfterEach
-    public void tearDown() {
-        // Clean up after each test method.
-    }
 
     /* canAccessUser - begin */
     @Test
