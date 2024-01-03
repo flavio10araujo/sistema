@@ -5388,6 +5388,7 @@
 <div id="fb-root"></div>
 <script xml:space="preserve">
 		function statusChangeCallback(response) {
+            console.log(response);
             if (response.status === 'connected') {
                 window.location = "https://www.polifono.com/loginfb?code=" + response.authResponse.accessToken;
             }
