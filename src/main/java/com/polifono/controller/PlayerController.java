@@ -402,7 +402,7 @@ public class PlayerController extends BaseController {
             // If yes, log the player in.
             if (player != null) {
                 request.getSession(true);
-                updateCurrentAuthenticateUser(player);
+                createCurrentAuthenticateUserFacebook(request, null, player);
                 loginService.registerLogin(player);
             } else {
                 // If not, verify if the playerFacebook has an email.
@@ -422,7 +422,7 @@ public class PlayerController extends BaseController {
                         playerService.save(player);
 
                         request.getSession(true);
-                        updateCurrentAuthenticateUser(player);
+                        createCurrentAuthenticateUserFacebook(request, null, player);
                         loginService.registerLogin(player);
                     } else {
                         // If it is here it is because it is necessary to register the player in the system.
@@ -438,7 +438,7 @@ public class PlayerController extends BaseController {
                         playerService.create(player);
 
                         request.getSession(true);
-                        updateCurrentAuthenticateUser(player);
+                        createCurrentAuthenticateUserFacebook(request, null, player);
                         loginService.registerLogin(player);
                     }
                 } else {
@@ -457,7 +457,7 @@ public class PlayerController extends BaseController {
                     playerService.create(player);
 
                     request.getSession(true);
-                    updateCurrentAuthenticateUser(player);
+                    createCurrentAuthenticateUserFacebook(request, null, player);
                     loginService.registerLogin(player);
                 }
             }
