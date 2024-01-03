@@ -45,6 +45,7 @@
 <script th:inline="javascript">
     /*<![CDATA[*/
     function statusChangeCallback(response) {
+        console.log(response);
         if (response.status === 'connected') {
             window.location = "./loginfb?code=" + response.authResponse.accessToken;
         }
