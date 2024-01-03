@@ -10,12 +10,6 @@ public class CustomErrorController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomErrorController.class);
 
-    @RequestMapping("/error")
-    String error() {
-        LOGGER.debug("Entrou no error");
-        return "error/404";
-    }
-
     @RequestMapping("/error404")
     String error404() {
         LOGGER.debug("Entrou no error404");
