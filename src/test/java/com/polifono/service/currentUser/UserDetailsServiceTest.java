@@ -4,15 +4,13 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.polifono.domain.Player;
 import com.polifono.domain.bean.CurrentUser;
@@ -20,18 +18,18 @@ import com.polifono.domain.enums.Role;
 import com.polifono.repository.IPlayerRepository;
 import com.polifono.service.IPlayerGameService;
 import com.polifono.service.IPlayerService;
-import com.polifono.service.impl.PlayerServiceImpl;
 
 /**
  * Unit test methods for the UserDetailsServiceImpl.
  */
-@Transactional
+@ExtendWith(MockitoExtension.class)
 public class UserDetailsServiceTest {
 
+    @InjectMocks
     private UserDetailsServiceImpl service;
 
     @Mock
-    IPlayerService userService;
+    private IPlayerService userService;
 
     @Mock
     private IPlayerGameService playerGameService;
@@ -42,33 +40,18 @@ public class UserDetailsServiceTest {
     private final String PLAYER_EMAIL_EXISTENT = "flavio10araujo@yahoo.com.br";
     private final String PLAYER_EMAIL_INEXISTENT = "email_inexistent";
 
-    @Before
-    public void setUp() {
-        // Do something before each test method.
-        MockitoAnnotations.initMocks(this);
-        userService = new PlayerServiceImpl(playerRepository, playerGameService);
-        service = new UserDetailsServiceImpl(userService);
-    }
-
-    @After
-    public void tearDown() {
-        // Clean up after each test method.
-    }
-
     /* loadUserByUsername - begin */
-    @Test(expected = UsernameNotFoundException.class)
-    @Ignore
+    @Test
     public void loadUserByUsername_WhenUserNotFoundByEmailAndStatus_ThrowUsernameNotFoundException() {
-        String email = PLAYER_EMAIL_INEXISTENT;
-        when(userService.findByEmailAndStatusForLogin(email, true)).thenReturn(Optional.empty());
-        service.loadUserByUsername(PLAYER_EMAIL_INEXISTENT);
+        when(userService.findByEmailAndStatusForLogin(PLAYER_EMAIL_INEXISTENT, true)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(UsernameNotFoundException.class, () -> {
+            service.loadUserByUsername(PLAYER_EMAIL_INEXISTENT);
+        });
     }
 
     @Test
-    @Ignore
     public void loadUserByUsername_WhenUserIsFoundByEmailAndStatus_ReturnUser() {
-        String email = PLAYER_EMAIL_EXISTENT;
-
         Player player = new Player();
         player.setId(123);
         player.setRole(Role.USER);
@@ -76,17 +59,17 @@ public class UserDetailsServiceTest {
         player.setPassword("T12345");
         Optional<Player> returned = Optional.of(player);
 
-        when(userService.findByEmailAndStatusForLogin(email, true)).thenReturn(returned);
+        when(userService.findByEmailAndStatusForLogin(PLAYER_EMAIL_EXISTENT, true)).thenReturn(returned);
 
         CurrentUser currentUser = service.loadUserByUsername(PLAYER_EMAIL_EXISTENT);
 
-        Assert.assertNotNull(currentUser.getUser());
-        Assert.assertTrue("failure - expected id user bigger than zero", currentUser.getId() > 0);
-        Assert.assertTrue("failure - expected role user [ADMIN, USER or TEACHER]",
+        Assertions.assertNotNull(currentUser.getUser());
+        Assertions.assertTrue(currentUser.getId() > 0, "failure - expected id user bigger than zero");
+        Assertions.assertTrue(
                 (currentUser.getRole().toString().equals("ADMIN")) ||
                         (currentUser.getRole().toString().equals("USER")) ||
                         (currentUser.getRole().toString().equals("TEACHER"))
-        );
+                , "failure - expected role user [ADMIN, USER or TEACHER]");
     }
     /* loadUserByUsername - end */
 }

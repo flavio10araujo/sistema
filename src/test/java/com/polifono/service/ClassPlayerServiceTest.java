@@ -7,15 +7,15 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.AbstractTest;
 import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
 import com.polifono.repository.IClassPlayerRepository;
@@ -24,9 +24,11 @@ import com.polifono.service.impl.ClassPlayerServiceImpl;
 /**
  * Unit test methods for the ClassPlayerService.
  */
-public class ClassPlayerServiceTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+public class ClassPlayerServiceTest {
 
-    private IClassPlayerService service;
+    @InjectMocks
+    private ClassPlayerServiceImpl service;
 
     @Mock
     private IClassPlayerRepository repository;
@@ -49,20 +51,8 @@ public class ClassPlayerServiceTest extends AbstractTest {
     private final Integer STUDENT_ID_EXISTENT = 1;
     private final Integer STUDENT_ID_INEXISTENT = Integer.MAX_VALUE;
 
-    @Before
-    public void setUp() {
-        // Do something before each test method.
-        MockitoAnnotations.initMocks(this);
-        service = new ClassPlayerServiceImpl(repository);
-    }
-
-    @After
-    public void tearDown() {
-        // Clean up after each test method.
-    }
-
     /* stubs - begin */
-    private ClassPlayer getEntityStubData() {
+    private Optional<ClassPlayer> getEntityStubData() {
         com.polifono.domain.Class clazz = new com.polifono.domain.Class();
         clazz.setId(CLASS_ID_EXISTENT);
 
@@ -74,14 +64,14 @@ public class ClassPlayerServiceTest extends AbstractTest {
         entity.setClazz(clazz);
         entity.setPlayer(player);
 
-        return entity;
+        return Optional.of(entity);
     }
 
     private List<ClassPlayer> getEntityListStubData() {
         List<ClassPlayer> list = new ArrayList<ClassPlayer>();
 
-        ClassPlayer entity1 = getEntityStubData();
-        ClassPlayer entity2 = getEntityStubData();
+        ClassPlayer entity1 = getEntityStubData().get();
+        ClassPlayer entity2 = getEntityStubData().get();
 
         list.add(entity1);
         list.add(entity2);
@@ -93,19 +83,19 @@ public class ClassPlayerServiceTest extends AbstractTest {
     /* save - begin */
     @Test
     public void save_WhenSaveClassPlayer_ReturnClassPlayerSaved() {
-        ClassPlayer entity = getEntityStubData();
+        Optional<ClassPlayer> entity = getEntityStubData();
 
-        when(repository.save(entity)).thenReturn(entity);
+        when(repository.save(entity.get())).thenReturn(entity.get());
 
-        ClassPlayer entitySaved = service.save(entity);
+        ClassPlayer entitySaved = service.save(entity.get());
 
-        Assert.assertNotNull("failure - expected not null", entitySaved);
-        Assert.assertEquals("failure - expected id attribute match", entity.getId(), entitySaved.getId());
-        Assert.assertEquals("failure - expected active attribute match", entity.isActive(), entitySaved.isActive());
-        Assert.assertEquals("failure - expected dt exc attribute match", entity.getDtExc(), entitySaved.getDtExc());
-        Assert.assertEquals("failure - expected status attribute match", entity.getStatus(), entitySaved.getStatus());
+        Assertions.assertNotNull(entitySaved, "failure - expected not null");
+        Assertions.assertEquals(entity.get().getId(), entitySaved.getId(), "failure - expected id attribute match");
+        Assertions.assertEquals(entity.get().isActive(), entitySaved.isActive(), "failure - expected active attribute match");
+        Assertions.assertEquals(entity.get().getDtExc(), entitySaved.getDtExc(), "failure - expected dt exc attribute match");
+        Assertions.assertEquals(entity.get().getStatus(), entitySaved.getStatus(), "failure - expected status attribute match");
 
-        verify(repository, times(1)).save(entity);
+        verify(repository, times(1)).save(entity.get());
         verifyNoMoreInteractions(repository);
     }
     /* save - end */
@@ -113,49 +103,49 @@ public class ClassPlayerServiceTest extends AbstractTest {
     /* delete - begin */
     @Test
     public void delete_WhenClassPlayerIsExistent_ReturnTrue() {
-        ClassPlayer entity = getEntityStubData();
+        Optional<ClassPlayer> entity = getEntityStubData();
 
-        when(repository.findOne(CLASSPLAYER_ID_EXISTENT)).thenReturn(entity);
-        when(repository.save(entity)).thenReturn(entity);
+        when(repository.findById(CLASSPLAYER_ID_EXISTENT)).thenReturn(entity);
+        when(repository.save(entity.get())).thenReturn(entity.get());
 
-        Assert.assertTrue("failure - expected return true", service.delete(CLASSPLAYER_ID_EXISTENT));
+        Assertions.assertTrue(service.delete(CLASSPLAYER_ID_EXISTENT), "failure - expected return true");
 
-        verify(repository, times(1)).findOne(CLASSPLAYER_ID_EXISTENT);
-        verify(repository, times(1)).save(entity);
+        verify(repository, times(1)).findById(CLASSPLAYER_ID_EXISTENT);
+        verify(repository, times(1)).save(entity.get());
         verifyNoMoreInteractions(repository);
     }
 
     @Test
     public void delete_WhenClassPlayerIsInexistent_ReturnFalse() {
-        when(repository.findOne(CLASSPLAYER_ID_INEXISTENT)).thenReturn(null);
+        when(repository.findById(CLASSPLAYER_ID_INEXISTENT)).thenReturn(Optional.empty());
 
-        Assert.assertFalse("failure - expected return false", service.delete(CLASSPLAYER_ID_INEXISTENT));
+        Assertions.assertFalse(service.delete(CLASSPLAYER_ID_INEXISTENT), "failure - expected return false");
     }
     /* delete - end */
 
     /* findOne - begin */
     @Test
     public void findOne_WhenClassPlayerIsExistent_ReturnClassPlayer() {
-        ClassPlayer entity = getEntityStubData();
+        Optional<ClassPlayer> entity = getEntityStubData();
 
-        when(repository.findOne(CLASSPLAYER_ID_EXISTENT)).thenReturn(entity);
+        when(repository.findById(CLASSPLAYER_ID_EXISTENT)).thenReturn(entity);
 
-        ClassPlayer entityReturned = service.findOne(CLASSPLAYER_ID_EXISTENT);
-        Assert.assertNotNull("failure - expected not null", entityReturned);
-        Assert.assertEquals("failure - expected id attribute match", CLASSPLAYER_ID_EXISTENT.intValue(), entityReturned.getId());
+        Optional<ClassPlayer> entityReturned = service.findById(CLASSPLAYER_ID_EXISTENT);
+        Assertions.assertNotNull(entityReturned, "failure - expected not null");
+        Assertions.assertEquals(CLASSPLAYER_ID_EXISTENT.intValue(), entityReturned.get().getId(), "failure - expected id attribute match");
 
-        verify(repository, times(1)).findOne(CLASSPLAYER_ID_EXISTENT);
+        verify(repository, times(1)).findById(CLASSPLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
     }
 
     @Test
     public void findOne_WhenClassPlayerIsInexistent_ReturnNull() {
-        when(repository.findOne(CLASSPLAYER_ID_EXISTENT)).thenReturn(null);
+        when(repository.findById(CLASSPLAYER_ID_INEXISTENT)).thenReturn(Optional.empty());
 
-        ClassPlayer entityReturned = service.findOne(CLASSPLAYER_ID_INEXISTENT);
-        Assert.assertNull("failure - expected null", entityReturned);
+        Optional<ClassPlayer> entityReturned = service.findById(CLASSPLAYER_ID_INEXISTENT);
+        Assertions.assertFalse(entityReturned.isPresent(), "failure - expected null");
 
-        verify(repository, times(1)).findOne(CLASSPLAYER_ID_INEXISTENT);
+        verify(repository, times(1)).findById(CLASSPLAYER_ID_INEXISTENT);
         verifyNoMoreInteractions(repository);
     }
     /* findOne - end */
@@ -168,8 +158,8 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findAll()).thenReturn(list);
 
         List<ClassPlayer> listReturned = service.findAll();
-        Assert.assertNotNull("failure - expected not null", listReturned);
-        Assert.assertNotEquals("failure - not expected list size 0", 0, listReturned.size());
+        Assertions.assertNotNull(listReturned, "failure - expected not null");
+        Assertions.assertNotEquals(0, listReturned.size(), "failure - not expected list size 0");
 
         verify(repository, times(1)).findAll();
         verifyNoMoreInteractions(repository);
@@ -201,22 +191,22 @@ public class ClassPlayerServiceTest extends AbstractTest {
     /* changeStatus - begin */
     @Test
     public void changeStatus_WhenClassPlayerIsExistent_ReturnTrue() {
-        ClassPlayer entity = getEntityStubData();
+        Optional<ClassPlayer> entity = getEntityStubData();
 
-        when(repository.findOne(CLASSPLAYER_ID_EXISTENT)).thenReturn(entity);
-        when(repository.save(entity)).thenReturn(entity);
+        when(repository.findById(CLASSPLAYER_ID_EXISTENT)).thenReturn(entity);
+        when(repository.save(entity.get())).thenReturn(entity.get());
 
-        Assert.assertTrue("failure - expected true", service.changeStatus(CLASSPLAYER_ID_EXISTENT.intValue(), STATUS_CONFIRMED));
+        Assertions.assertTrue(service.changeStatus(CLASSPLAYER_ID_EXISTENT.intValue(), STATUS_CONFIRMED), "failure - expected true");
 
-        verify(repository, times(1)).save(entity);
+        verify(repository, times(1)).save(entity.get());
         //verifyNoMoreInteractions(repository);
     }
 
     @Test
     public void changeStatus_WhenClassPlayerIsInexistent_ReturnFalse() {
-        when(repository.findOne(CLASSPLAYER_ID_INEXISTENT)).thenReturn(null);
+        when(repository.findById(CLASSPLAYER_ID_INEXISTENT)).thenReturn(Optional.empty());
 
-        Assert.assertFalse("failure - expected false", service.changeStatus(CLASSPLAYER_ID_INEXISTENT.intValue(), STATUS_CONFIRMED));
+        Assertions.assertFalse(service.changeStatus(CLASSPLAYER_ID_INEXISTENT.intValue(), STATUS_CONFIRMED), "failure - expected false");
     }
     /* changeStatus - end */
 
@@ -241,8 +231,8 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByTeacher(TEACHER_ID_EXISTENT)).thenReturn(list);
 
         List<ClassPlayer> listReturned = service.findByTeacher(TEACHER_ID_EXISTENT);
-        Assert.assertNotNull("failure - not expected null", listReturned);
-        Assert.assertNotEquals("failure - list size not expected 0", 0, listReturned.size());
+        Assertions.assertNotNull(listReturned, "failure - not expected null");
+        Assertions.assertNotEquals(0, listReturned.size(), "failure - list size not expected 0");
 
         verify(repository, times(1)).findByTeacher(TEACHER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
@@ -250,10 +240,10 @@ public class ClassPlayerServiceTest extends AbstractTest {
 
     @Test
     public void findClassPlayersByTeacher_WhenSearchByTeacherInexistent_ReturnEmptyList() {
-        when(repository.findByTeacher(TEACHER_ID_INEXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByTeacher(TEACHER_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByTeacher(TEACHER_ID_INEXISTENT);
-        Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+        Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByTeacher(TEACHER_ID_INEXISTENT);
         verifyNoMoreInteractions(repository);
@@ -268,8 +258,8 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByTeacherAndClass(TEACHER_ID_EXISTENT, CLASS_ID_EXISTENT)).thenReturn(list);
 
         List<ClassPlayer> listReturned = service.findByTeacherAndClass(TEACHER_ID_EXISTENT, CLASS_ID_EXISTENT);
-        Assert.assertNotNull("failure - not expected null", listReturned);
-        Assert.assertNotEquals("failure - list size not expected 0", 0, listReturned.size());
+        Assertions.assertNotNull(listReturned, "failure - not expected null");
+        Assertions.assertNotEquals(0, listReturned.size(), "failure - list size not expected 0");
 
         verify(repository, times(1)).findByTeacherAndClass(TEACHER_ID_EXISTENT, CLASS_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
@@ -277,10 +267,10 @@ public class ClassPlayerServiceTest extends AbstractTest {
 
     @Test
     public void findClassPlayersByTeacherAndClass_WhenSearchByTeacherAndClassInexistents_ReturnEmptyList() {
-        when(repository.findByTeacherAndClass(TEACHER_ID_INEXISTENT, CLASS_ID_INEXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByTeacherAndClass(TEACHER_ID_INEXISTENT, CLASS_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByTeacherAndClass(TEACHER_ID_INEXISTENT, CLASS_ID_INEXISTENT);
-        Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+        Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByTeacherAndClass(TEACHER_ID_INEXISTENT, CLASS_ID_INEXISTENT);
         verifyNoMoreInteractions(repository);
@@ -288,10 +278,10 @@ public class ClassPlayerServiceTest extends AbstractTest {
 
     @Test
     public void findClassPlayersByTeacherAndClass_WhenSearchByTeacherExistentButClassInexistent_ReturnEmptyList() {
-        when(repository.findByTeacherAndClass(TEACHER_ID_EXISTENT, CLASS_ID_INEXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByTeacherAndClass(TEACHER_ID_EXISTENT, CLASS_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByTeacherAndClass(TEACHER_ID_EXISTENT, CLASS_ID_INEXISTENT);
-        Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+        Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByTeacherAndClass(TEACHER_ID_EXISTENT, CLASS_ID_INEXISTENT);
         verifyNoMoreInteractions(repository);
@@ -302,7 +292,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByTeacherAndClass(TEACHER_ID_INEXISTENT, CLASS_ID_EXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
 
         List<ClassPlayer> listReturned = service.findByTeacherAndClass(TEACHER_ID_INEXISTENT, CLASS_ID_EXISTENT);
-        Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+        Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByTeacherAndClass(TEACHER_ID_INEXISTENT, CLASS_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
@@ -317,8 +307,8 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByClassAndStatus(CLASS_ID_EXISTENT, STATUS_CONFIRMED)).thenReturn(list);
 
         List<ClassPlayer> listReturned = service.findByClassAndStatus(CLASS_ID_EXISTENT, STATUS_CONFIRMED);
-        Assert.assertNotNull("failure - not expected null", listReturned);
-        Assert.assertNotEquals("failure - list size not expected 0", 0, listReturned.size());
+        Assertions.assertNotNull(listReturned, "failure - not expected null");
+        Assertions.assertNotEquals(0, listReturned.size(), "failure - list size not expected 0");
 
         verify(repository, times(1)).findByClassAndStatus(CLASS_ID_EXISTENT, STATUS_CONFIRMED);
         verifyNoMoreInteractions(repository);
@@ -326,10 +316,10 @@ public class ClassPlayerServiceTest extends AbstractTest {
 
     @Test
     public void findClassPlayersByClassAndStatus_WhenSearchByClassAndStatusInexistents_ReturnEmptyList() {
-        when(repository.findByClassAndStatus(CLASS_ID_INEXISTENT, 0)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByClassAndStatus(CLASS_ID_INEXISTENT, 0)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByClassAndStatus(CLASS_ID_INEXISTENT, 0);
-        Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+        Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByClassAndStatus(CLASS_ID_INEXISTENT, 0);
         verifyNoMoreInteractions(repository);
@@ -337,10 +327,10 @@ public class ClassPlayerServiceTest extends AbstractTest {
 
     @Test
     public void findClassPlayersByClassAndStatus_WhenSearchByClassExistentButStatusInexistent_ReturnEmptyList() {
-        when(repository.findByClassAndStatus(CLASS_ID_INEXISTENT, 0)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByClassAndStatus(CLASS_ID_EXISTENT, 0)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByClassAndStatus(CLASS_ID_EXISTENT, 0);
-        Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+        Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByClassAndStatus(CLASS_ID_EXISTENT, 0);
         verifyNoMoreInteractions(repository);
@@ -351,7 +341,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByClassAndStatus(CLASS_ID_INEXISTENT, STATUS_CONFIRMED)).thenReturn(new ArrayList<ClassPlayer>());
 
         List<ClassPlayer> list = service.findByClassAndStatus(CLASS_ID_INEXISTENT, STATUS_CONFIRMED);
-        Assert.assertEquals("failure - expected empty list", 0, list.size());
+        Assertions.assertEquals(0, list.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByClassAndStatus(CLASS_ID_INEXISTENT, STATUS_CONFIRMED);
         verifyNoMoreInteractions(repository);
@@ -366,8 +356,8 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByClassAndPlayer(CLASS_ID_EXISTENT, PLAYER_ID_EXISTENT)).thenReturn(list);
 
         List<ClassPlayer> listReturned = service.findByClassAndPlayer(CLASS_ID_EXISTENT, PLAYER_ID_EXISTENT);
-        Assert.assertNotNull("failure - not expected null", listReturned);
-        Assert.assertNotEquals("failure - list size not expected 0", 0, listReturned.size());
+        Assertions.assertNotNull(listReturned, "failure - not expected null");
+        Assertions.assertNotEquals(0, listReturned.size(), "failure - list size not expected 0");
 
         verify(repository, times(1)).findByClassAndPlayer(CLASS_ID_EXISTENT, PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
@@ -378,7 +368,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByClassAndPlayer(CLASS_ID_INEXISTENT, PLAYER_ID_INEXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
 
         List<ClassPlayer> listReturned = service.findByClassAndPlayer(CLASS_ID_INEXISTENT, PLAYER_ID_INEXISTENT);
-        Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+        Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByClassAndPlayer(CLASS_ID_INEXISTENT, PLAYER_ID_INEXISTENT);
         verifyNoMoreInteractions(repository);
@@ -389,7 +379,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByClassAndPlayer(CLASS_ID_EXISTENT, PLAYER_ID_INEXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
 
         List<ClassPlayer> listReturned = service.findByClassAndPlayer(CLASS_ID_EXISTENT, PLAYER_ID_INEXISTENT);
-        Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+        Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByClassAndPlayer(CLASS_ID_EXISTENT, PLAYER_ID_INEXISTENT);
         verifyNoMoreInteractions(repository);
@@ -400,7 +390,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByClassAndPlayer(CLASS_ID_INEXISTENT, PLAYER_ID_EXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
 
         List<ClassPlayer> listReturned = service.findByClassAndPlayer(CLASS_ID_INEXISTENT, PLAYER_ID_EXISTENT);
-        Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+        Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByClassAndPlayer(CLASS_ID_INEXISTENT, PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
@@ -415,8 +405,8 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByPlayerAndStatus(PLAYER_ID_EXISTENT, STATUS_CONFIRMED)).thenReturn(list);
 
         List<ClassPlayer> listReturned = service.findByPlayerAndStatus(PLAYER_ID_EXISTENT, STATUS_CONFIRMED);
-        Assert.assertNotNull("failure - not expected null", listReturned);
-        Assert.assertNotEquals("failure - list size not expected 0", 0, listReturned.size());
+        Assertions.assertNotNull(listReturned, "failure - not expected null");
+        Assertions.assertNotEquals(0, listReturned.size(), "failure - list size not expected 0");
 
         verify(repository, times(1)).findByPlayerAndStatus(PLAYER_ID_EXISTENT, STATUS_CONFIRMED);
         verifyNoMoreInteractions(repository);
@@ -427,7 +417,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByPlayerAndStatus(PLAYER_ID_INEXISTENT, 0)).thenReturn(new ArrayList<ClassPlayer>());
 
         List<ClassPlayer> listReturned = service.findByPlayerAndStatus(PLAYER_ID_INEXISTENT, 0);
-        Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+        Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByPlayerAndStatus(PLAYER_ID_INEXISTENT, 0);
         verifyNoMoreInteractions(repository);
@@ -438,7 +428,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByPlayerAndStatus(PLAYER_ID_EXISTENT, 0)).thenReturn(new ArrayList<ClassPlayer>());
 
         List<ClassPlayer> listReturned = service.findByPlayerAndStatus(PLAYER_ID_EXISTENT, 0);
-        Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+        Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByPlayerAndStatus(PLAYER_ID_EXISTENT, 0);
         verifyNoMoreInteractions(repository);
@@ -449,7 +439,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByPlayerAndStatus(PLAYER_ID_INEXISTENT, STATUS_CONFIRMED)).thenReturn(new ArrayList<ClassPlayer>());
 
         List<ClassPlayer> listReturned = service.findByPlayerAndStatus(PLAYER_ID_INEXISTENT, STATUS_CONFIRMED);
-        Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+        Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByPlayerAndStatus(PLAYER_ID_INEXISTENT, STATUS_CONFIRMED);
         verifyNoMoreInteractions(repository);
@@ -464,8 +454,8 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByTeacherAndStudent(TEACHER_ID_EXISTENT, STUDENT_ID_EXISTENT)).thenReturn(list);
 
         List<ClassPlayer> listReturned = service.findByTeacherAndStudent(TEACHER_ID_EXISTENT, STUDENT_ID_EXISTENT);
-        Assert.assertNotNull("failure - not expected null", listReturned);
-        Assert.assertNotEquals("failure - list size not expected 0", 0, listReturned.size());
+        Assertions.assertNotNull(listReturned, "failure - not expected null");
+        Assertions.assertNotEquals(0, listReturned.size(), "failure - list size not expected 0");
 
         verify(repository, times(1)).findByTeacherAndStudent(TEACHER_ID_EXISTENT, STUDENT_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
@@ -476,7 +466,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByTeacherAndStudent(TEACHER_ID_INEXISTENT, STUDENT_ID_INEXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
 
         List<ClassPlayer> listReturned = service.findByTeacherAndStudent(TEACHER_ID_INEXISTENT, STUDENT_ID_INEXISTENT);
-        Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+        Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByTeacherAndStudent(TEACHER_ID_INEXISTENT, STUDENT_ID_INEXISTENT);
         verifyNoMoreInteractions(repository);
@@ -487,7 +477,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByTeacherAndStudent(TEACHER_ID_EXISTENT, STUDENT_ID_INEXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
 
         List<ClassPlayer> listReturned = service.findByTeacherAndStudent(TEACHER_ID_EXISTENT, STUDENT_ID_INEXISTENT);
-        Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+        Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByTeacherAndStudent(TEACHER_ID_EXISTENT, STUDENT_ID_INEXISTENT);
         verifyNoMoreInteractions(repository);
@@ -498,7 +488,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
         when(repository.findByTeacherAndStudent(TEACHER_ID_INEXISTENT, STUDENT_ID_EXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
 
         List<ClassPlayer> listReturned = service.findByTeacherAndStudent(TEACHER_ID_INEXISTENT, STUDENT_ID_EXISTENT);
-        Assert.assertEquals("failure - expected empty list", 0, listReturned.size());
+        Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByTeacherAndStudent(TEACHER_ID_INEXISTENT, STUDENT_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
@@ -518,7 +508,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
 
         when(repository.findByTeacherAndStudent(TEACHER_ID_EXISTENT, PLAYER_ID_EXISTENT)).thenReturn(list);
 
-        Assert.assertTrue(service.isMyStudent(teacher, student));
+        Assertions.assertTrue(service.isMyStudent(teacher, student));
 
         verify(repository, times(1)).findByTeacherAndStudent(TEACHER_ID_EXISTENT, PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
@@ -534,7 +524,7 @@ public class ClassPlayerServiceTest extends AbstractTest {
 
         when(repository.findByTeacherAndStudent(TEACHER_ID_EXISTENT, PLAYER_ID_INEXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
 
-        Assert.assertFalse(service.isMyStudent(teacher, student));
+        Assertions.assertFalse(service.isMyStudent(teacher, student));
 
         verify(repository, times(1)).findByTeacherAndStudent(TEACHER_ID_EXISTENT, PLAYER_ID_INEXISTENT);
         verifyNoMoreInteractions(repository);

@@ -2,85 +2,86 @@ package com.polifono.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "t022_playervideo")
 public class Playervideo {
 
-	@Id
-	@Column(name = "c022_id")
-	@GeneratedValue
-	private int id;
-	
-	@ManyToOne
-	@JoinColumn(name = "c001_id")
-	private Player player;
-	
-	@ManyToOne
-	@JoinColumn(name = "c009_id")
-	private Content content;
-	
-	@Column(name = "c022_dt_inc")
-	private Date dtInc;
-	
-	@Column(name = "c022_active")
-	private boolean active;
-	
-	@Column(name = "c022_url")
-	private String url;
+    @Id
+    @Column(name = "c022_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	public int getId() {
-		return id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "c001_id")
+    private Player player;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "c009_id")
+    private Content content;
 
-	public Player getPlayer() {
-		return player;
-	}
+    @Column(name = "c022_dt_inc")
+    private Date dtInc;
 
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
+    @Column(name = "c022_active")
+    private boolean active;
 
-	public Content getContent() {
-		return content;
-	}
+    @Column(name = "c022_url")
+    private String url;
 
-	public void setContent(Content content) {
-		this.content = content;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public Date getDtInc() {
-		return dtInc;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setDtInc(Date dtInc) {
-		this.dtInc = dtInc;
-	}
+    public Player getPlayer() {
+        return player;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public Content getContent() {
+        return content;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public void setContent(Content content) {
+        this.content = content;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public Date getDtInc() {
+        return dtInc;
+    }
+
+    public void setDtInc(Date dtInc) {
+        this.dtInc = dtInc;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

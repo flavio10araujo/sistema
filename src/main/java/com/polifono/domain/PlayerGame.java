@@ -1,62 +1,63 @@
 package com.polifono.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "t016_player_game")
 public class PlayerGame {
 
-	@Id
-	@Column(name = "c016_id")
-	@GeneratedValue
-	private int id;
-	
-	@ManyToOne
-	@JoinColumn(name = "c001_id")
-	private Player player;
-	
-	@ManyToOne
-	@JoinColumn(name = "c002_id")
-	private Game game;
-	
-	@Column(name = "c016_credit")
-	private int credit;
+    @Id
+    @Column(name = "c016_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	public int getId() {
-		return id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "c001_id")
+    private Player player;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "c002_id")
+    private Game game;
 
-	public Player getPlayer() {
-		return player;
-	}
+    @Column(name = "c016_credit")
+    private int credit;
 
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public Game getGame() {
-		return game;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setGame(Game game) {
-		this.game = game;
-	}
+    public Player getPlayer() {
+        return player;
+    }
 
-	public int getCredit() {
-		return credit;
-	}
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
-	public void setCredit(int credit) {
-		this.credit = credit;
-	}
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public int getCredit() {
+        return credit;
+    }
+
+    public void setCredit(int credit) {
+        this.credit = credit;
+    }
 }

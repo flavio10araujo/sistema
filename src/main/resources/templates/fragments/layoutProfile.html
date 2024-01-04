@@ -1,142 +1,153 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMainFb">
-
-<head>
-	<style type="text/css">
-        .mainbody{background:#f0f0f0}
-	</style>
-</head>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutMainFb :: layout(~{::section})}"
+      th:fragment="layout (contentTemplateProfile)">
 
 <body>
-	<div layout:fragment="content" class="container">
-	
-        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-        
-            <div class="panel panel-default">
-            
-                <div class="panel-body">
-                
-                    <div class="media">
-                    
-                        <div align="center">
-                            <a th:href="@{'/profile/player/'+${player.id}}"><img class="thumbnail img-responsive" th:src="@{'https://www.gravatar.com/avatar/'+${player.emailMD5}+'.jpg?s=200'}" width="300px" height="300px" /></a>
-                        </div>
-                        
-                        <div class="media-body">
-                            <hr />
-                            <h3><strong>Eu</strong></h3>
-                            
-                           	<p th:if="${player.about == null} OR ${player.about == ''}">
-         						<span th:text="#{msg.infoNotFound}"></span>
-       						</p>
-       						<p th:if="${player.about != null}">
-         						<span th:text="${player.about}"></span>
-       						</p>
-       						
-       						<hr />
-                            <h3><strong>Nível musical</strong></h3>
-                            
-                           	<span class="badge" th:text="${player.rankLevel}">1</span>&nbsp;<span th:text="${player.rankColor}"></span>
-                            
-                            <hr />
-                            <h3><strong>Cidade</strong></h3>
-                            
-                            <p th:if="${player.address == null} OR ${player.address == ''}">
-         						<span th:text="#{msg.infoNotFound}"></span>
-       						</p>
-       						<p th:if="${player.address != null}">
-         						<span th:text="${player.address}"></span>
-       						</p>
-                            
-                            <hr />
-                            <h3><strong>Nascimento</strong></h3>
-                            
-                            <p th:if="${player.dtBirth == null}">
-         						<span th:text="#{msg.infoNotFound}"></span>
-       						</p>
-       						<p th:if="${player.dtBirth != null}">
-         						<span th:text="${#calendars.format(player.dtBirth,'dd/MM/yyyy')}"></span>
-       						</p>
-                            
-                            <hr />
-                            <h3><strong>Sexo</strong></h3>
-                            
-                            <p th:if="${player.sex == 0}">
-         						<span th:text="#{msg.infoNotFound}"></span>
-       						</p>
-       						<p th:if="${player.sex > 0}">
-         						<span th:text="( (${player.sex} == 1) ? #{app.male} : #{app.female})"></span>
-       						</p>
-       						
-       						<hr />
-                            <h3><strong>Desde</strong></h3>
-                            <span th:text="${#calendars.format(player.dtInc,'dd/MM/yyyy')}"></span>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                </div>
-                
-            </div>
-            
-        </div>
-        
-        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-        
-            <div class="panel panel-default">
-            
-                <div class="panel-body">
-                
-                    
-                    <h1 class="panel-title pull-left" style="font-size:30px;" th:text="${player.name}+' '+${player.lastName}">Name</h1> 
-                    
-                    <div class="dropdown pull-right" th:if="${editAvailable == true}">
-                        <a th:href="@{'/profile/player/edit/'+${player.id}}" class="btn btn-success dropdown-toggle" th:title="#{app.edit}">Editar</a>
-                    </div>
-                    
-                    <br /><br />
-                    
-                    <h4 th:text="${player.email}" th:if="${editAvailable == true}">example@polifono.com</h4>
-                    
-                    <hr />
-                    
-                    <span class="pull-left">
-                        <a th:if="${editAvailable == false}" href="#" class="btn btn-link" style="text-decoration:none">Pontos <span class="badge" th:text="${player.score}">1</span></a>
-                        <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/score|}" data-toggle="tooltip" title="Ver a pontuação obtida em cada fase" class="btn btn-link" style="text-decoration:none">Pontos <span class="badge" th:text="${player.score}">1</span></a>
-                        
-                        <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/attendance|}" data-toggle="tooltip" title="Ver a frequência no curso" class="btn btn-link" style="text-decoration:none">Frequência</a>
-                        
-                        <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/credits|}" data-toggle="tooltip" title="Ver a quantidade de créditos adquiridos até o momento" class="btn btn-link" style="text-decoration:none">Créditos</a>
-                        
-                        <a th:href="@{|/profile/player/${player.id}/videos|}" class="btn btn-link" style="text-decoration:none">Vídeos</a>
-                    </span>
-                </div>
-            </div>
-            
-            <hr />
-            
-            <div layout:fragment="contentProfile"></div>
-            
-        </div>
-        
-        <input type="hidden" th:value="${save}" id="alertSave" />
-        <input type="hidden" th:value="${edit}" id="alertEdit" />
-        <input type="hidden" th:value="#{crud.msg.savedSuccessfully}" id="alertSaveSuccess" />
-        <input type="hidden" th:value="#{crud.msg.editedSuccessfully}" id="alertEditSuccess" />
-        <input type="hidden" th:value="#{crud.msg.notSaved}" id="alertSaveError" />
-        <input type="hidden" th:value="#{crud.msg.notEdited}" id="alertEditError" />
+<section layout:fragment="contentTemplate" class="container">
 
-		<script th:inline="javascript">
-            /*<![CDATA[*/
-            if(document.getElementById("alertSave").value=='success'){bootbox.alert(document.getElementById("alertSaveSuccess").value);}
-			if(document.getElementById("alertSave").value=='unsuccess'){bootbox.alert(document.getElementById("alertSaveError").value);}
-			if(document.getElementById("alertEdit").value=='success'){bootbox.alert(document.getElementById("alertEditSuccess").value);}
-			if(document.getElementById("alertEdit").value=='unsuccess'){bootbox.alert(document.getElementById("alertEditError").value);}
-			/*]]>*/
-		</script>
-        
+    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+
+        <div class="panel panel-default">
+
+            <div class="panel-body">
+
+                <div class="media">
+
+                    <div align="center">
+                        <a th:href="@{'/profile/player/'+${player.id}}"><img class="thumbnail img-responsive"
+                                                                             th:src="@{'https://www.gravatar.com/avatar/'+${player.emailMD5}+'.jpg?s=200'}"
+                                                                             width="300px" height="300px" /></a>
+                    </div>
+
+                    <div class="media-body">
+                        <hr />
+                        <h3><strong>Eu</strong></h3>
+
+                        <p th:if="${player.about == null} OR ${player.about == ''}">
+                            <span th:text="#{msg.infoNotFound}"></span>
+                        </p>
+                        <p th:if="${player.about != null}">
+                            <span th:text="${player.about}"></span>
+                        </p>
+
+                        <hr />
+                        <h3><strong>Nível musical</strong></h3>
+
+                        <span class="badge" th:text="${player.rankLevel}">1</span>&nbsp;<span th:text="${player.rankColor}"></span>
+
+                        <hr />
+                        <h3><strong>Cidade</strong></h3>
+
+                        <p th:if="${player.address == null} OR ${player.address == ''}">
+                            <span th:text="#{msg.infoNotFound}"></span>
+                        </p>
+                        <p th:if="${player.address != null}">
+                            <span th:text="${player.address}"></span>
+                        </p>
+
+                        <hr />
+                        <h3><strong>Nascimento</strong></h3>
+
+                        <p th:if="${player.dtBirth == null}">
+                            <span th:text="#{msg.infoNotFound}"></span>
+                        </p>
+                        <p th:if="${player.dtBirth != null}">
+                            <span th:text="${#calendars.format(player.dtBirth,'dd/MM/yyyy')}"></span>
+                        </p>
+
+                        <hr />
+                        <h3><strong>Sexo</strong></h3>
+
+                        <p th:if="${player.sex == 0}">
+                            <span th:text="#{msg.infoNotFound}"></span>
+                        </p>
+                        <p th:if="${player.sex > 0}">
+                            <span th:text="( (${player.sex} == 1) ? #{app.male} : #{app.female})"></span>
+                        </p>
+
+                        <hr />
+                        <h3><strong>Desde</strong></h3>
+                        <span th:text="${#calendars.format(player.dtInc,'dd/MM/yyyy')}"></span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
+
+    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+
+        <div class="panel panel-default">
+
+            <div class="panel-body">
+
+
+                <h1 class="panel-title pull-left" style="font-size:30px;" th:text="${player.name}+' '+${player.lastName}">Name</h1>
+
+                <div class="dropdown pull-right" th:if="${editAvailable == true}">
+                    <a th:href="@{'/profile/player/edit/'+${player.id}}" class="btn btn-success dropdown-toggle" th:title="#{app.edit}">Editar</a>
+                </div>
+
+                <br /><br />
+
+                <h4 th:text="${player.email}" th:if="${editAvailable == true}">example@polifono.com</h4>
+
+                <hr />
+
+                <span class="pull-left">
+                    <a th:if="${editAvailable == false}" href="#" class="btn btn-link" style="text-decoration:none">Pontos <span class="badge"
+                                                                                                                                 th:text="${player.score}">1</span></a>
+                    <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/score|}" data-toggle="tooltip"
+                       title="Ver a pontuação obtida em cada fase" class="btn btn-link" style="text-decoration:none">Pontos <span class="badge"
+                                                                                                                                  th:text="${player.score}">1</span></a>
+
+                    <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/attendance|}" data-toggle="tooltip"
+                       title="Ver a frequência no curso" class="btn btn-link" style="text-decoration:none">Frequência</a>
+
+                    <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/credits|}" data-toggle="tooltip"
+                       title="Ver a quantidade de créditos adquiridos até o momento" class="btn btn-link" style="text-decoration:none">Créditos</a>
+
+                    <a th:href="@{|/profile/player/${player.id}/videos|}" class="btn btn-link" style="text-decoration:none">Vídeos</a>
+                </span>
+            </div>
+        </div>
+
+        <hr />
+
+        <div th:replace="${contentTemplateProfile}"></div>
+
+    </div>
+
+    <input type="hidden" th:value="${save}" id="alertSave" />
+    <input type="hidden" th:value="${edit}" id="alertEdit" />
+    <input type="hidden" th:value="#{crud.msg.savedSuccessfully}" id="alertSaveSuccess" />
+    <input type="hidden" th:value="#{crud.msg.editedSuccessfully}" id="alertEditSuccess" />
+    <input type="hidden" th:value="#{crud.msg.notSaved}" id="alertSaveError" />
+    <input type="hidden" th:value="#{crud.msg.notEdited}" id="alertEditError" />
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        if (document.getElementById("alertSave").value == 'success') {
+            bootbox.alert(document.getElementById("alertSaveSuccess").value);
+        }
+        if (document.getElementById("alertSave").value == 'unsuccess') {
+            bootbox.alert(document.getElementById("alertSaveError").value);
+        }
+        if (document.getElementById("alertEdit").value == 'success') {
+            bootbox.alert(document.getElementById("alertEditSuccess").value);
+        }
+        if (document.getElementById("alertEdit").value == 'unsuccess') {
+            bootbox.alert(document.getElementById("alertEditError").value);
+        }
+        /*]]>*/
+    </script>
+
+</section>
 
 </body>
 </html>

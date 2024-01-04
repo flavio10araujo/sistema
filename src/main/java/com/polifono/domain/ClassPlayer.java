@@ -2,96 +2,97 @@ package com.polifono.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "t015_class_player")
 public class ClassPlayer {
 
-	@Id
-	@Column(name = "c015_id")
-	@GeneratedValue
-	private int id;
+    @Id
+    @Column(name = "c015_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	@ManyToOne
-	@JoinColumn(name = "c014_id")
-	private Class clazz;
-	
-	@ManyToOne
-	@JoinColumn(name = "c001_id")
-	private Player player;
-	
-	@Column(name = "c015_dt_inc")
-	private Date dtInc;
-	
-	@Column(name = "c015_active")
-	private boolean active;
-	
-	@Column(name = "c015_dt_exc")
-	private Date dtExc;
-	
-	@Column(name = "c015_status")
-	private int status;
+    @ManyToOne
+    @JoinColumn(name = "c014_id")
+    private Class clazz;
 
-	public int getId() {
-		return id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "c001_id")
+    private Player player;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(name = "c015_dt_inc")
+    private Date dtInc;
 
-	public Class getClazz() {
-		return clazz;
-	}
+    @Column(name = "c015_active")
+    private boolean active;
 
-	public void setClazz(Class clazz) {
-		this.clazz = clazz;
-	}
+    @Column(name = "c015_dt_exc")
+    private Date dtExc;
 
-	public Player getPlayer() {
-		return player;
-	}
+    @Column(name = "c015_status")
+    private int status;
 
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public Date getDtInc() {
-		return dtInc;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setDtInc(Date dtInc) {
-		this.dtInc = dtInc;
-	}
+    public Class getClazz() {
+        return clazz;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public void setClazz(Class clazz) {
+        this.clazz = clazz;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public Player getPlayer() {
+        return player;
+    }
 
-	public Date getDtExc() {
-		return dtExc;
-	}
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
-	public void setDtExc(Date dtExc) {
-		this.dtExc = dtExc;
-	}
+    public Date getDtInc() {
+        return dtInc;
+    }
 
-	public int getStatus() {
-		return status;
-	}
+    public void setDtInc(Date dtInc) {
+        this.dtInc = dtInc;
+    }
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Date getDtExc() {
+        return dtExc;
+    }
+
+    public void setDtExc(Date dtExc) {
+        this.dtExc = dtExc;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 }

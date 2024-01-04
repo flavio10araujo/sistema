@@ -2,77 +2,78 @@ package com.polifono.domain;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "t010_question")
 public class Question {
 
-	@Id
-	@Column(name = "c010_id")
-	@GeneratedValue
-	private int id;
-	
-	@Column(name="c010_name", columnDefinition="TEXT")
-	private String name;
-	
-	@Column(name = "c010_order")
-	private int order;
-	
-	@ManyToOne
-	@JoinColumn(name = "c009_id")
-	private Content content;
-	
-	@OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
-	@OrderBy("order asc")
-	private List<Answer> answers;
+    @Id
+    @Column(name = "c010_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	public int getId() {
-		return id;
-	}
+    @Column(name = "c010_name", columnDefinition = "TEXT")
+    private String name;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(name = "c010_order")
+    private int order;
 
-	public String getName() {
-		return name;
-	}
+    @ManyToOne
+    @JoinColumn(name = "c009_id")
+    private Content content;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
+    @OrderBy("order asc")
+    private List<Answer> answers;
 
-	public int getOrder() {
-		return order;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setOrder(int order) {
-		this.order = order;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public Content getContent() {
-		return content;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setContent(Content content) {
-		this.content = content;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public List<Answer> getAnswers() {
-		return answers;
-	}
+    public int getOrder() {
+        return order;
+    }
 
-	public void setAnswers(List<Answer> answers) {
-		this.answers = answers;
-	}
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public Content getContent() {
+        return content;
+    }
+
+    public void setContent(Content content) {
+        this.content = content;
+    }
+
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
+    }
 }

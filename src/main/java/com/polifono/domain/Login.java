@@ -2,51 +2,52 @@ package com.polifono.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "t013_login")
 public class Login {
 
-	@Id
-	@Column(name = "c013_id")
-	@GeneratedValue
-	private int id;
-	
-	@ManyToOne
-	@JoinColumn(name = "c001_id")
-	private Player player;
-	
-	@Column(name = "c013_dt_login")
-	private Date dtLogin;
+    @Id
+    @Column(name = "c013_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	public int getId() {
-		return id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "c001_id")
+    private Player player;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(name = "c013_dt_login")
+    private Date dtLogin;
 
-	public Player getPlayer() {
-		return player;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public Date getDtLogin() {
-		return dtLogin;
-	}
+    public Player getPlayer() {
+        return player;
+    }
 
-	public void setDtLogin(Date dtLogin) {
-		this.dtLogin = dtLogin;
-	}
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public Date getDtLogin() {
+        return dtLogin;
+    }
+
+    public void setDtLogin(Date dtLogin) {
+        this.dtLogin = dtLogin;
+    }
 }

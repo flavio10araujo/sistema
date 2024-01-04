@@ -1,173 +1,211 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="layout (contentTemplate)">
 
-	<head>
-		<title th:text="#{title}"></title>
-		
-		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-		<meta name="viewport" content="width=device-width,initial-scale=1" />
-		<meta name="description" content="Music Network and E-learning" />
-    	<meta name="author" content="Polifono.com" />
-    	
-    	<link rel="icon" th:href="@{/static/img/favicon.ico}" sizes="16x16" />
-		
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-		
-		<link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/project/assets/css/style.minV20190529.css}" />
-		
-		<script type="text/javascript" th:inline="javascript" th:src="@{/vendors/project/assets/js/mainHeader.minV20190529.js}"></script>
-        <script defer="defer" type="text/javascript" th:inline="javascript" th:src="@{/vendors/project/assets/js/mainFooter.minV20190529.js}"></script>
-        
-        <!-- Vuejs para dev: -->
-        <!--
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script src="https://vuejs.org/js/vue.js"></script>
-        -->
-        <!-- Vuejs para prod: -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
-    	
-    	<script async="true" src="https://www.googletagmanager.com/gtag/js?id=UA-91913532-1"></script>
-		<script>
-		  window.dataLayer = window.dataLayer || [];
-		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date());
-		  gtag('config', 'UA-91913532-1');
-		</script>
+<head>
+    <title th:text="#{title}"></title>
 
-	</head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="Music Network and E-learning" />
+    <meta name="author" content="Polifono.com" />
+
+    <link rel="icon" th:href="@{/static/img/favicon.ico}" sizes="16x16" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/vendors/project/assets/css/style.minV20190529.css}" />
+
+    <script type="text/javascript" th:inline="javascript" th:src="@{/vendors/project/assets/js/mainHeader.minV20190529.js}"></script>
+    <script defer="defer" type="text/javascript" th:inline="javascript" th:src="@{/vendors/project/assets/js/mainFooter.minV20190529.js}"></script>
+
+    <!-- Vuejs para dev: -->
+    <!--
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://vuejs.org/js/vue.js"></script>
+    -->
+    <!-- Vuejs para prod: -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
+
+    <script async="true" src="https://www.googletagmanager.com/gtag/js?id=UA-91913532-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-91913532-1');
+    </script>
+
+    <style>
+      .mainbody {
+        background: #f0f0f0
+      }
+    </style>
+</head>
 
 <body>
 
 <div id="fb-root"></div>
 <script th:inline="javascript">
-	/*<![CDATA[*/
-	function statusChangeCallback(response){if(response.status==='connected'){window.location="./loginfb?code="+response.authResponse.accessToken;}}
-  	function checkLoginState(){FB.getLoginStatus(function(response){statusChangeCallback(response);});}
-  	window.fbAsyncInit=function(){FB.init({appId:'324370751419847',cookie:true,xfbml:true,version:'v2.8'});};
-  	(function(d,s,id){
-          var js,fjs=d.getElementsByTagName(s)[0];
-          if(d.getElementById(id)) return;
-          js=d.createElement(s);js.id=id;
-          js.src="https://connect.facebook.net/pt_BR/sdk/xfbml.customerchat.js";
-          fjs.parentNode.insertBefore(js,fjs);
-        	}(document,'script','facebook-jssdk'));
-	/*]]>*/
+    /*<![CDATA[*/
+    function statusChangeCallback(response) {
+        if (response.status === 'connected') {
+            window.location = "./loginfb?code=" + response.authResponse.accessToken;
+        }
+    }
+
+    function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+    }
+
+    window.fbAsyncInit = function () {
+        FB.init({appId: '324370751419847', cookie: true, xfbml: true, version: 'v2.8'});
+    };
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/pt_BR/sdk/xfbml.customerchat.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    /*]]>*/
 </script>
 
-<div class="fb-customerchat" attribution="setup_tool" page_id="243859729372740" logged_in_greeting="Olá! Se tiver alguma dúvida, estamos aqui!" logged_out_greeting="Olá! Se tiver alguma dúvida, estamos aqui!"></div>
+<div class="fb-customerchat" attribution="setup_tool" page_id="243859729372740" logged_in_greeting="Olá! Se tiver alguma dúvida, estamos aqui!"
+     logged_out_greeting="Olá! Se tiver alguma dúvida, estamos aqui!"></div>
 
 <div class="mainbody container-fluid">
 
-	<div class="row">
-        
-		<div class="navbar-wrapper">
-            
-			<div class="container-fluid">
-                
-				<div class="navbar navbar-default navbar-static-top" role="navigation">
-                    
-					<div class="container-fluid">
-                        
-						<div class="navbar-header">
-                            
-							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+    <div class="row">
+
+        <div class="navbar-wrapper">
+
+            <div class="container-fluid">
+
+                <div class="navbar navbar-default navbar-static-top" role="navigation">
+
+                    <div class="container-fluid">
+
+                        <div class="navbar-header">
+
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                                 <span class="sr-only">Toggle navigation</span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
                             </button>
-							
+
                             <a class="navbar-brand" th:href="@{/}" style="margin-right:-8px; margin-top:-5px;">
                                 <img alt="Polifono.com" th:src="@{/static/img/logo-30x30.png}" width="30px" height="30px" />
                             </a>
-							
-                            <a class="navbar-brand" th:href="@{/}" th:text="#{company}">Polifono</a>
-                            
-							<i class="brand_network"><small><small>Music Network</small></small></i>
-                        </div>
-						
-                        <div class="navbar-collapse collapse">
-                            
-							<ul class="nav navbar-nav" sec:authorize="hasAuthority('ADMIN')">
-				     			<li><a th:href="@{/admin}" th:text="#{menu.admin.home}"></a></li>
-				   			</ul>
-				   			
-					    	<ul class="nav navbar-nav" sec:authorize="hasAuthority('TEACHER')">
-				     			<li class="dropdown">
-				       				<a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{app.teacher}"><span class="caret"></span></a>
-				       				<ul class="dropdown-menu">
-				         				<li><a th:href="@{/teacher/class}" th:text="#{menu.teacher.class}"></a></li>
-				         				<li><a th:href="@{/teacher/student}" th:text="#{menu.teacher.student}"></a></li>
-				         				<li><a th:href="@{/teacher/report}" th:text="#{menu.teacher.report}"></a></li>
-				         				<li><a th:href="@{/teacher/player/create}" th:text="#{menu.teacher.player.create}"></a></li>
-				         				<li><a th:href="@{/teacher/credit}">Transferir Créditos</a></li>
-				       				</ul>
-				     			</li>
-				   			</ul>
-                            
-							<ul class="nav navbar-nav navbar-right">
 
-								<li data-toggle="tooltip" th:title="#{msg.toseemygrades}"><a th:href="@{|/profile/player/${#authentication.principal.user.id}/score|}"><span th:text="#{app.score}"></span>: <span sec:authentication="principal.user.coin"></span></a></li>
-								
-								<li data-toggle="tooltip" th:title="#{msg.buymorecredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>: <span sec:authentication="principal.user.totalCredit"></span></a></li>
-								
-								<li>
-    								<form class="navbar-form" th:action="@{/search}">
-	      								<div class="input-group">
-	        								<input type="text" class="searchBar" style="padding:0px 8px;height:30px;margin-top:5px" required="true" maxlength="25" placeholder="Pesquisar" name="q" />
-	        								<div class="input-group-btn">
-	          									<button class="btn btn-default" type="submit" style="padding:0px 0px;font-size:22px;margin-top:3px;margin-left:8px"><i class="fa fa-search"></i></button>
-	        								</div>
-	      								</div>
-	    							</form>
-								</li>
-								
-								<li class="dropdown">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <a class="navbar-brand" th:href="@{/}" th:text="#{company}">Polifono</a>
+
+                            <i class="brand_network"><small><small>Music Network</small></small></i>
+                        </div>
+
+                        <div class="navbar-collapse collapse">
+
+                            <ul class="nav navbar-nav" sec:authorize="hasAuthority('ADMIN')">
+                                <li><a th:href="@{/admin}" th:text="#{menu.admin.home}"></a></li>
+                            </ul>
+
+                            <ul class="nav navbar-nav" sec:authorize="hasAuthority('TEACHER')">
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" th:text="#{app.teacher}"><span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a th:href="@{/teacher/class}" th:text="#{menu.teacher.class}"></a></li>
+                                        <li><a th:href="@{/teacher/student}" th:text="#{menu.teacher.student}"></a></li>
+                                        <li><a th:href="@{/teacher/report}" th:text="#{menu.teacher.report}"></a></li>
+                                        <li><a th:href="@{/teacher/player/create}" th:text="#{menu.teacher.player.create}"></a></li>
+                                        <li><a th:href="@{/teacher/credit}">Transferir Créditos</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <ul class="nav navbar-nav navbar-right">
+
+                                <li data-toggle="tooltip" th:title="#{msg.toseemygrades}"><a
+                                        th:href="@{|/profile/player/${#authentication.principal.user.id}/score|}"><span th:text="#{app.score}"></span>: <span
+                                        sec:authentication="principal.user.coin"></span></a></li>
+
+                                <li data-toggle="tooltip" th:title="#{msg.buymorecredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>:
+                                    <span sec:authentication="principal.user.totalCredit"></span></a></li>
+
+                                <li>
+                                    <form class="navbar-form" th:action="@{/search}">
+                                        <div class="input-group">
+                                            <input type="text" class="searchBar" style="padding:0px 8px;height:30px;margin-top:5px" required="true"
+                                                   maxlength="25" placeholder="Pesquisar" name="q" />
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-default" type="submit"
+                                                        style="padding:0px 0px;font-size:22px;margin-top:3px;margin-left:8px"><i class="fa fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </li>
+
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 										<span class="user-avatar pull-left" style="margin-right:8px;margin-top:-5px">
-											<img th:src="@{|https://www.gravatar.com/avatar/${#authentication.principal.user.emailMD5}.jpg?s=200|}" class="img-responsive img-circle" title="" alt="" width="30px" height="30px" />
+											<img th:src="@{|https://www.gravatar.com/avatar/${#authentication.principal.user.emailMD5}.jpg?s=200|}"
+                                                 class="img-responsive img-circle" title="" alt="" width="30px" height="30px" />
 										</span>
-										
-										<span class="user-name" sec:authentication="principal.user.name">Name</span>
-										
-										<b class="caret"></b>
-									</a>
-									
-									<ul class="dropdown-menu" style="background-color:#fff">
+
+                                        <span class="user-name" sec:authentication="principal.user.name">Name</span>
+
+                                        <b class="caret"></b>
+                                    </a>
+
+                                    <ul class="dropdown-menu" style="background-color:#fff">
                                         <li>
                                             <div class="navbar-content">
                                                 <div class="row">
                                                     <div class="col-md-5">
-                                                        <img th:src="@{|https://www.gravatar.com/avatar/${#authentication.principal.user.emailMD5}.jpg?s=200|}" alt="IMG" class="img-responsive" width="120px" height="120px" />
+                                                        <img th:src="@{|https://www.gravatar.com/avatar/${#authentication.principal.user.emailMD5}.jpg?s=200|}"
+                                                             alt="IMG" class="img-responsive" width="120px" height="120px" />
                                                         <br />
                                                     </div>
                                                     <div class="col-md-7">
                                                         <span sec:authentication="principal.user.name">Name</span>
-                                                        
-														<p class="text-muted small" sec:authentication="principal.user.email">example@polifono.com</p>
-                                                        
-														<div class="divider"></div>
-                                                        
-														<a th:href="@{|/profile/player/${#authentication.principal.user.id}|}" class="btn btn-default btn-xs"><i class="fa fa-user-o" aria-hidden="true"></i> Perfil</a>
-														<a th:href="@{|/profile/player/edit/${#authentication.principal.user.id}|}" class="btn btn-default btn-xs"><i class="fa fa-cogs" aria-hidden="true"></i> Config</a>
-														
-														<br /><br />
+
+                                                        <p class="text-muted small" sec:authentication="principal.user.email">example@polifono.com</p>
+
+                                                        <div class="divider"></div>
+
+                                                        <a th:href="@{|/profile/player/${#authentication.principal.user.id}|}" class="btn btn-default btn-xs"><i
+                                                                class="fa fa-user-o" aria-hidden="true"></i> Perfil</a>
+                                                        <a th:href="@{|/profile/player/edit/${#authentication.principal.user.id}|}"
+                                                           class="btn btn-default btn-xs"><i class="fa fa-cogs" aria-hidden="true"></i> Config</a>
+
+                                                        <br /><br />
                                                     </div>
                                                 </div>
                                             </div>
-											
+
                                             <div class="navbar-footer">
                                                 <div class="navbar-footer-content">
                                                     <div class="row">
                                                         <div class="col-xs-6 col-sm-6 col-md-6">
-                                                            <a href="javascript:editPassword()" class="btn btn-default btn-sm"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Alterar senha</a>
+                                                            <a href="javascript:editPassword()" class="btn btn-default btn-sm"><i class="fa fa-unlock-alt"
+                                                                                                                                  aria-hidden="true"></i>
+                                                                Alterar senha</a>
                                                         </div>
                                                         <div class="col-xs-6 col-sm-6 col-md-6">
-                                                            <a href="javascript:logout()" class="btn btn-default btn-sm pull-right"><i class="fa fa-power-off" aria-hidden="true"></i> Sair</a>
+                                                            <a href="javascript:logout()" class="btn btn-default btn-sm pull-right"><i class="fa fa-power-off"
+                                                                                                                                       aria-hidden="true"></i>
+                                                                Sair</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -181,12 +219,12 @@
                 </div>
             </div>
         </div>
-		
+
         <div style="padding-top:50px;"> </div>
-        
+
         <div>
-			<div layout:fragment="content"></div>
-		</div>
+            <div th:replace="${contentTemplate}"></div>
+        </div>
 
     </div>
 </div>
@@ -195,24 +233,24 @@
     <div class="footer" id="footer">
         <div class="container">
             <div class="row">
-	            <h3>Siga-nos nas redes sociais ;-)</h3>
-	            <ul class="social">
-	                <li><a href="https://www.facebook.com/polifonooficial/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-	                <li><a href="https://www.youtube.com/c/PolifonoOficial" target="_blank"><i class="fa fa-youtube"></i></a></li>
-	                <li><a href="https://www.instagram.com/polifono_music/" target="_blank"><i class="fa fa-instagram"></i></a></li>
-	                <li><a href="https://twitter.com/polifonooficial" target="_blank"><i class="fa fa-twitter"></i></a></li>
-	            </ul>
+                <h3>Siga-nos nas redes sociais ;-)</h3>
+                <ul class="social">
+                    <li><a href="https://www.facebook.com/polifonooficial/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="https://www.youtube.com/c/PolifonoOficial" target="_blank"><i class="fa fa-youtube"></i></a></li>
+                    <li><a href="https://www.instagram.com/polifono_music/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                    <li><a href="https://twitter.com/polifonooficial" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                </ul>
             </div>
         </div>
     </div>
     <div class="footer-bottom">
         <div class="container">
-            <p class="pull-left">Copyright @ 2016-2022 Polifono.com</p>
+            <p class="pull-left">Copyright @ 2016-2024 Polifono.com</p>
         </div>
     </div>
 </footer>
 
-	<form name="f_logout" id="f_logout" th:action="@{/logout}" method="post" />
+<form name="f_logout" id="f_logout" th:action="@{/logout}" method="post" />
 
-	</body>
+</body>
 </html>

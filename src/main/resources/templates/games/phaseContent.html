@@ -1,124 +1,137 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMainWithPubs">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutMainWithPubs :: layout(~{::section})}">
 
 <head></head>
 
 <body>
-	<div layout:fragment="content">
-	
-		<div class="col-sm-12 bg">
-      		<div class="row">
-      			<br />
-      			<ol class="breadcrumb">
-					<li><a th:href="@{'/games/'}">Cursos</a></li>
-					<li><a th:href="@{'/games/'+${game.namelink}}" th:text="${game.name}" id="breadcrumbGame"></a></li>
-					<li><a th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/1'}" th:text="${map.level.name}" id="breadcrumbLevel"></a></li>
-					<li th:text="#{app.phase}+' '+${phase.order}" class="active"></li>
-				</ol>
-			</div>
-			
-<!-- Google AdSense : Display-01 -->
-<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8438162361021396" data-ad-slot="2737461285" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script><br/>
-			
-			<div class="row" align="right" style="height:0px">
-				<a onClick="switchColor();" data-toggle="tooltip" title="Mudar cor de fundo" class="btn btn-primary" style="height:42px;padding-right:6px;padding-left:6px"><span class="fa fa-adjust" style="font-size:20px"></span></a>
-				<a onClick="fontSize('a');" data-toggle="tooltip" title="Aumentar o texto" class="btn btn-primary" style="height:42px;padding-right:6px;padding-left:6px"><span class="fa fa-plus-circle" style="font-size:20px"></span></a>
-				<a onClick="fontSize('d');" data-toggle="tooltip" title="Diminuir o texto" class="btn btn-primary" style="height:42px;padding-right:6px;padding-left:6px;margin-right:8px"><span class="fa fa-minus-circle" style="font-size:20px"></span></a>
-			</div>
-      		<div class="row">
-				<div class="panel panel-primary">
-					<div class="panel-heading" th:text="${phase.name}"></div>
-					<div class="panel-body" th:utext="${content.content}" id="content"></div>
-				</div>
-			</div>
-			<div class="row" align="left" style="height:0px">
-				<a onClick="printContent();" data-toggle="tooltip" title="Imprimir" class="btn btn-primary" shape="rect"><span class="fa fa-print" ></span></a>
-			</div>
-			<div class="row" align="right">
-				<a th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/'+${map.order}+'/'+${phase.order}+'/test'}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Concluir&nbsp;&nbsp;&nbsp;<span class="fa fa-arrow-right"></span></a>
-				<br /><br />
-			</div>
-			<div class="row breadcrumb">
-				Clique no botão [Concluir] para fazer a prova dessa aula.<br />
-				O aluno pode fazer a prova quantas vezes for preciso, mas assim que conseguir acertar 70% das questões, não será mais possível ver a prova.<br />
-				Para desbloquear a próxima aula, é obrigatório fazer a prova da aula atual.
-				<br /><br />
+<section layout:fragment="contentTemplate">
+
+    <div class="col-sm-12 bg">
+        <div class="row">
+            <br />
+            <ol class="breadcrumb">
+                <li><a th:href="@{'/games'}">Cursos</a></li>
+                <li><a th:href="@{'/games/'+${game.namelink}}" th:text="${game.name}" id="breadcrumbGame"></a></li>
+                <li><a th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/1'}" th:text="${map.level.name}" id="breadcrumbLevel"></a></li>
+                <li th:text="#{app.phase}+' '+${phase.order}" class="active"></li>
+            </ol>
+        </div>
+
+        <!-- Google AdSense : Display-01 -->
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8438162361021396" data-ad-slot="2737461285" data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        <br />
+
+        <div class="row" align="right" style="height:0px">
+            <a onClick="switchColor();" data-toggle="tooltip" title="Mudar cor de fundo" class="btn btn-primary"
+               style="height:42px;padding-right:6px;padding-left:6px"><span class="fa fa-adjust" style="font-size:20px"></span></a>
+            <a onClick="fontSize('a');" data-toggle="tooltip" title="Aumentar o texto" class="btn btn-primary"
+               style="height:42px;padding-right:6px;padding-left:6px"><span class="fa fa-plus-circle" style="font-size:20px"></span></a>
+            <a onClick="fontSize('d');" data-toggle="tooltip" title="Diminuir o texto" class="btn btn-primary"
+               style="height:42px;padding-right:6px;padding-left:6px;margin-right:8px"><span class="fa fa-minus-circle" style="font-size:20px"></span></a>
+        </div>
+        <div class="row">
+            <div class="panel panel-primary">
+                <div class="panel-heading" th:text="${phase.name}"></div>
+                <div class="panel-body" th:utext="${content.content}" id="content"></div>
             </div>
-            <div class="row">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <a th:href="@{'/profile/player/addVideo/'+${#authentication.principal.user.id}}" class="btn btn-success dropdown-toggle">Adicionar um ensaio</a>
-                        <input type="hidden" id="contentId" th:field="${content.id}" />
-                    </div>
+        </div>
+        <div class="row" align="left" style="height:0px">
+            <a onClick="printContent();" data-toggle="tooltip" title="Imprimir" class="btn btn-primary" shape="rect"><span class="fa fa-print"></span></a>
+        </div>
+        <div class="row" align="right">
+            <a th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/'+${map.order}+'/'+${phase.order}+'/test'}" class="btn btn-primary" role="button"
+               data-loading-text="Carregando..." id="btnOk">Concluir&nbsp;&nbsp;&nbsp;<span class="fa fa-arrow-right"></span></a>
+            <br /><br />
+        </div>
+        <div class="row breadcrumb">
+            Clique no botão [Concluir] para fazer a prova dessa aula.<br />
+            O aluno pode fazer a prova quantas vezes for preciso, mas assim que conseguir acertar 70% das questões, não será mais possível ver a prova.<br />
+            Para desbloquear a próxima aula, é obrigatório fazer a prova da aula atual.
+            <br /><br />
+        </div>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a th:href="@{'/profile/player/addVideo/'+${#authentication.principal.user.id}}" class="btn btn-success dropdown-toggle">Adicionar um
+                        ensaio</a>
+                    <input type="hidden" id="contentId" th:field="${content.id}" />
                 </div>
-                
-                <div class="panel panel-default">
+            </div>
 
-                    <div class="panel-body">
-                
-                        <div class="pull-left"><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" class="btn btn-link" style="text-decoration:none" aria-controls="collapseInstrument" href="#collapseInstrument"><i class="fa fa-video-camera fa-1x" aria-hidden="true"></i></a></div>
+            <div class="panel panel-default">
 
-                        <h4><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" style="text-decoration:none" aria-controls="collapseInstrument" href="#collapseInstrument"><strong>Ensaios dos alunos</strong></a></h4>
-                    
-                        <div id="collapseInstrument" class="collapse in">
-                    
-                            <hr />
-                        
-                            <div id="app">
+                <div class="panel-body">
 
-                                <div class="row" v-for="video in videos">
-                                    <div class="col-sm-9">
-                                        <div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" :src="video.url" allowfullscreen="true"></iframe></div>
-										<h4>Aluno(a): <a :href="'/profile/player/'+video.playerId">{{video.playerFirstName}} {{video.playerLastName}}</a></h4>
-										<h4>{{video.gameName}} : {{video.levelName}} : Aula {{video.phaseOrder}}</h4><br /><br />
+                    <div class="pull-left"><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" class="btn btn-link"
+                                              style="text-decoration:none" aria-controls="collapseInstrument" href="#collapseInstrument"><i
+                            class="fa fa-video-camera fa-1x" aria-hidden="true"></i></a></div>
+
+                    <h4><a data-toggle="collapse" data-parent="#accordion" aria-expanded="false" style="text-decoration:none" aria-controls="collapseInstrument"
+                           href="#collapseInstrument"><strong>Ensaios dos alunos</strong></a></h4>
+
+                    <div id="collapseInstrument" class="collapse in">
+
+                        <hr />
+
+                        <div id="app">
+
+                            <div class="row" v-for="video in videos">
+                                <div class="col-sm-9">
+                                    <div class="embed-responsive embed-responsive-16by9">
+                                        <iframe class="embed-responsive-item" :src="video.url" allowfullscreen="true"></iframe>
                                     </div>
+                                    <h4>Aluno(a): <a :href="'/profile/player/'+video.playerId">{{video.playerFirstName}} {{video.playerLastName}}</a></h4>
+                                    <h4>{{video.gameName}} : {{video.levelName}} : Aula {{video.phaseOrder}}</h4><br /><br />
                                 </div>
-
-                                <span>{{msgNoVideos}}</span>
-
                             </div>
 
+                            <span>{{msgNoVideos}}</span>
+
                         </div>
-                    
+
                     </div>
-                
+
                 </div>
 
-                <script th:inline="javascript">
-                    /*<![CDATA[*/
-                    var app = new Vue({
-                        el: '#app',
-                        data () {
-                            return {
-                                page: 0,
-                                lastPage: false,
-                                msgNoVideos: "",
-                                videos: []
-                            }
-                        },
-                        methods: {
-                            getInitialVideos() {
-                                axios.get("/playervideos/content/"+this.getContentId()+"?page="+this.page+"&size=1")
-                                    .then(response => {
-                                        if (response.data.length == 0) {
-                                            this.lastPage = true;
-                                            this.msgNoVideos = 'Nenhum ensaio dessa aula até o momento. Seja o primeiro a enviar um ensaio!';
-                                        } else {
-                                            this.videos.push(response.data[0]);
-                                        }
-                                });
-                            },
-                            scroll (video) {
-                                window.onscroll = () => {
-                                    if (!this.lastPage) {
-                                        let bottomOfWindow = Math.round(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight;
-                                        let bottomOfWindow1 = Math.round(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight + 1;
-                                        let bottomOfWindow2 = Math.round(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight - 1;
+            </div>
 
-                                        if (bottomOfWindow || bottomOfWindow1 || bottomOfWindow2) {
-                                            this.page++;
-                                            axios.get("/playervideos/content/"+this.getContentId()+"?page="+this.page+"&size=1")
+            <script th:inline="javascript">
+                /*<![CDATA[*/
+                var app = new Vue({
+                    el: '#app',
+                    data() {
+                        return {
+                            page: 0,
+                            lastPage: false,
+                            msgNoVideos: "",
+                            videos: []
+                        }
+                    },
+                    methods: {
+                        getInitialVideos() {
+                            axios.get("/playervideos/content/" + this.getContentId() + "?page=" + this.page + "&size=1")
+                                .then(response => {
+                                    if (response.data.length == 0) {
+                                        this.lastPage = true;
+                                        this.msgNoVideos = 'Nenhum ensaio dessa aula até o momento. Seja o primeiro a enviar um ensaio!';
+                                    } else {
+                                        this.videos.push(response.data[0]);
+                                    }
+                                });
+                        },
+                        scroll(video) {
+                            window.onscroll = () => {
+                                if (!this.lastPage) {
+                                    let bottomOfWindow = Math.round(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight;
+                                    let bottomOfWindow1 = Math.round(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight + 1;
+                                    let bottomOfWindow2 = Math.round(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight - 1;
+
+                                    if (bottomOfWindow || bottomOfWindow1 || bottomOfWindow2) {
+                                        this.page++;
+                                        axios.get("/playervideos/content/" + this.getContentId() + "?page=" + this.page + "&size=1")
                                             .then(response => {
                                                 if (response.data.length == 0) {
                                                     this.lastPage = true;
@@ -127,41 +140,43 @@
                                                     this.videos.push(response.data[0]);
                                                 }
                                             });
-                                        }
                                     }
-                                };
-                            },
-                            getContentId() {
-                                return document.getElementById("contentId").value;
-                            }
+                                }
+                            };
                         },
-                        mounted() {
-                            this.scroll(this.video);
-                        },
-                        beforeMount() {
-                            this.getInitialVideos();
+                        getContentId() {
+                            return document.getElementById("contentId").value;
                         }
-                    })
-                    /*]]>*/
-                </script>
-            </div>
-            
-            <!-- Google AdSense : Display-02 -->
-<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8438162361021396" data-ad-slot="9927770722" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script><br/><br/>
-
+                    },
+                    mounted() {
+                        this.scroll(this.video);
+                    },
+                    beforeMount() {
+                        this.getInitialVideos();
+                    }
+                })
+                /*]]>*/
+            </script>
         </div>
-                
-        <script th:inline="javascript">
-            /*<![CDATA[*/	
-            $(document).ready(function(){
-                $("#btnOk").click(function() {
-                    $(this).button('loading');
-                });
-            });
-            /*]]>*/
-        </script>
 
-	</div>
+        <!-- Google AdSense : Display-02 -->
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8438162361021396" data-ad-slot="9927770722" data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        <br /><br />
+
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function () {
+            $("#btnOk").click(function () {
+                $(this).button('loading');
+            });
+        });
+        /*]]>*/
+    </script>
+
+</section>
 </body>
 </html>

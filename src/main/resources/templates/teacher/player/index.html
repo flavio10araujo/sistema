@@ -1,173 +1,187 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" th:replace="~{fragments/layoutMain :: layout(~{::section})}">
 
 <head>
-	<style type="text/css">
-        .mainbody{background:#f0f0f0}
-	</style>
+    <style type="text/css">
+      .mainbody {
+        background: #f0f0f0
+      }
+    </style>
 </head>
 
 <body>
 
-	<div layout:fragment="content">
+<section layout:fragment="contentTemplate">
 
-        <div class="col-lg-3 col-md-3">
-            
-            <div class="list-group">
-                <a class="list-group-item" th:href="@{/teacher/class}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>  Gerenciar Salas <span class="pull-right"></span></a>
-                <a class="list-group-item" th:href="@{/teacher/student}"><i class="fa fa-users fa-fw" aria-hidden="true"></i>  Gerenciar Alunos</a>
-                <a class="list-group-item" th:href="@{/teacher/report}"><i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>  Relatórios</a>
-                <a class="list-group-item active" href="#"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>  Cadastrar Alunos</a>
-                <a class="list-group-item" th:href="@{/teacher/credit}"><i class="fa fa-money fa-fw" aria-hidden="true"></i>  Transferir Créditos</a>
-            </div>
-            
-            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                
-                <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingThree">
-                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="text-decoration:none;">
-                            <h4 class="panel-title">
-                                <i class="fa fa-caret-right fa-fw" aria-hidden="true"></i>  Ajuda?
-                            </h4>
-                        </a>
-                    </div>
-                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                        <div class="panel-body">
-                            <small>A tela Cadastrar Alunos é utilizada para o cadastro de alunos que não possuem um e-mail. 
+    <div class="col-lg-3 col-md-3">
+
+        <div class="list-group">
+            <a class="list-group-item" th:href="@{/teacher/class}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>  Gerenciar Salas <span
+                    class="pull-right"></span></a>
+            <a class="list-group-item" th:href="@{/teacher/student}"><i class="fa fa-users fa-fw" aria-hidden="true"></i>  Gerenciar Alunos</a>
+            <a class="list-group-item" th:href="@{/teacher/report}"><i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>  Relatórios</a>
+            <a class="list-group-item active" href="#"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>  Cadastrar Alunos</a>
+            <a class="list-group-item" th:href="@{/teacher/credit}"><i class="fa fa-money fa-fw" aria-hidden="true"></i>  Transferir Créditos</a>
+        </div>
+
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false"
+                       aria-controls="collapseThree" style="text-decoration:none;">
+                        <h4 class="panel-title">
+                            <i class="fa fa-caret-right fa-fw" aria-hidden="true"></i>  Ajuda?
+                        </h4>
+                    </a>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                        <small>A tela Cadastrar Alunos é utilizada para o cadastro de alunos que não possuem um e-mail.
                             Se o aluno possui um e-mail, por favor, cadastre-o pela tela inicial do sistema.
                             Os alunos cadastrados sem e-mail ficarão vinculados ao login do professor.
-                            O login do aluno pode ser qualquer palavra entre 6 e 20 caracteres, mas não deve possuir espaços, acentos e outros caracteres especiais.
+                            O login do aluno pode ser qualquer palavra entre 6 e 20 caracteres, mas não deve possuir espaços, acentos e outros caracteres
+                            especiais.
                             <br />Exemplo:
-                            <br />Se o nome do aluno que não possui um e-mail é João da Silva, o seu nome de login poderá ser joaosilva, ou joao10silva, etc. Mas não
+                            <br />Se o nome do aluno que não possui um e-mail é João da Silva, o seu nome de login poderá ser joaosilva, ou joao10silva, etc.
+                            Mas não
                             poderá ser "joão silva" (com espaço), nem joãosilva (com acento).
                             <br />É com esse login que o aluno acessará o sistema para fazer as aulas.
                             Para mais informações, verifique o <a href="#">Manual do Professor</a>.</small>
-                        </div>
                     </div>
-                </div>
-                
-                <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingSix">
-                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseThree" style="text-decoration:none;">
-                            <h4 class="panel-title">
-                                <i class="fa fa-caret-right fa-fw" aria-hidden="true"></i>  Encontrou um erro?
-                            </h4>
-                        </a>
-                    </div>
-                    <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix" style="text-decoration:none;">
-                        <div class="panel-body">
-                            <small>Caso tenha encontrado algum erro no sistema, por favor, avise-nos através do e-mail polifono@polifono.com.</small>
-                        </div>
-                    </div>
-                </div>
-                
-                
-                <div class="panel panel-footer">
-                    <small><a href="#">Manual do Professor</a></small><br />
-                    <small><a href="#">Vídeo tutorial</a></small><br />
                 </div>
             </div>
-        </div>
-        
-        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-            
+
             <div class="panel panel-default">
-                
-                <div class="panel-body">
-                    
-                    <div class="pull-left">
-                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i></a>
+                <div class="panel-heading" role="tab" id="headingSix">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false"
+                       aria-controls="collapseThree" style="text-decoration:none;">
+                        <h4 class="panel-title">
+                            <i class="fa fa-caret-right fa-fw" aria-hidden="true"></i>  Encontrou um erro?
+                        </h4>
+                    </a>
+                </div>
+                <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix" style="text-decoration:none;">
+                    <div class="panel-body">
+                        <small>Caso tenha encontrado algum erro no sistema, por favor, avise-nos através do e-mail polifono@polifono.com.</small>
                     </div>
-                    
-                    <h4><a href="#" style="text-decoration:none;"><strong>Cadastrar Alunos</strong></a> – <small><small><a href="#" style="text-decoration:none; color:grey;"><i><i class="fa fa-plus-square-o" aria-hidden="true"></i> cadastrar no sistema alunos que não possuem e-mail</i></a></small></small></h4>
-                    
-                    <hr />
-                    
-                    <div class="media">
-                        <div class="media-body">
-                            <form id="f_player_register" th:object="${player}" th:action="@{/teacher/player/create}" action="#" method="post">
-       						
-	       						<div class="form-group">
-	       							<label for="name" th:text="#{app.full_name}"></label>
-	       							<input type="text" th:field="*{name}" th:id="name" class="form-control" required="true" />
-	       						</div>
-	       						
-	       						<div class="form-group">
-	       							<label for="login" th:text="#{app.login}"></label>
-		    						<input type="text" th:field="*{login}" th:id="login" class="form-control" required="true" data-toggle="tooltip" th:title="#{msg.rule.login}" />
-				  				</div>
-				  				
-				  				<div class="form-group">
-				    				<label for="create_password" th:text="#{app.password}"></label>
-				    				<input type="password" th:field="*{password}" th:id="create_password" class="form-control" required="true" data-toggle="tooltip" th:title="#{msg.rule.password}" />
-				  				</div>
-				  				
-				  				<div class="checkbox">
-			  						<label><input type="checkbox" value="1" id="create_show_password" />Mostrar senha</label>
-								</div>
-	       						
-	       						<a th:if="${codRegister}==1" th:href="@{/teacher/player/create}" class="btn btn-default"><i class="fa fa-fw fa-times" aria-hidden="true"></i> Limpar</a>
-	       						<button onclick="javascript:submitForm()" class="btn btn-primary pull-right"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Cadastrar</button>
-	
-	 						</form>
-                        </div>
+                </div>
+            </div>
+
+
+            <div class="panel panel-footer">
+                <small><a href="#">Manual do Professor</a></small><br />
+                <small><a href="#">Vídeo tutorial</a></small><br />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+
+        <div class="panel panel-default">
+
+            <div class="panel-body">
+
+                <div class="pull-left">
+                    <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i></a>
+                </div>
+
+                <h4><a href="#" style="text-decoration:none;"><strong>Cadastrar Alunos</strong></a> – <small><small><a href="#"
+                                                                                                                       style="text-decoration:none; color:grey;"><i><i
+                        class="fa fa-plus-square-o" aria-hidden="true"></i> cadastrar no sistema alunos que não possuem e-mail</i></a></small></small></h4>
+
+                <hr />
+
+                <div class="media">
+                    <div class="media-body">
+                        <form id="f_player_register" th:object="${player}" th:action="@{/teacher/player/create}" action="#" method="post">
+
+                            <div class="form-group">
+                                <label for="name" th:text="#{app.full_name}"></label>
+                                <input type="text" th:field="*{name}" th:id="name" class="form-control" required="true" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="login" th:text="#{app.login}"></label>
+                                <input type="text" th:field="*{login}" th:id="login" class="form-control" required="true" data-toggle="tooltip"
+                                       th:title="#{msg.rule.login}" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="create_password" th:text="#{app.password}"></label>
+                                <input type="password" th:field="*{password}" th:id="create_password" class="form-control" required="true" data-toggle="tooltip"
+                                       th:title="#{msg.rule.password}" />
+                            </div>
+
+                            <div class="checkbox">
+                                <label><input type="checkbox" value="1" id="create_show_password" />Mostrar senha</label>
+                            </div>
+
+                            <a th:if="${codRegister}==1" th:href="@{/teacher/player/create}" class="btn btn-default"><i class="fa fa-fw fa-times"
+                                                                                                                        aria-hidden="true"></i> Limpar</a>
+                            <button onclick="javascript:submitForm()" class="btn btn-primary pull-right"><i class="fa fa-fw fa-check" aria-hidden="true"></i>
+                                Cadastrar
+                            </button>
+
+                        </form>
                     </div>
-                    
-				</div>
-			
-			</div>
+                </div>
+
+            </div>
 
         </div>
-        
-        <input type="hidden" th:value="${codRegister}" id="alertCodRegister" />
-        <input type="hidden" th:value="#{msg.register.ok}" id="alertCodRegisterOk" />
-        <input type="hidden" th:value="${msgRegister}" id="alertCodRegisterMsg" />
-        
-        <input type="hidden" th:value="${error}" id="alertError" />
-        <input type="hidden" th:value="#{msg.login.nOk}" id="alertErrorContent" />
-        
-        <script th:inline="javascript">
-			/*<![CDATA[*/
-				
-				if (document.getElementById("alertCodRegister").value == '1') {
-					bootbox.alert(document.getElementById("alertCodRegisterOk").value);
-				}
-			
-				if (document.getElementById("alertCodRegister").value == '2') {
-					bootbox.alert(document.getElementById("alertCodRegisterMsg").value);
-				}
-				
-				if (document.getElementById("alertError").value != "") {
-					bootbox.alert(document.getElementById("alertErrorContent").value);
-				}
-			
-				$('#create_show_password').click(function(){
-					if($('#create_show_password').prop('checked')) {
-						$('#create_password').attr('type', 'text');
-					} else {
-						$('#create_password').attr('type', 'password');
-					}
-				});
-				
-				function submitForm() {
-					if (document.getElementById("name").value == "") {
-						bootbox.alert("Por favor, informe um valor no campo [Nome completo].");
-						return false;
-					}
-					if (document.getElementById("login").value == "") {
-						bootbox.alert("Por favor, informe um valor no campo [Login].");
-						return false;
-					}
-					if (document.getElementById("create_password").value == "") {
-						bootbox.alert("Por favor, informe um valor no campo [Senha].");
-						return false;
-					}
-				}
-				
-			/*]]>*/
-		</script>
-        
+
     </div>
-    
+
+    <input type="hidden" th:value="${codRegister}" id="alertCodRegister" />
+    <input type="hidden" th:value="#{msg.register.ok}" id="alertCodRegisterOk" />
+    <input type="hidden" th:value="${msgRegister}" id="alertCodRegisterMsg" />
+
+    <input type="hidden" th:value="${error}" id="alertError" />
+    <input type="hidden" th:value="#{msg.login.nOk}" id="alertErrorContent" />
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        if (document.getElementById("alertCodRegister").value == '1') {
+            bootbox.alert(document.getElementById("alertCodRegisterOk").value);
+        }
+
+        if (document.getElementById("alertCodRegister").value == '2') {
+            bootbox.alert(document.getElementById("alertCodRegisterMsg").value);
+        }
+
+        if (document.getElementById("alertError").value != "") {
+            bootbox.alert(document.getElementById("alertErrorContent").value);
+        }
+
+        $('#create_show_password').click(function () {
+            if ($('#create_show_password').prop('checked')) {
+                $('#create_password').attr('type', 'text');
+            } else {
+                $('#create_password').attr('type', 'password');
+            }
+        });
+
+        function submitForm() {
+            if (document.getElementById("name").value == "") {
+                bootbox.alert("Por favor, informe um valor no campo [Nome completo].");
+                return false;
+            }
+            if (document.getElementById("login").value == "") {
+                bootbox.alert("Por favor, informe um valor no campo [Login].");
+                return false;
+            }
+            if (document.getElementById("create_password").value == "") {
+                bootbox.alert("Por favor, informe um valor no campo [Senha].");
+                return false;
+            }
+        }
+
+        /*]]>*/
+    </script>
+
+</section>
+
 </body>
 </html>

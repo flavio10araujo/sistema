@@ -1,84 +1,92 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMainFb">
-
-<head>
-	<style type="text/css">
-        .mainbody{background:#f0f0f0}
-	</style>
-</head>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutMainFb :: layout(~{::section})}">
 
 <body>
-	<div layout:fragment="content">
-		
-		<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-lg-push-4 col-md-push-4">
-        
-            <div class="panel panel-default">
-            
-                <div class="panel-body">
-                
-                	<div class="pull-left">
-                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-dollar" aria-hidden="true"></i><i class="fa fa-dollar" aria-hidden="true"></i><i class="fa fa-dollar" aria-hidden="true"></i></a>
-                    </div>
-                    
-                    <h4><a href="#" style="text-decoration:none;margin-right:8px; margin-top:-5px;"><strong th:text="#{app.titlepage.dailypromo}">Promo</strong></a></h4>
-                    
-                    <hr />
-                
-		      		<form th:action="@{/promo}" method="post">
-		  				<div class="form-group">
-							<label for="code">Informe o código da promoção:</label>
-						  	<input type="text" th:name="code" th:id="code" class="form-control" required="true" maxlength="30" />
-						</div>
-		  				
-		  				<a th:href="@{/}" class="btn btn-default"><i class="fa fa-fw fa-times" aria-hidden="true"></i> Voltar</a>
-						<button data-loading-text="Verificando..." class="btn btn-primary pull-right" id="btnDip"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Ganhar</button>
-						
-						<h5>Os códigos promocionais são divulgados em nossas redes sociais. Acompanhe o nosso Facebook e Instagram para estudar música de graça!</h5>
-					</form>
-		    	</div>
-		    	
-		    </div>
-		    
-		</div>
-		
-		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:if="${message eq 'success'}">
-        
-            <div class="panel panel-default">
-            
-            	<div class="panel-body">
-				
-					<h4><a href="#" style="text-decoration:none;margin-right:8px; margin-top:-5px;"><strong>Você participou da promoção com sucesso!</strong></a></h4>
-				
-					<hr />
-					
-					Créditos recebidos: <span th:text="${promo.prize}" class="badge"></span><br /><br />
-					Bons estudos e continue atento às próximas promoções para estudar música de graça!
-				
-				</div>
-			</div>
-		</div>
-		
-		<input type="hidden" th:value="${message}" id="alertMessage" />
-		<input type="hidden" th:value="${messageContent}" id="alertMessageContent" />
-		
-		<script th:inline="javascript">
-			/*<![CDATA[*/
-				if(document.getElementById("alertMessage").value=="error"){bootbox.alert(document.getElementById("alertMessageContent").value);}
-			
-				$(document).ready(function(){
-	  				$("#btnDip").click(function(){
-	  					$(this).button('loading');
-	  					if(!verifyForm()){$(this).button('reset');}
-	  				});
-	  			});
+<section layout:fragment="contentTemplate">
 
-		  		function verifyForm(){
-					if($("#code").val()==""){return false;}
-					return true;
-				}
-			/*]]>*/
-		</script>
-		
-	</div>
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-lg-push-4 col-md-push-4">
+
+        <div class="panel panel-default">
+
+            <div class="panel-body">
+
+                <div class="pull-left">
+                    <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-dollar" aria-hidden="true"></i><i class="fa fa-dollar"
+                                                                                                                                     aria-hidden="true"></i><i
+                            class="fa fa-dollar" aria-hidden="true"></i></a>
+                </div>
+
+                <h4><a href="#" style="text-decoration:none;margin-right:8px; margin-top:-5px;"><strong th:text="#{app.titlepage.dailypromo}">Promo</strong></a>
+                </h4>
+
+                <hr />
+
+                <form th:action="@{/promo}" method="post">
+                    <div class="form-group">
+                        <label for="code">Informe o código da promoção:</label>
+                        <input type="text" th:name="code" th:id="code" class="form-control" required="true" maxlength="30" />
+                    </div>
+
+                    <a th:href="@{/}" class="btn btn-default"><i class="fa fa-fw fa-times" aria-hidden="true"></i> Voltar</a>
+                    <button data-loading-text="Verificando..." class="btn btn-primary pull-right" id="btnDip"><i class="fa fa-fw fa-check"
+                                                                                                                 aria-hidden="true"></i> Ganhar
+                    </button>
+
+                    <h5>Os códigos promocionais são divulgados em nossas redes sociais. Acompanhe o nosso Facebook e Instagram para estudar música de
+                        graça!</h5>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:if="${message eq 'success'}">
+        <div class="panel panel-default">
+
+            <div class="panel-body">
+
+                <h4><a href="#" style="text-decoration:none;margin-right:8px; margin-top:-5px;"><strong>Você participou da promoção com sucesso!</strong></a>
+                </h4>
+
+                <hr />
+
+                Créditos recebidos: <span th:text="${promo.prize}" class="badge"></span><br /><br />
+                Bons estudos e continue atento às próximas promoções para estudar música de graça!
+
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" th:value="${message}" id="alertMessage" />
+    <input type="hidden" th:value="${messageContent}" id="alertMessageContent" />
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        if (document.getElementById("alertMessage").value == "error") {
+            bootbox.alert(document.getElementById("alertMessageContent").value);
+        }
+
+        $(document).ready(function () {
+            $("#btnDip").click(function () {
+                $(this).button('loading');
+                if (!verifyForm()) {
+                    $(this).button('reset');
+                }
+            });
+        });
+
+        function verifyForm() {
+            if ($("#code").val() == "") {
+                return false;
+            }
+            return true;
+        }
+
+        /*]]>*/
+    </script>
+
+</section>
 </body>
 </html>

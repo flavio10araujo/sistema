@@ -1,63 +1,73 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutMain :: layout(~{::section})}">
 
 <head></head>
 
 <body>
-	<div layout:fragment="content">
-		<div class="row">
-    		<br />
-    		<ol class="breadcrumb">
-				<li><a th:href="@{'/games/'}">Cursos</a></li>
-				<li><a th:href="@{'/games/'+${phase.map.game.namelink}}" th:text="${phase.map.game.name}"></a></li>
-				<li><a th:href="@{'/games/'+${phase.map.game.namelink}+'/'+${phase.map.level.order}+'/1'}" th:text="${phase.map.level.name}"></a></li>
-			</ol>
-		</div>
-		<div class="row breadcrumb">
-	    	<div class="col-sm-12 bg">
-	      		<div class="row" th:if="${grade} &gt;= 70">
-	      			<div th:if="${#authentication.principal.user.totalCredit} &gt; 0">
-	      				<h3>Parabéns! Você passou de fase!</h3>
-	      				
-	      				A porcentagem de acertos foi de <span th:text="${grade}"></span>%.<br />
-	      				Você ganhou <span th:text="${score}"></span> pontos.<br /><br />
-	      				
-	      				A Fase <span th:text="${phase.order}"></span> foi desbloqueada.<br /><br />
-	      				
-	      				<a th:href="@{'/games/'+${phase.map.game.namelink}+'/'+${phase.map.level.order}+'/'+${phase.map.order}+'/'+${phase.order}}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Ir para a próxima fase&nbsp;&nbsp;&nbsp;<span class="fa fa-arrow-right"></span></a>
-	      				<br /><br />
-	      			</div>
-	      			<div th:if="${#authentication.principal.user.totalCredit} &lt; 1">
-	      				<h3>Parabéns! Você passou de fase!</h3>
-	      				
-	      				A porcentagem de acertos foi de <span th:text="${grade}"></span>%.<br />
-	      				Você ganhou <span th:text="${score}"></span> pontos.<br /><br />
-	      				
-	      				Os seus créditos acabaram...<br />
-	      				Para ver a Fase <span th:text="${phase.order}"></span>, será necessário adquirir mais créditos!<br /><br />
-	      				<a th:href="@{/buycredits}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Adquirir mais créditos&nbsp;&nbsp;&nbsp;<span class="fa fa-arrow-right"></span></a>
-	      				<br /><br />
-	      			</div>
-	      		</div>
-	      		<div class="row" th:if="${grade} &lt; 70">
-	      			<h3>Resultado do teste da Fase <span th:text="${phase.order}"></span>:</h3>
-	      			Sua porcentagem de acertos foi de <span th:text="${grade}"></span>%.<br />
-	      			A porcentagem mínima para passar de fase é de 70%.<br /><br />
-	      			<a th:href="@{'/games/'+${phase.map.game.namelink}+'/'+${phase.map.level.order}+'/'+${phase.map.order}+'/'+${phase.order}}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk"><span class="fa fa-arrow-left"></span>&nbsp;&nbsp;&nbsp;Rever a aula</a>
-	      			<br /><br />
-	      		</div>
-	    	</div>
-	  	</div>
-	  	<div class="row">
-	  		<br /><br /><br /><br /><br />
-	  	</div>
-	  	
-	  	<script th:inline="javascript">
-	  		/*<![CDATA[*/	
-  			$(document).ready(function(){$("#btnOk").click(function(){$(this).button('loading');});});
-	  		/*]]>*/
-		</script>
-	  	
-	</div>
+<section layout:fragment="contentTemplate">
+    <div class="row">
+        <br />
+        <ol class="breadcrumb">
+            <li><a th:href="@{'/games'}">Cursos</a></li>
+            <li><a th:href="@{'/games/'+${phase.map.game.namelink}}" th:text="${phase.map.game.name}"></a></li>
+            <li><a th:href="@{'/games/'+${phase.map.game.namelink}+'/'+${phase.map.level.order}+'/1'}" th:text="${phase.map.level.name}"></a></li>
+        </ol>
+    </div>
+    <div class="row breadcrumb">
+        <div class="col-sm-12 bg">
+            <div class="row" th:if="${grade} &gt;= 70">
+                <div th:if="${#authentication.principal.user.totalCredit} &gt; 0">
+                    <h3>Parabéns! Você passou de fase!</h3>
+
+                    A porcentagem de acertos foi de <span th:text="${grade}"></span>%.<br />
+                    Você ganhou <span th:text="${score}"></span> pontos.<br /><br />
+
+                    A Fase <span th:text="${phase.order}"></span> foi desbloqueada.<br /><br />
+
+                    <a th:href="@{'/games/'+${phase.map.game.namelink}+'/'+${phase.map.level.order}+'/'+${phase.map.order}+'/'+${phase.order}}"
+                       class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Ir para a próxima fase&nbsp;&nbsp;&nbsp;<span
+                            class="fa fa-arrow-right"></span></a>
+                    <br /><br />
+                </div>
+                <div th:if="${#authentication.principal.user.totalCredit} &lt; 1">
+                    <h3>Parabéns! Você passou de fase!</h3>
+
+                    A porcentagem de acertos foi de <span th:text="${grade}"></span>%.<br />
+                    Você ganhou <span th:text="${score}"></span> pontos.<br /><br />
+
+                    Os seus créditos acabaram...<br />
+                    Para ver a Fase <span th:text="${phase.order}"></span>, será necessário adquirir mais créditos!<br /><br />
+                    <a th:href="@{/buycredits}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Adquirir mais créditos&nbsp;&nbsp;&nbsp;<span
+                            class="fa fa-arrow-right"></span></a>
+                    <br /><br />
+                </div>
+            </div>
+            <div class="row" th:if="${grade} &lt; 70">
+                <h3>Resultado do teste da Fase <span th:text="${phase.order}"></span>:</h3>
+                Sua porcentagem de acertos foi de <span th:text="${grade}"></span>%.<br />
+                A porcentagem mínima para passar de fase é de 70%.<br /><br />
+                <a th:href="@{'/games/'+${phase.map.game.namelink}+'/'+${phase.map.level.order}+'/'+${phase.map.order}+'/'+${phase.order}}"
+                   class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk"><span class="fa fa-arrow-left"></span>&nbsp;&nbsp;&nbsp;Rever
+                    a aula</a>
+                <br /><br />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <br /><br /><br /><br /><br />
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function () {
+            $("#btnOk").click(function () {
+                $(this).button('loading');
+            });
+        });
+        /*]]>*/
+    </script>
+
+</section>
 </body>
 </html>

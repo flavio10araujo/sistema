@@ -1,44 +1,49 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMainWithPubs">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutMainWithPubs :: layout(~{::section})}">
 
 <head></head>
 
 <body>
-	<div layout:fragment="content" class="container">
-		
-		<div class="col-sm-12 bg">
-		  	<div class="row">
-	     		<br />
-	     		<ol class="breadcrumb">
-					<li><a th:href="@{'/games/'}">Cursos</a></li>
-					<li th:text="${game.name}" class="active"></li>
-				</ol>
-	      	</div>
-		  	<div class="row">
-		    	<div class="col-sm-12">
+
+<section layout:fragment="contentTemplate" class="container">
+
+    <div class="col-sm-12 bg">
+        <div class="row">
+            <br />
+            <ol class="breadcrumb">
+                <li><a th:href="@{'/games'}">Cursos</a></li>
+                <li th:text="${game.name}" class="active"></li>
+            </ol>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
 		      		<span th:each="level : ${levels}">
-		           		<a th:if="${level.opened}" th:href="@{'/games/'+${game.namelink}+'/'+${level.order}+'/1'}" style="margin-left:10px;margin-bottom:10px" class="btn btn-primary btn-lg" role="button" th:text="${level.name}"></a>
-		           		<button th:if="${not level.opened}" type="button" style="margin-left:10px;margin-bottom:10px" class="btn btn-primary btn-lg disabled" th:text="${level.name}" />
+		           		<a th:if="${level.opened}" th:href="@{'/games/'+${game.namelink}+'/'+${level.order}+'/1'}" style="margin-left:10px;margin-bottom:10px"
+                           class="btn btn-primary btn-lg" role="button" th:text="${level.name}"></a>
+		           		<button th:if="${not level.opened}" type="button" style="margin-left:10px;margin-bottom:10px" class="btn btn-primary btn-lg disabled"
+                                th:text="${level.name}" />
 		           		<br />
 		           	</span>
-		           	<br />
-		    	</div>
-	  		</div>
-	  		<div class="row breadcrumb">
-	     		Informações sobre os níveis:<br />
-	     		<u>Esta página mostra quais são os níveis disponíveis para o curso de <span th:text="${game.name}"></span>.</u><br />
-	     		O aluno deve concluir todas as aulas de um nível para desbloquear o nível seguinte.<br />
-	     		Ao concluir um nível, o aluno receberá um certificado de conclusão de nível.
-	      	</div>
-	      	
-<!-- Google AdSense : Display-02 -->
-<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8438162361021396" data-ad-slot="9927770722" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-	      	
-	  		<div class="row">
-	  			<br /><br /><br /><br /><br />
-	  		</div>
-		</div>
-	</div>
+                <br />
+            </div>
+        </div>
+        <div class="row breadcrumb">
+            Informações sobre os níveis:<br />
+            <u>Esta página mostra quais são os níveis disponíveis para o curso de <span th:text="${game.name}"></span>.</u><br />
+            O aluno deve concluir todas as aulas de um nível para desbloquear o nível seguinte.<br />
+            Ao concluir um nível, o aluno receberá um certificado de conclusão de nível.
+        </div>
+
+        <!-- Google AdSense : Display-02 -->
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8438162361021396" data-ad-slot="9927770722" data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+        <div class="row">
+            <br /><br /><br /><br /><br />
+        </div>
+    </div>
+</section>
 </body>
 </html>

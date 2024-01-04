@@ -1,38 +1,41 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMain">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" th:replace="~{fragments/layoutMain :: layout(~{::section})}">
 
 <head>
-	<style type="text/css">
-        .mainbody{background:#f0f0f0}
-	</style>
+    <style type="text/css">
+      .mainbody {
+        background: #f0f0f0
+      }
+    </style>
 </head>
 
 <body>
 
-	<div layout:fragment="content">
+<section layout:fragment="contentTemplate">
 
-        <div class="col-lg-3 col-md-3">
-            
-            <div class="list-group">
-                <a class="list-group-item active" href="#"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>  Gerenciar Salas <span class="pull-right"></span></a>
-                <a class="list-group-item" th:href="@{/teacher/student}"><i class="fa fa-users fa-fw" aria-hidden="true"></i>  Gerenciar Alunos</a>
-                <a class="list-group-item" th:href="@{/teacher/report}"><i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>  Relatórios</a>
-                <a class="list-group-item" th:href="@{/teacher/player/create}"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>  Cadastrar Alunos</a>
-            </div>
-            
-            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                
-                <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingThree">
-                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="text-decoration:none;">
-                            <h4 class="panel-title">
-                                <i class="fa fa-caret-right fa-fw" aria-hidden="true"></i>  Ajuda?
-                            </h4>
-                        </a>
-                    </div>
-                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                        <div class="panel-body">
-                            <small>A tela Gerenciar Salas é utilizada para o gerenciamento (cadastro, edição, exclusão) de salas de aula. 
+    <div class="col-lg-3 col-md-3">
+
+        <div class="list-group">
+            <a class="list-group-item active" href="#"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>  Gerenciar Salas <span class="pull-right"></span></a>
+            <a class="list-group-item" th:href="@{/teacher/student}"><i class="fa fa-users fa-fw" aria-hidden="true"></i>  Gerenciar Alunos</a>
+            <a class="list-group-item" th:href="@{/teacher/report}"><i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i>  Relatórios</a>
+            <a class="list-group-item" th:href="@{/teacher/player/create}"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>  Cadastrar Alunos</a>
+        </div>
+
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false"
+                       aria-controls="collapseThree" style="text-decoration:none;">
+                        <h4 class="panel-title">
+                            <i class="fa fa-caret-right fa-fw" aria-hidden="true"></i>  Ajuda?
+                        </h4>
+                    </a>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                        <small>A tela Gerenciar Salas é utilizada para o gerenciamento (cadastro, edição, exclusão) de salas de aula.
                             Caso você possua alunos em salas de aulas diferentes, é aqui que você deve cadastrar essas salas.
                             Para uma melhor organização, recomendamos que a sala de aula seja cadastrada relacionada a um ano ou semestre escolar.<br />
                             Por exemplo: <br />
@@ -40,142 +43,150 @@
                             Nome da sala de aula: 2017/01 - 5º ano A.<br />
                             Onde 2017 é o ano, 01 é o semestre, 5º ano A é referente a turma do quinto ano.
                             Para mais informações, verifique o <a href="#">Manual do Professor</a>.</small>
-                        </div>
                     </div>
-                </div>
-                
-                <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingSix">
-                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseThree" style="text-decoration:none;">
-                            <h4 class="panel-title">
-                                <i class="fa fa-caret-right fa-fw" aria-hidden="true"></i>  Encontrou um erro?
-                            </h4>
-                        </a>
-                    </div>
-                    <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix" style="text-decoration:none;">
-                        <div class="panel-body">
-                            <small>Caso tenha encontrado algum erro no sistema, por favor, avise-nos através do e-mail polifono@polifono.com.</small>
-                        </div>
-                    </div>
-                </div>
-                
-                
-                <div class="panel panel-footer">
-                    <small><a href="#">Manual do Professor</a></small><br />
-                    <small><a href="#">Vídeo tutorial</a></small><br />
                 </div>
             </div>
-        </div>
-        
-        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-            
+
             <div class="panel panel-default">
-                
-                <div class="panel-body">
-                    
-                    <div class="pull-left">
-                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i></a>
+                <div class="panel-heading" role="tab" id="headingSix">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false"
+                       aria-controls="collapseThree" style="text-decoration:none;">
+                        <h4 class="panel-title">
+                            <i class="fa fa-caret-right fa-fw" aria-hidden="true"></i>  Encontrou um erro?
+                        </h4>
+                    </a>
+                </div>
+                <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix" style="text-decoration:none;">
+                    <div class="panel-body">
+                        <small>Caso tenha encontrado algum erro no sistema, por favor, avise-nos através do e-mail polifono@polifono.com.</small>
                     </div>
-                    
-                    <h4><a href="#" style="text-decoration:none;"><strong>Gerenciar Salas</strong></a> – <small><small><a href="#" style="text-decoration:none; color:grey;"><i><i class="fa fa-pencil-square-o" aria-hidden="true"></i> editar sala de aula</i></a></small></small></h4>
-                    
-                    <hr />
-                    
-                    <div class="media">
-                        <div class="media-body">
-                            <form th:object="${class}" th:action="@{/teacher/class/update}" action="#" method="post">
-       						
-	       						<input type="hidden" th:field="*{id}" />
-	       						
-	       						<div class="form-group">
-	       							<label for="year">Ano</label>
-	       							<input type="number" th:field="*{year}" th:id="year" class="form-control" required="true" min="2016" max="2018" />
-	       						</div>
-	       						
-	       						<div class="form-group">
-	       							<label for="semester">Semestre</label>
-	       							<input type="number" th:field="*{semester}" th:id="semester" class="form-control" required="true" min="1" max="2" data-toggle="tooltip" title="Primeiro semestre ou segundo semestre" />
-	       						</div>
-	       						
-	       						<div class="form-group">
-	       							<label>Nome da escola</label>
-	       							<input type="text" th:field="*{school}" th:id="school" class="form-control" required="true" />
-	       						</div>
-	       						
-	       						<div class="form-group">
-	       							<label for="grade">Ano escolar</label>
-	       							<input type="text" th:field="*{grade}" th:id="grade" class="form-control" required="true" data-toggle="tooltip" title="Ex.: 5º ano, 6º ano, etc." />
-	       						</div>
-	       						
-	       						<div class="form-group">
-	       							<label for="name">Nome da sala</label>
-	       							<input type="text" th:field="*{name}" th:id="name" class="form-control" required="true" data-toggle="tooltip" title="Ex.: A, B ou 1, 2 ou manhã, tarde, etc." />
-	       						</div>
-	       						
-	       						<div class="form-group">
-									<label for="description" th:text="#{app.description}">Description</label>
-							  		<textarea class="form-control" rows="3" th:field="*{description}" th:id="description"></textarea>
-								</div>
-	       						
-	       						<a th:href="@{/teacher/class/savepage}" class="btn btn-default"><i class="fa fa-fw fa-times" aria-hidden="true"></i> Cancelar</a>
-	       						<button onclick="javascript:submitForm()" class="btn btn-primary pull-right"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Salvar</button>
-								
-	 						</form>
-                        </div>
+                </div>
+            </div>
+
+
+            <div class="panel panel-footer">
+                <small><a href="#">Manual do Professor</a></small><br />
+                <small><a href="#">Vídeo tutorial</a></small><br />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+
+        <div class="panel panel-default">
+
+            <div class="panel-body">
+
+                <div class="pull-left">
+                    <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i></a>
+                </div>
+
+                <h4><a href="#" style="text-decoration:none;"><strong>Gerenciar Salas</strong></a> – <small><small><a href="#"
+                                                                                                                      style="text-decoration:none; color:grey;"><i><i
+                        class="fa fa-pencil-square-o" aria-hidden="true"></i> editar sala de aula</i></a></small></small></h4>
+
+                <hr />
+
+                <div class="media">
+                    <div class="media-body">
+                        <form th:object="${class}" th:action="@{/teacher/class/update}" action="#" method="post">
+
+                            <input type="hidden" th:field="*{id}" />
+
+                            <div class="form-group">
+                                <label for="year">Ano</label>
+                                <input type="number" th:field="*{year}" th:id="year" class="form-control" required="true" min="2016" max="2018" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="semester">Semestre</label>
+                                <input type="number" th:field="*{semester}" th:id="semester" class="form-control" required="true" min="1" max="2"
+                                       data-toggle="tooltip" title="Primeiro semestre ou segundo semestre" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Nome da escola</label>
+                                <input type="text" th:field="*{school}" th:id="school" class="form-control" required="true" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="grade">Ano escolar</label>
+                                <input type="text" th:field="*{grade}" th:id="grade" class="form-control" required="true" data-toggle="tooltip"
+                                       title="Ex.: 5º ano, 6º ano, etc." />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name">Nome da sala</label>
+                                <input type="text" th:field="*{name}" th:id="name" class="form-control" required="true" data-toggle="tooltip"
+                                       title="Ex.: A, B ou 1, 2 ou manhã, tarde, etc." />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description" th:text="#{app.description}">Description</label>
+                                <textarea class="form-control" rows="3" th:field="*{description}" th:id="description"></textarea>
+                            </div>
+
+                            <a th:href="@{/teacher/class/savepage}" class="btn btn-default"><i class="fa fa-fw fa-times" aria-hidden="true"></i> Cancelar</a>
+                            <button onclick="javascript:submitForm()" class="btn btn-primary pull-right"><i class="fa fa-fw fa-check" aria-hidden="true"></i>
+                                Salvar
+                            </button>
+
+                        </form>
                     </div>
-                    
-				</div>
-			
-			</div>
+                </div>
+
+            </div>
 
         </div>
-        
-        <input type="hidden" th:value="${save}" id="alertSave" />
-        <input type="hidden" th:value="#{crud.msg.notEdited}" id="alertSaveUnsuccess" />
-        <input type="hidden" th:value="#{crud.msg.editedSuccessfully}" id="alertSaveSuccess" />
-        
-        <script th:inline="javascript">
-			/*<![CDATA[*/
-				
-				if (document.getElementById("alertSave").value == 'unsuccess') {
-					bootbox.alert(document.getElementById("alertSaveUnsuccess").value);
-				}
-			
-				if (document.getElementById("alertSave").value == 'success') {
-					bootbox.alert(document.getElementById("alertSaveSuccess").value);
-				}
-				
-				function submitForm() {
-					if (document.getElementById("year").value == "" || document.getElementById("year").value == "0") {
-						bootbox.alert("Por favor, informe um valor no campo [Ano].");
-						return false;
-					}
-					
-					if (document.getElementById("semester").value == "" || document.getElementById("semester").value == "0") {
-						bootbox.alert("Por favor, informe um valor no campo [Semestre].");
-						return false;
-					}
-					
-					if (document.getElementById("school").value == "") {
-						bootbox.alert("Por favor, informe um valor no campo [Nome da escola].");
-						return false;
-					}
-					
-					if (document.getElementById("grade").value == "") {
-						bootbox.alert("Por favor, informe um valor no campo [Ano escolar].");
-						return false;
-					}
-					
-					if (document.getElementById("name").value == "") {
-						bootbox.alert("Por favor, informe um valor no campo [Nome da sala].");
-						return false;
-					}
-				}
-				
-			/*]]>*/
-		</script>
-        
+
     </div>
-    
+
+    <input type="hidden" th:value="${save}" id="alertSave" />
+    <input type="hidden" th:value="#{crud.msg.notEdited}" id="alertSaveUnsuccess" />
+    <input type="hidden" th:value="#{crud.msg.editedSuccessfully}" id="alertSaveSuccess" />
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        if (document.getElementById("alertSave").value == 'unsuccess') {
+            bootbox.alert(document.getElementById("alertSaveUnsuccess").value);
+        }
+
+        if (document.getElementById("alertSave").value == 'success') {
+            bootbox.alert(document.getElementById("alertSaveSuccess").value);
+        }
+
+        function submitForm() {
+            if (document.getElementById("year").value == "" || document.getElementById("year").value == "0") {
+                bootbox.alert("Por favor, informe um valor no campo [Ano].");
+                return false;
+            }
+
+            if (document.getElementById("semester").value == "" || document.getElementById("semester").value == "0") {
+                bootbox.alert("Por favor, informe um valor no campo [Semestre].");
+                return false;
+            }
+
+            if (document.getElementById("school").value == "") {
+                bootbox.alert("Por favor, informe um valor no campo [Nome da escola].");
+                return false;
+            }
+
+            if (document.getElementById("grade").value == "") {
+                bootbox.alert("Por favor, informe um valor no campo [Ano escolar].");
+                return false;
+            }
+
+            if (document.getElementById("name").value == "") {
+                bootbox.alert("Por favor, informe um valor no campo [Nome da sala].");
+                return false;
+            }
+        }
+
+        /*]]>*/
+    </script>
+
+</section>
+
 </body>
 </html>

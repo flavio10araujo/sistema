@@ -22,87 +22,87 @@ public class ComboController extends BaseController {
 
     @Autowired
     private IMapService mapService;
-    
+
     @Autowired
     private IPhaseService phaseService;
-    
+
     @Autowired
     private IQuestionService questionService;
 
     @RequestMapping("/comboMap")
-    public List<Combo> comboMap(@RequestParam(value="gameId") String gameId, @RequestParam(value="levelId") String levelId) {
+    public List<Combo> comboMap(@RequestParam(value = "gameId") String gameId, @RequestParam(value = "levelId") String levelId) {
         List<Combo> list = new ArrayList<Combo>();
-    	
-    	List<Map> auxiliar = mapService.findMapsByGameAndLevel(Integer.parseInt(gameId), Integer.parseInt(levelId));
-    	
-    	for (Map item : auxiliar) {
-    		Combo combo = new Combo();
-    		combo.setId(item.getId());
-    		combo.setName(item.getOrder() + ". " + item.getName());
-    		list.add(combo);
-    	}
-    	
-    	return list;
+
+        List<Map> auxiliar = mapService.findMapsByGameAndLevel(Integer.parseInt(gameId), Integer.parseInt(levelId));
+
+        for (Map item : auxiliar) {
+            Combo combo = new Combo();
+            combo.setId(item.getId());
+            combo.setName(item.getOrder() + ". " + item.getName());
+            list.add(combo);
+        }
+
+        return list;
     }
-    
-    @RequestMapping("/comboPhase")
-    public List<Combo> comboPhase(@RequestParam(value="mapId") String mapId) {
-    	List<Combo> list = new ArrayList<Combo>();
-    	
-    	List<Phase> auxiliar = phaseService.findByMap(Integer.parseInt(mapId));
-    	
-    	for (Phase item : auxiliar) {
-    		Combo combo = new Combo();
-    		combo.setId(item.getId());
-    		combo.setName(item.getOrder() + ". " + item.getName());
-    		list.add(combo);
-    	}
-    	
-    	return list;
+
+    @RequestMapping(value = "/comboPhase", produces = "application/json; charset=UTF-8")
+    public List<Combo> comboPhase(@RequestParam(value = "mapId") String mapId) {
+        List<Combo> list = new ArrayList<Combo>();
+
+        List<Phase> auxiliar = phaseService.findByMap(Integer.parseInt(mapId));
+
+        for (Phase item : auxiliar) {
+            Combo combo = new Combo();
+            combo.setId(item.getId());
+            combo.setName(item.getOrder() + ". " + item.getName());
+            list.add(combo);
+        }
+
+        return list;
     }
-    
+
     /**
      * In this method, we consider that mapId is always the first map of the list.
-     * 
+     *
      * @param gameId
      * @param levelId
      * @return
      */
-    @RequestMapping("/comboPhaseWithMap")
-    public List<Combo> comboPhase(@RequestParam(value="gameId") String gameId, @RequestParam(value="levelId") String levelId) {
-    	List<Combo> list = new ArrayList<Combo>();
-    	
-    	List<Map> auxiliarMap = mapService.findMapsByGameAndLevel(Integer.parseInt(gameId), Integer.parseInt(levelId));
-    	
-    	if (auxiliarMap != null && auxiliarMap.size() > 0) {
-    	
-	    	List<Phase> auxiliar = phaseService.findByMap(auxiliarMap.get(0).getId());
-	    	
-	    	for (Phase item : auxiliar) {
-	    		Combo combo = new Combo();
-	    		combo.setId(item.getId());
-	    		combo.setName(item.getOrder() + ". " + item.getName());
-	    		list.add(combo);
-	    	}
-    	
-    	}
-    	
-    	return list;
+    @RequestMapping(value = "/comboPhaseWithMap", produces = "application/json; charset=UTF-8")
+    public List<Combo> comboPhase(@RequestParam(value = "gameId") String gameId, @RequestParam(value = "levelId") String levelId) {
+        List<Combo> list = new ArrayList<Combo>();
+
+        List<Map> auxiliarMap = mapService.findMapsByGameAndLevel(Integer.parseInt(gameId), Integer.parseInt(levelId));
+
+        if (auxiliarMap != null && auxiliarMap.size() > 0) {
+
+            List<Phase> auxiliar = phaseService.findByMap(auxiliarMap.get(0).getId());
+
+            for (Phase item : auxiliar) {
+                Combo combo = new Combo();
+                combo.setId(item.getId());
+                combo.setName(item.getOrder() + ". " + item.getName());
+                list.add(combo);
+            }
+
+        }
+
+        return list;
     }
-    
-    @RequestMapping("/comboQuestion")
-    public List<Combo> comboQuestion(@RequestParam(value="phaseId") String phaseId) {
-    	List<Combo> list = new ArrayList<Combo>();
-    	
-    	List<Question> auxiliar = questionService.findByPhase(Integer.parseInt(phaseId));
-    	
-    	for (Question item : auxiliar) {
-    		Combo combo = new Combo();
-    		combo.setId(item.getId());
-    		combo.setName(item.getOrder() + ". " + item.getName());
-    		list.add(combo);
-    	}
-    	
-    	return list;
+
+    @RequestMapping(value = "/comboQuestion", produces = "application/json; charset=UTF-8")
+    public List<Combo> comboQuestion(@RequestParam(value = "phaseId") String phaseId) {
+        List<Combo> list = new ArrayList<Combo>();
+
+        List<Question> auxiliar = questionService.findByPhase(Integer.parseInt(phaseId));
+
+        for (Question item : auxiliar) {
+            Combo combo = new Combo();
+            combo.setId(item.getId());
+            combo.setName(item.getOrder() + ". " + item.getName());
+            list.add(combo);
+        }
+
+        return list;
     }
 }

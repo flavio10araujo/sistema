@@ -1,48 +1,50 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutLogin">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutLogin :: layout(~{::section})}">
 
 <head></head>
 
 <body>
 
-   	<div layout:fragment="content" class="container intro">
-		<div class="col-md-6">
-			<h2 th:text="#{app.certificado}" class="title">Certificado</h2>
-			<p class="summary">Informe o código do certificado buscado e verificaremos se ele realmente foi emitido pela Polifono.com:</p>
-               
-			<div class="login-form-container">
-			
-				<form class="login-form" th:action="@{/diploma}" method="post">
-	  				<div class="form-group">
-						<input type="text" th:name="code" th:id="code" class="form-control" required="true" placeholder="Código do certificado" />
-					</div>
+<section layout:fragment="contentTemplate" class="container intro">
+    <div class="col-md-6">
+        <h2 th:text="#{app.certificado}" class="title">Certificado</h2>
+        <p class="summary">Informe o código do certificado buscado e verificaremos se ele realmente foi emitido pela Polifono.com:</p>
 
-	  				<input type="submit" class="btn btn-cta btn-cta-secondary" th:value="#{app.send}" />
-				</form>
-			</div>	
-		</div>
-		<div class="col-md-6">
+        <div class="login-form-container">
 
-			<input type="hidden" th:value="${message}" id="alertMessage" />
-			<input type="hidden" th:value="${messageContent}" id="alertMessageContent" />
-			
-			<div th:if="${message eq 'success'}">
-           	
-           		<h2 class="title">Certificado válido!</h2>
+            <form class="login-form" th:action="@{/diploma}" method="post">
+                <div class="form-group">
+                    <input type="text" th:name="code" th:id="code" class="form-control" required="true" placeholder="Código do certificado" />
+                </div>
 
-           		<div class="alert alert-success alert-dismissible" role="alert">
-					Certificamos que <b><span th:text="${diploma.player.fullName}"></span></b>
-					concluiu o módulo "<b><span th:text="${diploma.level.name}"></span></b>" do curso de "<b><span th:text="${diploma.game.name}"></span></b>".<br />
-					Carga horária: <span th:text="${diploma.qtdHours}"></span> horas<br />
-					Data de conclusão: <span th:text="${diploma.dtStr}"></span><br /><br />
-					Clique para baixar o certificado: <a class="btn btn-cta btn-cta-secondary" th:href="@{'/diploma/'+${diploma.code}}" th:text="${diploma.code}"></a>
-				</div>
-			
-			</div>
+                <input type="submit" class="btn btn-cta btn-cta-secondary" th:value="#{app.send}" />
+            </form>
+        </div>
+    </div>
+    <div class="col-md-6">
 
-		</div>
+        <input type="hidden" th:value="${message}" id="alertMessage" />
+        <input type="hidden" th:value="${messageContent}" id="alertMessageContent" />
 
-	</div>
+        <div th:if="${message eq 'success'}">
+
+            <h2 class="title">Certificado válido!</h2>
+
+            <div class="alert alert-success alert-dismissible" role="alert">
+                Certificamos que <b><span th:text="${diploma.player.fullName}"></span></b>
+                concluiu o módulo "<b><span th:text="${diploma.level.name}"></span></b>" do curso de "<b><span
+                    th:text="${diploma.game.name}"></span></b>".<br />
+                Carga horária: <span th:text="${diploma.qtdHours}"></span> horas<br />
+                Data de conclusão: <span th:text="${diploma.dtStr}"></span><br /><br />
+                Clique para baixar o certificado: <a class="btn btn-cta btn-cta-secondary" th:href="@{'/diploma/'+${diploma.code}}"
+                                                     th:text="${diploma.code}"></a>
+            </div>
+
+        </div>
+
+    </div>
+</section>
 
 </body>
 </html>

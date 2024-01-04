@@ -1,41 +1,59 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutPromo">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutPromo :: layout(~{::section})}">
 
 <head></head>
 
 <body>
-	<div layout:fragment="content">
-		<style>
-		.embed-container{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%}
-		.embed-container iframe, .embed-container object, .embed-container embed{position:absolute;top:0;left:0;width:100%;height:100%}
-		</style>
-    	<div class="col-sm-12 bg">
-      		<div class="row">
-      			<br />
-      			<ol class="breadcrumb">
-					<li><a th:href="@{/}" th:text="${game.name}"></a></li>
-					<li><a th:href="@{/}" th:text="${map.level.name}"></a></li>
-					<li th:text="#{app.phase}+' '+${phase.order}" class="active"></li>
-				</ol>
-      		</div>
-      		<div class="row">
-				<div class="panel panel-primary">
-					<div class="panel-heading" th:text="${phase.name}"></div>
-					<div class="panel-body" th:utext="${content.content}"></div>
-				</div>
-			</div>
-			<div class="row">
-				<a th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/'+${map.order}+'/'+${phase.order}+'/test'}" class="btn btn-primary" role="button" data-loading-text="Carregando..." id="btnOk">Ir para a segunda aula</a>
-				<br /><br />
-			</div>
-    	</div>
-    	
-    	<script th:inline="javascript">
-	  		/*<![CDATA[*/	
-  			$(document).ready(function(){$("#btnOk").click(function(){$(this).button('loading');});});
-	  		/*]]>*/
-		</script>
+<section layout:fragment="contentTemplate">
+    <style>
+      .embed-container {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+        max-width: 100%
+      }
 
-	</div>
+      .embed-container iframe, .embed-container object, .embed-container embed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%
+      }
+    </style>
+    <div class="col-sm-12 bg">
+        <div class="row">
+            <br />
+            <ol class="breadcrumb">
+                <li><a th:href="@{/}" th:text="${game.name}"></a></li>
+                <li><a th:href="@{/}" th:text="${map.level.name}"></a></li>
+                <li th:text="#{app.phase}+' '+${phase.order}" class="active"></li>
+            </ol>
+        </div>
+        <div class="row">
+            <div class="panel panel-primary">
+                <div class="panel-heading" th:text="${phase.name}"></div>
+                <div class="panel-body" th:utext="${content.content}"></div>
+            </div>
+        </div>
+        <div class="row">
+            <a th:href="@{'/games/'+${game.namelink}+'/'+${map.level.order}+'/'+${map.order}+'/'+${phase.order}+'/test'}" class="btn btn-primary" role="button"
+               data-loading-text="Carregando..." id="btnOk">Ir para a segunda aula</a>
+            <br /><br />
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function () {
+            $("#btnOk").click(function () {
+                $(this).button('loading');
+            });
+        });
+        /*]]>*/
+    </script>
+</section>
 </body>
 </html>

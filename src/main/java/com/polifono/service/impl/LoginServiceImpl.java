@@ -16,38 +16,38 @@ import com.polifono.service.ILoginService;
 @Service
 public class LoginServiceImpl implements ILoginService {
 
-	private ILoginRepository repository;
-	
-	@Autowired
-	public LoginServiceImpl(ILoginRepository repository) {
-		this.repository = repository;
-	}
-	
-	public Login registerLogin(Player player) {
-		return repository.save(prepareForRegisterLogin(player));
-	}
-	
-	public Login prepareForRegisterLogin(Player player) {
-		Login login = new Login();
-		login.setPlayer(player);
-		login.setDtLogin(new Date());
-		return login;
-	}
-	
-	public List<Login> findByPlayer(int playerId) {
-		List<Date> listDates = repository.findByPlayer(playerId, new PageRequest(0, 30));
-		
-		List<Login> list = new ArrayList<Login>();
-		for (Date s : listDates) {
-			Login l = new Login();
-			l.setDtLogin(s);
-			list.add(l);
-		}
-		
-		if (list == null || list.size() == 0) {
-			return null;
-		}
-		
-		return list;
-	}
+    private ILoginRepository repository;
+
+    @Autowired
+    public LoginServiceImpl(ILoginRepository repository) {
+        this.repository = repository;
+    }
+
+    public Login registerLogin(Player player) {
+        return repository.save(prepareForRegisterLogin(player));
+    }
+
+    public Login prepareForRegisterLogin(Player player) {
+        Login login = new Login();
+        login.setPlayer(player);
+        login.setDtLogin(new Date());
+        return login;
+    }
+
+    public List<Login> findByPlayer(int playerId) {
+        List<Date> listDates = repository.findByPlayer(playerId, PageRequest.of(0, 30));
+
+        List<Login> list = new ArrayList<>();
+        for (Date s : listDates) {
+            Login l = new Login();
+            l.setDtLogin(s);
+            list.add(l);
+        }
+
+        if (list.isEmpty()) {
+            return null;
+        }
+
+        return list;
+    }
 }

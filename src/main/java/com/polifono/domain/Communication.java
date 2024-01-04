@@ -2,73 +2,74 @@ package com.polifono.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "t020_communication")
 public class Communication {
 
-	@Id
-	@Column(name = "c020_id")
-	@GeneratedValue
-	private int id;
-	
-	@Column(name = "c020_dt_inc")
-	private Date dtInc;
-	
-	@ManyToOne
-	@JoinColumn(name = "c019_id")
-	private Groupcommunication groupcommunication;
-	
-	@Column(name = "c020_title")
-	private String title;
-	
-	@Column(name="c020_message", columnDefinition="TEXT")
-	private String message;
+    @Id
+    @Column(name = "c020_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	public int getId() {
-		return id;
-	}
+    @Column(name = "c020_dt_inc")
+    private Date dtInc;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "c019_id")
+    private Groupcommunication groupcommunication;
 
-	public Date getDtInc() {
-		return dtInc;
-	}
+    @Column(name = "c020_title")
+    private String title;
 
-	public void setDtInc(Date dtInc) {
-		this.dtInc = dtInc;
-	}
+    @Column(name = "c020_message", columnDefinition = "TEXT")
+    private String message;
 
-	public Groupcommunication getGroupcommunication() {
-		return groupcommunication;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setGroupcommunication(Groupcommunication groupcommunication) {
-		this.groupcommunication = groupcommunication;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public Date getDtInc() {
+        return dtInc;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setDtInc(Date dtInc) {
+        this.dtInc = dtInc;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public Groupcommunication getGroupcommunication() {
+        return groupcommunication;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setGroupcommunication(Groupcommunication groupcommunication) {
+        this.groupcommunication = groupcommunication;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

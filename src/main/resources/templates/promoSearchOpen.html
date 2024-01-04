@@ -1,40 +1,46 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutLogin">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutLogin :: layout(~{::section})}">
 
 <head></head>
 
 <body>
 
-   	<div layout:fragment="content" class="container intro">
-	
-		<div class="col-md-5">
+<section layout:fragment="contentTemplate" class="container intro">
 
-			<h2 class="title">Promoção</h2>
-			
-			<div class="login-form-container">
-			
-				<div class="form-group">
-					<label for="code">Informe o código da promoção:</label>
-				  	<input type="text" th:name="code" th:id="code" class="form-control" required="true" maxlength="30" />
-				</div>
-	 				
-	 			<button class="btn btn-primary pull-right" data-toggle="tooltip" title="É preciso estar logado para poder participar" onclick="msgPromoLogin()">Ganhar</button>
-	 		</div>
-	 	</div>
-		<div class="col-md-7">			
-			<p class="summary">Para participar da promoção, é preciso estar logado no sistema.</p>
-			<p class="summary">Caso não seja cadastrado, clique no botão para se cadastrar.</p>
-			<a class="btn btn-primary pull-right" style="margin-left:10px" href="/">Cadastrar</a>
-			<a class="btn btn-primary pull-right" href="/">Acessar</a>
-		</div>
-		
-		<script th:inline="javascript">
-            /*<![CDATA[*/
-            	function msgPromoLogin(){bootbox.alert('É preciso estar logado no sistema para poder participar da promoção.');}
-            /*]]>*/
-        </script>
+    <div class="col-md-5">
 
-	</div>
+        <h2 class="title">Promoção</h2>
+
+        <div class="login-form-container">
+
+            <div class="form-group">
+                <label for="code">Informe o código da promoção:</label>
+                <input type="text" th:name="code" th:id="code" class="form-control" required="true" maxlength="30" />
+            </div>
+
+            <button class="btn btn-primary pull-right" data-toggle="tooltip" title="É preciso estar logado para poder participar" onclick="msgPromoLogin()">
+                Ganhar
+            </button>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <p class="summary">Para participar da promoção, é preciso estar logado no sistema.</p>
+        <p class="summary">Caso não seja cadastrado, clique no botão para se cadastrar.</p>
+        <a class="btn btn-primary pull-right" style="margin-left:10px" href="/">Cadastrar</a>
+        <a class="btn btn-primary pull-right" href="/">Acessar</a>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function msgPromoLogin() {
+            bootbox.alert('É preciso estar logado no sistema para poder participar da promoção.');
+        }
+
+        /*]]>*/
+    </script>
+
+</section>
 
 </body>
 </html>

@@ -1,266 +1,267 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutAdmin">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutAdmin :: layout(~{::section})}">
 
 <head></head>
 
 <body>
 
-	<div layout:fragment="content">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-offset-2 col-md-8">
-				
-					<!-- Save Alert Messages -->
-					<div th:if="${save eq 'unsuccess'}">
-	          			<div class="alert alert-danger alert-dismissible" role="alert">
-	  						<strong>Error!</strong> Data Not Saved.
-						</div>
-	       			</div>
-	       			<div th:if="${save eq 'success'}">
-	          			<div class="alert alert-success alert-dismissible" role="alert">
-	  						<strong>Success!</strong> Data Saved Successfully.
-						</div>
-	       			</div>
-	
-					<!-- Deletion Alert Messages -->
-	        		<div th:if="${deletion eq 'unsuccess'}">
-	          			<div class="alert alert-danger alert-dismissible" role="alert">
-	  						<strong>Error!</strong> Data Not Deleted.
-						</div>
-	       			</div>
-	       			<div th:if="${deletion eq 'success'}">
-	          			<div class="alert alert-success alert-dismissible" role="alert">
-	  						<strong>Success!</strong> Data Deleted Successfully.
-						</div>
-	       			</div>
-	
-					<div class="panel panel-success">
-						<div class="panel-heading">
-	  						<h3 class="panel-title">Add Content Test</h3>
-						</div>
-	   					<div class="panel-body">
-	    					<form th:object="${content}" th:action="@{/admin/basic/contentTest/save}" action="#" method="post">
-	       						
-	       						<div class="form-group">
-									<label for="phaseId">Phase:</label>
-								  	<select class="form-control" th:field="*{phase.id}" th:id="phaseId" required="true">
-								    	<option value="0"></option>
-	  									<option th:each="phase : ${phases}" th:value="${phase.id}" th:text="${phase.order} + '. ' + ${phase.name}"></option>
-								  	</select>
-								</div>
-	       						
-	       						<input type="submit" class="btn btn-danger pull-right" th:value="#{app.save}" />
-								
-	 						</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		
-			<div class="row" style="margin-bottom:50px;">
-				<div class="col-md-offset-2 col-md-8">
-					<div class="panel panel-success">
-						<div class="panel-heading">
-							<h3 class="panel-title">All Contents Test</h3>
-						</div>
-						<div class="panel-body">
-	    					<form id="f_filter" th:object="${contentTestFilterForm}" th:action="@{/admin/basic/contentTest}" method="post">
-	       						<div class="form-group">
-									<label for="gameId">Game:</label>
-								  	<select class="form-control" th:field="*{game.id}" th:id="gameId" required="true">
-								    	<option value="0"></option>
-	  									<option th:each="game : ${games}" th:value="${game.id}" th:text="${game.name}"></option>
-								  	</select>
-								</div>
-								<div class="form-group">
-									<label for="levelId">Level:</label>
-								  	<select class="form-control" th:field="*{level.id}" th:id="levelId" required="true">
-								    	<option value="0"></option>
-	  									<option th:each="level : ${levels}" th:value="${level.id}" th:text="${level.order} + '. ' + ${level.name}"></option>
-								  	</select>
-								</div>
-								<div id="containerMap">
-									<div class="form-group" th:if="*{game.id} &gt; 0 AND *{level.id} &gt; 0">
-										<label for="mapId">Map:</label>
-									  	<select class="form-control" th:field="*{map.id}" th:id="mapId" required="true">
-									    	<option value="0"></option>
-		  									<option th:each="map : ${maps}" th:value="${map.id}" th:text="${map.order} + '. ' + ${map.name}"></option>
-									  	</select>
-									</div>
-								</div>
-								<div id="containerPhase">
-									<div class="form-group" th:if="*{game.id} &gt; 0 AND *{level.id} &gt; 0 AND *{map.id} &gt; 0">
-										<label for="filterPhaseId">Phase:</label>
-									  	<select class="form-control" th:field="*{phase.id}" th:id="filterPhaseId" required="true">
-									    	<option value="0"></option>
-		  									<option th:each="phase : ${phases}" th:value="${phase.id}" th:text="${phase.order} + '. ' + ${phase.name}"></option>
-									  	</select>
-									</div>
-								</div>
-								<input type="button" class="btn btn-default pull-right" th:value="#{app.filter}" onclick="javascript:submitFilter()" />
-							</form>
-						</div>
-						<div class="panel-body">
-							<table class="table table-bordered">
-								<thead>
-									<tr class="btn-success">
-										<th>Game</th>
-										<th>Level</th>
-										<th>Map</th>
-										<th>Phase</th>
-										<th th:text="#{app.operation}">Operation</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:if="${#lists.isEmpty(contents)}" class="btn-warning">
-										<td colspan="5" align="center">No Item Registered Yet!</td> 
-									</tr>
-									<tr th:each="item : ${contents}">
-										<td th:text="${item.phase.map.game.name}"></td>
-										<td th:text="${item.phase.map.level.order} + '. ' + ${item.phase.map.level.name}"></td>
-										<td th:text="${item.phase.map.order} + '. ' + ${item.phase.map.name}"></td>
-										<td th:text="${item.phase.order} + '. ' + ${item.phase.name}"></td>
-										<td align="center">
-											<a th:href="'javascript:deleteItem(\'/admin/basic/contentTest/delete/' + ${item.id} + '\')'"><span class="glyphicon glyphicon-trash"></span></a>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<script th:inline="javascript">
-			/*<![CDATA[*/
-			function submitFilter(){
-				if (document.getElementById("gameId").value == 0) {
-					alert("Please, select an option for the field Game.");
-					return;
-				}
-				
-				if (document.getElementById("levelId").value == 0) {
-					alert("Please, select an option for the field Level.");
-					return;
-				}
-				
-				form=document.getElementById("f_filter");
-				form.submit();
-			}
-			
-			function verifyGameLevel(){
-				if(document.getElementById("gameId").value > 0 && document.getElementById("levelId").value > 0){
-					return true;
-				}
-				
-				return false;
-			}
-			
-			$(document).ready(function() {
+<section layout:fragment="contentTemplate">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
 
-				$("#gameId").change(function() {
-					if(verifyGameLevel()){
-						comboMap();
-					}
-				});
-				
-				$("#levelId").change(function() {
-					if(verifyGameLevel()){
-						comboMap();
-					}
-				});
-				
-				$("#mapId").change(function() {
-					comboPhase();
-				});
+                <!-- Save Alert Messages -->
+                <div th:if="${save eq 'unsuccess'}">
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <strong>Error!</strong> Data Not Saved.
+                    </div>
+                </div>
+                <div th:if="${save eq 'success'}">
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <strong>Success!</strong> Data Saved Successfully.
+                    </div>
+                </div>
 
-			});
-			
-			$(function () {
-			    var token = $("input[name='_csrf']").val();
-			    var header = "X-CSRF-TOKEN";
-			    $(document).ajaxSend(function(e, xhr, options) {
-			        xhr.setRequestHeader(header, token);
-			    });
-			});
-			
-			function comboMap() {
-				
-				$.ajax({
-					url: "/comboMap",
-					data: {
-				        gameId: $("#gameId").val(),
-				        levelId: $("#levelId").val()
-				    }
-				})
-				.then(function(data) {				       
-					
-					var options = "";
-					
-					for(var i = 0; i < data.length; i++) {
-					    var obj = data[i];
-					    options = options + '<option value="' + obj.id + '">' + obj.name + '</option>';
-					}
-					
-					if(data.length > 0){ 
-						var newCombo = '<div class="form-group">';
-						newCombo = newCombo + '<label for="mapId">Map:</label>';
-						newCombo = newCombo + '<select class="form-control" required="true" id="mapId" name="map.id">'; 
-						newCombo = newCombo + '<option value="0" selected="selected"></option>';
-						newCombo = newCombo + options;
-						newCombo = newCombo + '</select></div>';
-						$("#containerMap").show();
-						$("#containerMap").html(newCombo);
-						
-						$("#mapId").on("change", function(event){ 
-							comboPhase();
-						});
-					}
-					else{
-						$("#containerMap").hide();
-						$("#containerPhase").hide();
-					}
-				});
-			}
-			
-			function comboPhase() {
-				
-				$.ajax({
-					url: "/comboPhase",
-					data: {
-				        mapId: $("#mapId").val()
-				    }
-				})
-				.then(function(data) {			       
-					
-					var options = "";
-					
-					for(var i = 0; i < data.length; i++) {
-					    var obj = data[i];
-					    options = options + '<option value="' + obj.id + '">' + obj.name + '</option>';
-					}
-					
-					if(data.length > 0){
-						var newCombo = '<div class="form-group">';
-						newCombo = newCombo + '<label for="filterPhaseId">Phase:</label>';
-						newCombo = newCombo + '<select class="form-control" required="true" id="filterPhaseId" name="phase.id">'; 
-						newCombo = newCombo + '<option value="0" selected="selected"></option>';
-						newCombo = newCombo + options;
-						newCombo = newCombo + '</select></div>';
-						$("#containerPhase").show();
-						$("#containerPhase").html(newCombo);
-					}
-					else{
-						$("#containerPhase").hide();
-					}
-				});
-			}
-			/*]]>*/
-		</script>
-		
-	</div>
+                <!-- Deletion Alert Messages -->
+                <div th:if="${deletion eq 'unsuccess'}">
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <strong>Error!</strong> Data Not Deleted.
+                    </div>
+                </div>
+                <div th:if="${deletion eq 'success'}">
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <strong>Success!</strong> Data Deleted Successfully.
+                    </div>
+                </div>
+
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Add Content Test</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form th:object="${content}" th:action="@{/admin/basic/contentTest/save}" action="#" method="post">
+
+                            <div class="form-group">
+                                <label for="phaseId">Phase:</label>
+                                <select class="form-control" th:field="*{phase.id}" th:id="phaseId" required="true">
+                                    <option value="0"></option>
+                                    <option th:each="phase : ${phases}" th:value="${phase.id}" th:text="${phase.order} + '. ' + ${phase.name}"></option>
+                                </select>
+                            </div>
+
+                            <input type="submit" class="btn btn-danger pull-right" th:value="#{app.save}" />
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom:50px;">
+            <div class="col-md-offset-2 col-md-8">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">All Contents Test</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form id="f_filter" th:object="${contentTestFilterForm}" th:action="@{/admin/basic/contentTest}" method="post">
+                            <div class="form-group">
+                                <label for="gameId">Game:</label>
+                                <select class="form-control" th:field="*{game.id}" th:id="gameId" required="true">
+                                    <option value="0"></option>
+                                    <option th:each="game : ${games}" th:value="${game.id}" th:text="${game.name}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="levelId">Level:</label>
+                                <select class="form-control" th:field="*{level.id}" th:id="levelId" required="true">
+                                    <option value="0"></option>
+                                    <option th:each="level : ${levels}" th:value="${level.id}" th:text="${level.order} + '. ' + ${level.name}"></option>
+                                </select>
+                            </div>
+                            <div id="containerMap">
+                                <div class="form-group" th:if="*{game.id} &gt; 0 AND *{level.id} &gt; 0">
+                                    <label for="mapId">Map:</label>
+                                    <select class="form-control" th:field="*{map.id}" th:id="mapId" required="true">
+                                        <option value="0"></option>
+                                        <option th:each="map : ${maps}" th:value="${map.id}" th:text="${map.order} + '. ' + ${map.name}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="containerPhase">
+                                <div class="form-group" th:if="*{game.id} &gt; 0 AND *{level.id} &gt; 0 AND *{map.id} &gt; 0">
+                                    <label for="filterPhaseId">Phase:</label>
+                                    <select class="form-control" th:field="*{phase.id}" th:id="filterPhaseId" required="true">
+                                        <option value="0"></option>
+                                        <option th:each="phase : ${phases}" th:value="${phase.id}" th:text="${phase.order} + '. ' + ${phase.name}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="button" class="btn btn-default pull-right" th:value="#{app.filter}" onclick="javascript:submitFilter()" />
+                        </form>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr class="btn-success">
+                                <th>Game</th>
+                                <th>Level</th>
+                                <th>Map</th>
+                                <th>Phase</th>
+                                <th th:text="#{app.operation}">Operation</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${#lists.isEmpty(contents)}" class="btn-warning">
+                                <td colspan="5" align="center">No Item Registered Yet!</td>
+                            </tr>
+                            <tr th:each="item : ${contents}">
+                                <td th:text="${item.phase.map.game.name}"></td>
+                                <td th:text="${item.phase.map.level.order} + '. ' + ${item.phase.map.level.name}"></td>
+                                <td th:text="${item.phase.map.order} + '. ' + ${item.phase.map.name}"></td>
+                                <td th:text="${item.phase.order} + '. ' + ${item.phase.name}"></td>
+                                <td align="center">
+                                    <a th:href="'javascript:deleteItem(\'/admin/basic/contentTest/delete/' + ${item.id} + '\')'"><span
+                                            class="glyphicon glyphicon-trash"></span></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function submitFilter() {
+            if (document.getElementById("gameId").value == 0) {
+                alert("Please, select an option for the field Game.");
+                return;
+            }
+
+            if (document.getElementById("levelId").value == 0) {
+                alert("Please, select an option for the field Level.");
+                return;
+            }
+
+            form = document.getElementById("f_filter");
+            form.submit();
+        }
+
+        function verifyGameLevel() {
+            if (document.getElementById("gameId").value > 0 && document.getElementById("levelId").value > 0) {
+                return true;
+            }
+
+            return false;
+        }
+
+        $(document).ready(function () {
+
+            $("#gameId").change(function () {
+                if (verifyGameLevel()) {
+                    comboMap();
+                }
+            });
+
+            $("#levelId").change(function () {
+                if (verifyGameLevel()) {
+                    comboMap();
+                }
+            });
+
+            $("#mapId").change(function () {
+                comboPhase();
+            });
+
+        });
+
+        $(function () {
+            var token = $("input[name='_csrf']").val();
+            var header = "X-CSRF-TOKEN";
+            $(document).ajaxSend(function (e, xhr, options) {
+                xhr.setRequestHeader(header, token);
+            });
+        });
+
+        function comboMap() {
+
+            $.ajax({
+                url: "/comboMap",
+                data: {
+                    gameId: $("#gameId").val(),
+                    levelId: $("#levelId").val()
+                }
+            })
+                .then(function (data) {
+
+                    var options = "";
+
+                    for (var i = 0; i < data.length; i++) {
+                        var obj = data[i];
+                        options = options + '<option value="' + obj.id + '">' + obj.name + '</option>';
+                    }
+
+                    if (data.length > 0) {
+                        var newCombo = '<div class="form-group">';
+                        newCombo = newCombo + '<label for="mapId">Map:</label>';
+                        newCombo = newCombo + '<select class="form-control" required="true" id="mapId" name="map.id">';
+                        newCombo = newCombo + '<option value="0" selected="selected"></option>';
+                        newCombo = newCombo + options;
+                        newCombo = newCombo + '</select></div>';
+                        $("#containerMap").show();
+                        $("#containerMap").html(newCombo);
+
+                        $("#mapId").on("change", function (event) {
+                            comboPhase();
+                        });
+                    } else {
+                        $("#containerMap").hide();
+                        $("#containerPhase").hide();
+                    }
+                });
+        }
+
+        function comboPhase() {
+
+            $.ajax({
+                url: "/comboPhase",
+                data: {
+                    mapId: $("#mapId").val()
+                }
+            })
+                .then(function (data) {
+
+                    var options = "";
+
+                    for (var i = 0; i < data.length; i++) {
+                        var obj = data[i];
+                        options = options + '<option value="' + obj.id + '">' + obj.name + '</option>';
+                    }
+
+                    if (data.length > 0) {
+                        var newCombo = '<div class="form-group">';
+                        newCombo = newCombo + '<label for="filterPhaseId">Phase:</label>';
+                        newCombo = newCombo + '<select class="form-control" required="true" id="filterPhaseId" name="phase.id">';
+                        newCombo = newCombo + '<option value="0" selected="selected"></option>';
+                        newCombo = newCombo + options;
+                        newCombo = newCombo + '</select></div>';
+                        $("#containerPhase").show();
+                        $("#containerPhase").html(newCombo);
+                    } else {
+                        $("#containerPhase").hide();
+                    }
+                });
+        }
+
+        /*]]>*/
+    </script>
+
+</section>
 
 </body>
 </html>

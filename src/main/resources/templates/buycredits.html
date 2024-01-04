@@ -1,194 +1,207 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="fragments/layoutMainFb">
-
-<head>
-	<style type="text/css">
-        .mainbody{background:#f0f0f0}
-	</style>
-</head>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:replace="~{fragments/layoutMainFb :: layout(~{::section})}">
 
 <body>
-	
-	<div layout:fragment="content" class="container" id="app">
 
-		<div class="mainbody container-fluid">
-		    
-		    <div class="row">
-		        
-		        <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
-		            <div class="panel panel-default">
-		                <div class="panel-body">
-		                    <h1 class="panel-title pull-left" style="font-size:30px;"><i class="fa fa-money" aria-hidden="true"></i> Cr&#xE9;ditos</h1>
-		                </div>
-		            </div>
-		        </div>
-		        
-		        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-		            
-		            <div class="panel panel-default">
-		                <div class="panel-body">
-		                    <h1 class="panel-title pull-left" style="font-size:30px">Adquirir Cr&#xE9;ditos</h1>
-		                </div>
-		            </div>
-		            
-		            <form id="f_credit" th:action="@{/buycredits}" method="post" class="form-horizontal">
-		            
-		            	<div class="panel panel-default">
-			                <div class="panel-body">
-			                    <label for="quantity">Informe a quantia de aulas desejada:</label> <small><small sec:authorize="hasAuthority('USER')">(m&#xED;nimo: 5 m&#xE1;ximo: 85)</small></small>
-		                        <input type="number" class="form-control" required="true" name="quantity" id="quantity" min="5" max="85" v-model.number="quantity" />
-		                        
-		                        <br />
-		                        <label>Custo total:</label> {{totalCost}}
-		                        
-		                        <br />
-		                        <label>Custo por aula:</label> {{priceForEachUnity}}
-		                        
-		                        <br /><br />
-		                        
-		                        <a th:href="@{/}" class="btn btn-default"><i class="fa fa-fw fa-times" aria-hidden="true"></i> Voltar</a>
-			                	<button data-loading-text="Carregando..." class="btn btn-primary pull-right" id="btnBuy"><i class="fa fa-fw fa-check" aria-hidden="true"></i> Comprar</button>
-		                        
-			                </div>
-			            </div>
-					
-					</form>
-					
-					<div class="panel panel-default">
-		                <div class="panel-body">
-                        	<h2 class="panel-title pull-left" style="font-size:25px">Quanto custa?</h2>
-                        	
-                        	<br /><br />
-                        	
-                        	<p>O custo de cada aula depende da quantidade de aulas compradas.<br />Para compras acima de 50 aulas, cada aula custa apenas <b>R$ 1 real</b>.</p>
-                        	<p>O aluno pode comprar a partir de 5 aulas. Verifique quantas aulas existem no curso desejado para não comprar mais aulas do que o necessário. O aluno pode rever
-                        	a aula quantas vezes precisar durante um período de 2 anos. A aula comprada pode ser usada para qualquer curso. Portanto, ao comprar 20 aulas, o aluno pode fazer, por exemplo,
-                        	10 aulas de saxofone e 10 aulas de violão.</p>
-                        	
-                        	<h2 class="panel-title pull-left" style="font-size:25px">Promoção</h2>
-                        	
-                        	<br /><br />
-                        	
-                        	<p>Ao comprar 50 ou mais aulas, cada aula custa apenas <b>R$ 1 real</b>.<br/>
-                        	Na compra entre 26 e 49 aulas, cada aula custa <b>R$ 1,50 centavos</b>.<br/>
-                        	Ao comprar 25 ou menos aulas, cada aula custa: <b>R$ 2,00 reais</b>.</p>
-                        	
-                        	<h2 class="panel-title pull-left" style="font-size:25px">Promoção relâmpago</h2>
-                        	
-                        	<br /><br />
-                        	
-                        	<p>Siga-nos no <a href="https://www.facebook.com/polifonooficial/" target="_blank">Facebook</a> e <a href="https://www.instagram.com/polifono_music/" target="_blank">Instagram</a> 
-                        	para ganhar aulas. De tempos em tempos, fazemos promoções válidas por 1 dia nas quais os participantes ganham uma quantidade de aulas. Não perca essa oportunidade de estudar música de graça!</p>
-                        </div>
-					</div>
-					
-					<div class="panel panel-default">
-		                <div class="panel-body">
-                        	<h2 class="panel-title pull-left" style="font-size:25px">Como funciona?</h2>
-                        	
-                        	<br /><br />
-                        	
-                        	<p>A plataforma Polifono.com utiliza o sistema de pagamentos <a href="https://pagseguro.uol.com.br" target="_blank" style="text-decoration:none">PagSeguro.com</a>.</p>
-                        	
-                        	<p>Informe a quantidade de aulas que deseja e clique em [Comprar]. Voc&#xEA; ser&#xE1; direcionado para o sistema PagSeguro. Ap&#xF3;s efetuar o pagamento, o sistema PagSeguro retornar&#xE1; para essa p&#xE1;gina automaticamente. 
-                        	Os cr&#xE9;ditos ser&#xE3;o adicionados em sua conta apenas ap&#xF3;s a confirma&#xE7;&#xE3;o de pagamento feita pelo PagSeguro.
-                        	Os pagamentos por cartão de crédito são confirmados no mesmo momento. Os pagamentos por boleto levam até 3 dias úteis para serem confirmados. 
-                        	O sistema PagSeguro lhe enviar&#xE1; um e-mail quando o pagamento for confirmado.</p>
-                        </div>
-					</div>
-					
-					<div class="panel panel-default">
-		                <div class="panel-body">
-                        	<h2 class="panel-title pull-left" style="font-size:25px">O sistema PagSeguro</h2>
-                        	
-                        	<br /><br />
-                        	
-                        	<label>Quais as formas de pagamento aceitas pelo PagSeguro?</label>
-                        	<br />
-                        	<p>
-                        	Cart&#xF5;es de cr&#xE9;dito - parcelamento em at&#xE9; 18 vezes;<br />
-							Boleto banc&#xE1;rio;<br />
-							Transfer&#xEA;ncia de saldo entre contas PagSeguro;<br />
-							D&#xE9;bito banc&#xE1;rio.<br />
-							</p>
-							
-							<br />
-                        	
-                        	<label>&#xC9; poss&#xED;vel comprar parcelado pelo PagSeguro? </label>
-                        	<br />
-                        	<p>
-                        	Sim, por&#xE9;m o PagSeguro oferece a op&#xE7;&#xE3;o de parcelamento apenas para pagamento via cart&#xE3;o de cr&#xE9;dito.<br />
-                        	O valor m&#xED;nimo para compra parcelada &#xE9; de R$ 10,00.<br />
-                        	O valor m&#xED;nimo da parcela &#xE9; de R$ 5,00.
-							</p>
-							
-							<br />
-                        	
-                        	<label>Quais cart&#xF5;es de cr&#xE9;dito s&#xE3;o aceitos pelo PagSeguro? </label>
-                        	<br />
-                        	<p>
-                        	S&#xE3;o aceitas mais de 20 op&#xE7;&#xF5;es de cart&#xF5;es. Clique <a href="https://pagseguro.uol.com.br/para_voce/meios_de_pagamento_e_parcelamento.jhtml" target="_blank" style="text-decoration:none">aqui</a> para ver mais informa&#xE7;&#xF5;es.
-							</p>
-                        </div>
-					</div>
+<section layout:fragment="contentTemplate" class="container" id="app">
 
-        		</div>
-        		
-    		</div>
-    		
-		</div>
-		
-		<input type="hidden" th:value="${codRegister}" id="alertCodRegister" />
-        <input type="hidden" th:value="${msg}" id="alertMessageContent" />
-		
-		<script th:inline="javascript">
-			/*<![CDATA[*/
-				if(document.getElementById("alertCodRegister").value==1 || document.getElementById("alertCodRegister").value==2){bootbox.alert(document.getElementById("alertMessageContent").value);}
+    <div class="mainbody container-fluid">
 
-				$(document).ready(function(){
-	  				$("#btnBuy").click(function(){
-	  					if($("#quantity").val() >= 5 && $("#quantity").val() <= 85){$(this).button('loading');}
-	  				});
-	  			});
-				
-				var app = new Vue({
-                    el: '#app',
-                    data : {
-                    	quantity
-                    },
-                    computed : {
-                    	priceForEachUnity : function() {
-                    		if (this.quantity <= 25) {
-                        		return 'R$ 2,00 reais';
-                        	} else if (this.quantity >= 26 && this.quantity <= 49) {
-                        		return 'R$ 1,50 centavos';
-                        	} else if (this.quantity >= 50) {
-                        		return 'R$ 1,00 real';
-                        	}
-                        	
-                        	return 'R$ 1,00 real';
-                    	},
-                    	totalCost() {
-                        	if (this.quantity <= 25) {
-                        		var total = this.quantity * 2.00;
-                        		return total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-                        	} else if (this.quantity >= 26 && this.quantity <= 49) {
-                        		var total = this.quantity * 1.50;
-                        		return total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-                        	} else if (this.quantity >= 50) {
-                        		var total = this.quantity * 1.00;
-                        		return total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-                        	}
-                        	
-                        	return 'R$ 0,00';
-                        }
-                    	
+        <div class="row">
+
+            <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h1 class="panel-title pull-left" style="font-size:30px;"><i class="fa fa-money" aria-hidden="true"></i> Cr&#xE9;ditos</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h1 class="panel-title pull-left" style="font-size:30px">Adquirir Cr&#xE9;ditos</h1>
+                    </div>
+                </div>
+
+                <form id="f_credit" th:action="@{/buycredits}" method="post" class="form-horizontal">
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <label for="quantity">Informe a quantia de aulas desejada:</label> <small><small sec:authorize="hasAuthority('USER')">(m&#xED;nimo:
+                            5 m&#xE1;ximo: 85)</small></small>
+                            <input type="number" class="form-control" required="true" name="quantity" id="quantity" min="5" max="85"
+                                   v-model.number="quantity" />
+
+                            <br />
+                            <label>Custo total:</label> {{totalCost}}
+
+                            <br />
+                            <label>Custo por aula:</label> {{priceForEachUnity}}
+
+                            <br /><br />
+
+                            <a th:href="@{/}" class="btn btn-default"><i class="fa fa-fw fa-times" aria-hidden="true"></i> Voltar</a>
+                            <button data-loading-text="Carregando..." class="btn btn-primary pull-right" id="btnBuy"><i class="fa fa-fw fa-check"
+                                                                                                                        aria-hidden="true"></i> Comprar
+                            </button>
+
+                        </div>
+                    </div>
+
+                </form>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h2 class="panel-title pull-left" style="font-size:25px">Quanto custa?</h2>
+
+                        <br /><br />
+
+                        <p>O custo de cada aula depende da quantidade de aulas compradas.<br />Para compras acima de 50 aulas, cada aula custa apenas <b>R$ 1
+                            real</b>.</p>
+                        <p>O aluno pode comprar a partir de 5 aulas. Verifique quantas aulas existem no curso desejado para não comprar mais aulas do que o
+                            necessário. O aluno pode rever
+                            a aula quantas vezes precisar durante um período de 2 anos. A aula comprada pode ser usada para qualquer curso. Portanto, ao comprar
+                            20 aulas, o aluno pode fazer, por exemplo,
+                            10 aulas de saxofone e 10 aulas de violão.</p>
+
+                        <h2 class="panel-title pull-left" style="font-size:25px">Promoção</h2>
+
+                        <br /><br />
+
+                        <p>Ao comprar 50 ou mais aulas, cada aula custa apenas <b>R$ 1 real</b>.<br />
+                            Na compra entre 26 e 49 aulas, cada aula custa <b>R$ 1,50 centavos</b>.<br />
+                            Ao comprar 25 ou menos aulas, cada aula custa: <b>R$ 2,00 reais</b>.</p>
+
+                        <h2 class="panel-title pull-left" style="font-size:25px">Promoção relâmpago</h2>
+
+                        <br /><br />
+
+                        <p>Siga-nos no <a href="https://www.facebook.com/polifonooficial/" target="_blank">Facebook</a> e <a
+                                href="https://www.instagram.com/polifono_music/" target="_blank">Instagram</a>
+                            para ganhar aulas. De tempos em tempos, fazemos promoções válidas por 1 dia nas quais os participantes ganham uma quantidade de
+                            aulas. Não perca essa oportunidade de estudar música de graça!</p>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h2 class="panel-title pull-left" style="font-size:25px">Como funciona?</h2>
+
+                        <br /><br />
+
+                        <p>A plataforma Polifono.com utiliza o sistema de pagamentos <a href="https://pagseguro.uol.com.br" target="_blank"
+                                                                                        style="text-decoration:none">PagSeguro.com</a>.</p>
+
+                        <p>Informe a quantidade de aulas que deseja e clique em [Comprar]. Voc&#xEA; ser&#xE1; direcionado para o sistema PagSeguro. Ap&#xF3;s
+                            efetuar o pagamento, o sistema PagSeguro retornar&#xE1; para essa p&#xE1;gina automaticamente.
+                            Os cr&#xE9;ditos ser&#xE3;o adicionados em sua conta apenas ap&#xF3;s a confirma&#xE7;&#xE3;o de pagamento feita pelo PagSeguro.
+                            Os pagamentos por cartão de crédito são confirmados no mesmo momento. Os pagamentos por boleto levam até 3 dias úteis para serem
+                            confirmados.
+                            O sistema PagSeguro lhe enviar&#xE1; um e-mail quando o pagamento for confirmado.</p>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h2 class="panel-title pull-left" style="font-size:25px">O sistema PagSeguro</h2>
+
+                        <br /><br />
+
+                        <label>Quais as formas de pagamento aceitas pelo PagSeguro?</label>
+                        <br />
+                        <p>
+                            Cart&#xF5;es de cr&#xE9;dito - parcelamento em at&#xE9; 18 vezes;<br />
+                            Boleto banc&#xE1;rio;<br />
+                            Transfer&#xEA;ncia de saldo entre contas PagSeguro;<br />
+                            D&#xE9;bito banc&#xE1;rio.<br />
+                        </p>
+
+                        <br />
+
+                        <label>&#xC9; poss&#xED;vel comprar parcelado pelo PagSeguro? </label>
+                        <br />
+                        <p>
+                            Sim, por&#xE9;m o PagSeguro oferece a op&#xE7;&#xE3;o de parcelamento apenas para pagamento via cart&#xE3;o de cr&#xE9;dito.<br />
+                            O valor m&#xED;nimo para compra parcelada &#xE9; de R$ 10,00.<br />
+                            O valor m&#xED;nimo da parcela &#xE9; de R$ 5,00.
+                        </p>
+
+                        <br />
+
+                        <label>Quais cart&#xF5;es de cr&#xE9;dito s&#xE3;o aceitos pelo PagSeguro? </label>
+                        <br />
+                        <p>
+                            S&#xE3;o aceitas mais de 20 op&#xE7;&#xF5;es de cart&#xF5;es. Clique <a
+                                href="https://pagseguro.uol.com.br/para_voce/meios_de_pagamento_e_parcelamento.jhtml" target="_blank"
+                                style="text-decoration:none">aqui</a> para ver mais informa&#xE7;&#xF5;es.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <input type="hidden" th:value="${codRegister}" id="alertCodRegister" />
+    <input type="hidden" th:value="${msg}" id="alertMessageContent" />
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        if (document.getElementById("alertCodRegister").value == 1 || document.getElementById("alertCodRegister").value == 2) {
+            bootbox.alert(document.getElementById("alertMessageContent").value);
+        }
+
+        $(document).ready(function () {
+            $("#btnBuy").click(function () {
+                if ($("#quantity").val() >= 5 && $("#quantity").val() <= 85) {
+                    $(this).button('loading');
+                }
+            });
+        });
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                quantity
+            },
+            computed: {
+                priceForEachUnity: function () {
+                    if (this.quantity <= 25) {
+                        return 'R$ 2,00 reais';
+                    } else if (this.quantity >= 26 && this.quantity <= 49) {
+                        return 'R$ 1,50 centavos';
+                    } else if (this.quantity >= 50) {
+                        return 'R$ 1,00 real';
                     }
-                })
-			/*]]>*/
-		</script>
-		
-	</div>
+
+                    return 'R$ 1,00 real';
+                },
+                totalCost() {
+                    if (this.quantity <= 25) {
+                        var total = this.quantity * 2.00;
+                        return total.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'});
+                    } else if (this.quantity >= 26 && this.quantity <= 49) {
+                        var total = this.quantity * 1.50;
+                        return total.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'});
+                    } else if (this.quantity >= 50) {
+                        var total = this.quantity * 1.00;
+                        return total.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'});
+                    }
+
+                    return 'R$ 0,00';
+                }
+
+            }
+        })
+        /*]]>*/
+    </script>
+
+</section>
 
 </body>
 </html>

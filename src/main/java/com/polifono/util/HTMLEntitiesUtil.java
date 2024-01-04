@@ -4,513 +4,511 @@ import java.util.Hashtable;
 
 public class HTMLEntitiesUtil {
 
-	/**
-	 * Translation table for HTML entities.<br/>
-	 * Reference: W3C - character entity references in HTML 4 [<a href="http://www.w3.org/TR/html401/sgml/entities.html" target="_blank">http://www.w3.org/TR/html401/sgml/entities.html</a>].
-	 */
-	private static final Object[][] html_entities_table = {
-		{ new String("&Aacute;"), new Integer(193) },
-		{ new String("&aacute;"), new Integer(225) },
-		{ new String("&Acirc;"), new Integer(194) },
-		{ new String("&acirc;"), new Integer(226) },
-		{ new String("&acute;"), new Integer(180) },
-		{ new String("&AElig;"), new Integer(198) },
-		{ new String("&aelig;"), new Integer(230) },
-		{ new String("&Agrave;"), new Integer(192) },
-		{ new String("&agrave;"), new Integer(224) },
-		{ new String("&alefsym;"), new Integer(8501) },
-		{ new String("&Alpha;"), new Integer(913) },
-		{ new String("&alpha;"), new Integer(945) },
-		{ new String("&amp;"), new Integer(38) },
-		{ new String("&and;"), new Integer(8743) },
-		{ new String("&ang;"), new Integer(8736) },
-		{ new String("&Aring;"), new Integer(197) },
-		{ new String("&aring;"), new Integer(229) },
-		{ new String("&asymp;"), new Integer(8776) },
-		{ new String("&Atilde;"), new Integer(195) },
-		{ new String("&atilde;"), new Integer(227) },
-		{ new String("&Auml;"), new Integer(196) },
-		{ new String("&auml;"), new Integer(228) },
-		{ new String("&bdquo;"), new Integer(8222) },
-		{ new String("&Beta;"), new Integer(914) },
-		{ new String("&beta;"), new Integer(946) },
-		{ new String("&brvbar;"), new Integer(166) },
-		{ new String("&bull;"), new Integer(8226) },
-		{ new String("&cap;"), new Integer(8745) },
-		{ new String("&Ccedil;"), new Integer(199) },
-		{ new String("&ccedil;"), new Integer(231) },
-		{ new String("&cedil;"), new Integer(184) },
-		{ new String("&cent;"), new Integer(162) },
-		{ new String("&Chi;"), new Integer(935) },
-		{ new String("&chi;"), new Integer(967) },
-		{ new String("&circ;"), new Integer(710) },
-		{ new String("&clubs;"), new Integer(9827) },
-		{ new String("&cong;"), new Integer(8773) },
-		{ new String("&copy;"), new Integer(169) },
-		{ new String("&crarr;"), new Integer(8629) },
-		{ new String("&cup;"), new Integer(8746) },
-		{ new String("&curren;"), new Integer(164) },
-		{ new String("&dagger;"), new Integer(8224) },
-		{ new String("&Dagger;"), new Integer(8225) },
-		{ new String("&darr;"), new Integer(8595) },
-		{ new String("&dArr;"), new Integer(8659) },
-		{ new String("&deg;"), new Integer(176) },
-		{ new String("&Delta;"), new Integer(916) },
-		{ new String("&delta;"), new Integer(948) },
-		{ new String("&diams;"), new Integer(9830) },
-		{ new String("&divide;"), new Integer(247) },
-		{ new String("&Eacute;"), new Integer(201) },
-		{ new String("&eacute;"), new Integer(233) },
-		{ new String("&Ecirc;"), new Integer(202) },
-		{ new String("&ecirc;"), new Integer(234) },
-		{ new String("&Egrave;"), new Integer(200) },
-		{ new String("&egrave;"), new Integer(232) },
-		{ new String("&empty;"), new Integer(8709) },
-		{ new String("&emsp;"), new Integer(8195) },
-		{ new String("&ensp;"), new Integer(8194) },
-		{ new String("&Epsilon;"), new Integer(917) },
-		{ new String("&epsilon;"), new Integer(949) },
-		{ new String("&equiv;"), new Integer(8801) },
-		{ new String("&Eta;"), new Integer(919) },
-		{ new String("&eta;"), new Integer(951) },
-		{ new String("&ETH;"), new Integer(208) },
-		{ new String("&eth;"), new Integer(240) },
-		{ new String("&Euml;"), new Integer(203) },
-		{ new String("&euml;"), new Integer(235) },
-		{ new String("&euro;"), new Integer(8364) },
-		{ new String("&exist;"), new Integer(8707) },
-		{ new String("&fnof;"), new Integer(402) },
-		{ new String("&forall;"), new Integer(8704) },
-		{ new String("&frac12;"), new Integer(189) },
-		{ new String("&frac14;"), new Integer(188) },
-		{ new String("&frac34;"), new Integer(190) },
-		{ new String("&frasl;"), new Integer(8260) },
-		{ new String("&Gamma;"), new Integer(915) },
-		{ new String("&gamma;"), new Integer(947) },
-		{ new String("&ge;"), new Integer(8805) },
-		{ new String("&harr;"), new Integer(8596) },
-		{ new String("&hArr;"), new Integer(8660) },
-		{ new String("&hearts;"), new Integer(9829) },
-		{ new String("&hellip;"), new Integer(8230) },
-		{ new String("&Iacute;"), new Integer(205) },
-		{ new String("&iacute;"), new Integer(237) },
-		{ new String("&Icirc;"), new Integer(206) },
-		{ new String("&icirc;"), new Integer(238) },
-		{ new String("&iexcl;"), new Integer(161) },
-		{ new String("&Igrave;"), new Integer(204) },
-		{ new String("&igrave;"), new Integer(236) },
-		{ new String("&image;"), new Integer(8465) },
-		{ new String("&infin;"), new Integer(8734) },
-		{ new String("&int;"), new Integer(8747) },
-		{ new String("&Iota;"), new Integer(921) },
-		{ new String("&iota;"), new Integer(953) },
-		{ new String("&iquest;"), new Integer(191) },
-		{ new String("&isin;"), new Integer(8712) },
-		{ new String("&Iuml;"), new Integer(207) },
-		{ new String("&iuml;"), new Integer(239) },
-		{ new String("&Kappa;"), new Integer(922) },
-		{ new String("&kappa;"), new Integer(954) },
-		{ new String("&Lambda;"), new Integer(923) },
-		{ new String("&lambda;"), new Integer(955) },
-		{ new String("&lang;"), new Integer(9001) },
-		{ new String("&laquo;"), new Integer(171) },
-		{ new String("&larr;"), new Integer(8592) },
-		{ new String("&lArr;"), new Integer(8656) },
-		{ new String("&lceil;"), new Integer(8968) },
-		{ new String("&ldquo;"), new Integer(8220) },
-		{ new String("&le;"), new Integer(8804) },
-		{ new String("&lfloor;"), new Integer(8970) },
-		{ new String("&lowast;"), new Integer(8727) },
-		{ new String("&loz;"), new Integer(9674) },
-		{ new String("&lrm;"), new Integer(8206) },
-		{ new String("&lsaquo;"), new Integer(8249) },
-		{ new String("&lsquo;"), new Integer(8216) },
-		{ new String("&macr;"), new Integer(175) },
-		{ new String("&mdash;"), new Integer(8212) },
-		{ new String("&micro;"), new Integer(181) },
-		{ new String("&middot;"), new Integer(183) },
-		{ new String("&minus;"), new Integer(8722) },
-		{ new String("&Mu;"), new Integer(924) },
-		{ new String("&mu;"), new Integer(956) },
-		{ new String("&nabla;"), new Integer(8711) },
-		{ new String("&nbsp;"), new Integer(160) },
-		{ new String("&ndash;"), new Integer(8211) },
-		{ new String("&ne;"), new Integer(8800) },
-		{ new String("&ni;"), new Integer(8715) },
-		{ new String("&not;"), new Integer(172) },
-		{ new String("&notin;"), new Integer(8713) },
-		{ new String("&nsub;"), new Integer(8836) },
-		{ new String("&Ntilde;"), new Integer(209) },
-		{ new String("&ntilde;"), new Integer(241) },
-		{ new String("&Nu;"), new Integer(925) },
-		{ new String("&nu;"), new Integer(957) },
-		{ new String("&Oacute;"), new Integer(211) },
-		{ new String("&oacute;"), new Integer(243) },
-		{ new String("&Ocirc;"), new Integer(212) },
-		{ new String("&ocirc;"), new Integer(244) },
-		{ new String("&OElig;"), new Integer(338) },
-		{ new String("&oelig;"), new Integer(339) },
-		{ new String("&Ograve;"), new Integer(210) },
-		{ new String("&ograve;"), new Integer(242) },
-		{ new String("&oline;"), new Integer(8254) },
-		{ new String("&Omega;"), new Integer(937) },
-		{ new String("&omega;"), new Integer(969) },
-		{ new String("&Omicron;"), new Integer(927) },
-		{ new String("&omicron;"), new Integer(959) },
-		{ new String("&oplus;"), new Integer(8853) },
-		{ new String("&or;"), new Integer(8744) },
-		{ new String("&ordf;"), new Integer(170) },
-		{ new String("&ordm;"), new Integer(186) },
-		{ new String("&Oslash;"), new Integer(216) },
-		{ new String("&oslash;"), new Integer(248) },
-		{ new String("&Otilde;"), new Integer(213) },
-		{ new String("&otilde;"), new Integer(245) },
-		{ new String("&otimes;"), new Integer(8855) },
-		{ new String("&Ouml;"), new Integer(214) },
-		{ new String("&ouml;"), new Integer(246) },
-		{ new String("&para;"), new Integer(182) },
-		{ new String("&part;"), new Integer(8706) },
-		{ new String("&permil;"), new Integer(8240) },
-		{ new String("&perp;"), new Integer(8869) },
-		{ new String("&Phi;"), new Integer(934) },
-		{ new String("&phi;"), new Integer(966) },
-		{ new String("&Pi;"), new Integer(928) },
-		{ new String("&pi;"), new Integer(960) },
-		{ new String("&piv;"), new Integer(982) },
-		{ new String("&plusmn;"), new Integer(177) },
-		{ new String("&pound;"), new Integer(163) },
-		{ new String("&prime;"), new Integer(8242) },
-		{ new String("&Prime;"), new Integer(8243) },
-		{ new String("&prod;"), new Integer(8719) },
-		{ new String("&prop;"), new Integer(8733) },
-		{ new String("&Psi;"), new Integer(936) },
-		{ new String("&psi;"), new Integer(968) },
-		{ new String("&radic;"), new Integer(8730) },
-		{ new String("&rang;"), new Integer(9002) },
-		{ new String("&raquo;"), new Integer(187) },
-		{ new String("&rarr;"), new Integer(8594) },
-		{ new String("&rArr;"), new Integer(8658) },
-		{ new String("&rceil;"), new Integer(8969) },
-		{ new String("&rdquo;"), new Integer(8221) },
-		{ new String("&real;"), new Integer(8476) },
-		{ new String("&reg;"), new Integer(174) },
-		{ new String("&rfloor;"), new Integer(8971) },
-		{ new String("&Rho;"), new Integer(929) },
-		{ new String("&rho;"), new Integer(961) },
-		{ new String("&rlm;"), new Integer(8207) },
-		{ new String("&rsaquo;"), new Integer(8250) },
-		{ new String("&rsquo;"), new Integer(8217) },
-		{ new String("&sbquo;"), new Integer(8218) },
-		{ new String("&Scaron;"), new Integer(352) },
-		{ new String("&scaron;"), new Integer(353) },
-		{ new String("&sdot;"), new Integer(8901) },
-		{ new String("&sect;"), new Integer(167) },
-		{ new String("&shy;"), new Integer(173) },
-		{ new String("&Sigma;"), new Integer(931) },
-		{ new String("&sigma;"), new Integer(963) },
-		{ new String("&sigmaf;"), new Integer(962) },
-		{ new String("&sim;"), new Integer(8764) },
-		{ new String("&spades;"), new Integer(9824) },
-		{ new String("&sub;"), new Integer(8834) },
-		{ new String("&sube;"), new Integer(8838) },
-		{ new String("&sum;"), new Integer(8721) },
-		{ new String("&sup1;"), new Integer(185) },
-		{ new String("&sup2;"), new Integer(178) },
-		{ new String("&sup3;"), new Integer(179) },
-		{ new String("&sup;"), new Integer(8835) },
-		{ new String("&supe;"), new Integer(8839) },
-		{ new String("&szlig;"), new Integer(223) },
-		{ new String("&Tau;"), new Integer(932) },
-		{ new String("&tau;"), new Integer(964) },
-		{ new String("&there4;"), new Integer(8756) },
-		{ new String("&Theta;"), new Integer(920) },
-		{ new String("&theta;"), new Integer(952) },
-		{ new String("&thetasym;"), new Integer(977) },
-		{ new String("&thinsp;"), new Integer(8201) },
-		{ new String("&THORN;"), new Integer(222) },
-		{ new String("&thorn;"), new Integer(254) },
-		{ new String("&tilde;"), new Integer(732) },
-		{ new String("&times;"), new Integer(215) },
-		{ new String("&trade;"), new Integer(8482) },
-		{ new String("&Uacute;"), new Integer(218) },
-		{ new String("&uacute;"), new Integer(250) },
-		{ new String("&uarr;"), new Integer(8593) },
-		{ new String("&uArr;"), new Integer(8657) },
-		{ new String("&Ucirc;"), new Integer(219) },
-		{ new String("&ucirc;"), new Integer(251) },
-		{ new String("&Ugrave;"), new Integer(217) },
-		{ new String("&ugrave;"), new Integer(249) },
-		{ new String("&uml;"), new Integer(168) },
-		{ new String("&upsih;"), new Integer(978) },
-		{ new String("&Upsilon;"), new Integer(933) },
-		{ new String("&upsilon;"), new Integer(965) },
-		{ new String("&Uuml;"), new Integer(220) },
-		{ new String("&uuml;"), new Integer(252) },
-		{ new String("&weierp;"), new Integer(8472) },
-		{ new String("&Xi;"), new Integer(926) },
-		{ new String("&xi;"), new Integer(958) },
-		{ new String("&Yacute;"), new Integer(221) },
-		{ new String("&yacute;"), new Integer(253) },
-		{ new String("&yen;"), new Integer(165) },
-		{ new String("&yuml;"), new Integer(255) },
-		{ new String("&Yuml;"), new Integer(376) },
-		{ new String("&Zeta;"), new Integer(918) },
-		{ new String("&zeta;"), new Integer(950) },
-		{ new String("&zwj;"), new Integer(8205) },
-		{ new String("&zwnj;"), new Integer(8204) } };
+    /**
+     * Translation table for HTML entities.<br/>
+     * Reference: W3C - character entity references in HTML 4 [<a href="http://www.w3.org/TR/html401/sgml/entities.html" target="_blank">http://www.w3.org/TR/html401/sgml/entities.html</a>].
+     */
+    private static final Object[][] html_entities_table = {
+            { new String("&Aacute;"), Integer.valueOf(193) },
+            { new String("&aacute;"), Integer.valueOf(225) },
+            { new String("&Acirc;"), Integer.valueOf(194) },
+            { new String("&acirc;"), Integer.valueOf(226) },
+            { new String("&acute;"), Integer.valueOf(180) },
+            { new String("&AElig;"), Integer.valueOf(198) },
+            { new String("&aelig;"), Integer.valueOf(230) },
+            { new String("&Agrave;"), Integer.valueOf(192) },
+            { new String("&agrave;"), Integer.valueOf(224) },
+            { new String("&alefsym;"), Integer.valueOf(8501) },
+            { new String("&Alpha;"), Integer.valueOf(913) },
+            { new String("&alpha;"), Integer.valueOf(945) },
+            { new String("&amp;"), Integer.valueOf(38) },
+            { new String("&and;"), Integer.valueOf(8743) },
+            { new String("&ang;"), Integer.valueOf(8736) },
+            { new String("&Aring;"), Integer.valueOf(197) },
+            { new String("&aring;"), Integer.valueOf(229) },
+            { new String("&asymp;"), Integer.valueOf(8776) },
+            { new String("&Atilde;"), Integer.valueOf(195) },
+            { new String("&atilde;"), Integer.valueOf(227) },
+            { new String("&Auml;"), Integer.valueOf(196) },
+            { new String("&auml;"), Integer.valueOf(228) },
+            { new String("&bdquo;"), Integer.valueOf(8222) },
+            { new String("&Beta;"), Integer.valueOf(914) },
+            { new String("&beta;"), Integer.valueOf(946) },
+            { new String("&brvbar;"), Integer.valueOf(166) },
+            { new String("&bull;"), Integer.valueOf(8226) },
+            { new String("&cap;"), Integer.valueOf(8745) },
+            { new String("&Ccedil;"), Integer.valueOf(199) },
+            { new String("&ccedil;"), Integer.valueOf(231) },
+            { new String("&cedil;"), Integer.valueOf(184) },
+            { new String("&cent;"), Integer.valueOf(162) },
+            { new String("&Chi;"), Integer.valueOf(935) },
+            { new String("&chi;"), Integer.valueOf(967) },
+            { new String("&circ;"), Integer.valueOf(710) },
+            { new String("&clubs;"), Integer.valueOf(9827) },
+            { new String("&cong;"), Integer.valueOf(8773) },
+            { new String("&copy;"), Integer.valueOf(169) },
+            { new String("&crarr;"), Integer.valueOf(8629) },
+            { new String("&cup;"), Integer.valueOf(8746) },
+            { new String("&curren;"), Integer.valueOf(164) },
+            { new String("&dagger;"), Integer.valueOf(8224) },
+            { new String("&Dagger;"), Integer.valueOf(8225) },
+            { new String("&darr;"), Integer.valueOf(8595) },
+            { new String("&dArr;"), Integer.valueOf(8659) },
+            { new String("&deg;"), Integer.valueOf(176) },
+            { new String("&Delta;"), Integer.valueOf(916) },
+            { new String("&delta;"), Integer.valueOf(948) },
+            { new String("&diams;"), Integer.valueOf(9830) },
+            { new String("&divide;"), Integer.valueOf(247) },
+            { new String("&Eacute;"), Integer.valueOf(201) },
+            { new String("&eacute;"), Integer.valueOf(233) },
+            { new String("&Ecirc;"), Integer.valueOf(202) },
+            { new String("&ecirc;"), Integer.valueOf(234) },
+            { new String("&Egrave;"), Integer.valueOf(200) },
+            { new String("&egrave;"), Integer.valueOf(232) },
+            { new String("&empty;"), Integer.valueOf(8709) },
+            { new String("&emsp;"), Integer.valueOf(8195) },
+            { new String("&ensp;"), Integer.valueOf(8194) },
+            { new String("&Epsilon;"), Integer.valueOf(917) },
+            { new String("&epsilon;"), Integer.valueOf(949) },
+            { new String("&equiv;"), Integer.valueOf(8801) },
+            { new String("&Eta;"), Integer.valueOf(919) },
+            { new String("&eta;"), Integer.valueOf(951) },
+            { new String("&ETH;"), Integer.valueOf(208) },
+            { new String("&eth;"), Integer.valueOf(240) },
+            { new String("&Euml;"), Integer.valueOf(203) },
+            { new String("&euml;"), Integer.valueOf(235) },
+            { new String("&euro;"), Integer.valueOf(8364) },
+            { new String("&exist;"), Integer.valueOf(8707) },
+            { new String("&fnof;"), Integer.valueOf(402) },
+            { new String("&forall;"), Integer.valueOf(8704) },
+            { new String("&frac12;"), Integer.valueOf(189) },
+            { new String("&frac14;"), Integer.valueOf(188) },
+            { new String("&frac34;"), Integer.valueOf(190) },
+            { new String("&frasl;"), Integer.valueOf(8260) },
+            { new String("&Gamma;"), Integer.valueOf(915) },
+            { new String("&gamma;"), Integer.valueOf(947) },
+            { new String("&ge;"), Integer.valueOf(8805) },
+            { new String("&harr;"), Integer.valueOf(8596) },
+            { new String("&hArr;"), Integer.valueOf(8660) },
+            { new String("&hearts;"), Integer.valueOf(9829) },
+            { new String("&hellip;"), Integer.valueOf(8230) },
+            { new String("&Iacute;"), Integer.valueOf(205) },
+            { new String("&iacute;"), Integer.valueOf(237) },
+            { new String("&Icirc;"), Integer.valueOf(206) },
+            { new String("&icirc;"), Integer.valueOf(238) },
+            { new String("&iexcl;"), Integer.valueOf(161) },
+            { new String("&Igrave;"), Integer.valueOf(204) },
+            { new String("&igrave;"), Integer.valueOf(236) },
+            { new String("&image;"), Integer.valueOf(8465) },
+            { new String("&infin;"), Integer.valueOf(8734) },
+            { new String("&int;"), Integer.valueOf(8747) },
+            { new String("&Iota;"), Integer.valueOf(921) },
+            { new String("&iota;"), Integer.valueOf(953) },
+            { new String("&iquest;"), Integer.valueOf(191) },
+            { new String("&isin;"), Integer.valueOf(8712) },
+            { new String("&Iuml;"), Integer.valueOf(207) },
+            { new String("&iuml;"), Integer.valueOf(239) },
+            { new String("&Kappa;"), Integer.valueOf(922) },
+            { new String("&kappa;"), Integer.valueOf(954) },
+            { new String("&Lambda;"), Integer.valueOf(923) },
+            { new String("&lambda;"), Integer.valueOf(955) },
+            { new String("&lang;"), Integer.valueOf(9001) },
+            { new String("&laquo;"), Integer.valueOf(171) },
+            { new String("&larr;"), Integer.valueOf(8592) },
+            { new String("&lArr;"), Integer.valueOf(8656) },
+            { new String("&lceil;"), Integer.valueOf(8968) },
+            { new String("&ldquo;"), Integer.valueOf(8220) },
+            { new String("&le;"), Integer.valueOf(8804) },
+            { new String("&lfloor;"), Integer.valueOf(8970) },
+            { new String("&lowast;"), Integer.valueOf(8727) },
+            { new String("&loz;"), Integer.valueOf(9674) },
+            { new String("&lrm;"), Integer.valueOf(8206) },
+            { new String("&lsaquo;"), Integer.valueOf(8249) },
+            { new String("&lsquo;"), Integer.valueOf(8216) },
+            { new String("&macr;"), Integer.valueOf(175) },
+            { new String("&mdash;"), Integer.valueOf(8212) },
+            { new String("&micro;"), Integer.valueOf(181) },
+            { new String("&middot;"), Integer.valueOf(183) },
+            { new String("&minus;"), Integer.valueOf(8722) },
+            { new String("&Mu;"), Integer.valueOf(924) },
+            { new String("&mu;"), Integer.valueOf(956) },
+            { new String("&nabla;"), Integer.valueOf(8711) },
+            { new String("&nbsp;"), Integer.valueOf(160) },
+            { new String("&ndash;"), Integer.valueOf(8211) },
+            { new String("&ne;"), Integer.valueOf(8800) },
+            { new String("&ni;"), Integer.valueOf(8715) },
+            { new String("&not;"), Integer.valueOf(172) },
+            { new String("&notin;"), Integer.valueOf(8713) },
+            { new String("&nsub;"), Integer.valueOf(8836) },
+            { new String("&Ntilde;"), Integer.valueOf(209) },
+            { new String("&ntilde;"), Integer.valueOf(241) },
+            { new String("&Nu;"), Integer.valueOf(925) },
+            { new String("&nu;"), Integer.valueOf(957) },
+            { new String("&Oacute;"), Integer.valueOf(211) },
+            { new String("&oacute;"), Integer.valueOf(243) },
+            { new String("&Ocirc;"), Integer.valueOf(212) },
+            { new String("&ocirc;"), Integer.valueOf(244) },
+            { new String("&OElig;"), Integer.valueOf(338) },
+            { new String("&oelig;"), Integer.valueOf(339) },
+            { new String("&Ograve;"), Integer.valueOf(210) },
+            { new String("&ograve;"), Integer.valueOf(242) },
+            { new String("&oline;"), Integer.valueOf(8254) },
+            { new String("&Omega;"), Integer.valueOf(937) },
+            { new String("&omega;"), Integer.valueOf(969) },
+            { new String("&Omicron;"), Integer.valueOf(927) },
+            { new String("&omicron;"), Integer.valueOf(959) },
+            { new String("&oplus;"), Integer.valueOf(8853) },
+            { new String("&or;"), Integer.valueOf(8744) },
+            { new String("&ordf;"), Integer.valueOf(170) },
+            { new String("&ordm;"), Integer.valueOf(186) },
+            { new String("&Oslash;"), Integer.valueOf(216) },
+            { new String("&oslash;"), Integer.valueOf(248) },
+            { new String("&Otilde;"), Integer.valueOf(213) },
+            { new String("&otilde;"), Integer.valueOf(245) },
+            { new String("&otimes;"), Integer.valueOf(8855) },
+            { new String("&Ouml;"), Integer.valueOf(214) },
+            { new String("&ouml;"), Integer.valueOf(246) },
+            { new String("&para;"), Integer.valueOf(182) },
+            { new String("&part;"), Integer.valueOf(8706) },
+            { new String("&permil;"), Integer.valueOf(8240) },
+            { new String("&perp;"), Integer.valueOf(8869) },
+            { new String("&Phi;"), Integer.valueOf(934) },
+            { new String("&phi;"), Integer.valueOf(966) },
+            { new String("&Pi;"), Integer.valueOf(928) },
+            { new String("&pi;"), Integer.valueOf(960) },
+            { new String("&piv;"), Integer.valueOf(982) },
+            { new String("&plusmn;"), Integer.valueOf(177) },
+            { new String("&pound;"), Integer.valueOf(163) },
+            { new String("&prime;"), Integer.valueOf(8242) },
+            { new String("&Prime;"), Integer.valueOf(8243) },
+            { new String("&prod;"), Integer.valueOf(8719) },
+            { new String("&prop;"), Integer.valueOf(8733) },
+            { new String("&Psi;"), Integer.valueOf(936) },
+            { new String("&psi;"), Integer.valueOf(968) },
+            { new String("&radic;"), Integer.valueOf(8730) },
+            { new String("&rang;"), Integer.valueOf(9002) },
+            { new String("&raquo;"), Integer.valueOf(187) },
+            { new String("&rarr;"), Integer.valueOf(8594) },
+            { new String("&rArr;"), Integer.valueOf(8658) },
+            { new String("&rceil;"), Integer.valueOf(8969) },
+            { new String("&rdquo;"), Integer.valueOf(8221) },
+            { new String("&real;"), Integer.valueOf(8476) },
+            { new String("&reg;"), Integer.valueOf(174) },
+            { new String("&rfloor;"), Integer.valueOf(8971) },
+            { new String("&Rho;"), Integer.valueOf(929) },
+            { new String("&rho;"), Integer.valueOf(961) },
+            { new String("&rlm;"), Integer.valueOf(8207) },
+            { new String("&rsaquo;"), Integer.valueOf(8250) },
+            { new String("&rsquo;"), Integer.valueOf(8217) },
+            { new String("&sbquo;"), Integer.valueOf(8218) },
+            { new String("&Scaron;"), Integer.valueOf(352) },
+            { new String("&scaron;"), Integer.valueOf(353) },
+            { new String("&sdot;"), Integer.valueOf(8901) },
+            { new String("&sect;"), Integer.valueOf(167) },
+            { new String("&shy;"), Integer.valueOf(173) },
+            { new String("&Sigma;"), Integer.valueOf(931) },
+            { new String("&sigma;"), Integer.valueOf(963) },
+            { new String("&sigmaf;"), Integer.valueOf(962) },
+            { new String("&sim;"), Integer.valueOf(8764) },
+            { new String("&spades;"), Integer.valueOf(9824) },
+            { new String("&sub;"), Integer.valueOf(8834) },
+            { new String("&sube;"), Integer.valueOf(8838) },
+            { new String("&sum;"), Integer.valueOf(8721) },
+            { new String("&sup1;"), Integer.valueOf(185) },
+            { new String("&sup2;"), Integer.valueOf(178) },
+            { new String("&sup3;"), Integer.valueOf(179) },
+            { new String("&sup;"), Integer.valueOf(8835) },
+            { new String("&supe;"), Integer.valueOf(8839) },
+            { new String("&szlig;"), Integer.valueOf(223) },
+            { new String("&Tau;"), Integer.valueOf(932) },
+            { new String("&tau;"), Integer.valueOf(964) },
+            { new String("&there4;"), Integer.valueOf(8756) },
+            { new String("&Theta;"), Integer.valueOf(920) },
+            { new String("&theta;"), Integer.valueOf(952) },
+            { new String("&thetasym;"), Integer.valueOf(977) },
+            { new String("&thinsp;"), Integer.valueOf(8201) },
+            { new String("&THORN;"), Integer.valueOf(222) },
+            { new String("&thorn;"), Integer.valueOf(254) },
+            { new String("&tilde;"), Integer.valueOf(732) },
+            { new String("&times;"), Integer.valueOf(215) },
+            { new String("&trade;"), Integer.valueOf(8482) },
+            { new String("&Uacute;"), Integer.valueOf(218) },
+            { new String("&uacute;"), Integer.valueOf(250) },
+            { new String("&uarr;"), Integer.valueOf(8593) },
+            { new String("&uArr;"), Integer.valueOf(8657) },
+            { new String("&Ucirc;"), Integer.valueOf(219) },
+            { new String("&ucirc;"), Integer.valueOf(251) },
+            { new String("&Ugrave;"), Integer.valueOf(217) },
+            { new String("&ugrave;"), Integer.valueOf(249) },
+            { new String("&uml;"), Integer.valueOf(168) },
+            { new String("&upsih;"), Integer.valueOf(978) },
+            { new String("&Upsilon;"), Integer.valueOf(933) },
+            { new String("&upsilon;"), Integer.valueOf(965) },
+            { new String("&Uuml;"), Integer.valueOf(220) },
+            { new String("&uuml;"), Integer.valueOf(252) },
+            { new String("&weierp;"), Integer.valueOf(8472) },
+            { new String("&Xi;"), Integer.valueOf(926) },
+            { new String("&xi;"), Integer.valueOf(958) },
+            { new String("&Yacute;"), Integer.valueOf(221) },
+            { new String("&yacute;"), Integer.valueOf(253) },
+            { new String("&yen;"), Integer.valueOf(165) },
+            { new String("&yuml;"), Integer.valueOf(255) },
+            { new String("&Yuml;"), Integer.valueOf(376) },
+            { new String("&Zeta;"), Integer.valueOf(918) },
+            { new String("&zeta;"), Integer.valueOf(950) },
+            { new String("&zwj;"), Integer.valueOf(8205) },
+            { new String("&zwnj;"), Integer.valueOf(8204) } };
 
-	/**
-	 * Map to convert extended characters in HTML entities.
-	 */
-	@SuppressWarnings("rawtypes")
-	private static final Hashtable htmlentities_map = new Hashtable();
+    /**
+     * Map to convert extended characters in HTML entities.
+     */
+    @SuppressWarnings("rawtypes")
+    private static final Hashtable htmlentities_map = new Hashtable();
 
-	/**
-	 * Map to convert html entities in exteden characters.
-	 */
-	@SuppressWarnings("rawtypes")
-	private static final Hashtable unhtmlentities_map = new Hashtable();
+    /**
+     * Map to convert html entities in exteden characters.
+     */
+    @SuppressWarnings("rawtypes")
+    private static final Hashtable unhtmlentities_map = new Hashtable();
 
-	/**
-	 * Initialize HTML translation maps.
-	 */
-	public HTMLEntitiesUtil() {
-		initializeEntitiesTables();
-	}
-	
-	/**
-	 * Initialize HTML entities table.
-	 */
-	@SuppressWarnings("unchecked")
-	private static void initializeEntitiesTables() {
-		// Initialize HTML translation maps.
-		for (int i = 0; i < html_entities_table.length; ++i) {
-			htmlentities_map.put(html_entities_table[i][1], html_entities_table[i][0]);
-			unhtmlentities_map.put(html_entities_table[i][0], html_entities_table[i][1]);
-		}
-	}
-	
-	/**
-	 * Get the HTML entities translation table.
-	 * @return translation table
-	 */
-	public static Object[][] getEntitiesTable() {
-		return html_entities_table;
-	}
+    /**
+     * Initialize HTML translation maps.
+     */
+    public HTMLEntitiesUtil() {
+        initializeEntitiesTables();
+    }
 
-	/**
-	 * Convert special and extended characters into HTML entitities.
-	 * @param str input string
-	 * @return formatted string
-	 * @see #unhtmlentities(String)
-	 */
-	public static String htmlentities(String str) {
+    /**
+     * Initialize HTML entities table.
+     */
+    @SuppressWarnings("unchecked")
+    private static void initializeEntitiesTables() {
+        // Initialize HTML translation maps.
+        for (int i = 0; i < html_entities_table.length; ++i) {
+            htmlentities_map.put(html_entities_table[i][1], html_entities_table[i][0]);
+            unhtmlentities_map.put(html_entities_table[i][0], html_entities_table[i][1]);
+        }
+    }
 
-		if (str == null) {
-			return "";
-		}
-		
-		// Initialize HTML translation maps table the first time is called.
-		if (htmlentities_map.isEmpty()) {
-			initializeEntitiesTables();
-		}
+    /**
+     * Get the HTML entities translation table.
+     *
+     * @return translation table
+     */
+    public static Object[][] getEntitiesTable() {
+        return html_entities_table;
+    }
 
-		StringBuffer buf = new StringBuffer(); // The output string buffer.
+    /**
+     * Convert special and extended characters into HTML entitities.
+     *
+     * @param str input string
+     * @return formatted string
+     * @see #unhtmlentities(String)
+     */
+    public static String htmlentities(String str) {
 
-		for (int i = 0; i < str.length(); ++i) {
-			char ch = str.charAt(i);
-			String entity = (String) htmlentities_map.get(new Integer((int) ch)); // Get equivalent HTML entity.
-			
-			// If entity has not been found.
-			if (entity == null) { 
-				// Check if is an extended character.
-				if (((int) ch) > 128) {
-					buf.append("&#" + ((int) ch) + ";"); // Convert extended character.
-				}
-				else {
-					buf.append(ch); // Append the character as is.
-				}
-			} else {
-				buf.append(entity); // Append the HTML entity.
-			}
-		}
-		
-		return buf.toString();
-	}
+        if (str == null) {
+            return "";
+        }
 
-	/**
-	 * Convert HTML entities to special and extended unicode characters equivalents.
-	 * @param str input string
-	 * @return formatted string
-	 * @see #htmlentities(String)
-	 */
-	public static String unhtmlentities(String str) {
+        // Initialize HTML translation maps table the first time is called.
+        if (htmlentities_map.isEmpty()) {
+            initializeEntitiesTables();
+        }
 
-		// Initialize HTML translation maps table the first time is called.
-		if (htmlentities_map.isEmpty()) {
-			initializeEntitiesTables();
-		}
+        StringBuffer buf = new StringBuffer(); // The output string buffer.
 
-		StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < str.length(); ++i) {
+            char ch = str.charAt(i);
+            String entity = (String) htmlentities_map.get(Integer.valueOf((int) ch)); // Get equivalent HTML entity.
 
-		for (int i = 0; i < str.length(); ++i) {
-			char ch = str.charAt(i);
-			if (ch == '&') {
-				int semi = str.indexOf(';', i + 1);
-				if ((semi == -1) || ((semi-i) > 7)){
-					buf.append(ch);
-					continue;
-				}
-				
-				String entity = str.substring(i, semi + 1);
-				Integer iso;
-				
-				if (entity.charAt(1) == ' ') {
-					buf.append(ch);
-					continue;
-				}
-				
-				if (entity.charAt(1) == '#') {
-					if (entity.charAt(2) == 'x') {
-						iso = new Integer(Integer.parseInt(entity.substring(3, entity.length() - 1), 16));
-					}
-					else {
-						iso = new Integer(entity.substring(2, entity.length() - 1));
-					}
-				}
-				else {
-					iso = (Integer) unhtmlentities_map.get(entity);
-				}
-				
-				if (iso == null) {
-					buf.append(entity);
-				}
-				else {
-					buf.append((char) (iso.intValue()));
-				}
-				
-				i = semi;
-			}
-			else {
-				buf.append(ch);
-			}
-		}
-		
-		return buf.toString();
-	}
-	
-	/**
-	 * Replace single quotes characters with HTML entities.
-	 *
-	 * @param str the input string
-	 * @return string with replaced single quotes
-	 */
-	public static String htmlSingleQuotes(String str) {
-		str = str.replaceAll("[\']", "&rsquo;");
-		str = str.replaceAll("&#039;", "&rsquo;");
-		str = str.replaceAll("&#145;", "&rsquo;");
-		str = str.replaceAll("&#146;", "&rsquo;");
-		return str;
-	}
-	
-	/**
-	 * Replace single quotes HTML entities with equivalent character.
-	 *
-	 * @param str the input string
-	 * @return string with replaced single quotes
-	 */
-	public static String unhtmlSingleQuotes(String str) {
-		return str.replaceAll("&rsquo;", "\'");
-	}
-	
-	/**
-	 * Replace double quotes characters with HTML entities.
-	 *
-	 * @param str the input string
-	 * @return string with replaced double quotes
-	 */
-	public static String htmlDoubleQuotes(String str) {
-		str = str.replaceAll("[\"]", "&quot;");
-		str = str.replaceAll("&#147;", "&quot;");
-		str = str.replaceAll("&#148;", "&quot;");
-		return str;
-	}
-	
-	/**
-	 * Replace single quotes HTML entities with equivalent character.
-	 *
-	 * @param str the input string
-	 * @return string with replaced single quotes
-	 */
-	public static String unhtmlDoubleQuotes(String str) {
-		return str.replaceAll("&quot;", "\"");
-	}
-	
-	/**
-	 * Replace single and double quotes characters with HTML entities.
-	 *
-	 * @param str the input string
-	 * @return string with replaced quotes
-	 */
-	public static String htmlQuotes(String str) {
-		str = htmlDoubleQuotes(str); //convert double quotes
-		str = htmlSingleQuotes(str); //convert single quotes
-		return str;
-	}
+            // If entity has not been found.
+            if (entity == null) {
+                // Check if is an extended character.
+                if (((int) ch) > 128) {
+                    buf.append("&#" + ((int) ch) + ";"); // Convert extended character.
+                } else {
+                    buf.append(ch); // Append the character as is.
+                }
+            } else {
+                buf.append(entity); // Append the HTML entity.
+            }
+        }
 
-	/**
-	 * Replace single and double quotes HTML entities with equivalent characters.
-	 *
-	 * @param str the input string
-	 * @return string with replaced quotes
-	 */
-	public static String unhtmlQuotes(String str) {
-		str = unhtmlDoubleQuotes(str); //convert double quotes
-		str = unhtmlSingleQuotes(str); //convert single quotes
-		return str;
-	}
+        return buf.toString();
+    }
 
-	/**
-	 * Replace &lt; &gt; characters with &amp;lt; &amp;gt; entities.
-	 *
-	 * @param str the input string
-	 * @return string with replaced characters
-	 */
-	public static String htmlAngleBrackets(String str) {
-		str = str.replaceAll("<", "&lt;");
-		str = str.replaceAll(">", "&gt;");
-		return str;
-	}
+    /**
+     * Convert HTML entities to special and extended unicode characters equivalents.
+     *
+     * @param str input string
+     * @return formatted string
+     * @see #htmlentities(String)
+     */
+    public static String unhtmlentities(String str) {
 
-	/**
-	 * Replace &amp;lt; &amp;gt; entities with &lt; &gt; characters.
-	 *
-	 * @param str the input string
-	 * @return string with replaced entities
-	 */
-	public static String unhtmlAngleBrackets(String str) {
-		str = str.replaceAll("&lt;", "<");
-		str = str.replaceAll("&gt;", ">");
-		return str;
-	}
+        // Initialize HTML translation maps table the first time is called.
+        if (htmlentities_map.isEmpty()) {
+            initializeEntitiesTables();
+        }
 
-	/**
-	 * Replace &amp; characters with &amp;amp; HTML entities.
-	 *
-	 * @param str the input string
-	 * @return string with replaced characters
-	 */
-	public static String htmlAmpersand(String str) {
-		return str.replaceAll("&", "&amp;");
-	}
+        StringBuffer buf = new StringBuffer();
 
-	/**
-	 * Replace &amp;amp; HTML entities with &amp; characters.
-	 *
-	 * @param str the input string
-	 * @return string with replaced entities
-	 */
-	public static String unhtmlAmpersand(String str) {
-		return str.replaceAll("&amp;", "&");
-	}
+        for (int i = 0; i < str.length(); ++i) {
+            char ch = str.charAt(i);
+            if (ch == '&') {
+                int semi = str.indexOf(';', i + 1);
+                if ((semi == -1) || ((semi - i) > 7)) {
+                    buf.append(ch);
+                    continue;
+                }
+
+                String entity = str.substring(i, semi + 1);
+                Integer iso;
+
+                if (entity.charAt(1) == ' ') {
+                    buf.append(ch);
+                    continue;
+                }
+
+                if (entity.charAt(1) == '#') {
+                    if (entity.charAt(2) == 'x') {
+                        iso = Integer.valueOf(Integer.parseInt(entity.substring(3, entity.length() - 1), 16));
+                    } else {
+                        iso = Integer.valueOf(entity.substring(2, entity.length() - 1));
+                    }
+                } else {
+                    iso = (Integer) unhtmlentities_map.get(entity);
+                }
+
+                if (iso == null) {
+                    buf.append(entity);
+                } else {
+                    buf.append((char) (iso.intValue()));
+                }
+
+                i = semi;
+            } else {
+                buf.append(ch);
+            }
+        }
+
+        return buf.toString();
+    }
+
+    /**
+     * Replace single quotes characters with HTML entities.
+     *
+     * @param str the input string
+     * @return string with replaced single quotes
+     */
+    public static String htmlSingleQuotes(String str) {
+        str = str.replaceAll("[\']", "&rsquo;");
+        str = str.replaceAll("&#039;", "&rsquo;");
+        str = str.replaceAll("&#145;", "&rsquo;");
+        str = str.replaceAll("&#146;", "&rsquo;");
+        return str;
+    }
+
+    /**
+     * Replace single quotes HTML entities with equivalent character.
+     *
+     * @param str the input string
+     * @return string with replaced single quotes
+     */
+    public static String unhtmlSingleQuotes(String str) {
+        return str.replaceAll("&rsquo;", "\'");
+    }
+
+    /**
+     * Replace double quotes characters with HTML entities.
+     *
+     * @param str the input string
+     * @return string with replaced double quotes
+     */
+    public static String htmlDoubleQuotes(String str) {
+        str = str.replaceAll("[\"]", "&quot;");
+        str = str.replaceAll("&#147;", "&quot;");
+        str = str.replaceAll("&#148;", "&quot;");
+        return str;
+    }
+
+    /**
+     * Replace single quotes HTML entities with equivalent character.
+     *
+     * @param str the input string
+     * @return string with replaced single quotes
+     */
+    public static String unhtmlDoubleQuotes(String str) {
+        return str.replaceAll("&quot;", "\"");
+    }
+
+    /**
+     * Replace single and double quotes characters with HTML entities.
+     *
+     * @param str the input string
+     * @return string with replaced quotes
+     */
+    public static String htmlQuotes(String str) {
+        str = htmlDoubleQuotes(str); //convert double quotes
+        str = htmlSingleQuotes(str); //convert single quotes
+        return str;
+    }
+
+    /**
+     * Replace single and double quotes HTML entities with equivalent characters.
+     *
+     * @param str the input string
+     * @return string with replaced quotes
+     */
+    public static String unhtmlQuotes(String str) {
+        str = unhtmlDoubleQuotes(str); //convert double quotes
+        str = unhtmlSingleQuotes(str); //convert single quotes
+        return str;
+    }
+
+    /**
+     * Replace &lt; &gt; characters with &amp;lt; &amp;gt; entities.
+     *
+     * @param str the input string
+     * @return string with replaced characters
+     */
+    public static String htmlAngleBrackets(String str) {
+        str = str.replaceAll("<", "&lt;");
+        str = str.replaceAll(">", "&gt;");
+        return str;
+    }
+
+    /**
+     * Replace &amp;lt; &amp;gt; entities with &lt; &gt; characters.
+     *
+     * @param str the input string
+     * @return string with replaced entities
+     */
+    public static String unhtmlAngleBrackets(String str) {
+        str = str.replaceAll("&lt;", "<");
+        str = str.replaceAll("&gt;", ">");
+        return str;
+    }
+
+    /**
+     * Replace &amp; characters with &amp;amp; HTML entities.
+     *
+     * @param str the input string
+     * @return string with replaced characters
+     */
+    public static String htmlAmpersand(String str) {
+        return str.replaceAll("&", "&amp;");
+    }
+
+    /**
+     * Replace &amp;amp; HTML entities with &amp; characters.
+     *
+     * @param str the input string
+     * @return string with replaced entities
+     */
+    public static String unhtmlAmpersand(String str) {
+        return str.replaceAll("&amp;", "&");
+    }
 }

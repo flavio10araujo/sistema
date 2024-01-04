@@ -1,69 +1,70 @@
 package com.polifono.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "t002_game")
 public class Game {
 
-	@Id
-	@Column(name = "c002_id")
-	@GeneratedValue
-	private int id;
-	
-	@Column(name = "c002_name")
-	private String name;
-	
-	@Column(name = "c002_namelink")
-	private String namelink;
-	
-	@Column(name = "c002_order")
-	private int order;
-	
-	@Column(name = "c002_active")
-	private boolean active;
+    @Id
+    @Column(name = "c002_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	public int getId() {
-		return id;
-	}
+    @Column(name = "c002_name")
+    private String name;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(name = "c002_namelink")
+    private String namelink;
 
-	public String getName() {
-		return name;
-	}
+    @Column(name = "c002_order")
+    private int order;
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getNamelink() {
-		return namelink;
-	}
+    @Column(name = "c002_active")
+    private boolean active;
 
-	public void setNamelink(String namelink) {
-		this.namelink = namelink;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public int getOrder() {
-		return order;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setOrder(int order) {
-		this.order = order;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public String getNamelink() {
+        return namelink;
+    }
+
+    public void setNamelink(String namelink) {
+        this.namelink = namelink;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

@@ -2,70 +2,71 @@ package com.polifono.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "t023_promo")
 public class Promo {
 
-	@Id
-	@Column(name = "c023_id")
-	@GeneratedValue
-	private int id;
+    @Id
+    @Column(name = "c023_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	@Column(name = "c023_dt_begin")
-	private Date dtBegin;
-	
-	@Column(name = "c023_dt_end")
-	private Date dtEnd;
+    @Column(name = "c023_dt_begin")
+    private Date dtBegin;
 
-	@Column(name = "c023_code")
-	private String code;
-	
-	@Column(name = "c023_prize")
-	private int prize;
+    @Column(name = "c023_dt_end")
+    private Date dtEnd;
 
-	public int getId() {
-		return id;
-	}
+    @Column(name = "c023_code")
+    private String code;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(name = "c023_prize")
+    private int prize;
 
-	public Date getDtBegin() {
-		return dtBegin;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setDtBegin(Date dtBegin) {
-		this.dtBegin = dtBegin;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public Date getDtEnd() {
-		return dtEnd;
-	}
+    public Date getDtBegin() {
+        return dtBegin;
+    }
 
-	public void setDtEnd(Date dtEnd) {
-		this.dtEnd = dtEnd;
-	}
+    public void setDtBegin(Date dtBegin) {
+        this.dtBegin = dtBegin;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public Date getDtEnd() {
+        return dtEnd;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setDtEnd(Date dtEnd) {
+        this.dtEnd = dtEnd;
+    }
 
-	public int getPrize() {
-		return prize;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public void setPrize(int prize) {
-		this.prize = prize;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public int getPrize() {
+        return prize;
+    }
+
+    public void setPrize(int prize) {
+        this.prize = prize;
+    }
 }
