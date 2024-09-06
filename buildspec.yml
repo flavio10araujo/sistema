@@ -21,7 +21,7 @@ phases:
 
 artifacts:
   files:
-    - target/**/*
+    - target/polifono-*.war
 
 cache:
   paths:
