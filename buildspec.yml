@@ -20,6 +20,7 @@ phases:
       - echo Build completed on `date`
 
 artifacts:
+  base-directory: target
   files:
     - target/polifono-*.war
 
