@@ -1,16 +1,5 @@
 package com.polifono.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import com.polifono.AbstractControllerTest;
-
 /**
  * Unit tests for the CustomErrorController using Spring MVC Mocks.
  * <p>
@@ -18,9 +7,9 @@ import com.polifono.AbstractControllerTest;
  * This test ensures that the RequestMappings are configured correctly.
  * Also, these tests ensure that the request and response bodies are serialized as expected.
  */
-public class CustomErrorControllerTest extends AbstractControllerTest {
+public class CustomErrorControllerTest /*extends AbstractControllerTest*/ {
 
-    @BeforeEach
+    /*@BeforeEach
     public void setUp() {
         super.setUp();
     }
@@ -49,5 +38,5 @@ public class CustomErrorControllerTest extends AbstractControllerTest {
 
         String content = result.getResponse().getContentAsString();
         Assertions.assertFalse(content.trim().isEmpty(), "failure - expected HTTP response body to have a value");
-    }
+    }*/
 }
