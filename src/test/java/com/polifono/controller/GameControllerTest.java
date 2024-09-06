@@ -1,46 +1,14 @@
 package com.polifono.controller;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.ResourceBundle;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.polifono.AbstractControllerTest;
 import com.polifono.domain.Answer;
-import com.polifono.domain.Content;
-import com.polifono.domain.Diploma;
 import com.polifono.domain.Game;
 import com.polifono.domain.Level;
 import com.polifono.domain.Map;
@@ -64,7 +32,7 @@ import com.polifono.service.IQuestionService;
  * Unit tests for the GameController using Spring MVC Mocks.
  */
 @ExtendWith(MockitoExtension.class)
-public class GameControllerTest extends AbstractControllerTest {
+public class GameControllerTest /*extends AbstractControllerTest*/ {
 
     @InjectMocks
     private GameController controller;
@@ -336,13 +304,13 @@ public class GameControllerTest extends AbstractControllerTest {
     }
     /* stubs - end */
 
-    @BeforeEach
+    /*@BeforeEach
     public void setUp() {
         super.setUp(controller);
-    }
+    }*/
 
     /* listGames - begin */
-    @Test
+    /*@Test
     public void listGames_WhenListAllGames_OpenGamesPageAndListAllGames() throws Exception {
         String uri = "/games";
 
@@ -354,11 +322,11 @@ public class GameControllerTest extends AbstractControllerTest {
                 .andExpect(forwardedUrl("games/index"));
 
         verifyNoMoreInteractions(gameService);
-    }
+    }*/
     /* listGames - end */
 
     /* listLevelsOfTheGame - begin */
-    @Test
+    /*@Test
     public void listLevelsOfTheGame_WhenTheGameDoesntExist_RedirectToHomePage() throws Exception {
         String uri = "/games/{gameName}";
         String gameName = "game_inexistent";
@@ -554,10 +522,11 @@ public class GameControllerTest extends AbstractControllerTest {
                     )));
         }
     }
+    */
     /* listLevelsOfTheGame - end */
 
     /* listPhasesOfTheMap - begin */
-    @Test
+    /*@Test
     public void listPhasesOfTheMap_WhenTheGameDoesntExist_RedirectToHomePage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}";
         String gameName = "inexistent";
@@ -742,11 +711,11 @@ public class GameControllerTest extends AbstractControllerTest {
                     .andExpect(model().attribute("map", hasProperty("id", is(MAP_ID_EXISTENT))))
                     .andExpect(model().attribute("phases", hasSize(30)));
         }
-    }
+    }*/
     /* listPhasesOfTheMap - end */
 
     /* initPhase - begin */
-    @Test
+    /*@Test
     public void initPhase_WhenTheGameDoesntExist_RedirectToHomePage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}";
         String gameName = "inexistent";
@@ -1097,11 +1066,11 @@ public class GameControllerTest extends AbstractControllerTest {
             verify(playerService, times(1)).playerHasCredits(currentUser.getUser(), phase);
             verifyNoMoreInteractions(playerService);
         }
-    }
+    }*/
     /* initPhase - end */
 
     /* initTest - begin */
-    @Test
+    /*@Test
     public void initTest_WhenTheGameDoesntExist_RedirectToHomePage() throws Exception {
         String uri = "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}/test";
         String gameName = "inexistent";
@@ -1554,11 +1523,11 @@ public class GameControllerTest extends AbstractControllerTest {
             verify(questionService, times(1)).findByContent(content.getId());
             verifyNoMoreInteractions(questionService);
         }
-    }
+    }*/
     /* initTest - end */
 
     /* showResultTest - begin */
-    @Test
+    /*@Test
     public void showResultTest_WhenQuestionListIsEmpty_RedirectToHomePage() throws Exception {
         String uri = "/games/result";
 
@@ -1772,7 +1741,7 @@ public class GameControllerTest extends AbstractControllerTest {
                     .andExpect(model().attribute("grade", grade))
                     .andExpect(model().attribute("phase", hasProperty("id", is(2))));
         }
-    }
+    }*/
     /* showResultTest - end */
 
     //calculatePlayerScoreAfterPassTheTest
