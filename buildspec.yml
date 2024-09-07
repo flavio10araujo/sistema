@@ -18,11 +18,12 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
+      - mv target/polifono-*.war target/ROOT.war
 
 artifacts:
   base-directory: target
   files:
-    - polifono-*.war
+    - ROOT.war
 
 cache:
   paths:
