@@ -63,8 +63,8 @@ public class HomeController extends BaseController {
         }
     }
 
-    @RequestMapping(value = { "/contact" }, method = RequestMethod.POST)
-    public final String contactsubmit(final Model model, @RequestParam(value = "email", defaultValue = "") String email,
+    @RequestMapping(value = { "/contactOld" }, method = RequestMethod.POST)
+    public final String contactsubmitOld(final Model model, @RequestParam(value = "email", defaultValue = "") String email,
             @RequestParam("message") String message,
             @RequestParam(name = "g-recaptcha-response") String recaptchaResponse, HttpServletRequest request) {
 
@@ -96,6 +96,49 @@ public class HomeController extends BaseController {
                 model.addAttribute("playerResend", new Player());
                 return URL_CONTACTOPEN;
             }
+        }
+
+        String msg = this.validateContact(email, message);
+
+        // If there are errors.
+        if (!msg.equals("")) {
+            model.addAttribute("message", "error");
+            model.addAttribute("messageContent", msg);
+
+            if (logged) {
+                return URL_CONTACT;
+            } else {
+                model.addAttribute("player", new Player());
+                model.addAttribute("playerResend", new Player());
+                return URL_CONTACTOPEN;
+            }
+        }
+
+        EmailSendUtil.sendEmailContact(email, message);
+
+        model.addAttribute("message", "success");
+
+        if (logged) {
+            return URL_CONTACT;
+        } else {
+            model.addAttribute("player", new Player());
+            model.addAttribute("playerResend", new Player());
+            return URL_CONTACTOPEN;
+        }
+    }
+
+    @RequestMapping(value = { "/contact" }, method = RequestMethod.POST)
+    public final String contactsubmit(final Model model, @RequestParam(value = "email", defaultValue = "") String email,
+            @RequestParam("message") String message, HttpServletRequest request) {
+
+        boolean logged = false;
+
+        CurrentUser currentUser = currentAuthenticatedUser();
+
+        // If the user is logged in, get his email.
+        if (currentUser != null) {
+            logged = true;
+            email = currentUser.getUser().getEmail();
         }
 
         String msg = this.validateContact(email, message);
