@@ -226,7 +226,7 @@ public class PagSeguroSystem {
         PagSeguroSystem.pagSeguroEncoding = pagSeguroEncoding;
     }
 
-    @Value("${serviceTimeout}")
+    @Value("${pagSeguro.serviceTimeout}")
     public void setPagSeguroServiceTimeout(String pagSeguroServiceTimeout) {
         PagSeguroSystem.pagSeguroServiceTimeout = pagSeguroServiceTimeout;
     }
