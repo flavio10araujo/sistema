@@ -536,22 +536,6 @@
                 <button type="submit" class="btn btn-cta btn-cta-primary button-register" disabled="true">Enviar</button>
 
             </form>
-
-            <form class="formContact" id="formContact2" th:action="@{/contact}" method="post">
-
-                <div class="form-group email">
-                    <label class="sr-only" for="email" th:text="#{app.email}"></label>
-                    <input type="email" th:name="email" th:id="email" class="form-control" required="true" th:placeholder="#{app.email}" />
-                </div>
-
-                <div class="form-group message">
-                    <label class="sr-only" for="message" th:text="#{app.message}"></label>
-                    <textarea class="form-control" rows="5" th:name="message" th:id="message" required="true" th:placeholder="#{app.message}"></textarea>
-                </div>
-
-                <button type="submit" class="btn btn-cta btn-cta-primary button-register">Enviar</button>
-
-            </form>
         </div>
     </section><!--//contact-->
 

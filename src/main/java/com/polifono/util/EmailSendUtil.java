@@ -100,11 +100,6 @@ public class EmailSendUtil {
         @Override
         public void run() {
             try {
-                //System.out.println("email.authentication.login = [" + resourceBundle.getString("email.authentication.login") + "]");
-                System.out.println("email.authentication.login = [" + emailLogin + "]");
-                //System.out.println("email.authentication.password = [" + resourceBundle.getString("email.authentication.password") + "]");
-                System.out.println("email.authentication.password = [" + emailPassword + "]");
-
                 MultiPartEmail hm = new MultiPartEmail();
 
 				/*
