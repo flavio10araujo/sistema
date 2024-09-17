@@ -21,9 +21,10 @@ phases:
       - mv target/polifono-*.jar target/ROOT.jar
 
 artifacts:
-  base-directory: target
   files:
-    - ROOT.jar
+    - target/ROOT.jar
+    - .ebextensions/**
+  discard-paths: no
 
 cache:
   paths:
