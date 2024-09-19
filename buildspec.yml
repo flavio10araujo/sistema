@@ -14,16 +14,17 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - mvn install
+      - mvn package -DskipTests
   post_build:
     commands:
       - echo Build completed on `date`
-      - mv target/polifono-*.jar target/ROOT_NEW.jar
+      - mv target/polifono-*.jar target/ROOT_NEW2.jar
 
 artifacts:
   base-directory: target
   files:
-    - ROOT_NEW.jar
+    - ROOT_NEW2.jar
+    - ../.ebextensions/**
 
 cache:
   paths:
