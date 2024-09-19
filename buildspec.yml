@@ -20,7 +20,9 @@ phases:
       - echo Build completed on `date`
       - mkdir -p deploy
       - cp target/polifono-*.jar ./deploy
+      - ls -la
       - cp -r .ebextensions ./deploy
+      - ls -la deploy
 artifacts:
   files:
     - deploy/**
