@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: corretto17
+    java: corretto17
     commands:
       - echo Installing Maven...
       - yum install -y maven
@@ -18,15 +18,11 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - cp target/polifono-*.jar ./ROOT_NEW7.jar
-      - mkdir -p .ebextensions
-      - cp -r .ebextensions .ebextensions/
+      - cp target/polifono-*.jar ./ROOT_NEW8.jar
 artifacts:
   files:
-    - ROOT_NEW7.jar
-    - .ebextensions/**
-  discard-paths: no
-
+    - ROOT_NEW8.jar
+    - .ebextensions
 cache:
   paths:
     - /root/.m2/**/*
