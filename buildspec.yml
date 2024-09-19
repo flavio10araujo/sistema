@@ -26,6 +26,7 @@ phases:
 artifacts:
   files:
     - deploy/**
+    - deploy/.ebextensions/**
 cache:
   paths:
     - /root/.m2/**/*
