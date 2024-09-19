@@ -23,10 +23,10 @@ phases:
       - ls -la
       - cp -r .ebextensions ./deploy
       - ls -la deploy
+      - zip -r deploy.zip deploy
 artifacts:
   files:
-    - deploy/**
-    - deploy/.ebextensions/**
+    - deploy.zip
 cache:
   paths:
     - /root/.m2/**/*
