@@ -18,11 +18,13 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - cp target/polifono-*.jar ./ROOT_NEW4.jar
-
+      - cp target/polifono-*.jar ./ROOT_NEW5.jar
+      - mkdir -p .ebextensions
+      - cp ../.ebextensions/alb-http-to-https-redirection-full.config .ebextensions/
+      - cp ../.ebextensions/securelistener-alb.config .ebextensions/
 artifacts:
   files:
-    - ROOT_NEW4.jar
+    - ROOT_NEW5.jar
     - .ebextensions/**
   discard-paths: no
 
