@@ -18,12 +18,12 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - cp target/polifono-*.jar ./ROOT_NEW6.jar
+      - cp target/polifono-*.jar ./ROOT_NEW7.jar
       - mkdir -p .ebextensions
-      - cp -r ../.ebextensions/* .ebextensions/
+      - cp -r .ebextensions .ebextensions/
 artifacts:
   files:
-    - ROOT_NEW6.jar
+    - ROOT_NEW7.jar
     - .ebextensions/**
   discard-paths: no
 
