@@ -18,13 +18,13 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - mv target/polifono-*.jar target/ROOT_NEW2.jar
+      - cp target/polifono-*.jar ./ROOT_NEW3.jar
 
 artifacts:
-  base-directory: target
   files:
-    - ROOT_NEW2.jar
-    - ../.ebextensions/**
+    - ROOT_NEW3.jar
+    - .ebextensions/**
+  discard-paths: yes
 
 cache:
   paths:
