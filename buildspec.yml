@@ -18,14 +18,17 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - cp target/polifono-*.jar ./deployment.jar
+      - mkdir deploy
+      - cp target/polifono-*.jar deploy/
       - ls -la
+      - cp -r .platform deploy/
+      - cd deploy
 artifacts:
   files:
-    - deployment.jar
-    - '.platform/**'
+    - '*.jar'
     - '.platform/**/*'
-  name: polifono.zip
+  base-directory: 'deploy'
+  discard-paths: no
 cache:
   paths:
     - /root/.m2/**/*
