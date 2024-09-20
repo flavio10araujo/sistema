@@ -24,11 +24,12 @@ phases:
       - cp -r .platform deploy/
       - cd deploy
 artifacts:
-  files:
-    - '*.jar'
-    - '.platform/**/*'
   base-directory: 'deploy'
   discard-paths: no
+  files:
+    - '*.jar'
+    - '.platform/**'
+    - '.platform/**/*'
 cache:
   paths:
     - /root/.m2/**/*
