@@ -25,6 +25,7 @@ artifacts:
     - deployment.jar
     - .platform/**
     - .platform/**/*
+  name: polifono.zip
 cache:
   paths:
     - /root/.m2/**/*
