@@ -24,10 +24,11 @@ phases:
       - cp -r .platform ./deploy
       - ls -la deploy
 artifacts:
+  base-directory: deploy
   files:
-    - deploy/**
-    - deploy/.platform/**
-    - deploy/.platform/**/**
+    - ./**
+    - ./.platform/**
+    - ./.platform/**/**
 cache:
   paths:
     - /root/.m2/**/*
