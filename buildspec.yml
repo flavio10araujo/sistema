@@ -24,7 +24,7 @@ artifacts:
   files:
     - deployment.jar
     - .platform/**
-    - .platform/**/**
+    - .platform/**/*
 cache:
   paths:
     - /root/.m2/**/*
