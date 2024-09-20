@@ -27,6 +27,7 @@ artifacts:
   files:
     - deploy/**
     - deploy/.platform/**
+    - deploy/.platform/**/**
 cache:
   paths:
     - /root/.m2/**/*
