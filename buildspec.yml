@@ -14,7 +14,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - mvn package -DskipTests
+      - mvn package
   post_build:
     commands:
       - echo Build completed on `date`
@@ -28,8 +28,8 @@ artifacts:
   discard-paths: no
   files:
     - '*.jar'
-    - '.platform/**'
-    - '.platform/**/*'
+    - '.platform/**' # It is not working.
+    - '.platform/**/*' # It is not working, only the jar is added in the artifact.
 cache:
   paths:
     - /root/.m2/**/*
