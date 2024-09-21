@@ -16,7 +16,7 @@
     <groupId>com.polifono</groupId>
     <artifactId>polifono</artifactId>
     <version>2.0.0</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>Polifono Webapp</name>
     <description>Polifono Webapp</description>
 
@@ -155,12 +155,6 @@
             </exclusions>
         </dependency>
         <!-- Test - end -->
-
-        <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-            <version>1.3.2</version>
-        </dependency>
 
     </dependencies>
 

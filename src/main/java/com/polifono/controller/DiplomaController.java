@@ -1,6 +1,5 @@
 package com.polifono.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,7 +92,6 @@ public class DiplomaController extends BaseController {
     @RequestMapping(value = { "/diploma/{code}" }, method = RequestMethod.GET)
     public final String diplomaGet(HttpServletResponse response, final Model model, @PathVariable("code") String code) throws JRException, IOException {
         if (code == null || "".equals(code)) {
-            // If the user is logged in.
             if (currentAuthenticatedUser() != null) {
                 return URL_DIPLOMA_SEARCH;
             } else {
@@ -107,7 +106,6 @@ public class DiplomaController extends BaseController {
         if (diploma == null) {
             model.addAttribute("message", "error");
 
-            // If the user is logged in.
             if (currentAuthenticatedUser() != null) {
                 return URL_DIPLOMA_SEARCH;
             } else {
@@ -117,19 +115,19 @@ public class DiplomaController extends BaseController {
             }
         }
 
-        // Generate diploma.
-        List<Diploma> list = new ArrayList<Diploma>();
+        List<Diploma> list = new ArrayList<>();
         list.add(diploma);
 
         InputStream jasperStream = this.getClass().getResourceAsStream("/reports/compiled/diploma.jasper");
 
         Map<String, Object> params = new HashMap<>();
-
         params.put("company", messagesResourceBundle.getString("diploma.company"));
         params.put("url", messagesResourceBundle.getString("url") + "/diploma");
-        params.put("img_selo", context.getRealPath("") + "img" + File.separator + "diploma" + File.separator + "selo.png");
-        params.put("img_logo", context.getRealPath("") + "img" + File.separator + "diploma" + File.separator + "logo.png");
-        params.put("img_assinatura", context.getRealPath("") + "img" + File.separator + "diploma" + File.separator + "assinatura.png");
+
+        // Load images from classpath as URLs
+        params.put("img_selo", new ClassPathResource("img/diploma/selo.png").getURL());
+        params.put("img_logo", new ClassPathResource("img/diploma/logo.png").getURL());
+        params.put("img_assinatura", new ClassPathResource("img/diploma/assinatura.png").getURL());
 
         JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JRBeanCollectionDataSource(list));

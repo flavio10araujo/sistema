@@ -14,17 +14,22 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - mvn install
+      - mvn package
   post_build:
     commands:
       - echo Build completed on `date`
-      - mv target/polifono-*.war target/ROOT.war
-
+      - mkdir -p deploy
+      - cp target/polifono-*.jar deploy/
+      - cp -r .platform deploy/
+      - cd deploy
+      - ls -la
 artifacts:
-  base-directory: target
+  base-directory: 'deploy'
+  discard-paths: no
   files:
-    - ROOT.war
-
+    - '*.jar'
+    - '.platform/**' # It is not working.
+    - '.platform/**/*' # It is not working, only the jar is added in the artifact.
 cache:
   paths:
     - /root/.m2/**/*

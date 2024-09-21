@@ -1,20 +1,82 @@
 package com.polifono.util;
 
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 import org.apache.commons.mail.MultiPartEmail;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
 
+@Component
 public class EmailSendUtil {
 
-    private static ResourceBundle resourceBundle;
+    private static String emailLogin;
+    private static String emailPassword;
+    private static String emailHostName;
+    private static String emailSmtpPort;
+    private static String emailCharset;
+    private static String emailCompany;
+    private static String emailCompanySlogan;
+    private static String emailUrl;
+    private static String emailGeneral;
+    private static String emailNoReply;
+    private static String emailGeneralTo;
 
-    static {
-        resourceBundle = ResourceBundle.getBundle("application", Locale.getDefault());
+    @Value("${email.authentication.login}")
+    public void setEmailLogin(String emailLogin) {
+        EmailSendUtil.emailLogin = emailLogin;
+    }
+
+    @Value("${email.authentication.password}")
+    public void setEmailPassword(String emailPassword) {
+        EmailSendUtil.emailPassword = emailPassword;
+    }
+
+    @Value("${email.hostName}")
+    public void setEmailHostName(String emailHostName) {
+        EmailSendUtil.emailHostName = emailHostName;
+    }
+
+    @Value("${email.smtpPort}")
+    public void setEmailSmtpPort(String emailSmtpPort) {
+        EmailSendUtil.emailSmtpPort = emailSmtpPort;
+    }
+
+    @Value("${email.charset}")
+    public void setEmailCharset(String emailCharset) {
+        EmailSendUtil.emailCharset = emailCharset;
+    }
+
+    @Value("${email.company}")
+    public void setEmailCompany(String emailCompany) {
+        EmailSendUtil.emailCompany = emailCompany;
+    }
+
+    @Value("${email.company.slogan}")
+    public void setEmailCompanySlogan(String emailCompanySlogan) {
+        EmailSendUtil.emailCompanySlogan = emailCompanySlogan;
+    }
+
+    @Value("${email.url}")
+    public void setEmailUrl(String emailUrl) {
+        EmailSendUtil.emailUrl = emailUrl;
+    }
+
+    @Value("${email.general}")
+    public void setEmailGeneral(String emailGeneral) {
+        EmailSendUtil.emailGeneral = emailGeneral;
+    }
+
+    @Value("${email.noreply}")
+    public void setEmailNoReply(String emailNoReply) {
+        EmailSendUtil.emailNoReply = emailNoReply;
+    }
+
+    @Value("${email.general.to}")
+    public void setEmailGeneralTo(String emailGeneralTo) {
+        EmailSendUtil.emailGeneralTo = emailGeneralTo;
     }
 
     /**
@@ -61,10 +123,10 @@ public class EmailSendUtil {
 				*/
 
                 // AWS configuration.
-                hm.setHostName(resourceBundle.getString("email.hostName"));
-                hm.setSmtpPort(Integer.parseInt(resourceBundle.getString("email.smtpPort")));
-                hm.setAuthentication(resourceBundle.getString("email.authentication.login"), resourceBundle.getString("email.authentication.password"));
-                hm.setCharset(resourceBundle.getString("email.charset"));
+                hm.setHostName(emailHostName);
+                hm.setSmtpPort(Integer.parseInt(emailSmtpPort));
+                hm.setAuthentication(emailLogin, emailPassword);
+                hm.setCharset(emailCharset);
                 hm.setSubject(subject);
                 hm.setFrom(senderAddress);
                 hm.addTo(recipientAddress);
@@ -114,10 +176,10 @@ public class EmailSendUtil {
 				*/
 
                 // AWS configuration.
-                hm.setHostName(resourceBundle.getString("email.hostName"));
-                hm.setSmtpPort(Integer.parseInt(resourceBundle.getString("email.smtpPort")));
-                hm.setAuthentication(resourceBundle.getString("email.authentication.login"), resourceBundle.getString("email.authentication.password"));
-                hm.setCharset(resourceBundle.getString("email.charset"));
+                hm.setHostName(emailHostName);
+                hm.setSmtpPort(Integer.parseInt(emailSmtpPort));
+                hm.setAuthentication(emailLogin, emailPassword);
+                hm.setCharset(emailCharset);
                 hm.setSubject(subject);
                 hm.setFrom(senderAddress);
                 hm.addTo(recipientAddress);
@@ -141,42 +203,33 @@ public class EmailSendUtil {
         String from = "", subject = "", message = "";
 
         if (messageType == 1) {
-            from = resourceBundle.getString("email.noreply");
-            subject = "Confirme seu cadastro na " + resourceBundle.getString("email.company");
+            from = emailNoReply;
+            subject = "Confirme seu cadastro na " + emailCompany;
             message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">"
-                    + "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString(
-                    "email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
+                    + "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + emailCompany + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
                     + "<p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
-                    + "<p><font face=\"arial\" size=\"2\">Você iniciou seu cadastro na plataforma " + resourceBundle.getString(
-                    "email.company") + " com o e-mail <a href=\"#\">{1}</a>. Para finalizá-lo, precisamos que você valide seu email.</font></p>"
+                    + "<p><font face=\"arial\" size=\"2\">Você iniciou seu cadastro na plataforma " + emailCompany + " com o e-mail <a href=\"#\">{1}</a>. Para finalizá-lo, precisamos que você valide seu email.</font></p>"
                     + "<p><font face=\"arial\" size=\"2\">Para validar:</font></p>"
-                    + "<p><font face=\"arial\" size=\"2\">- Acesse <a href=\"https://" + resourceBundle.getString(
-                    "email.url") + "/emailconfirmation\">" + resourceBundle.getString("email.url") + "/emailconfirmation</a></font></p>"
+                    + "<p><font face=\"arial\" size=\"2\">- Acesse <a href=\"https://" + emailUrl + "/emailconfirmation\">" + emailUrl + "/emailconfirmation</a></font></p>"
                     + "<p><font face=\"arial\" size=\"2\">- Informe o e-mail cadastrado;</font></p>"
                     + "<p><font face=\"arial\" size=\"2\">- Informe o seguinte código de ativação: <b>{2}</b></font></p>"
                     + "</td></tr><tr><td>"
-                    + "<font face=\"arial\" size=\"-1\"><br>Atenciosamente,<br>Equipe " + resourceBundle.getString(
-                    "email.company") + "<br /><br /><strong>" + resourceBundle.getString("email.company") + "</strong> - " + resourceBundle.getString(
-                    "email.company.slogan") + "</font>"
+                    + "<font face=\"arial\" size=\"-1\"><br>Atenciosamente,<br>Equipe " + emailCompany + "<br /><br /><strong>" + emailCompany + "</strong> - " + emailCompanySlogan + "</font>"
                     + "</td></tr><tr><td align=\"center\">"
-                    + "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"https://" + resourceBundle.getString(
-                    "email.url") + "/#faq\">" + resourceBundle.getString("email.url") + "/#faq</a></font>"
+                    + "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"https://" + emailUrl + "/#faq\">" + emailUrl + "/#faq</a></font>"
                     + "</td></tr><tr><td align=\"center\"><hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">Este é um e-mail automático disparado pelo sistema. Favor não respondê-lo, pois esta conta não é monitorada.</font>"
                     + "</td></tr></tbody></table>";
 
             message = replaceParamsMessage(message, args);
         } else if (messageType == 2) {
-            from = resourceBundle.getString("email.noreply");
-            subject = "Sua solicitação de alteração de senha na " + resourceBundle.getString("email.company");
+            from = emailNoReply;
+            subject = "Sua solicitação de alteração de senha na " + emailCompany;
             message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">"
-                    + "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString(
-                    "email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
+                    + "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + emailCompany + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
                     + "<p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
-                    + "<p><font face=\"arial\" size=\"2\">Você (ou alguém) solicitou a alteração da senha na plataforma " + resourceBundle.getString(
-                    "email.company") + " para o login <a href=\"#\">{1}</a>.</font></p>"
+                    + "<p><font face=\"arial\" size=\"2\">Você (ou alguém) solicitou a alteração da senha na plataforma " + emailCompany + " para o login <a href=\"#\">{1}</a>.</font></p>"
                     + "<p><font face=\"arial\" size=\"2\">Para dar continuidade na alteração da senha:</font></p>"
-                    + "<p><font face=\"arial\" size=\"2\">- Acesse <a href=\"https://" + resourceBundle.getString(
-                    "email.url") + "\">" + resourceBundle.getString("email.url") + "</a></font></p>"
+                    + "<p><font face=\"arial\" size=\"2\">- Acesse <a href=\"https://" + emailUrl + "\">" + emailUrl + "</a></font></p>"
                     + "<p><font face=\"arial\" size=\"2\">- Clique no botão [ENTRAR];</font></p>"
                     + "<p><font face=\"arial\" size=\"2\">- Clique no link [Esqueci minha senha];</font></p>"
                     + "<p><font face=\"arial\" size=\"2\">- Informe o login cadastrado;</font></p>"
@@ -184,76 +237,60 @@ public class EmailSendUtil {
                     + "<p><font face=\"arial\" size=\"2\">- Informe a nova senha desejada.</font></p>"
                     + "<p><font face=\"arial\" size=\"2\"><br /><br />Caso a alteração de senha não seja mais necessária, apenas ignore este e-mail.</font></p>"
                     + "</td></tr><tr><td>"
-                    + "<font face=\"arial\" size=\"-1\"><br />Atenciosamente,<br />Equipe " + resourceBundle.getString(
-                    "email.company") + "<br /><br /><strong>" + resourceBundle.getString("email.company") + "</strong> - " + resourceBundle.getString(
-                    "email.company.slogan") + "</font>"
+                    + "<font face=\"arial\" size=\"-1\"><br />Atenciosamente,<br />Equipe " + emailCompany + "<br /><br /><strong>" + emailCompany + "</strong> - " + emailCompanySlogan + "</font>"
                     + "</td></tr><tr><td align=\"center\">"
-                    + "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"https://" + resourceBundle.getString(
-                    "email.url") + "/#faq\">" + resourceBundle.getString("email.url") + "/#faq</a></font>"
+                    + "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"https://" + emailUrl + "/#faq\">" + emailUrl + "/#faq</a></font>"
                     + "</td></tr><tr><td align=\"center\"><hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">Este é um e-mail automático disparado pelo sistema. Favor não respondê-lo, pois esta conta não é monitorada.</font>"
                     + "</td></tr></tbody></table>";
 
             message = replaceParamsMessage(message, args);
         } else if (messageType == 3) {
-            from = resourceBundle.getString("email.general");
-            subject = "Sua compra de créditos foi confirmada na " + resourceBundle.getString("email.company");
+            from = emailGeneral;
+            subject = "Sua compra de créditos foi confirmada na " + emailCompany;
             message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">"
-                    + "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString(
-                    "email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
+                    + "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + emailCompany + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
                     + "<p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
                     + "<p><font face=\"arial\" size=\"2\">A sua compra foi confirmada e os créditos adquiridos já estão disponíveis em sua conta.</font></p>"
                     + "<p><font face=\"arial\" size=\"2\"><br />O total de créditos adquiridos foi de: <b>{1}</b></font></p>"
                     + "<p><font face=\"arial\" size=\"2\">Obs.: caso esteja logado no sistema, é necessário deslogar e logar novamente para que os novos créditos sejam mostrados.</b></font></p>"
                     + "<p><font face=\"arial\" size=\"2\"><br /><br />Não perca tempo e comece a estudar agora mesmo.</font></p>"
                     + "</td></tr><tr><td>"
-                    + "<font face=\"arial\" size=\"-1\"><br />Atenciosamente,<br />Equipe " + resourceBundle.getString(
-                    "email.company") + "<br /><br /><strong>" + resourceBundle.getString("email.company") + "</strong> - " + resourceBundle.getString(
-                    "email.company.slogan") + "</font>"
+                    + "<font face=\"arial\" size=\"-1\"><br />Atenciosamente,<br />Equipe " + emailCompany + "<br /><br /><strong>" + emailCompany + "</strong> - " + emailCompanySlogan + "</font>"
                     + "</td></tr><tr><td align=\"center\">"
-                    + "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"https://" + resourceBundle.getString(
-                    "email.url") + "/#faq\">" + resourceBundle.getString("email.url") + "/#faq</a></font>"
+                    + "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"https://" + emailUrl + "/#faq\">" + emailUrl + "/#faq</a></font>"
                     + "</td></tr><tr><td align=\"center\"><hr size=\"2\" color=\"#EFEFEF\">"
                     + "</td></tr></tbody></table>";
 
             message = replaceParamsMessage(message, args);
         } else if (messageType == 4) {
-            from = resourceBundle.getString("email.general");
-            subject = "Você foi convidado para uma sala de aula na " + resourceBundle.getString("email.company");
+            from = emailGeneral;
+            subject = "Você foi convidado para uma sala de aula na " + emailCompany;
             message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">"
-                    + "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString(
-                    "email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
+                    + "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + emailCompany + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
                     + "<p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
                     + "<p><font face=\"arial\" size=\"2\">O professor {1} te adicionou na sala de aula {2}.</font></p>"
                     + "<p><font face=\"arial\" size=\"2\"><br />Caso você queira participar dessa sala de aula, acesse o seguinte link para confirmar sua participação:</font></p>"
-                    + "<p><font face=\"arial\" size=\"2\"><br /><br /><a href=\"https://" + resourceBundle.getString(
-                    "email.url") + "/classinvitation\">" + resourceBundle.getString("email.url") + "/classinvitation</a></font></p>"
+                    + "<p><font face=\"arial\" size=\"2\"><br /><br /><a href=\"https://" + emailUrl + "/classinvitation\">" + emailUrl + "/classinvitation</a></font></p>"
                     + "</td></tr><tr><td>"
-                    + "<font face=\"arial\" size=\"-1\"><br />Atenciosamente,<br />Equipe " + resourceBundle.getString(
-                    "email.company") + "<br /><br /><strong>" + resourceBundle.getString("email.company") + "</strong> - " + resourceBundle.getString(
-                    "email.company.slogan") + "</font>"
+                    + "<font face=\"arial\" size=\"-1\"><br />Atenciosamente,<br />Equipe " + emailCompany + "<br /><br /><strong>" + emailCompany + "</strong> - " + emailCompanySlogan + "</font>"
                     + "</td></tr><tr><td align=\"center\">"
-                    + "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"https://" + resourceBundle.getString(
-                    "email.url") + "/#faq\">" + resourceBundle.getString("email.url") + "/#faq</a></font>"
+                    + "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"https://" + emailUrl + "/#faq\">" + emailUrl + "/#faq</a></font>"
                     + "</td></tr><tr><td align=\"center\"><hr size=\"2\" color=\"#EFEFEF\">"
                     + "</td></tr></tbody></table>";
 
             message = replaceParamsMessage(message, args);
         } else if (messageType == 5) {
-            from = resourceBundle.getString("email.general");
-            to = resourceBundle.getString("email.general.to");
+            from = emailGeneral;
+            to = emailGeneralTo;
             subject = "Novo contato: " + args[0];
             message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">"
-                    + "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString(
-                    "email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
+                    + "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + emailCompany + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead><tbody><tr><td>"
                     + "<p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>A seguinte mensagem foi enviada por {0}:</b></font></p>"
                     + "<p><font face=\"arial\" size=\"2\">Mensagem: {1} </font></p>"
                     + "</td></tr><tr><td>"
-                    + "<font face=\"arial\" size=\"-1\"><br />Atenciosamente,<br />Equipe " + resourceBundle.getString(
-                    "email.company") + "<br /><br /><strong>" + resourceBundle.getString("email.company") + "</strong> - " + resourceBundle.getString(
-                    "email.company.slogan") + "</font>"
+                    + "<font face=\"arial\" size=\"-1\"><br />Atenciosamente,<br />Equipe " + emailCompany + "<br /><br /><strong>" + emailCompany + "</strong> - " + emailCompanySlogan + "</font>"
                     + "</td></tr><tr><td align=\"center\">"
-                    + "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"https://" + resourceBundle.getString(
-                    "email.url") + "/#faq\">" + resourceBundle.getString("email.url") + "/#faq</a></font>"
+                    + "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"https://" + emailUrl + "/#faq\">" + emailUrl + "/#faq</a></font>"
                     + "</td></tr><tr><td align=\"center\"><hr size=\"2\" color=\"#EFEFEF\">"
                     + "</td></tr></tbody></table>";
 
@@ -277,22 +314,19 @@ public class EmailSendUtil {
         } else if (messageType == 3) {
 
         } else if (messageType == 4) {
-            from = resourceBundle.getString("email.general");
-            subject = "Sentimos sua falta na " + resourceBundle.getString("email.company") + "... Acesse sua conta para continuar a aprender música!";
+            from = emailGeneral;
+            subject = "Sentimos sua falta na " + emailCompany + "... Acesse sua conta para continuar a aprender música!";
 
             message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">";
 
-            message = message + "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString(
-                    "email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead>";
+            message = message + "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + emailCompany + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead>";
 
             message = message + "<tbody><tr><td>"
                     + "<p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
-                    + "<p><font face=\"arial\" size=\"2\">Sentimos sua falta! Já faz tempo que você não acessa a " + resourceBundle.getString(
-                    "email.company") + "! "
+                    + "<p><font face=\"arial\" size=\"2\">Sentimos sua falta! Já faz tempo que você não acessa a " + emailCompany + "! "
                     + "<p><font face=\"arial\" size=\"2\">Estamos sempre melhorando nosso sistema e já temos cursos de trompete, violão, saxofone, flauta doce e teoria musical.</font></p>"
                     + "<p><font face=\"arial\" size=\"2\">Para continuar a estudar música com a gente:</font></p>"
-                    + "<p><font face=\"arial\" size=\"2\">- Acesse <a href=\"https://" + resourceBundle.getString(
-                    "email.url") + "\">" + resourceBundle.getString("email.url") + "</a></font></p>";
+                    + "<p><font face=\"arial\" size=\"2\">- Acesse <a href=\"https://" + emailUrl + "\">" + emailUrl + "</a></font></p>";
 
             if (args[1] != null) {
                 message = message + "<p><font face=\"arial\" size=\"2\">- Clique no botão [Facebook] que aparecerá na tela;</font></p>";
@@ -307,13 +341,10 @@ public class EmailSendUtil {
 
             message = message + "<p><font face=\"arial\" size=\"2\"><br />Após acessar o sistema, escolha o curso de música que você deseja fazer e bons estudos!.</font></p></td></tr>";
 
-            message = message + "<tr><td><font face=\"arial\" size=\"-1\"><br />Aguardamos você!<br />Equipe " + resourceBundle.getString(
-                    "email.company") + "<br /><br /><strong>" + resourceBundle.getString("email.company") + "</strong> - " + resourceBundle.getString(
-                    "email.company.slogan") + "</font></td></tr>";
+            message = message + "<tr><td><font face=\"arial\" size=\"-1\"><br />Aguardamos você!<br />Equipe " + emailCompany + "<br /><br /><strong>" + emailCompany + "</strong> - " + emailCompanySlogan + "</font></td></tr>";
 
             message = message + "<tr><td align=\"center\">"
-                    + "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"https://" + resourceBundle.getString(
-                    "email.url") + "/#faq\">" + resourceBundle.getString("email.url") + "/#faq</a></font>"
+                    + "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"https://" + emailUrl + "/#faq\">" + emailUrl + "/#faq</a></font>"
                     + "</td></tr><tr><td align=\"center\"><hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\"></font></td></tr>";
 
             message = message + "<tr><td><p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Promoções e novidades:</b></font></p>"
@@ -325,18 +356,16 @@ public class EmailSendUtil {
 
             message = replaceParamsMessage(message, args);
         } else if (messageType == 5) {
-            from = resourceBundle.getString("email.general");
-            subject = "Sentimos sua falta na " + resourceBundle.getString("email.company") + "... Acesse sua conta para continuar a aprender música!";
+            from = emailGeneral;
+            subject = "Sentimos sua falta na " + emailCompany + "... Acesse sua conta para continuar a aprender música!";
 
             message = "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"550\" summary=\"\">";
 
-            message = message + "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + resourceBundle.getString(
-                    "email.company") + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead>";
+            message = message + "<thead><tr><td align=\"center\"><font color=\"#7EBB3B\" face=\"arial\" size=\"+2\" style=\"text-transform:uppercase\"><b>" + emailCompany + "</b></font><hr size=\"3\" color=\"#7EBB3B\"></td></tr></thead>";
 
             message = message + "<tbody><tr><td>"
                     + "<p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Olá {0},</b></font></p>"
-                    + "<p><font face=\"arial\" size=\"2\">Sentimos sua falta! Já faz tempo que você não acessa a " + resourceBundle.getString(
-                    "email.company") + "! "
+                    + "<p><font face=\"arial\" size=\"2\">Sentimos sua falta! Já faz tempo que você não acessa a " + emailCompany + "! "
                     + "<p><font face=\"arial\" size=\"2\">Estamos sempre melhorando nosso sistema, criando novas funcionalidades e adicionando novas aulas.</font></p>";
 
             // Credits > 0
@@ -349,16 +378,12 @@ public class EmailSendUtil {
                     + "<p><font face=\"arial\" size=\"2\">- Pontuação total: {3}</font></p>"
                     + "<p><font face=\"arial\" size=\"2\">- Nível musical: {4}</font></p>";
 
-            message = message + "<p><font face=\"arial\" size=\"2\"><br />Acesse <a href=\"https://" + resourceBundle.getString(
-                    "email.url") + "\">" + resourceBundle.getString("email.url") + "</a> e continue estudando para subir de nível!</font></p></td></tr>";
+            message = message + "<p><font face=\"arial\" size=\"2\"><br />Acesse <a href=\"https://" + emailUrl + "\">" + emailUrl + "</a> e continue estudando para subir de nível!</font></p></td></tr>";
 
-            message = message + "<tr><td><font face=\"arial\" size=\"-1\"><br />Aguardamos você!<br />Equipe " + resourceBundle.getString(
-                    "email.company") + "<br /><br /><strong>" + resourceBundle.getString("email.company") + "</strong> - " + resourceBundle.getString(
-                    "email.company.slogan") + "</font></td></tr>";
+            message = message + "<tr><td><font face=\"arial\" size=\"-1\"><br />Aguardamos você!<br />Equipe " + emailCompany + "<br /><br /><strong>" + emailCompany + "</strong> - " + emailCompanySlogan + "</font></td></tr>";
 
             message = message + "<tr><td align=\"center\">"
-                    + "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"https://" + resourceBundle.getString(
-                    "email.url") + "/#faq\">" + resourceBundle.getString("email.url") + "/#faq</a></font>"
+                    + "<hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\">DÚVIDAS? Acesse <a href=\"https://" + emailUrl + "/#faq\">" + emailUrl + "/#faq</a></font>"
                     + "</td></tr><tr><td align=\"center\"><hr size=\"2\" color=\"#EFEFEF\"><font face=\"arial\" size=\"-1\"></font></td></tr>";
 
             message = message + "<tr><td><p><font color=\"#7EBB3B\" face=\"arial\" size=\"+1\"><b>Promoções e novidades:</b></font></p>"
