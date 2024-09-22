@@ -55,7 +55,7 @@ public class PlayerServiceImpl implements IPlayerService {
         player.setDtInc(new Date());
         player.setActive(true);
         player.setPassword(StringUtil.encryptPassword(player.getPassword()));
-        player.setCredit(Integer.parseInt(resourceBundle.getString("credits.creation"))); // n credits are given to the player when he creates the account.
+        player.setCredit(Integer.parseInt(resourceBundle.getString("app.configs.credits.creation"))); // n credits are given to the player when he creates the account.
         player.setRole(Role.USER);
         player.setEmailConfirmed(new RandomStringUtil(10).nextString()); // This field is sent to the player's email to confirm if the email is real.
         return player;

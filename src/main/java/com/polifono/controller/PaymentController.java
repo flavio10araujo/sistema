@@ -67,8 +67,8 @@ public class PaymentController extends BaseController {
 
         // TEACHER and ADMIN don't have limitations to buy credits.
         if (player.getRole().equals("USER")) {
-            int creditsBuyMin = Integer.parseInt(applicationResourceBundle.getString("credits.buy.min"));
-            int creditsBuyMax = Integer.parseInt(applicationResourceBundle.getString("credits.buy.max"));
+            int creditsBuyMin = Integer.parseInt(applicationResourceBundle.getString("app.configs.credits.buy.min"));
+            int creditsBuyMax = Integer.parseInt(applicationResourceBundle.getString("app.configs.credits.buy.max"));
 
             if (quantity < creditsBuyMin || quantity > creditsBuyMax) {
                 model.addAttribute("codRegister", "2");
@@ -115,7 +115,7 @@ public class PaymentController extends BaseController {
 
         checkout.addItem(
                 "0001", // Item's number.
-                applicationResourceBundle.getString("payment.nf.description"), // Item's name.
+                applicationResourceBundle.getString("pagSeguro.paymentService.nf.description"), // Item's name.
                 quantity, // Item's quantity.
                 this.getPriceForEachUnity(quantity), // Price for each unity.
                 new Long(0), // Weight.
@@ -315,17 +315,17 @@ public class PaymentController extends BaseController {
      */
     private BigDecimal getPriceForEachUnity(int quantity) {
         if (quantity <= 25) {
-            return new BigDecimal(applicationResourceBundle.getString("priceForEachUnityRange01"));
+            return new BigDecimal(applicationResourceBundle.getString("app.configs.credits.priceForEachUnityRange01"));
         }
 
         if (quantity >= 26 && quantity <= 49) {
-            return new BigDecimal(applicationResourceBundle.getString("priceForEachUnityRange02"));
+            return new BigDecimal(applicationResourceBundle.getString("app.configs.credits.priceForEachUnityRange02"));
         }
 
         if (quantity >= 50) {
-            return new BigDecimal(applicationResourceBundle.getString("priceForEachUnityRange03"));
+            return new BigDecimal(applicationResourceBundle.getString("app.configs.credits.priceForEachUnityRange03"));
         }
 
-        return new BigDecimal(applicationResourceBundle.getString("priceForEachUnityRange03"));
+        return new BigDecimal(applicationResourceBundle.getString("app.configs.credits.priceForEachUnityRange03"));
     }
 }

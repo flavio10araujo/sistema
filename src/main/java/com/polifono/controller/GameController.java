@@ -425,7 +425,7 @@ public class GameController extends BaseController {
 
                 // When the player finishes the last phase of the level, he gains n credits.
                 this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(),
-                        Integer.parseInt(applicationResourceBundle.getString("credits.levelCompleted"))));
+                        Integer.parseInt(applicationResourceBundle.getString("app.configs.credits.levelCompleted"))));
 
                 return URL_GAMES_ENDOFLEVEL;
             }
@@ -439,7 +439,7 @@ public class GameController extends BaseController {
 
                 // When the player finishes the last phase of the last level of the game, he gains n credits.
                 this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(),
-                        Integer.parseInt(applicationResourceBundle.getString("credits.gameCompleted"))));
+                        Integer.parseInt(applicationResourceBundle.getString("app.configs.credits.gameCompleted"))));
 
                 return URL_GAMES_ENDOFGAME;
             }
