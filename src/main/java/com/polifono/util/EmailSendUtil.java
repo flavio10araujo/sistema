@@ -69,7 +69,7 @@ public class EmailSendUtil {
         EmailSendUtil.emailGeneral = emailGeneral;
     }
 
-    @Value("${app.email.accounts.noreply.address}")
+    @Value("${app.email.accounts.noReply.address}")
     public void setEmailNoReply(String emailNoReply) {
         EmailSendUtil.emailNoReply = emailNoReply;
     }

@@ -115,7 +115,7 @@ app:
       general:
         address: polifono@polifono.com
         to: polifono.oficial@gmail.com
-      noreply:
+      noReply:
         address: polifono@polifono.com
   configs:
     credits:
