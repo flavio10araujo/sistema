@@ -1,6 +1,7 @@
 package com.polifono.controller;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -95,7 +96,8 @@ public class PaymentController extends BaseController {
         try {
             return "redirect:" + openPagSeguro(t, player, quantity);
         } catch (PagSeguroServiceException e) {
-            LOGGER.debug("error={}", e); //System.err.println(e.getMessage());
+            LOGGER.debug("error={}", e);
+            System.out.println(e.getMessage());
 
             model.addAttribute("codRegister", "2");
             model.addAttribute("msg", messagesResourceBundle.getString("msg.credits.error.access"));
@@ -142,7 +144,7 @@ public class PaymentController extends BaseController {
         Boolean onlyCheckoutCode = false;
         String checkoutURL = checkout.register(PagSeguroConfig.getAccountCredentials(), onlyCheckoutCode);
 
-        LOGGER.debug(checkoutURL); //System.out.println(checkoutURL);
+        LOGGER.debug(checkoutURL);
 
         return checkoutURL;
     }
@@ -315,18 +317,16 @@ public class PaymentController extends BaseController {
     }
 
     private BigDecimal getPriceForEachUnity(int quantity) {
+        BigDecimal price;
+
         if (quantity <= 25) {
-            return BigDecimal.valueOf(configsCreditsProperties.getPriceForEachUnityRange01());
+            price = BigDecimal.valueOf(configsCreditsProperties.getPriceForEachUnityRange01());
+        } else if (quantity <= 49) {
+            price = BigDecimal.valueOf(configsCreditsProperties.getPriceForEachUnityRange02());
+        } else {
+            price = BigDecimal.valueOf(configsCreditsProperties.getPriceForEachUnityRange03());
         }
 
-        if (quantity >= 26 && quantity <= 49) {
-            return BigDecimal.valueOf(configsCreditsProperties.getPriceForEachUnityRange02());
-        }
-
-        if (quantity >= 50) {
-            return BigDecimal.valueOf(configsCreditsProperties.getPriceForEachUnityRange03());
-        }
-
-        return BigDecimal.valueOf(configsCreditsProperties.getPriceForEachUnityRange03());
+        return price.setScale(2, RoundingMode.HALF_UP);
     }
 }
