@@ -34,6 +34,9 @@ import br.com.uol.pagseguro.service.TransactionSearchService;
 public class PaymentController extends BaseController {
 
     @Autowired
+    private ConfigsCreditsProperties configsCreditsProperties;
+
+    @Autowired
     private ITransactionService transactionService;
 
     @Autowired
@@ -69,8 +72,8 @@ public class PaymentController extends BaseController {
 
         // TEACHER and ADMIN don't have limitations to buy credits.
         if (player.getRole().equals("USER")) {
-            int creditsBuyMin = ConfigsCreditsProperties.getMinBuyCredits();
-            int creditsBuyMax = ConfigsCreditsProperties.getMaxBuyCredits();
+            int creditsBuyMin = configsCreditsProperties.getMinBuyCredits();
+            int creditsBuyMax = configsCreditsProperties.getMaxBuyCredits();
 
             if (quantity < creditsBuyMin || quantity > creditsBuyMax) {
                 model.addAttribute("codRegister", "2");
@@ -313,17 +316,17 @@ public class PaymentController extends BaseController {
 
     private BigDecimal getPriceForEachUnity(int quantity) {
         if (quantity <= 25) {
-            return BigDecimal.valueOf(ConfigsCreditsProperties.getPriceForEachUnityRange01());
+            return BigDecimal.valueOf(configsCreditsProperties.getPriceForEachUnityRange01());
         }
 
         if (quantity >= 26 && quantity <= 49) {
-            return BigDecimal.valueOf(ConfigsCreditsProperties.getPriceForEachUnityRange02());
+            return BigDecimal.valueOf(configsCreditsProperties.getPriceForEachUnityRange02());
         }
 
         if (quantity >= 50) {
-            return BigDecimal.valueOf(ConfigsCreditsProperties.getPriceForEachUnityRange03());
+            return BigDecimal.valueOf(configsCreditsProperties.getPriceForEachUnityRange03());
         }
 
-        return BigDecimal.valueOf(ConfigsCreditsProperties.getPriceForEachUnityRange03());
+        return BigDecimal.valueOf(configsCreditsProperties.getPriceForEachUnityRange03());
     }
 }

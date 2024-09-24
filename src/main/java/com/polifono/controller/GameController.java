@@ -43,6 +43,9 @@ import lombok.RequiredArgsConstructor;
 public class GameController extends BaseController {
 
     @Autowired
+    private ConfigsCreditsProperties configsCreditsProperties;
+
+    @Autowired
     @Qualifier("playerServiceImpl")
     private IPlayerService playerService;
 
@@ -426,7 +429,7 @@ public class GameController extends BaseController {
                 model.addAttribute("diploma", diploma);
 
                 // When the player finishes the last phase of the level, he gains n credits.
-                this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(), ConfigsCreditsProperties.getLevelCompleted()));
+                this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(), configsCreditsProperties.getLevelCompleted()));
 
                 return URL_GAMES_ENDOFLEVEL;
             }
@@ -439,7 +442,7 @@ public class GameController extends BaseController {
                 model.addAttribute("diploma", diploma);
 
                 // When the player finishes the last phase of the last level of the game, he gains n credits.
-                this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(), ConfigsCreditsProperties.getGameCompleted()));
+                this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(), configsCreditsProperties.getGameCompleted()));
 
                 return URL_GAMES_ENDOFGAME;
             }
