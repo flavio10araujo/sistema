@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.polifono.common.properties.ConfigsCreditsProperties;
 import com.polifono.domain.Content;
 import com.polifono.domain.Diploma;
 import com.polifono.domain.Game;
@@ -36,37 +37,21 @@ import com.polifono.util.ContentUtil;
 import com.polifono.util.RandomStringUtil;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Controller
 public class GameController extends BaseController {
 
-    @Autowired
-    @Qualifier("playerServiceImpl")
-    private IPlayerService playerService;
-
-    @Autowired
-    private IGameService gameService;
-
-    @Autowired
-    private ILevelService levelService;
-
-    @Autowired
-    private IMapService mapService;
-
-    @Autowired
-    private IPhaseService phaseService;
-
-    @Autowired
-    private IContentService contentService;
-
-    @Autowired
-    private IQuestionService questionService;
-
-    @Autowired
-    private IPlayerPhaseService playerPhaseService;
-
-    @Autowired
-    private IDiplomaService diplomaService;
+    private final IPlayerService playerService;
+    private final IGameService gameService;
+    private final ILevelService levelService;
+    private final IMapService mapService;
+    private final IPhaseService phaseService;
+    private final IContentService contentService;
+    private final IQuestionService questionService;
+    private final IPlayerPhaseService playerPhaseService;
+    private final IDiplomaService diplomaService;
 
     public static final String URL_GAMES_INDEX = "games/index";
     public static final String URL_GAMES_LEVEL = "games/level";
@@ -84,9 +69,6 @@ public class GameController extends BaseController {
     /**
      * Show the index page of the games.
      * List all the games.
-     *
-     * @param model
-     * @return
      */
     @RequestMapping(value = { "/games" }, method = RequestMethod.GET)
     public final String listGames(final Model model) {
@@ -97,10 +79,6 @@ public class GameController extends BaseController {
 
     /**
      * List all the levels of a game and flag which ones are opened or closed for the player logged in.
-     *
-     * @param model
-     * @param gameName
-     * @return
      */
     @RequestMapping(value = { "/games/{gameName}" }, method = RequestMethod.GET)
     public final String listLevelsOfTheGame(final Model model, @PathVariable("gameName") String gameName) {
@@ -196,10 +174,6 @@ public class GameController extends BaseController {
      * <p>
      * POSSO USAR ESSE MÉTODO PARA CRIAR UM ATALHO NA TELA PRINCIPAL E DIRECIONAR O ALUNO DIRETO PRO MAPA QUE ELE DEVE IR.
      * TAMBÉM POSSO FAZER ALGO PARECIDO NA TELA INICIAL PARA DIRECIONAR O ALUNO DIRETO PRA AULA QUE ELE DEVE IR.
-     *
-     * @param model
-     * @param gameName
-     * @return
      */
 	/*@RequestMapping(value = {"/gamesOLD/{gameName}"}, method = RequestMethod.GET)
 	public final String gamePhases(final Model model, @PathVariable("gameName") String gameName) {
@@ -358,7 +332,7 @@ public class GameController extends BaseController {
         model.addAttribute("phase", phase);
         model.addAttribute("questions", questions);
 
-        List<Integer> questionsId = new ArrayList<Integer>();
+        List<Integer> questionsId = new ArrayList<>();
         for (Question q : questions) {
             questionsId.add(q.getId());
         }
@@ -378,7 +352,7 @@ public class GameController extends BaseController {
         @SuppressWarnings("unchecked")
         List<Integer> questionsId = (List<Integer>) session.getAttribute("questionsId");
 
-        if (questionsId == null || questionsId.size() == 0)
+        if (questionsId == null || questionsId.isEmpty())
             return REDIRECT_HOME;
 
         int grade = gameService.calculateGrade(questionsId, playerAnswers);
@@ -424,8 +398,7 @@ public class GameController extends BaseController {
                 model.addAttribute("diploma", diploma);
 
                 // When the player finishes the last phase of the level, he gains n credits.
-                this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(),
-                        Integer.parseInt(applicationResourceBundle.getString("app.configs.credits.levelCompleted"))));
+                this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(), ConfigsCreditsProperties.getLevelCompleted()));
 
                 return URL_GAMES_ENDOFLEVEL;
             }
@@ -438,8 +411,7 @@ public class GameController extends BaseController {
                 model.addAttribute("diploma", diploma);
 
                 // When the player finishes the last phase of the last level of the game, he gains n credits.
-                this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(),
-                        Integer.parseInt(applicationResourceBundle.getString("app.configs.credits.gameCompleted"))));
+                this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(), ConfigsCreditsProperties.getGameCompleted()));
 
                 return URL_GAMES_ENDOFGAME;
             }
@@ -469,9 +441,6 @@ public class GameController extends BaseController {
      * Return the nextPhase that the player has to do.
      * phases is a list of phases of a map with the flag opened equals true if the phase was already done by the player.
      * Besides from the phases already done, the next phase is also with the opened flag with the value true.
-     *
-     * @param phases
-     * @return
      */
     public final Phase setNextPhase(List<Phase> phases) {
         Phase nextPhase = null;
@@ -492,11 +461,6 @@ public class GameController extends BaseController {
 
     /**
      * Return a diploma to be saved.
-     *
-     * @param player
-     * @param game
-     * @param level
-     * @return
      */
     public final Diploma setDiploma(Player player, Game game, Level level) {
         Diploma diploma = new Diploma();

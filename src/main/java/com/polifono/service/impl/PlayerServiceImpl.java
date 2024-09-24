@@ -2,15 +2,13 @@ package com.polifono.service.impl;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.polifono.common.properties.ConfigsCreditsProperties;
 import com.polifono.domain.Game;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
@@ -26,26 +24,16 @@ import com.polifono.util.EmailUtil;
 import com.polifono.util.RandomStringUtil;
 import com.polifono.util.StringUtil;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class PlayerServiceImpl implements IPlayerService {
 
-    private IPlayerRepository repository;
-
-    private IPlayerGameService playerGameService;
-
+    private final IPlayerRepository repository;
+    private final IPlayerGameService playerGameService;
+    private final ConfigsCreditsProperties configsCreditsProperties;
     private static final Logger LOGGER = LoggerFactory.getLogger(PlayerServiceImpl.class);
-
-    private static ResourceBundle resourceBundle;
-
-    static {
-        resourceBundle = ResourceBundle.getBundle("application", Locale.getDefault());
-    }
-
-    @Autowired
-    public PlayerServiceImpl(IPlayerRepository repository, IPlayerGameService playerGameService) {
-        this.repository = repository;
-        this.playerGameService = playerGameService;
-    }
 
     public final Player create(Player player) {
         return repository.save(preparePlayerForCreation(player));
@@ -55,7 +43,7 @@ public class PlayerServiceImpl implements IPlayerService {
         player.setDtInc(new Date());
         player.setActive(true);
         player.setPassword(StringUtil.encryptPassword(player.getPassword()));
-        player.setCredit(Integer.parseInt(resourceBundle.getString("app.configs.credits.creation"))); // n credits are given to the player when he creates the account.
+        player.setCredit(configsCreditsProperties.getCreation()); // n credits are given to the player when he creates the account.
         player.setRole(Role.USER);
         player.setEmailConfirmed(new RandomStringUtil(10).nextString()); // This field is sent to the player's email to confirm if the email is real.
         return player;

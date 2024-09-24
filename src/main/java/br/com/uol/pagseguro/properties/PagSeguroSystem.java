@@ -36,6 +36,7 @@ public class PagSeguroSystem {
     private static String pagSeguroPaymentRequestServiceFindByCodePath;
     private static String pagSeguroEnvironmentProductionWebserviceUrl;
     private static String pagSeguroEnvironmentSandboxWebserviceUrl;
+    private static String pagSeguroPaymentServiceNfDescription;
     private static String pagSeguroPaymentServiceProductionSessions;
     private static String pagSeguroPaymentServiceSandboxSessions;
     private static String pagSeguroPaymentServiceProductionInstallments;
@@ -99,6 +100,11 @@ public class PagSeguroSystem {
     @Value("${pagSeguro.environment.sandbox.webserviceUrl}")
     public void setPagSeguroEnvironmentSandboxWebserviceUrl(String pagSeguroEnvironmentSandboxWebserviceUrl) {
         PagSeguroSystem.pagSeguroEnvironmentSandboxWebserviceUrl = pagSeguroEnvironmentSandboxWebserviceUrl;
+    }
+
+    @Value("${pagSeguro.paymentService.nfDescription}")
+    public void setPagSeguroPaymentServiceNfDescription(String pagSeguroPaymentServiceNfDescription) {
+        PagSeguroSystem.pagSeguroPaymentServiceNfDescription = pagSeguroPaymentServiceNfDescription;
     }
 
     @Value("${pagSeguro.paymentService.production.sessions}")
@@ -433,5 +439,9 @@ public class PagSeguroSystem {
 
     public static String getLanguageEnginedescription() {
         return LANGUAGE_ENGINE_DESCRIPTION;
+    }
+
+    public static String getPagSeguroPaymentServiceNfDescription() {
+        return pagSeguroPaymentServiceNfDescription;
     }
 }

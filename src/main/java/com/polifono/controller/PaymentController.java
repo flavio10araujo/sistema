@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.polifono.common.properties.ConfigsCreditsProperties;
 import com.polifono.domain.Player;
 import com.polifono.domain.Transaction;
 import com.polifono.service.IPlayerService;
@@ -25,17 +25,17 @@ import br.com.uol.pagseguro.domain.checkout.Checkout;
 import br.com.uol.pagseguro.enums.Currency;
 import br.com.uol.pagseguro.exception.PagSeguroServiceException;
 import br.com.uol.pagseguro.properties.PagSeguroConfig;
+import br.com.uol.pagseguro.properties.PagSeguroSystem;
 import br.com.uol.pagseguro.service.NotificationService;
 import br.com.uol.pagseguro.service.TransactionSearchService;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Controller
 public class PaymentController extends BaseController {
 
-    @Autowired
-    private ITransactionService transactionService;
-
-    @Autowired
-    private IPlayerService playerService;
+    private final ITransactionService transactionService;
+    private final IPlayerService playerService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PaymentController.class);
 
@@ -67,8 +67,8 @@ public class PaymentController extends BaseController {
 
         // TEACHER and ADMIN don't have limitations to buy credits.
         if (player.getRole().equals("USER")) {
-            int creditsBuyMin = Integer.parseInt(applicationResourceBundle.getString("app.configs.credits.buy.min"));
-            int creditsBuyMax = Integer.parseInt(applicationResourceBundle.getString("app.configs.credits.buy.max"));
+            int creditsBuyMin = ConfigsCreditsProperties.getMinBuyCredits();
+            int creditsBuyMax = ConfigsCreditsProperties.getMaxBuyCredits();
 
             if (quantity < creditsBuyMin || quantity > creditsBuyMax) {
                 model.addAttribute("codRegister", "2");
@@ -115,10 +115,10 @@ public class PaymentController extends BaseController {
 
         checkout.addItem(
                 "0001", // Item's number.
-                applicationResourceBundle.getString("pagSeguro.paymentService.nf.description"), // Item's name.
+                PagSeguroSystem.getPagSeguroPaymentServiceNfDescription(), // Item's name.
                 quantity, // Item's quantity.
                 this.getPriceForEachUnity(quantity), // Price for each unity.
-                new Long(0), // Weight.
+                0L, // Weight.
                 null // ShippingCost
         );
 
@@ -309,23 +309,15 @@ public class PaymentController extends BaseController {
         return URL_BUYCREDITS;
     }
 
-    /**
-     * @param quantity
-     * @return
-     */
     private BigDecimal getPriceForEachUnity(int quantity) {
         if (quantity <= 25) {
-            return new BigDecimal(applicationResourceBundle.getString("app.configs.credits.priceForEachUnityRange01"));
+            return BigDecimal.valueOf(ConfigsCreditsProperties.getPriceForEachUnityRange01());
         }
 
-        if (quantity >= 26 && quantity <= 49) {
-            return new BigDecimal(applicationResourceBundle.getString("app.configs.credits.priceForEachUnityRange02"));
+        if (quantity <= 49) {
+            return BigDecimal.valueOf(ConfigsCreditsProperties.getPriceForEachUnityRange02());
         }
 
-        if (quantity >= 50) {
-            return new BigDecimal(applicationResourceBundle.getString("app.configs.credits.priceForEachUnityRange03"));
-        }
-
-        return new BigDecimal(applicationResourceBundle.getString("app.configs.credits.priceForEachUnityRange03"));
+        return BigDecimal.valueOf(ConfigsCreditsProperties.getPriceForEachUnityRange03());
     }
 }
