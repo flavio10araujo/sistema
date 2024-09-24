@@ -102,7 +102,7 @@ public class PagSeguroSystem {
         PagSeguroSystem.pagSeguroEnvironmentSandboxWebserviceUrl = pagSeguroEnvironmentSandboxWebserviceUrl;
     }
 
-    @Value("${pagSeguro.paymentService.nfDescription}")
+    @Value("${pagSeguro.paymentService.nf.description}")
     public void setPagSeguroPaymentServiceNfDescription(String pagSeguroPaymentServiceNfDescription) {
         PagSeguroSystem.pagSeguroPaymentServiceNfDescription = pagSeguroPaymentServiceNfDescription;
     }
