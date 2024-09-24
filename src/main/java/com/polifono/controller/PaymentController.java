@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,14 +29,15 @@ import br.com.uol.pagseguro.properties.PagSeguroConfig;
 import br.com.uol.pagseguro.properties.PagSeguroSystem;
 import br.com.uol.pagseguro.service.NotificationService;
 import br.com.uol.pagseguro.service.TransactionSearchService;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Controller
 public class PaymentController extends BaseController {
 
-    private final ITransactionService transactionService;
-    private final IPlayerService playerService;
+    @Autowired
+    private ITransactionService transactionService;
+
+    @Autowired
+    private IPlayerService playerService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PaymentController.class);
 
@@ -118,7 +120,7 @@ public class PaymentController extends BaseController {
                 PagSeguroSystem.getPagSeguroPaymentServiceNfDescription(), // Item's name.
                 quantity, // Item's quantity.
                 this.getPriceForEachUnity(quantity), // Price for each unity.
-                0L, // Weight.
+                new Long(0), // Weight.
                 null // ShippingCost
         );
 
@@ -314,8 +316,12 @@ public class PaymentController extends BaseController {
             return BigDecimal.valueOf(ConfigsCreditsProperties.getPriceForEachUnityRange01());
         }
 
-        if (quantity <= 49) {
+        if (quantity >= 26 && quantity <= 49) {
             return BigDecimal.valueOf(ConfigsCreditsProperties.getPriceForEachUnityRange02());
+        }
+
+        if (quantity >= 50) {
+            return BigDecimal.valueOf(ConfigsCreditsProperties.getPriceForEachUnityRange03());
         }
 
         return BigDecimal.valueOf(ConfigsCreditsProperties.getPriceForEachUnityRange03());

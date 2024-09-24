@@ -39,19 +39,36 @@ import com.polifono.util.RandomStringUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Controller
 public class GameController extends BaseController {
 
-    private final IPlayerService playerService;
-    private final IGameService gameService;
-    private final ILevelService levelService;
-    private final IMapService mapService;
-    private final IPhaseService phaseService;
-    private final IContentService contentService;
-    private final IQuestionService questionService;
-    private final IPlayerPhaseService playerPhaseService;
-    private final IDiplomaService diplomaService;
+    @Autowired
+    @Qualifier("playerServiceImpl")
+    private IPlayerService playerService;
+
+    @Autowired
+    private IGameService gameService;
+
+    @Autowired
+    private ILevelService levelService;
+
+    @Autowired
+    private IMapService mapService;
+
+    @Autowired
+    private IPhaseService phaseService;
+
+    @Autowired
+    private IContentService contentService;
+
+    @Autowired
+    private IQuestionService questionService;
+
+    @Autowired
+    private IPlayerPhaseService playerPhaseService;
+
+    @Autowired
+    private IDiplomaService diplomaService;
 
     public static final String URL_GAMES_INDEX = "games/index";
     public static final String URL_GAMES_LEVEL = "games/level";
@@ -69,6 +86,9 @@ public class GameController extends BaseController {
     /**
      * Show the index page of the games.
      * List all the games.
+     *
+     * @param model
+     * @return
      */
     @RequestMapping(value = { "/games" }, method = RequestMethod.GET)
     public final String listGames(final Model model) {
@@ -79,6 +99,10 @@ public class GameController extends BaseController {
 
     /**
      * List all the levels of a game and flag which ones are opened or closed for the player logged in.
+     *
+     * @param model
+     * @param gameName
+     * @return
      */
     @RequestMapping(value = { "/games/{gameName}" }, method = RequestMethod.GET)
     public final String listLevelsOfTheGame(final Model model, @PathVariable("gameName") String gameName) {
@@ -174,6 +198,10 @@ public class GameController extends BaseController {
      * <p>
      * POSSO USAR ESSE MÉTODO PARA CRIAR UM ATALHO NA TELA PRINCIPAL E DIRECIONAR O ALUNO DIRETO PRO MAPA QUE ELE DEVE IR.
      * TAMBÉM POSSO FAZER ALGO PARECIDO NA TELA INICIAL PARA DIRECIONAR O ALUNO DIRETO PRA AULA QUE ELE DEVE IR.
+     *
+     * @param model
+     * @param gameName
+     * @return
      */
 	/*@RequestMapping(value = {"/gamesOLD/{gameName}"}, method = RequestMethod.GET)
 	public final String gamePhases(final Model model, @PathVariable("gameName") String gameName) {
@@ -332,7 +360,7 @@ public class GameController extends BaseController {
         model.addAttribute("phase", phase);
         model.addAttribute("questions", questions);
 
-        List<Integer> questionsId = new ArrayList<>();
+        List<Integer> questionsId = new ArrayList<Integer>();
         for (Question q : questions) {
             questionsId.add(q.getId());
         }
@@ -352,7 +380,7 @@ public class GameController extends BaseController {
         @SuppressWarnings("unchecked")
         List<Integer> questionsId = (List<Integer>) session.getAttribute("questionsId");
 
-        if (questionsId == null || questionsId.isEmpty())
+        if (questionsId == null || questionsId.size() == 0)
             return REDIRECT_HOME;
 
         int grade = gameService.calculateGrade(questionsId, playerAnswers);
@@ -461,6 +489,11 @@ public class GameController extends BaseController {
 
     /**
      * Return a diploma to be saved.
+     *
+     * @param player
+     * @param game
+     * @param level
+     * @return
      */
     public final Diploma setDiploma(Player player, Game game, Level level) {
         Diploma diploma = new Diploma();
