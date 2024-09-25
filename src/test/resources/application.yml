@@ -102,7 +102,7 @@ pagSeguro:
 app:
   general:
     name: Polifono.com
-    slogan: A vida sem m\u00FAsica seria um engano.
+    slogan: A vida sem música seria um engano.
     url: www.polifono.com
   email:
     charset: UTF-8
@@ -122,9 +122,8 @@ app:
       creation: 5 # How many credits the student receives when creating an account.
       levelCompleted: 1 # How many credits the student receives when completing a level.
       gameCompleted: 3 # How many credits the student receives when completing a game.
-      buy:
-        min: 5 # Minimum amount of credits that can be bought.
-        max: 85 # Maximum amount of credits that can be bought.
+      minBuyCredits: 5 # Minimum amount of credits that can be bought.
+      maxBuyCredits: 85 # Maximum amount of credits that can be bought.
       priceForEachUnityRange01: 2.00 # Price for each unity when buying less than 25 credits.
-      priceForEachUnityRange02: 1.50
-      priceForEachUnityRange03: 1.00
+      priceForEachUnityRange02: 1.50 # Price for each unity when buying between 26 and 49 credits.
+      priceForEachUnityRange03: 1.00 # Price for each unity when buying between 50 and 85 credits.
