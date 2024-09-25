@@ -10,11 +10,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter @Getter
 @Entity
 @Table(name = "t020_communication")
 public class Communication {
-
     @Id
     @Column(name = "c020_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,44 +34,4 @@ public class Communication {
 
     @Column(name = "c020_message", columnDefinition = "TEXT")
     private String message;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Date getDtInc() {
-        return dtInc;
-    }
-
-    public void setDtInc(Date dtInc) {
-        this.dtInc = dtInc;
-    }
-
-    public Groupcommunication getGroupcommunication() {
-        return groupcommunication;
-    }
-
-    public void setGroupcommunication(Groupcommunication groupcommunication) {
-        this.groupcommunication = groupcommunication;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

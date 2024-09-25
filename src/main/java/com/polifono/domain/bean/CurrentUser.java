@@ -5,22 +5,21 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import com.polifono.domain.Player;
 import com.polifono.domain.enums.Role;
 
-@SuppressWarnings("serial")
+import lombok.Getter;
+
+@Getter
 public class CurrentUser extends org.springframework.security.core.userdetails.User {
 
-    private Player user;
+    private final Player user;
 
     public CurrentUser(Player user) {
         super(
-        	(user.getEmail() == null ? user.getLogin() : user.getEmail()), 
-        	user.getPassword(), 
+        	(user.getEmail() == null ? user.getLogin() : user.getEmail()),
+        	user.getPassword(),
         	AuthorityUtils.createAuthorityList(user.getRole().toString())
         );
-    	this.user = user;
-    }
 
-    public Player getUser() {
-        return user;
+    	this.user = user;
     }
 
     public Long getId() {

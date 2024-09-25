@@ -23,68 +23,85 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "t001_player")
 public class Player {
-
+    @Setter @Getter
     @Id
     @Column(name = "c001_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Setter @Getter
     @Column(name = "c001_dt_inc")
     private Date dtInc;
 
+    @Setter @Getter
     @Column(name = "c001_active")
     private boolean active;
 
+    @Setter @Getter
     @Column(name = "c001_email")
     private String email;
 
+    @Setter @Getter
     @JsonIgnore
     @Column(name = "c001_password")
     private String password;
 
+    @Setter @Getter
     @Column(name = "c001_name")
     private String name;
 
+    @Getter @Setter
     @Column(name = "c001_last_name")
     private String lastName;
 
     @Transient
     private String fullName;
 
+    @Setter @Getter
     @Column(name = "c001_score")
     private int score;
 
+    @Setter @Getter
     @Column(name = "c001_credit")
     private int credit;
 
+    @Getter @Setter
     @Column(name = "c001_coin")
     private int coin;
 
     @Column(name = "c001_role")
     private String role;
 
+    @Getter @Setter
     @Column(name = "c001_ind_email_confirmed")
     private boolean indEmailConfirmed;
 
+    @Getter @Setter
     @JsonIgnore
     @Column(name = "c001_email_confirmed")
     private String emailConfirmed;
 
+    @Getter @Setter
     @JsonIgnore
     @Column(name = "c001_password_reset")
     private String passwordReset;
 
+    @Setter @Getter
     @Column(name = "c001_phone")
     private String phone;
 
     // 1 = Male; 2 = Female.
+    @Setter @Getter
     @Column(name = "c001_sex")
     private int sex;
 
+    @Setter @Getter
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Column(name = "c001_dt_birth", columnDefinition = "DATE")
     private Date dtBirth;
@@ -92,110 +109,66 @@ public class Player {
     @Transient
     private String dtBirthStr;
 
+    @Setter
     @Transient
     private int dtBirthDay;
 
+    @Setter
     @Transient
     private int dtBirthMonth;
 
+    @Setter
     @Transient
     private int dtBirthYear;
 
+    @Setter @Getter
     @Column(name = "c001_address")
     private String address;
 
+    @Getter @Setter
     @JsonIgnore
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
     private List<PlayerGame> playerGameList;
 
+    @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "c001_id_creator")
     private Player creator;
 
+    @Getter @Setter
     @Column(name = "c001_login")
     private String login;
 
+    @Getter @Setter
     @Column(name = "c001_nationality")
     private String nationality;
 
+    @Getter @Setter
     @Column(name = "c001_city_of_birth")
     private String cityOfBirth;
 
+    @Getter @Setter
     @Column(name = "c001_doc_01")
     private String rg;
 
+    @Getter @Setter
     @Column(name = "c001_doc_01_exp")
     private String rgOrgExp;
 
+    @Getter @Setter
     @Column(name = "c001_about", columnDefinition = "TEXT")
     private String about;
 
+    @Getter @Setter
     @Column(name = "c018_id")
     private Long idFacebook;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Date getDtInc() {
-        return dtInc;
-    }
-
-    public void setDtInc(Date dtInc) {
-        this.dtInc = dtInc;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getEmailMD5() {
-
-        if (this.email == null || "".equals(email)) {
+        if (this.email == null || email.isEmpty()) {
             return "";
         }
 
         return MD5Util.md5Hex(email.toLowerCase());
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 
     public Role getRole() {
@@ -203,35 +176,7 @@ public class Player {
     }
 
     public void setRole(Role role) {
-        if (role == null) {
-            this.role = null;
-        } else {
-            this.role = role.toString();
-        }
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public int getSex() {
-        return sex;
-    }
-
-    public void setSex(int sex) {
-        this.sex = sex;
-    }
-
-    public Date getDtBirth() {
-        return dtBirth;
-    }
-
-    public void setDtBirth(Date dtBirth) {
-        this.dtBirth = dtBirth;
+        this.role = (role == null) ? null : role.toString();
     }
 
     public String getDtBirthStr() {
@@ -256,10 +201,6 @@ public class Player {
         return cal.get(Calendar.DAY_OF_MONTH);
     }
 
-    public void setDtBirthDay(int dtBirthDay) {
-        this.dtBirthDay = dtBirthDay;
-    }
-
     public int getDtBirthMonth() {
         if (this.dtBirth == null) {
             return -1;
@@ -268,10 +209,6 @@ public class Player {
         Calendar cal = Calendar.getInstance();
         cal.setTime(this.dtBirth);
         return cal.get(Calendar.MONTH);
-    }
-
-    public void setDtBirthMonth(int dtBirthMonth) {
-        this.dtBirthMonth = dtBirthMonth;
     }
 
     public int getDtBirthYear() {
@@ -284,87 +221,15 @@ public class Player {
         return cal.get(Calendar.YEAR);
     }
 
-    public void setDtBirthYear(int dtBirthYear) {
-        this.dtBirthYear = dtBirthYear;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public boolean isIndEmailConfirmed() {
-        return indEmailConfirmed;
-    }
-
-    public void setIndEmailConfirmed(boolean indEmailConfirmed) {
-        this.indEmailConfirmed = indEmailConfirmed;
-    }
-
-    public String getEmailConfirmed() {
-        return emailConfirmed;
-    }
-
-    public void setEmailConfirmed(String emailConfirmed) {
-        this.emailConfirmed = emailConfirmed;
-    }
-
-    public String getPasswordReset() {
-        return passwordReset;
-    }
-
-    public void setPasswordReset(String passwordReset) {
-        this.passwordReset = passwordReset;
-    }
-
-    public List<PlayerGame> getPlayerGameList() {
-        return playerGameList;
-    }
-
-    public void setPlayerGameList(List<PlayerGame> playerGameList) {
-        this.playerGameList = playerGameList;
-    }
-
-    public Player getCreator() {
-        return creator;
-    }
-
-    public void setCreator(Player creator) {
-        this.creator = creator;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     /**
      * Return the total quantity of credits: credit + specificCredit.
-     *
-     * @return
      */
     public int getTotalCredit() {
         return getCredit() + getSpecifiCredit();
     }
 
-    public int getCredit() {
-        return credit;
-    }
-
-    public void setCredit(int credit) {
-        this.credit = credit;
-    }
-
     /**
      * Return the quantity of specific credits.
-     *
-     * @return
      */
     public int getSpecifiCredit() {
         List<PlayerGame> list = getPlayerGameList();
@@ -382,72 +247,8 @@ public class Player {
         return specificCredit;
     }
 
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
-    public String getCityOfBirth() {
-        return cityOfBirth;
-    }
-
-    public void setCityOfBirth(String cityOfBirth) {
-        this.cityOfBirth = cityOfBirth;
-    }
-
-    public String getRg() {
-        return rg;
-    }
-
-    public void setRg(String rg) {
-        this.rg = rg;
-    }
-
-    public String getRgOrgExp() {
-        return rgOrgExp;
-    }
-
-    public void setRgOrgExp(String rgOrgExp) {
-        this.rgOrgExp = rgOrgExp;
-    }
-
-    public String getAbout() {
-        return about;
-    }
-
-    public void setAbout(String about) {
-        this.about = about;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getFullName() {
         return this.getName() + " " + this.getLastName();
-    }
-
-    public Long getIdFacebook() {
-        return idFacebook;
-    }
-
-    public void setIdFacebook(Long idFacebook) {
-        this.idFacebook = idFacebook;
-    }
-
-    public int getCoin() {
-        return coin;
-    }
-
-    public void setCoin(int coin) {
-        this.coin = coin;
     }
 
     /**
@@ -461,8 +262,6 @@ public class Player {
      * From 18001 to 21000 points = Level 8 = Copper
      * From 21001 to 24000 points = Level 9 = Silver
      * From 24001 to infinity = Level 10 = Gold
-     *
-     * @return
      */
     public Rank getRank() {
 
@@ -470,21 +269,21 @@ public class Player {
 
         if (score <= 1000) {
             return Rank.WHITE;
-        } else if (score > 1000 && score <= 3000) {
+        } else if (score <= 3000) {
             return Rank.YELLOW;
-        } else if (score > 3000 && score <= 5000) {
+        } else if (score <= 5000) {
             return Rank.ORANGE;
-        } else if (score > 5000 && score <= 6500) {
+        } else if (score <= 6500) {
             return Rank.RED;
-        } else if (score > 6500 && score <= 9000) {
+        } else if (score <= 9000) {
             return Rank.PURPLE;
-        } else if (score > 9000 && score <= 14000) {
+        } else if (score <= 14000) {
             return Rank.BROWN;
-        } else if (score > 14000 && score <= 18000) {
+        } else if (score <= 18000) {
             return Rank.BLACK;
-        } else if (score > 18000 && score <= 21000) {
+        } else if (score <= 21000) {
             return Rank.COPPER;
-        } else if (score > 21000 && score <= 24000) {
+        } else if (score <= 24000) {
             return Rank.SILVER;
         } else {
             return Rank.GOLD;

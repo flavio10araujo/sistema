@@ -8,11 +8,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter @Getter
 @Entity
 @Table(name = "t021_player_communication")
 public class PlayerCommunication {
-
     @Id
     @Column(name = "c021_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,28 +27,4 @@ public class PlayerCommunication {
     @ManyToOne
     @JoinColumn(name = "c020_id")
     private Communication communication;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public Communication getCommunication() {
-        return communication;
-    }
-
-    public void setCommunication(Communication communication) {
-        this.communication = communication;
-    }
 }

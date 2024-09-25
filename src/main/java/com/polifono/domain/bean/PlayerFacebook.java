@@ -2,99 +2,48 @@ package com.polifono.domain.bean;
 
 import org.json.JSONObject;
 
+import lombok.Getter;
+
 public class PlayerFacebook {
 
-	private Long id; 
-	private String firstName; 
-	private Integer timezone; 
-	private String email; 
-	private Boolean verified;	
-	private String middleName;	
-	private String gender;	
-	private String lastName;
+	@Getter private Long id;
+	@Getter private String firstName;
+	private Integer timezone;
+	@Getter private String email;
+	private Boolean verified;
+	private String middleName;
+	private String gender;
+	@Getter private String lastName;
 	private String link;
-	private String locale;	
-	private String name;	
+	private String locale;
+	@Getter private String name;
 	private String updatedTime;
-	
-	public PlayerFacebook(JSONObject jsonUsuario){
-		
-		String[] fields = JSONObject.getNames(jsonUsuario);
-		
+
+	public PlayerFacebook(JSONObject jsonUser) {
+
+		String[] fields = JSONObject.getNames(jsonUser);
+
 		for (String field : fields) {
-			if (field.equals("id")) {
-				id = jsonUsuario.getLong("id");
-				continue;
-			}
-			if (field.equals("first_name")) {
-				firstName = jsonUsuario.getString("first_name");
-				continue;
-			}
-			if (field.equals("timezone")) {
-				timezone = jsonUsuario.getInt("timezone");
-				continue;
-			}
-			if (field.equals("email")) {
-				email = jsonUsuario.getString("email");
-				continue;
-			}
-			if (field.equals("verified")) {
-				verified = jsonUsuario.getBoolean("verified");
-				continue;
-			}
-			if (field.equals("middle_name")) {
-				middleName = jsonUsuario.getString("middle_name");
-			}
-			if (field.equals("gender")) {
-				gender = jsonUsuario.getString("gender");
-				continue;
-			}
-			if (field.equals("last_name")) {
-				lastName = jsonUsuario.getString("last_name");
-				continue;
-			}
-			if (field.equals("link")) {
-				link = jsonUsuario.getString("link");
-				continue;
-			}
-			if (field.equals("locale")) {
-				locale = jsonUsuario.getString("locale");
-				continue;
-			}
-			if (field.equals("name")) {
-				name = jsonUsuario.getString("name");
-				continue;
-			}
-			if (field.equals("updated_time")) {
-				updatedTime = jsonUsuario.getString("updated_time");
-				continue;
+			switch (field) {
+				case "id" -> id = jsonUser.getLong("id");
+				case "first_name" -> firstName = jsonUser.getString("first_name");
+				case "timezone" -> timezone = jsonUser.getInt("timezone");
+				case "email" -> email = jsonUser.getString("email");
+				case "verified" -> verified = jsonUser.getBoolean("verified");
+				case "middle_name" -> middleName = jsonUser.getString("middle_name");
+				case "gender" -> gender = jsonUser.getString("gender");
+				case "last_name" -> lastName = jsonUser.getString("last_name");
+				case "link" -> link = jsonUser.getString("link");
+				case "locale" -> locale = jsonUser.getString("locale");
+				case "name" -> name = jsonUser.getString("name");
+				case "updated_time" -> updatedTime = jsonUser.getString("updated_time");
 			}
 		}
 	}
 
-	public Long getId () {
-		return id;
-	}
-	
-	public String getEmail() {
-		return email;
-	}
-
-	public String getName() {
-		return name;
-	}
-	
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	@Override
+    @Override
 	public String toString() {
-		return "UsuarioFacebook [id=" + id + ", firstName=" + firstName
+		return "UserFacebook [id=" + id + ", firstName=" + firstName
 				+ ", timezone=" + timezone + ", email=" + email + ", verified="
 				+ verified + ", middleName=" + middleName + ", gender="
 				+ gender + ", lastName=" + lastName + ", link=" + link
