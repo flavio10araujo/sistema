@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.polifono.common.properties.ConfigsCreditsProperties;
 import com.polifono.domain.Content;
 import com.polifono.domain.Diploma;
 import com.polifono.domain.Game;
@@ -36,9 +37,13 @@ import com.polifono.util.ContentUtil;
 import com.polifono.util.RandomStringUtil;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 public class GameController extends BaseController {
+
+    @Autowired
+    private ConfigsCreditsProperties configsCreditsProperties;
 
     @Autowired
     @Qualifier("playerServiceImpl")
@@ -424,8 +429,7 @@ public class GameController extends BaseController {
                 model.addAttribute("diploma", diploma);
 
                 // When the player finishes the last phase of the level, he gains n credits.
-                this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(),
-                        Integer.parseInt(applicationResourceBundle.getString("credits.levelCompleted"))));
+                this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(), configsCreditsProperties.getLevelCompleted()));
 
                 return URL_GAMES_ENDOFLEVEL;
             }
@@ -438,8 +442,7 @@ public class GameController extends BaseController {
                 model.addAttribute("diploma", diploma);
 
                 // When the player finishes the last phase of the last level of the game, he gains n credits.
-                this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(),
-                        Integer.parseInt(applicationResourceBundle.getString("credits.gameCompleted"))));
+                this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(this.currentAuthenticatedUser().getUser().getId(), configsCreditsProperties.getGameCompleted()));
 
                 return URL_GAMES_ENDOFGAME;
             }
@@ -469,9 +472,6 @@ public class GameController extends BaseController {
      * Return the nextPhase that the player has to do.
      * phases is a list of phases of a map with the flag opened equals true if the phase was already done by the player.
      * Besides from the phases already done, the next phase is also with the opened flag with the value true.
-     *
-     * @param phases
-     * @return
      */
     public final Phase setNextPhase(List<Phase> phases) {
         Phase nextPhase = null;

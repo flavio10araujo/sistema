@@ -24,57 +24,57 @@ public class EmailSendUtil {
     private static String emailNoReply;
     private static String emailGeneralTo;
 
-    @Value("${email.authentication.login}")
+    @Value("${app.email.authentication.login}")
     public void setEmailLogin(String emailLogin) {
         EmailSendUtil.emailLogin = emailLogin;
     }
 
-    @Value("${email.authentication.password}")
+    @Value("${app.email.authentication.password}")
     public void setEmailPassword(String emailPassword) {
         EmailSendUtil.emailPassword = emailPassword;
     }
 
-    @Value("${email.hostName}")
+    @Value("${app.email.hostName}")
     public void setEmailHostName(String emailHostName) {
         EmailSendUtil.emailHostName = emailHostName;
     }
 
-    @Value("${email.smtpPort}")
+    @Value("${app.email.smtpPort}")
     public void setEmailSmtpPort(String emailSmtpPort) {
         EmailSendUtil.emailSmtpPort = emailSmtpPort;
     }
 
-    @Value("${email.charset}")
+    @Value("${app.email.charset}")
     public void setEmailCharset(String emailCharset) {
         EmailSendUtil.emailCharset = emailCharset;
     }
 
-    @Value("${email.company}")
+    @Value("${app.general.name}")
     public void setEmailCompany(String emailCompany) {
         EmailSendUtil.emailCompany = emailCompany;
     }
 
-    @Value("${email.company.slogan}")
+    @Value("${app.general.slogan}")
     public void setEmailCompanySlogan(String emailCompanySlogan) {
         EmailSendUtil.emailCompanySlogan = emailCompanySlogan;
     }
 
-    @Value("${email.url}")
+    @Value("${app.general.url}")
     public void setEmailUrl(String emailUrl) {
         EmailSendUtil.emailUrl = emailUrl;
     }
 
-    @Value("${email.general}")
+    @Value("${app.email.accounts.general.address}")
     public void setEmailGeneral(String emailGeneral) {
         EmailSendUtil.emailGeneral = emailGeneral;
     }
 
-    @Value("${email.noreply}")
+    @Value("${app.email.accounts.noReply.address}")
     public void setEmailNoReply(String emailNoReply) {
         EmailSendUtil.emailNoReply = emailNoReply;
     }
 
-    @Value("${email.general.to}")
+    @Value("${app.email.accounts.general.to}")
     public void setEmailGeneralTo(String emailGeneralTo) {
         EmailSendUtil.emailGeneralTo = emailGeneralTo;
     }
@@ -102,27 +102,7 @@ public class EmailSendUtil {
             try {
                 MultiPartEmail hm = new MultiPartEmail();
 
-				/*
-				Gmail configuration.
-				hm.setHostName("smtp.gmail.com");
-				hm.setSslSmtpPort("587");
-				hm.setSmtpPort(Integer.parseInt("587"));
-				hm.setAuthentication("email@gmail.com", "senha");
-				hm.setTLS(true);
-				*/
-
-				/*
-				Integrator configuration.
-				hm.setHostName("localhost");
-				hm.setSmtpPort(Integer.parseInt("25"));
-				hm.setAuthentication(resourceBundle.getString("email.general"), resourceBundle.getString("email.general.password"));
-				hm.setCharset("UTF-8");
-				hm.setSubject(subject);
-				hm.setFrom(senderAddress);
-				hm.addTo(recipientAddress);
-				*/
-
-                // AWS configuration.
+				// AWS configuration.
                 hm.setHostName(emailHostName);
                 hm.setSmtpPort(Integer.parseInt(emailSmtpPort));
                 hm.setAuthentication(emailLogin, emailPassword);
@@ -164,18 +144,7 @@ public class EmailSendUtil {
             try {
                 MultiPartEmail hm = new MultiPartEmail();
 
-				/*
-				Integrator configuration.
-				hm.setHostName("localhost");
-				hm.setSmtpPort(Integer.parseInt("25"));
-				hm.setAuthentication(resourceBundle.getString("email.general"), resourceBundle.getString("email.general.password"));
-				hm.setCharset("UTF-8");
-				hm.setSubject(subject);
-				hm.setFrom(senderAddress);
-				hm.addTo(recipientAddress);
-				*/
-
-                // AWS configuration.
+				// AWS configuration.
                 hm.setHostName(emailHostName);
                 hm.setSmtpPort(Integer.parseInt(emailSmtpPort));
                 hm.setAuthentication(emailLogin, emailPassword);

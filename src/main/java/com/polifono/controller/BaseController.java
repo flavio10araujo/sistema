@@ -21,13 +21,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public abstract class BaseController {
 
-    public static ResourceBundle applicationResourceBundle;
     public static ResourceBundle messagesResourceBundle;
 
     private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
     static {
-        applicationResourceBundle = ResourceBundle.getBundle("application", Locale.getDefault());
         messagesResourceBundle = ResourceBundle.getBundle("messages/messages", Locale.getDefault());
     }
 

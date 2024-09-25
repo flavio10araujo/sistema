@@ -60,7 +60,7 @@ public class PagSeguroConfig {
     private PagSeguroConfig() {
     }
 
-    @Value("${pagSeguro.environment}")
+    @Value("${pagSeguro.environment.type}")
     public void setPagSeguroEnvironment(String pagSeguroEnvironment) {
         PagSeguroConfig.pagSeguroEnvironment = pagSeguroEnvironment;
     }

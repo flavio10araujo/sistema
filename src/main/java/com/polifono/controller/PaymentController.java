@@ -1,6 +1,7 @@
 package com.polifono.controller;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.polifono.common.properties.ConfigsCreditsProperties;
 import com.polifono.domain.Player;
 import com.polifono.domain.Transaction;
 import com.polifono.service.IPlayerService;
@@ -25,11 +27,15 @@ import br.com.uol.pagseguro.domain.checkout.Checkout;
 import br.com.uol.pagseguro.enums.Currency;
 import br.com.uol.pagseguro.exception.PagSeguroServiceException;
 import br.com.uol.pagseguro.properties.PagSeguroConfig;
+import br.com.uol.pagseguro.properties.PagSeguroSystem;
 import br.com.uol.pagseguro.service.NotificationService;
 import br.com.uol.pagseguro.service.TransactionSearchService;
 
 @Controller
 public class PaymentController extends BaseController {
+
+    @Autowired
+    private ConfigsCreditsProperties configsCreditsProperties;
 
     @Autowired
     private ITransactionService transactionService;
@@ -67,8 +73,8 @@ public class PaymentController extends BaseController {
 
         // TEACHER and ADMIN don't have limitations to buy credits.
         if (player.getRole().equals("USER")) {
-            int creditsBuyMin = Integer.parseInt(applicationResourceBundle.getString("credits.buy.min"));
-            int creditsBuyMax = Integer.parseInt(applicationResourceBundle.getString("credits.buy.max"));
+            int creditsBuyMin = configsCreditsProperties.getMinBuyCredits();
+            int creditsBuyMax = configsCreditsProperties.getMaxBuyCredits();
 
             if (quantity < creditsBuyMin || quantity > creditsBuyMax) {
                 model.addAttribute("codRegister", "2");
@@ -90,7 +96,8 @@ public class PaymentController extends BaseController {
         try {
             return "redirect:" + openPagSeguro(t, player, quantity);
         } catch (PagSeguroServiceException e) {
-            LOGGER.debug("error={}", e); //System.err.println(e.getMessage());
+            LOGGER.debug("error={}", e);
+            System.out.println(e.getMessage());
 
             model.addAttribute("codRegister", "2");
             model.addAttribute("msg", messagesResourceBundle.getString("msg.credits.error.access"));
@@ -115,7 +122,7 @@ public class PaymentController extends BaseController {
 
         checkout.addItem(
                 "0001", // Item's number.
-                applicationResourceBundle.getString("payment.nf.description"), // Item's name.
+                PagSeguroSystem.getPagSeguroPaymentServiceNfDescription(), // Item's name.
                 quantity, // Item's quantity.
                 this.getPriceForEachUnity(quantity), // Price for each unity.
                 new Long(0), // Weight.
@@ -137,7 +144,7 @@ public class PaymentController extends BaseController {
         Boolean onlyCheckoutCode = false;
         String checkoutURL = checkout.register(PagSeguroConfig.getAccountCredentials(), onlyCheckoutCode);
 
-        LOGGER.debug(checkoutURL); //System.out.println(checkoutURL);
+        LOGGER.debug(checkoutURL);
 
         return checkoutURL;
     }
@@ -309,23 +316,17 @@ public class PaymentController extends BaseController {
         return URL_BUYCREDITS;
     }
 
-    /**
-     * @param quantity
-     * @return
-     */
     private BigDecimal getPriceForEachUnity(int quantity) {
+        BigDecimal price;
+
         if (quantity <= 25) {
-            return new BigDecimal(applicationResourceBundle.getString("priceForEachUnityRange01"));
+            price = BigDecimal.valueOf(configsCreditsProperties.getPriceForEachUnityRange01());
+        } else if (quantity <= 49) {
+            price = BigDecimal.valueOf(configsCreditsProperties.getPriceForEachUnityRange02());
+        } else {
+            price = BigDecimal.valueOf(configsCreditsProperties.getPriceForEachUnityRange03());
         }
 
-        if (quantity >= 26 && quantity <= 49) {
-            return new BigDecimal(applicationResourceBundle.getString("priceForEachUnityRange02"));
-        }
-
-        if (quantity >= 50) {
-            return new BigDecimal(applicationResourceBundle.getString("priceForEachUnityRange03"));
-        }
-
-        return new BigDecimal(applicationResourceBundle.getString("priceForEachUnityRange03"));
+        return price.setScale(2, RoundingMode.HALF_UP);
     }
 }
