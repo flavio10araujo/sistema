@@ -102,7 +102,7 @@ pagSeguro:
 app:
   general:
     name: Polifono.com
-    slogan: A vida sem m\u00FAsica seria um engano.
+    slogan: A vida sem música seria um engano.
     url: www.polifono.com
   email:
     charset: UTF-8
