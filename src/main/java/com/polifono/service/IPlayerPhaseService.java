@@ -10,31 +10,22 @@ import com.polifono.dto.RankingDTO;
 import com.polifono.form.teacher.ReportGeneralForm;
 
 public interface IPlayerPhaseService {
-	
-	public PlayerPhase save(PlayerPhase o);
-	
-	//public Boolean delete(Integer id);
-	
-	//public PlayerPhase findOne(int id);
-		
-	//public List<PlayerPhase> findAll();
-	
-	
-	public List<PlayerPhase> findByPlayer(int playerId);
-	
-	public PlayerPhase findByPlayerPhaseAndStatus(int playerId, int phaseId, int phasestatusId);
-	
-	public PlayerPhase findLastPhaseCompleted(int playerId, int gameId);
-	
-	
-	public List<PlayerPhase> findForReportGeneral(ReportGeneralForm reportGeneralForm, int playerId);
 
-	public boolean isPhaseAlreadyCompletedByPlayer(Phase phase, Player user);
+	PlayerPhase save(PlayerPhase o);
 
-	public PlayerPhase setTestAttempt(Player user, Phase phase);
-	
-	public List<Game> filterPlayerPhasesListByGame(List<PlayerPhase> list);
-	
-	public List<RankingDTO> getRankingMonthly();
+	List<PlayerPhase> findByPlayer(int playerId);
 
+	PlayerPhase findByPlayerPhaseAndStatus(int playerId, int phaseId, int phasestatusId);
+
+	PlayerPhase findLastPhaseCompleted(int playerId, int gameId);
+
+	List<PlayerPhase> findForReportGeneral(ReportGeneralForm reportGeneralForm, int playerId);
+
+	boolean isPhaseAlreadyCompletedByPlayer(Phase phase, Player user);
+
+	PlayerPhase setTestAttempt(Player user, Phase phase);
+
+	List<Game> filterPlayerPhasesListByGame(List<PlayerPhase> list);
+
+	List<RankingDTO> getRankingMonthly();
 }

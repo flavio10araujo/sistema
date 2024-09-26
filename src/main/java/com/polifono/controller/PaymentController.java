@@ -125,7 +125,7 @@ public class PaymentController extends BaseController {
                 PagSeguroSystem.getPagSeguroPaymentServiceNfDescription(), // Item's name.
                 quantity, // Item's quantity.
                 this.getPriceForEachUnity(quantity), // Price for each unity.
-                new Long(0), // Weight.
+                0L, // Weight.
                 null // ShippingCost
         );
 

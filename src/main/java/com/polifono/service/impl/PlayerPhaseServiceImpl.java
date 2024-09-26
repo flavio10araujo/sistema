@@ -18,15 +18,15 @@ import com.polifono.repository.IPlayerPhaseRepository;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.util.DateUtil;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RequiredArgsConstructor
 @Service
 public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 
-    private IPlayerPhaseRepository repository;
-
-    @Autowired
-    public PlayerPhaseServiceImpl(IPlayerPhaseRepository repository) {
-        this.repository = repository;
-    }
+    private final IPlayerPhaseRepository repository;
 
     public final PlayerPhase save(PlayerPhase playerPhase) {
         return repository.save(playerPhase);
@@ -34,15 +34,11 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 
     /**
      * Return the last phase that the player has completed.
-     *
-     * @param playerId
-     * @param gameId
-     * @return
      */
     public final PlayerPhase findLastPhaseCompleted(int playerId, int gameId) {
         List<PlayerPhase> playerPhases = repository.findLastPhaseCompleted(playerId, gameId);
 
-        if (playerPhases.size() > 0) {
+        if (!playerPhases.isEmpty()) {
             return playerPhases.get(0);
         }
 
@@ -56,7 +52,7 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
     public final List<PlayerPhase> findByPlayer(int playerId) {
         List<PlayerPhase> list = repository.findByPlayer(playerId);
 
-        if (list == null || list.size() == 0) {
+        if (list == null || list.isEmpty()) {
             return null;
         }
 
@@ -65,12 +61,9 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 
     /**
      * Based on a list of playerPhase, get the games only once.
-     *
-     * @param list
-     * @return
      */
     public final List<Game> filterPlayerPhasesListByGame(List<PlayerPhase> list) {
-        List<Game> ret = new ArrayList<Game>();
+        List<Game> ret = new ArrayList<>();
 
         int gameId = 0;
 
@@ -84,16 +77,12 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
         return ret;
     }
 
-    /**
-     * @param playerId
-     * @return
-     */
     public final List<PlayerPhase> findForReportGeneral(ReportGeneralForm reportGeneralForm, int playerId) {
         List<PlayerPhase> list = repository.findForReportGeneral(playerId, reportGeneralForm.getGame().getId(), reportGeneralForm.getPhaseBegin(),
                 reportGeneralForm.getPhaseEnd());
 
         if (list == null) {
-            return new ArrayList<PlayerPhase>();
+            return new ArrayList<>();
         }
 
         return list;
@@ -101,26 +90,17 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 
     /**
      * Verify if the phase was already done by the player.
-     *
-     * @param phase
-     * @return
      */
     public boolean isPhaseAlreadyCompletedByPlayer(Phase phase, Player player) {
 
         PlayerPhase playerPhase = this.findByPlayerPhaseAndStatus(player.getId(), phase.getId(), 3);
 
         // The phase is already completed by this player.
-        if (playerPhase != null) {
-            return true;
-        }
-
-        return false;
+        return playerPhase != null;
     }
 
     /**
      * This method is used to register an attempt of doing the test.
-     *
-     * @param phase
      */
     public PlayerPhase setTestAttempt(Player player, Phase phase) {
         PlayerPhase playerPhase = this.findByPlayerPhaseAndStatus(player.getId(), phase.getId(), 2);
@@ -147,27 +127,23 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
      * The students that has achieved the highest scores.
      */
     public List<RankingDTO> getRankingMonthly() {
-        List<RankingDTO> ranking = new ArrayList<RankingDTO>();
+        List<RankingDTO> ranking = new ArrayList<>();
 
         Object[][] objects;
         try {
             objects = repository.getRanking(DateUtil.getFirstDayOfTheCurrentMonth(), DateUtil.getLastDayOfTheCurrentMonth());
         } catch (ParseException e) {
-            e.printStackTrace();
+            log.error("getRankingMonthly : ", e);
             return ranking;
         }
 
         for (Object[] o : objects) {
-            RankingDTO r = new RankingDTO();
             Player p = new Player();
-
             p.setId((int) o[0]);
             p.setName((String) o[1]);
             p.setLastName((String) o[2]);
 
-            r.setPlayer(p);
-            r.setScore(((Number) o[3]).intValue());
-
+            RankingDTO r = new RankingDTO(p, ((Number) o[3]).intValue());
             ranking.add(r);
         }
 

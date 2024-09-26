@@ -7,34 +7,33 @@ import com.polifono.domain.Content;
 
 public interface IContentService {
 
-    public Content save(Content o);
+    Content save(Content o);
 
-    public Boolean delete(Integer id);
+    boolean delete(Integer id);
 
-    public Optional<Content> findById(int id);
+    Optional<Content> findById(int id);
 
-    public List<Content> findAll();
+    List<Content> findAll();
 
-    public List<Content> findAllText();
+    List<Content> findAllText();
 
-    public List<Content> findContentsTextByGame(int gameId);
+    List<Content> findContentsTextByGame(int gameId);
 
-    public List<Content> findContentsTextByGameAndLevel(int gameId, int levelId);
+    List<Content> findContentsTextByGameAndLevel(int gameId, int levelId);
 
-    public List<Content> findContentsTextByMap(int mapId);
+    List<Content> findContentsTextByMap(int mapId);
 
-    public List<Content> findContentsTextByPhase(int phaseId);
+    List<Content> findContentsTextByPhase(int phaseId);
 
-    public List<Content> findAllTest();
+    List<Content> findAllTest();
 
-    public List<Content> findContentsTestByGame(int gameId);
+    List<Content> findContentsTestByGame(int gameId);
 
-    public List<Content> findContentsTestByGameAndLevel(int gameId, int levelId);
+    List<Content> findContentsTestByGameAndLevel(int gameId, int levelId);
 
-    public List<Content> findContentsTestByMap(int mapId);
+    List<Content> findContentsTestByMap(int mapId);
 
-    public List<Content> findContentsTestByPhase(int phaseId);
+    List<Content> findContentsTestByPhase(int phaseId);
 
-    public Content findByPhaseAndOrder(int phaseId, int contentOrder);
-
+    Content findByPhaseAndOrder(int phaseId, int contentOrder);
 }

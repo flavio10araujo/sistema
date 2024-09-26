@@ -9,11 +9,7 @@ import java.util.List;
 public class Util {
 
 	/**
-	 *
 	 * Explicação: Verifica se dentre uma determinada lista de objetos, algum dos valores está vazio "" ou 0 ou sem argumentos (no caso de uma lista).
-	 *
-	 * @param vargs
-	 * @return
 	 */
 	@SuppressWarnings ("rawtypes")
 	public static boolean isEmpty(Object... vargs) {
@@ -34,7 +30,6 @@ public class Util {
 	/**
 	 * Verifica se o número é nulo ou igual a zero.
 	 *
-	 * @param n
 	 * @return true se o número é nulo ou igual a zero.
 	 */
 	public static boolean isNumberEmpty(Number n) {
@@ -43,56 +38,29 @@ public class Util {
 
 	/**
 	 * Verifica se uma String é nula.
-	 *
-	 * @since 15/05/2012
-	 * @param String
-	 * @return boolean
 	 */
 	public static boolean isTextEmpty(String arg) {
-		if (arg == null || arg.trim().length() == 0) {
-			return true;
-		}
-		
-		return false;
-	}
-	
+        return arg == null || arg.trim().isEmpty();
+    }
+
 	/**
-	 *
 	 * Verifica se uma lista é nula/vazia.
-	 *
-	 * @param arg0
-	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
 	public static boolean isListEmpty(List arg0) {
-		if (arg0 == null || arg0.isEmpty()) {
-			return true;
-		}
-		
-		return false;
-	}
-	
+        return arg0 == null || arg0.isEmpty();
+    }
+
 	/**
 	 *
 	 * Verifica se um array é vazio.
-	 *
-	 * @param array
-	 * @return
 	 */
 	public static boolean isArrayEmpty(Object[] array) {
-		if (array == null || array.length <= 0) {
-			return true;
-		}
-		
-		return false;
-	}
-	
+        return array == null || array.length == 0;
+    }
+
 	/**
 	 * Lê uma URL.
-	 * 
-	 * @param url
-	 * @return
-	 * @throws IOException
 	 */
 	public static String readURL(URL url) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();

@@ -6,25 +6,24 @@ import java.util.Calendar;
 
 public class DateUtil {
 
-	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-	private static SimpleDateFormat simpleDateFormatYearMonthDay = new SimpleDateFormat("yyy-MM-dd");
+	private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	private static final SimpleDateFormat simpleDateFormatYearMonthDay = new SimpleDateFormat("yyy-MM-dd");
 
-	public static void main(String args[]) {
-		try {
+	public static void main(String[] args) {
+		//try {
 			//System.out.println(getFirstDayOfTheCurrentMonth());
 			//System.out.println(getLastDayOfTheCurrentMonth());
-			
+
 			//String d1Str = "2019-01-05";
 			//String d1Str = "05/01/2019";
 			//java.util.Date d1 = parseDateYearMonthDayFormat(d1Str);
 			//System.out.println(d1);
-			
+
 			//System.out.println(subtractMonth(new java.util.Date(), 2));
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		//} catch (Exception e) {
+			//e.printStackTrace();
+		//}
 	}
 
 	/**
@@ -34,13 +33,8 @@ public class DateUtil {
 	 * @param data an object of type Date
 	 */
 	public static String formatDate(Object data) {
-		if (data != null && !"".equals(data) && data instanceof String) {
-			//try {
-				return simpleDateFormat.format(data);
-			/*}
-			catch(IllegalArgumentException e) {
-				return "";
-			}*/
+		if (!"".equals(data) && data instanceof String) {
+			return simpleDateFormat.format(data);
 		}
 
 		return "";
@@ -57,19 +51,7 @@ public class DateUtil {
 
 		return simpleDateFormat.parse(data);
 	}
-	
-	/**
-	 * @return a java.util.Date object.
-	 * @param data is a string with a "YYYY-MM-DD" pattern.
-	 */
-	public static java.util.Date parseDateYearMonthDayFormat(String data) throws ParseException {
-		if (Util.isEmpty(data)) {
-			return null;
-		}
 
-		return simpleDateFormatYearMonthDay.parse(data);
-	}
-	
 	public static java.util.Date getFirstDayOfTheCurrentMonth() throws ParseException {
 		Calendar calendar = Calendar.getInstance();
 	    calendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -79,7 +61,7 @@ public class DateUtil {
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
 	}
-	
+
 	public static java.util.Date getLastDayOfTheCurrentMonth() throws ParseException {
 		Calendar calendar = Calendar.getInstance();
 	    calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
@@ -89,17 +71,16 @@ public class DateUtil {
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
 	}
-	
+
 	public static java.util.Date subtractMonth(java.util.Date currentDate, int subtract) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(currentDate);
 		cal.add(Calendar.MONTH, (subtract * -1));
 		return cal.getTime();
 	}
-	
-	public static java.util.Date getCurrentDateWithHourAndSeconds() throws ParseException {
+
+	public static java.util.Date getCurrentDateWithHourAndSeconds() {
 		Calendar calendar = Calendar.getInstance();
-		//System.out.println(calendar.getTime());
-	    return calendar.getTime();
+		return calendar.getTime();
 	}
 }

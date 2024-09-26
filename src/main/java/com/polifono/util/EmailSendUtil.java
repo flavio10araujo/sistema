@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class EmailSendUtil {
 
@@ -85,9 +88,9 @@ public class EmailSendUtil {
      */
     static class MailAsync extends Thread {
 
-        private String senderAddress;
-        private String recipientAddress;
-        private String subject;
+        private final String senderAddress;
+        private final String recipientAddress;
+        private final String subject;
         private String message;
 
         public MailAsync(String senderAddress, String subject, String message, String recipientAddress) {
@@ -111,8 +114,8 @@ public class EmailSendUtil {
                 hm.setFrom(senderAddress);
                 hm.addTo(recipientAddress);
 
-                message = HTMLEntitiesUtil.unhtmlentities(message);
-                message = HTMLEntitiesUtil.htmlentities(message);
+                message = HTMLEntitiesUtil.unHtmlEntities(message);
+                message = HTMLEntitiesUtil.htmlEntities(message);
 
                 hm.addPart(message, org.apache.commons.mail.Email.TEXT_HTML);
 
@@ -120,7 +123,7 @@ public class EmailSendUtil {
 
                 System.out.println("E-mail enviado!");
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("An email was not sent: ", e);
                 throw new RuntimeException("An email was not sent: ", e);
             }
         }
@@ -128,9 +131,9 @@ public class EmailSendUtil {
 
     static class MailSync {
 
-        private String senderAddress;
-        private String recipientAddress;
-        private String subject;
+        private final String senderAddress;
+        private final String recipientAddress;
+        private final String subject;
         private String message;
 
         public MailSync(String senderAddress, String subject, String message, String recipientAddress) {
@@ -153,8 +156,8 @@ public class EmailSendUtil {
                 hm.setFrom(senderAddress);
                 hm.addTo(recipientAddress);
 
-                message = HTMLEntitiesUtil.unhtmlentities(message);
-                message = HTMLEntitiesUtil.htmlentities(message);
+                message = HTMLEntitiesUtil.unHtmlEntities(message);
+                message = HTMLEntitiesUtil.htmlEntities(message);
 
                 hm.addPart(message, org.apache.commons.mail.Email.TEXT_HTML);
 
@@ -162,13 +165,13 @@ public class EmailSendUtil {
 
                 System.out.println("E-mail enviado!");
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("An email was not sent: ", e);
                 throw new RuntimeException("An email was not sent: ", e);
             }
         }
     }
 
-    public static void sendHtmlMail(boolean async, int messageType, String to, String[] args) throws Exception {
+    public static void sendHtmlMail(boolean async, int messageType, String to, String[] args) {
         String from = "", subject = "", message = "";
 
         if (messageType == 1) {
@@ -273,16 +276,10 @@ public class EmailSendUtil {
         }
     }
 
-    public static void sendMessageCommunication(boolean async, int messageType, String to, String[] args) throws Exception {
+    public static void sendMessageCommunication(boolean async, int messageType, String to, String[] args) {
         String from = "", subject = "", message = "";
 
-        if (messageType == 1) {
-
-        } else if (messageType == 2) {
-
-        } else if (messageType == 3) {
-
-        } else if (messageType == 4) {
+        if (messageType == 4) {
             from = emailGeneral;
             subject = "Sentimos sua falta na " + emailCompany + "... Acesse sua conta para continuar a aprender música!";
 
@@ -394,8 +391,6 @@ public class EmailSendUtil {
 
     /**
      * This method is used to send the email to the user confirm his email.
-     *
-     * @param player
      */
     public static void sendEmailConfirmRegister(Player player) {
         String[] args = new String[3];
@@ -406,14 +401,12 @@ public class EmailSendUtil {
         try {
             EmailSendUtil.sendHtmlMail(true, 1, player.getEmail(), args);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("sendEmailConfirmRegister", e);
         }
     }
 
     /**
      * This method is used to send the email to the user when he doesn't remember his password.
-     *
-     * @param player
      */
     public static void sendEmailPasswordReset(Player player) {
         String[] args = new String[3];
@@ -424,15 +417,12 @@ public class EmailSendUtil {
         try {
             EmailSendUtil.sendHtmlMail(true, 2, player.getEmail(), args);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("sendEmailPasswordReset", e);
         }
     }
 
     /**
      * Send one email of the type 3 (payment registered).
-     *
-     * @param player
-     * @param quantity
      */
     public static void sendEmailPaymentRegistered(Player player, int quantity) {
         String[] args = new String[2];
@@ -440,19 +430,16 @@ public class EmailSendUtil {
         args[1] = "" + quantity;
 
         try {
-            if (player.getEmail() != null && !"".equals(player.getEmail())) {
+            if (player.getEmail() != null && !player.getEmail().isEmpty()) {
                 EmailSendUtil.sendHtmlMail(true, 3, player.getEmail(), args);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("sendEmailPaymentRegistered", e);
         }
     }
 
     /**
      * Send one email of the type 4 (invitation to class).
-     *
-     * @param player
-     * @param classPlayer
      */
     public static void sendEmailInvitationToClass(Player player, ClassPlayer classPlayer) {
         String[] args = new String[3];
@@ -463,15 +450,12 @@ public class EmailSendUtil {
         try {
             EmailSendUtil.sendHtmlMail(true, 4, classPlayer.getPlayer().getEmail(), args);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("sendEmailInvitationToClass", e);
         }
     }
 
     /**
      * Send one email of the type 5 (contact).
-     *
-     * @param email
-     * @param message
      */
     public static void sendEmailContact(String email, String message) {
         String[] args = new String[2];
@@ -481,17 +465,14 @@ public class EmailSendUtil {
         try {
             EmailSendUtil.sendHtmlMail(true, 5, "", args);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("sendEmailContact", e);
         }
     }
 
     /**
-     * This method is used to send the email to list of players from the group communication of type groupcommunicationId.
-     *
-     * @param groupcommunicationId
-     * @param players
+     * This method is used to send the email to list of players from the group communication of type groupCommunicationId.
      */
-    public static void sendEmailCommunication(int groupcommunicationId, List<Player> players) {
+    public static void sendEmailCommunication(int groupCommunicationId, List<Player> players) {
         for (Player player : players) {
             String[] args = new String[5];
             args[0] = player.getName();
@@ -501,9 +482,9 @@ public class EmailSendUtil {
             args[4] = "(" + player.getRankLevel() + ") " + player.getRankColor();
 
             try {
-                EmailSendUtil.sendMessageCommunication(false, groupcommunicationId, player.getEmail(), args);
+                EmailSendUtil.sendMessageCommunication(false, groupCommunicationId, player.getEmail(), args);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("sendEmailCommunication", e);
             }
         }
     }

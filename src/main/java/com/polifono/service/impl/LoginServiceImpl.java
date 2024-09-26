@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +12,13 @@ import com.polifono.domain.Player;
 import com.polifono.repository.ILoginRepository;
 import com.polifono.service.ILoginService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class LoginServiceImpl implements ILoginService {
 
-    private ILoginRepository repository;
-
-    @Autowired
-    public LoginServiceImpl(ILoginRepository repository) {
-        this.repository = repository;
-    }
+    private final ILoginRepository repository;
 
     public Login registerLogin(Player player) {
         return repository.save(prepareForRegisterLogin(player));

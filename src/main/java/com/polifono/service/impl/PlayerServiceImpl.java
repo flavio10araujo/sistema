@@ -4,9 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.common.properties.ConfigsCreditsProperties;
@@ -25,24 +22,17 @@ import com.polifono.util.EmailUtil;
 import com.polifono.util.RandomStringUtil;
 import com.polifono.util.StringUtil;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@RequiredArgsConstructor
 @Service
 public class PlayerServiceImpl implements IPlayerService {
 
-    private ConfigsCreditsProperties configsCreditsProperties;
-
-    private IPlayerRepository repository;
-
-    private IPlayerGameService playerGameService;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(PlayerServiceImpl.class);
-
-    @Autowired
-    public PlayerServiceImpl(IPlayerRepository repository, IPlayerGameService playerGameService, ConfigsCreditsProperties configsCreditsProperties) {
-        this.repository = repository;
-        this.playerGameService = playerGameService;
-        this.configsCreditsProperties = configsCreditsProperties;
-    }
+    private final ConfigsCreditsProperties configsCreditsProperties;
+    private final IPlayerRepository repository;
+    private final IPlayerGameService playerGameService;
 
     public final Player create(Player player) {
         return repository.save(preparePlayerForCreation(player));
@@ -67,7 +57,7 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     public final List<Player> findAll() {
-        return (List<Player>) repository.findAll();
+        return repository.findAll();
     }
 
     public Player findByEmail(String email) {
@@ -87,14 +77,11 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     /**
-     * This method is used to login.
-     * This method was changed to permit that an user without email could access the system.
-     *
-     * @param email
-     * @return
+     * This method is used to log in.
+     * This method was changed to permit that a user without email could access the system.
      */
     public Optional<Player> findByEmailAndStatusForLogin(String email, boolean status) {
-        LOGGER.debug("Getting user by email={}", email.replaceFirst("@.*", "@***"));
+        log.debug("Getting user by email={}", email.replaceFirst("@.*", "@***"));
 
         Optional<Player> byEmail = repository.findByEmailAndStatusForLogin(email, status);
 
@@ -110,7 +97,7 @@ public class PlayerServiceImpl implements IPlayerService {
 
     @Override
     public List<Player> findByDateIncRange(Date dateBegin, Date dateEnd) {
-        return (List<Player>) repository.findByDateIncRange(dateBegin, dateEnd);
+        return repository.findByDateIncRange(dateBegin, dateEnd);
     }
 
     @Override
@@ -140,14 +127,10 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     /**
-     * Remove credits from an user.
+     * Remove credits from a user.
      * Analyze if the player has specific credits of the game passed.
      * In case affirmative, remove the specific credit from the game.
      * Otherwise, remove a general credit.
-     *
-     * @param player
-     * @param game
-     * @return
      */
     public Player removeOneCreditFromPlayer(Player player, Game game) {
         boolean hasSpecificCredits = false;
@@ -177,9 +160,6 @@ public class PlayerServiceImpl implements IPlayerService {
      * Verify if the player has enough credits to play the phase.
      * Return true, if the player has credits.
      * This method verify the generic credits and the specific credits for the game passed.
-     *
-     * @param phase
-     * @return
      */
     public boolean playerHasCredits(Player player, Phase phase) {
         player = this.findById(player.getId()).get();
@@ -208,44 +188,40 @@ public class PlayerServiceImpl implements IPlayerService {
     /**
      * Verify if the player has already confirmed his e-mail.
      * Return true if the player has already confirmed it. Return false otherwise.
-     *
-     * @param player
-     * @return
      */
     public boolean isEmailConfirmed(Player player) {
         player = this.findById(player.getId()).get();
 
-        if (player.isIndEmailConfirmed()) {
-            return true;
-        }
-
-        return false;
+        return player.isIndEmailConfirmed();
     }
 
     /**
      * Verify if the player has all the attributes mandatories when we are creating a new player.
      * If everything is OK, return an empty string.
      * Otherwise, return one string with the message of the error.
-     *
-     * @param player
-     * @return
      */
     public String validateCreatePlayer(Player player) {
         String msg = "";
 
-        if (player.getName() == null || player.getName().equals("")) {
+        if (player.getName() == null || player.getName().isEmpty()) {
             msg = msg + "<br />O nome precisa ser informado.";
         } else if (!player.getName().trim().contains(" ")) {
             msg = msg + "<br />Por favor, informe o nome e o sobrenome.";
         }
 
-        if (player.getEmail() == null || player.getEmail().equals("")) {
+        if (player.getEmail() == null || player.getEmail().isEmpty()) {
             msg = msg + "<br />O e-mail precisa ser informado.";
         } else if (!EmailUtil.validateEmail(player.getEmail())) {
             msg = msg + "<br />O e-mail informado não é válido.";
         }
 
-        if (player.getPassword() == null || player.getPassword().equals("")) {
+        msg = validatePassword(player, msg);
+
+        return msg;
+    }
+
+    private String validatePassword(Player player, String msg) {
+        if (player.getPassword() == null || player.getPassword().isEmpty()) {
             msg = msg + "<br />A senha precisa ser informada.";
         } else if (player.getPassword().length() < 6 || player.getPassword().length() > 20) {
             msg = msg + "<br />A senha precisa possuir entre 6 e 20 caracteres.";
@@ -257,25 +233,22 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     /**
-     * Verify if the player has all the attributes mandatories when the teacher are creating a new player.
+     * Verify if the player has all the mandatory attributes when the teacher are creating a new player.
      * If everything is OK, return an empty string.
      * Otherwise, return one string with the message of the error.
      * <p>
      * The difference between this method and the validateCreatePlayer is that here the player has a login and doesn't have an e-mail.
-     *
-     * @param player
-     * @return
      */
     public String validateCreatePlayerByTeacher(Player player) {
         String msg = "";
 
-        if (player.getName() == null || player.getName().equals("")) {
+        if (player.getName() == null || player.getName().isEmpty()) {
             msg = msg + "<br />O nome precisa ser informado.";
         } else if (!player.getName().trim().contains(" ")) {
             msg = msg + "<br />Por favor, informe o nome e o sobrenome.";
         }
 
-        if (player.getLogin() == null || player.getLogin().equals("")) {
+        if (player.getLogin() == null || player.getLogin().isEmpty()) {
             msg = msg + "<br />O login precisa ser informado.";
         } else if (player.getLogin().length() < 6 || player.getLogin().length() > 20) {
             msg = msg + "<br />O login precisa possuir entre 6 e 20 caracteres.";
@@ -283,31 +256,22 @@ public class PlayerServiceImpl implements IPlayerService {
             msg = msg + "<br />O login só deve possuir letras e números. Não deve possuir espaços, acentos ou demais caracteres especiais.";
         }
 
-        if (player.getPassword() == null || player.getPassword().equals("")) {
-            msg = msg + "<br />A senha precisa ser informada.";
-        } else if (player.getPassword().length() < 6 || player.getPassword().length() > 20) {
-            msg = msg + "<br />A senha precisa possuir entre 6 e 20 caracteres.";
-        } else if (!EmailUtil.validatePassword(player.getPassword())) {
-            msg = msg + "<br />A senha precisa possuir ao menos 1 número e ao menos 1 letra.";
-        }
+        msg = validatePassword(player, msg);
 
         return msg;
     }
 
     /**
-     * Verify if the player has all the attributes mandatories when we are updating a player.
-     *
-     * @param player
-     * @return
+     * Verify if the player has all the mandatory attributes when we are updating a player.
      */
     public String validateUpdateProfile(Player player) {
         String msg = "";
 
-        if (player.getName() == null || "".equals(player.getName().trim())) {
+        if (player.getName() == null || player.getName().trim().isEmpty()) {
             msg = "O nome precisa ser informado.<br />";
         }
 
-        if (player.getLastName() == null || "".equals(player.getLastName().trim())) {
+        if (player.getLastName() == null || player.getLastName().trim().isEmpty()) {
             msg = "O sobrenome precisa ser informado.<br />";
         }
 
@@ -315,24 +279,13 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     /**
-     * Verify if the player has all the attributes mandatories when he is trying to change his password.
+     * Verify if the player has all the mandatory attributes when he is trying to change his password.
      * If everything is OK, return an empty string.
      * Otherwise, return one string with the message of the error.
-     *
-     * @param player
-     * @return
      */
     public String validateChangePasswordPlayer(Player player) {
         String msg = "";
-
-        if (player.getPassword() == null || player.getPassword().equals("")) {
-            msg = msg + "<br />A senha precisa ser informada.";
-        } else if (player.getPassword().length() < 6 || player.getPassword().length() > 20) {
-            msg = msg + "<br />A senha precisa possuir entre 6 e 20 caracteres.";
-        } else if (!EmailUtil.validatePassword(player.getPassword())) {
-            msg = msg + "<br />A senha precisa possuir ao menos 1 número e ao menos 1 letra.";
-        }
-
+        msg = validatePassword(player, msg);
         return msg;
     }
 

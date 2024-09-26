@@ -3,28 +3,25 @@ package com.polifono.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Content;
 import com.polifono.repository.IContentRepository;
 import com.polifono.service.IContentService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class ContentServiceImpl implements IContentService {
 
-    private IContentRepository repository;
-
-    @Autowired
-    public ContentServiceImpl(IContentRepository repository) {
-        this.repository = repository;
-    }
+    private final IContentRepository repository;
 
     public final Content save(Content content) {
         return repository.save(content);
     }
 
-    public Boolean delete(Integer id) {
+    public boolean delete(Integer id) {
         Optional<Content> temp = repository.findById(id);
 
         if (temp.isPresent()) {
@@ -45,23 +42,18 @@ public class ContentServiceImpl implements IContentService {
     }
 
     public final List<Content> findAll() {
-        return (List<Content>) repository.findAll();
+        return repository.findAll();
     }
 
     /**
      * Only content with C008_ID = 2 (Text).
-     *
-     * @return
      */
     public final List<Content> findAllText() {
-        return (List<Content>) repository.findAllText();
+        return repository.findAllText();
     }
 
     /**
      * Only content with C008_ID = 2 (Text).
-     *
-     * @param gameId
-     * @return
      */
     public final List<Content> findContentsTextByGame(int gameId) {
         return repository.findContentsTextByGame(gameId);
@@ -69,10 +61,6 @@ public class ContentServiceImpl implements IContentService {
 
     /**
      * Only content with C008_ID = 2 (Text).
-     *
-     * @param gameId
-     * @param levelId
-     * @return
      */
     public final List<Content> findContentsTextByGameAndLevel(int gameId, int levelId) {
         return repository.findContentsTextByGameAndLevel(gameId, levelId);
@@ -80,9 +68,6 @@ public class ContentServiceImpl implements IContentService {
 
     /**
      * Only content with C008_ID = 2 (Text).
-     *
-     * @param mapId
-     * @return
      */
     public final List<Content> findContentsTextByMap(int mapId) {
         return repository.findContentsTextByMap(mapId);
@@ -90,9 +75,6 @@ public class ContentServiceImpl implements IContentService {
 
     /**
      * Only content with C008_ID = 2 (Text).
-     *
-     * @param phaseId
-     * @return
      */
     public final List<Content> findContentsTextByPhase(int phaseId) {
         return repository.findContentsTextByPhase(phaseId);
@@ -100,18 +82,13 @@ public class ContentServiceImpl implements IContentService {
 
     /**
      * Only content with C008_ID = 1 (Test).
-     *
-     * @return
      */
     public final List<Content> findAllTest() {
-        return (List<Content>) repository.findAllTest();
+        return repository.findAllTest();
     }
 
     /**
      * Only content with C008_ID = 1 (Test).
-     *
-     * @param gameId
-     * @return
      */
     public final List<Content> findContentsTestByGame(int gameId) {
         return repository.findContentsTestByGame(gameId);
@@ -119,10 +96,6 @@ public class ContentServiceImpl implements IContentService {
 
     /**
      * Only content with C008_ID = 1 (Test).
-     *
-     * @param gameId
-     * @param levelId
-     * @return
      */
     public final List<Content> findContentsTestByGameAndLevel(int gameId, int levelId) {
         return repository.findContentsTestByGameAndLevel(gameId, levelId);
@@ -130,9 +103,6 @@ public class ContentServiceImpl implements IContentService {
 
     /**
      * Only content with C008_ID = 1 (Test).
-     *
-     * @param mapId
-     * @return
      */
     public final List<Content> findContentsTestByMap(int mapId) {
         return repository.findContentsTestByMap(mapId);
@@ -140,9 +110,6 @@ public class ContentServiceImpl implements IContentService {
 
     /**
      * Only content with C008_ID = 1 (Test).
-     *
-     * @param phaseId
-     * @return
      */
     public final List<Content> findContentsTestByPhase(int phaseId) {
         return repository.findContentsTestByPhase(phaseId);

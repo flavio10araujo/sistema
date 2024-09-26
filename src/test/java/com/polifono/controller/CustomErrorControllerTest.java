@@ -1,5 +1,16 @@
 package com.polifono.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import com.polifono.AbstractControllerTest;
+
 /**
  * Unit tests for the CustomErrorController using Spring MVC Mocks.
  * <p>
@@ -15,7 +26,7 @@ public class CustomErrorControllerTest /*extends AbstractControllerTest*/ {
     }
 
     @Test
-    public void error404_WhenErro404Occurs_OpenError404Page() throws Exception {
+    public void whenError404Occurs_OpenError404Page() throws Exception {
         String uri = "/error404";
 
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri))
@@ -28,7 +39,7 @@ public class CustomErrorControllerTest /*extends AbstractControllerTest*/ {
     }
 
     @Test
-    public void error500_WhenError500Occurs_OpenError500Page() throws Exception {
+    public void whenError500Occurs_OpenError500Page() throws Exception {
         String uri = "/error500";
 
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri))

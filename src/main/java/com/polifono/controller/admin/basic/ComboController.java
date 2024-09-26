@@ -3,7 +3,6 @@ package com.polifono.controller.admin.basic;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,17 +16,15 @@ import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IQuestionService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @RestController
 public class ComboController extends BaseController {
 
-    @Autowired
-    private IMapService mapService;
-
-    @Autowired
-    private IPhaseService phaseService;
-
-    @Autowired
-    private IQuestionService questionService;
+    private final IMapService mapService;
+    private final IPhaseService phaseService;
+    private final IQuestionService questionService;
 
     @RequestMapping("/comboMap")
     public List<Combo> comboMap(@RequestParam(value = "gameId") String gameId, @RequestParam(value = "levelId") String levelId) {
@@ -36,9 +33,7 @@ public class ComboController extends BaseController {
         List<Map> auxiliar = mapService.findMapsByGameAndLevel(Integer.parseInt(gameId), Integer.parseInt(levelId));
 
         for (Map item : auxiliar) {
-            Combo combo = new Combo();
-            combo.setId(item.getId());
-            combo.setName(item.getOrder() + ". " + item.getName());
+            Combo combo = new Combo(item.getId(), item.getOrder() + ". " + item.getName());
             list.add(combo);
         }
 
@@ -52,9 +47,7 @@ public class ComboController extends BaseController {
         List<Phase> auxiliar = phaseService.findByMap(Integer.parseInt(mapId));
 
         for (Phase item : auxiliar) {
-            Combo combo = new Combo();
-            combo.setId(item.getId());
-            combo.setName(item.getOrder() + ". " + item.getName());
+            Combo combo = new Combo(item.getId(), item.getOrder() + ". " + item.getName());
             list.add(combo);
         }
 
@@ -63,28 +56,21 @@ public class ComboController extends BaseController {
 
     /**
      * In this method, we consider that mapId is always the first map of the list.
-     *
-     * @param gameId
-     * @param levelId
-     * @return
      */
     @RequestMapping(value = "/comboPhaseWithMap", produces = "application/json; charset=UTF-8")
     public List<Combo> comboPhase(@RequestParam(value = "gameId") String gameId, @RequestParam(value = "levelId") String levelId) {
-        List<Combo> list = new ArrayList<Combo>();
+        List<Combo> list = new ArrayList<>();
 
         List<Map> auxiliarMap = mapService.findMapsByGameAndLevel(Integer.parseInt(gameId), Integer.parseInt(levelId));
 
-        if (auxiliarMap != null && auxiliarMap.size() > 0) {
+        if (auxiliarMap != null && !auxiliarMap.isEmpty()) {
 
             List<Phase> auxiliar = phaseService.findByMap(auxiliarMap.get(0).getId());
 
             for (Phase item : auxiliar) {
-                Combo combo = new Combo();
-                combo.setId(item.getId());
-                combo.setName(item.getOrder() + ". " + item.getName());
+                Combo combo = new Combo(item.getId(), item.getOrder() + ". " + item.getName());
                 list.add(combo);
             }
-
         }
 
         return list;
@@ -92,14 +78,12 @@ public class ComboController extends BaseController {
 
     @RequestMapping(value = "/comboQuestion", produces = "application/json; charset=UTF-8")
     public List<Combo> comboQuestion(@RequestParam(value = "phaseId") String phaseId) {
-        List<Combo> list = new ArrayList<Combo>();
+        List<Combo> list = new ArrayList<>();
 
         List<Question> auxiliar = questionService.findByPhase(Integer.parseInt(phaseId));
 
         for (Question item : auxiliar) {
-            Combo combo = new Combo();
-            combo.setId(item.getId());
-            combo.setName(item.getOrder() + ". " + item.getName());
+            Combo combo = new Combo(item.getId(), item.getOrder() + ". " + item.getName());
             list.add(combo);
         }
 
