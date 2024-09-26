@@ -34,7 +34,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         registerLogin(authentication);
         handle(request, response, authentication);
-        //clearAuthenticationAttributes(request);
     }
 
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -98,20 +97,4 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             throw new IllegalStateException();
         }
     }
-
-    /*protected void clearAuthenticationAttributes(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            return;
-        }
-        session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-    }*/
-
-    /*public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
-        this.redirectStrategy = redirectStrategy;
-    }*/
-
-    /*protected RedirectStrategy getRedirectStrategy() {
-        return redirectStrategy;
-    }*/
 }

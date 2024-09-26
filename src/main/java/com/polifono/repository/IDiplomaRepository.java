@@ -11,7 +11,7 @@ import com.polifono.domain.Diploma;
 public interface IDiplomaRepository extends JpaRepository<Diploma, Integer> {
 
 	@Query("SELECT diploma FROM Diploma diploma WHERE diploma.player.id = :playerId ORDER BY diploma.dt DESC")
-	public List<Diploma> findByPlayer(@Param("playerId") int playerId);
-	
-	public Diploma findByCode(String code);
+	List<Diploma> findByPlayer(@Param("playerId") int playerId);
+
+	Diploma findByCode(String code);
 }

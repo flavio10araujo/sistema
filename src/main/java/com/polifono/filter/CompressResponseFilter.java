@@ -1,6 +1,7 @@
 package com.polifono.filter;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,9 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * This filter is used to compress the response content.
+ */
 @Component
 public class CompressResponseFilter implements Filter {
 
@@ -24,7 +28,7 @@ public class CompressResponseFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
 
-        if (!isCompress(req.getRequestURI())) {
+        if (!shouldCompress(req.getRequestURI())) {
             filterChain.doFilter(request, response);
         } else {
             HtmlResponseWrapper capturingResponseWrapper = new HtmlResponseWrapper((HttpServletResponse) response);
@@ -49,26 +53,22 @@ public class CompressResponseFilter implements Filter {
     }
 
     /**
-     * Return true if the content need to be compress.
-     *
-     * @param uri
-     * @return
+     * Return true if the content need to be compressed.
      */
-    public boolean isCompress(String uri) {
-        if (uri.contains(".js") ||
-                uri.contains(".css") ||
-                uri.contains(".ico") ||
-                uri.contains(".png") ||
-                uri.contains(".jpg") ||
-                uri.contains(".gif") ||
-                uri.contains(".bmp") ||
-                uri.contains(".pdf")) {
+    public boolean shouldCompress(String uri) {
+        Set<String> excludedExtensions = Set.of(".js", ".css", ".ico", ".png", ".jpg", ".gif", ".bmp", ".pdf");
+        Set<String> excludedPaths = Set.of("/static/", "/vendors/", "/diploma/");
 
-            return false;
+        for (String ext : excludedExtensions) {
+            if (uri.contains(ext)) {
+                return false;
+            }
         }
 
-        if (uri.contains("/static/") || uri.contains("/vendors/") || uri.contains("/diploma/")) {
-            return false;
+        for (String path : excludedPaths) {
+            if (uri.contains(path)) {
+                return false;
+            }
         }
 
         return true;
