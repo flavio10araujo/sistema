@@ -1,9 +1,9 @@
 package com.polifono.controller.teacher;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,31 +20,28 @@ import com.polifono.service.IPlayerService;
 import com.polifono.util.EmailSendUtil;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@RequiredArgsConstructor
+@Slf4j
 @Controller
 @RequestMapping("/teacher")
 public class StudentController extends BaseController {
 
     public static final String URL_ADMIN_BASIC = "teacher/student";
     public static final String URL_ADMIN_BASIC_INDEX = "teacher/student/index";
-    public static final String URL_ADMIN_BASIC_EDIT = "teacher/student/editPage";
-    public static final String URL_ADMIN_BASIC_SAVEPAGE = "teacher/student/savepage";
+    public static final String URL_ADMIN_BASIC_SAVE_PAGE = "teacher/student/savepage";
 
-    @Autowired
-    private IClassService classService;
-
-    @Autowired
-    private IPlayerService playerService;
-
-    @Autowired
-    private IClassPlayerService classPlayerService;
+    private final IClassService classService;
+    private final IPlayerService playerService;
+    private final IClassPlayerService classPlayerService;
 
     public static final String REDIRECT_HOME = "redirect:/";
 
     @RequestMapping(value = { "/student", "/student/savepage" }, method = RequestMethod.GET)
     public String savePage(HttpSession session, Model model) {
-        model.addAttribute("classes",
-                (ArrayList<com.polifono.domain.Class>) classService.findByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
+        model.addAttribute("classes", classService.findByTeacherAndStatus(Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId(), true));
         model.addAttribute("classPlayer", new ClassPlayer());
 
         if (session.getAttribute("clazzId") != null) {
@@ -53,10 +50,10 @@ public class StudentController extends BaseController {
             model.addAttribute("classFilter", filterClass);
 
             model.addAttribute("classPlayers",
-                    classPlayerService.findByTeacherAndClass(currentAuthenticatedUser().getUser().getId(), (int) session.getAttribute("clazzId")));
+                    classPlayerService.findByTeacherAndClass(Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId(),
+                            (int) session.getAttribute("clazzId")));
         } else {
             model.addAttribute("classFilter", new com.polifono.domain.Class());
-            //model.addAttribute("classPlayers", (ArrayList<ClassPlayer>) classPlayerService.findClassPlayersByTeacher(currentAuthenticatedUser().getUser().getId()));
         }
 
         return URL_ADMIN_BASIC_INDEX;
@@ -64,7 +61,6 @@ public class StudentController extends BaseController {
 
     @RequestMapping(value = { "/student" }, method = RequestMethod.POST)
     public String setFilter(HttpSession session, @ModelAttribute("clazz") com.polifono.domain.Class clazz) {
-
         if (clazz.getId() > 0) {
             session.setAttribute("clazzId", clazz.getId());
         } else {
@@ -79,14 +75,18 @@ public class StudentController extends BaseController {
 
         try {
             // If the student's email was not informed.
-            if (classPlayer.getPlayer() == null || classPlayer.getPlayer().getEmail() == null || "".equals(classPlayer.getPlayer().getEmail())) {
+            if (classPlayer.getPlayer() == null || classPlayer.getPlayer().getEmail() == null || classPlayer.getPlayer().getEmail().isEmpty()) {
                 throw new Exception();
             }
 
             // The teacher only can add players in his own classes.
-            com.polifono.domain.Class currentClass = classService.findById(classPlayer.getClazz().getId()).get();
+            Optional<com.polifono.domain.Class> currentClass = classService.findById(classPlayer.getClazz().getId());
 
-            if (currentClass.getPlayer().getId() != currentAuthenticatedUser().getUser().getId())
+            // If the class doesn't exist.
+            if (currentClass.isEmpty())
+                return REDIRECT_HOME;
+
+            if (currentClass.get().getPlayer().getId() != Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId())
                 return REDIRECT_HOME;
 
             String emailLogin = classPlayer.getPlayer().getEmail();
@@ -104,18 +104,18 @@ public class StudentController extends BaseController {
                 // If the login is not registered at the system as well.
                 if (classPlayer.getPlayer() == null) {
                     redirectAttributes.addFlashAttribute("message", "studentNotFound");
-                    return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+                    return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
                 }
             }
 
             // Verify if the player is already registered in this class.
             List<ClassPlayer> classPlayerAux = classPlayerService.findByClassAndPlayer(classPlayer.getClazz().getId(), classPlayer.getPlayer().getId());
 
-            if (classPlayerAux != null && classPlayerAux.size() > 0) {
+            if (classPlayerAux != null && !classPlayerAux.isEmpty()) {
 
                 ClassPlayer classPlayerItem = classPlayerAux.get(0);
 
-                // If the player is already registered and he is not disabled.
+                // If the player is already registered, and he is not disabled.
                 if (classPlayerItem.getStatus() != 3) {
                     redirectAttributes.addFlashAttribute("message", "studentAlreadyRegistered");
                 }
@@ -126,7 +126,7 @@ public class StudentController extends BaseController {
                     redirectAttributes.addFlashAttribute("message", "studentWasDisabled");
                 }
 
-                return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+                return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
             }
 
             //Originalmente, o aluno era cadastrado como pendente e ele somente passaria a integrar a sala de aula após confirmar sua participação através de um e-mail recebido.
@@ -141,38 +141,38 @@ public class StudentController extends BaseController {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/student/resendemail/{id}", method = RequestMethod.GET)
-    public String resendemail(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes, Model model) {
+    public String resendEmail(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes, Model model) {
 
         try {
             // The teacher only can send email to students from his own classes.
-            ClassPlayer current = classPlayerService.findById(id.intValue()).get();
+            Optional<ClassPlayer> current = classPlayerService.findById(id.intValue());
 
             // If the classPlayer doesn't exist.
-            if (current == null)
+            if (current.isEmpty())
                 return REDIRECT_HOME;
 
             // Verifying if the teacher logged in is the owner of this class.
-            if (current.getClazz().getPlayer().getId() != currentAuthenticatedUser().getUser().getId())
+            if (current.get().getClazz().getPlayer().getId() != Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId())
                 return REDIRECT_HOME;
 
             // Verifying if the student is not in the Pending status anymore.
-            if (current.getStatus() != 1) {
+            if (current.get().getStatus() != 1) {
                 redirectAttributes.addFlashAttribute("message", "studentNotPending");
-                return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+                return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
             }
 
-            EmailSendUtil.sendEmailInvitationToClass(currentAuthenticatedUser().getUser(), current);
+            EmailSendUtil.sendEmailInvitationToClass(Objects.requireNonNull(currentAuthenticatedUser()).getUser(), current.get());
 
             redirectAttributes.addFlashAttribute("message", "emailSent");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error sending email to student: {}", e.getMessage());
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/student/{operation}/{id}", method = RequestMethod.GET)
@@ -181,14 +181,14 @@ public class StudentController extends BaseController {
 
         try {
             // The teacher only can edit/delete his own classes.
-            ClassPlayer current = classPlayerService.findById(id.intValue()).get();
+            Optional<ClassPlayer> current = classPlayerService.findById(id.intValue());
 
             // If the classPlayer doesn't exist.
-            if (current == null)
+            if (current.isEmpty())
                 return REDIRECT_HOME;
 
             // Verifying if the teacher logged in is the owner of this class.
-            if (current.getClazz().getPlayer().getId() != currentAuthenticatedUser().getUser().getId())
+            if (current.get().getClazz().getPlayer().getId() != Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId())
                 return REDIRECT_HOME;
 
             if (operation.equals("delete")) {
@@ -199,9 +199,9 @@ public class StudentController extends BaseController {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error deleting student: {}", e.getMessage());
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
     }
 }

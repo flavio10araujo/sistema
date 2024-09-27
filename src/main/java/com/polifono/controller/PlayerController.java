@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -32,28 +30,24 @@ import com.polifono.util.Util;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@RequiredArgsConstructor
 @Controller
 public class PlayerController extends BaseController {
 
-    @Autowired
-    private IPlayerService playerService;
-
-    @Autowired
-    private IClassPlayerService classPlayerService;
-
-    @Autowired
-    private LoginServiceImpl loginService;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(PlayerController.class);
-
     public static final String URL_INDEX = "index";
-    public static final String URL_EMAILCONFIRMATION = "emailconfirmation";
-    public static final String URL_PASSWORDRESET = "index";
-    public static final String URL_CLASSINVITATION = "classinvitation";
-
+    public static final String URL_EMAIL_CONFIRMATION = "emailconfirmation";
+    public static final String URL_PASSWORD_RESET = "index";
+    public static final String URL_CLASS_INVITATION = "classinvitation";
     public static final String REDIRECT_HOME = "redirect:/";
-    public static final String REDIRECT_CLASSINVITATION = "redirect:/classinvitation";
+    public static final String REDIRECT_CLASS_INVITATION = "redirect:/classinvitation";
+
+    private final IPlayerService playerService;
+    private final IClassPlayerService classPlayerService;
+    private final LoginServiceImpl loginService;
 
     @RequestMapping(value = { "/player/create" }, method = RequestMethod.POST)
     public final synchronized String createPlayer(HttpServletRequest request, final Model model, @ModelAttribute("player") Player player) {
@@ -61,7 +55,7 @@ public class PlayerController extends BaseController {
         model.addAttribute("playerResend", new Player());
 
         if (player == null) {
-            LOGGER.debug("/player/create POST player is null");
+            log.debug("/player/create POST player is null");
             model.addAttribute("player", new Player());
             return URL_INDEX;
         }
@@ -69,7 +63,7 @@ public class PlayerController extends BaseController {
         // Verify if the email is already in use.
         Player playerOld = null;
 
-        if (player.getEmail() != null && !"".equals(player.getEmail().trim())) {
+        if (player.getEmail() != null && !player.getEmail().trim().isEmpty()) {
             player.setEmail(EmailUtil.avoidWrongDomain(player.getEmail()));
             playerOld = playerService.findByEmail(player.getEmail());
         }
@@ -83,7 +77,7 @@ public class PlayerController extends BaseController {
             String msg = playerService.validateCreatePlayer(player);
 
             // If there is not errors.
-            if (msg.equals("")) {
+            if (msg.isEmpty()) {
                 String password = player.getPassword();
 
                 player.setName(StringUtil.formatNamePlayer(player.getName()));
@@ -104,8 +98,7 @@ public class PlayerController extends BaseController {
                 try {
                     request.login(player.getEmail(), password);
                 } catch (ServletException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    log.error("Error in the login of the player {} ", player.getEmail());
                 }
 
                 return REDIRECT_HOME;
@@ -120,19 +113,19 @@ public class PlayerController extends BaseController {
     }
 
     @RequestMapping(value = { "/emailconfirmation" }, method = RequestMethod.GET)
-    public final String emailconfirmation(final Model model) {
+    public final String emailConfirmation(final Model model) {
         model.addAttribute("player", new Player());
         model.addAttribute("playerResend", new Player());
-        return URL_EMAILCONFIRMATION;
+        return URL_EMAIL_CONFIRMATION;
     }
 
     @RequestMapping(value = { "/emailconfirmation" }, method = RequestMethod.POST)
-    public final String emailconfirmationsubmit(final Model model, @ModelAttribute("player") Player player) {
+    public final String emailConfirmationSubmit(final Model model, @ModelAttribute("player") Player player) {
         model.addAttribute("playerResend", new Player());
 
         if (player == null) {
             model.addAttribute("player", new Player());
-            return URL_EMAILCONFIRMATION;
+            return URL_EMAIL_CONFIRMATION;
         }
 
         // Verify if there is a player with this email.
@@ -171,17 +164,17 @@ public class PlayerController extends BaseController {
             }
         }
 
-        return URL_EMAILCONFIRMATION;
+        return URL_EMAIL_CONFIRMATION;
     }
 
     @RequestMapping(value = { "/emailconfirmationresend" }, method = RequestMethod.POST)
-    public final String emailconfirmationresend(final Model model, @ModelAttribute("playerResend") Player playerResend) {
+    public final String emailConfirmationResend(final Model model, @ModelAttribute("playerResend") Player playerResend) {
 
         model.addAttribute("player", new Player());
 
         if (playerResend == null) {
             model.addAttribute("playerResend", new Player());
-            return URL_EMAILCONFIRMATION;
+            return URL_EMAIL_CONFIRMATION;
         }
 
         // Verify if there is a player with this email.
@@ -213,24 +206,24 @@ public class PlayerController extends BaseController {
             }
         }
 
-        return URL_EMAILCONFIRMATION;
+        return URL_EMAIL_CONFIRMATION;
     }
 
     @RequestMapping(value = { "/passwordreset" }, method = RequestMethod.GET)
-    public final String passwordreset(final Model model) {
+    public final String passwordReset(final Model model) {
         model.addAttribute("player", new Player());
         model.addAttribute("playerResend", new Player());
-        return URL_PASSWORDRESET;
+        return URL_PASSWORD_RESET;
     }
 
     @RequestMapping(value = { "/passwordresetresend" }, method = RequestMethod.POST)
-    public final String passwordreseteresend(final Model model, @ModelAttribute("playerResend") Player playerResend) {
+    public final String passwordResetResend(final Model model, @ModelAttribute("playerResend") Player playerResend) {
 
         model.addAttribute("player", new Player());
 
         if (playerResend == null) {
             model.addAttribute("playerResend", new Player());
-            return URL_PASSWORDRESET;
+            return URL_PASSWORD_RESET;
         }
 
         // Verify if there is a player with this email.
@@ -270,16 +263,16 @@ public class PlayerController extends BaseController {
             model.addAttribute("playerResend", new Player());
         }
 
-        return URL_PASSWORDRESET;
+        return URL_PASSWORD_RESET;
     }
 
     @RequestMapping(value = { "/passwordreset" }, method = RequestMethod.POST)
-    public final String passwordresetsubmit(final Model model, @ModelAttribute("player") Player player) {
+    public final String passwordResetSubmit(final Model model, @ModelAttribute("player") Player player) {
         model.addAttribute("playerResend", new Player());
 
         if (player == null) {
             model.addAttribute("player", new Player());
-            return URL_PASSWORDRESET;
+            return URL_PASSWORD_RESET;
         }
 
         // Verify if there is a player with this email.
@@ -310,8 +303,8 @@ public class PlayerController extends BaseController {
                 playerOld.setPassword(player.getPassword());
                 String msg = playerService.validateChangePasswordPlayer(playerOld);
 
-                // If there is not errors.
-                if (msg.equals("")) {
+                // If there is no errors.
+                if (msg.isEmpty()) {
                     playerOld.setPassword(StringUtil.encryptPassword(playerOld.getPassword()));
                     playerOld.setPasswordReset(""); // If the user has changed the password successfully, the reset code is cleaned.
                     playerService.save(playerOld);
@@ -332,36 +325,36 @@ public class PlayerController extends BaseController {
             }
         }
 
-        return URL_PASSWORDRESET;
+        return URL_PASSWORD_RESET;
     }
 
     @RequestMapping(value = { "/classinvitation" }, method = RequestMethod.GET)
-    public final String classinvitation(final Model model) {
+    public final String classInvitation(final Model model) {
         // Get all the invitation to classes that the student hasn't confirmed his participation yet.
         List<ClassPlayer> classPlayers = classPlayerService.findByPlayerAndStatus(currentAuthenticatedUser().getUser().getId(), 1);
         model.addAttribute("classPlayers", classPlayers);
-        return URL_CLASSINVITATION;
+        return URL_CLASS_INVITATION;
     }
 
     @RequestMapping(value = { "/classinvitation/{id}" }, method = RequestMethod.GET)
-    public final String classinvitationsubmit(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes, final Model model) {
+    public final String classInvitationSubmit(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes, final Model model) {
 
         try {
             Optional<ClassPlayer> currentOpt = classPlayerService.findById(id.intValue());
 
-            if (!currentOpt.isPresent()) {
+            if (currentOpt.isEmpty()) {
                 return REDIRECT_HOME;
             }
 
             ClassPlayer current = currentOpt.get();
 
             // Verifying if the student logged in is not the player of this classPlayer.
-            if (current.getPlayer().getId() != currentAuthenticatedUser().getUser().getId())
+            if (current.getPlayer().getId() != Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId())
                 return REDIRECT_HOME;
 
             // If the player has already confirmed his participation in this class.
             if (current.getStatus() != 1)
-                return URL_CLASSINVITATION;
+                return URL_CLASS_INVITATION;
 
             if (classPlayerService.changeStatus(id.intValue(), 2)) {
                 redirectAttributes.addFlashAttribute("message", "success");
@@ -369,30 +362,24 @@ public class PlayerController extends BaseController {
                 redirectAttributes.addFlashAttribute("message", "unsuccess");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error in the classInvitationSubmit method. {}", e.getMessage());
         }
 
-        return REDIRECT_CLASSINVITATION;
+        return REDIRECT_CLASS_INVITATION;
     }
 
     /**
      * Method used when the user does the login with his Facebook account.
-     *
-     * @param
-     * @return
-     * @throws MalformedURLException
-     * @throws IOException
      */
     @RequestMapping("/loginfb")
     public final synchronized String loginfb(HttpServletRequest request, final Model model, String code) {
-
         try {
             JSONObject resp = new JSONObject(
                     Util.readURL(new URL("https://graph.facebook.com/v2.12/me?fields=email,first_name,last_name&access_token=" + code)));
             PlayerFacebook playerFacebook = new PlayerFacebook(resp);
 
-            if (playerFacebook == null || playerFacebook.getId() == null) {
-                System.out.println("loginfb - playerFacebook is null");
+            if (playerFacebook.getId() == null) {
+                log.warn("loginFb - playerFacebook is null");
                 return URL_INDEX;
             }
 

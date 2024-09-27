@@ -38,8 +38,7 @@ public class PlayervideoController extends BaseController {
     public List<PlayervideoDTO> playerVideosGeneral(@RequestParam(value = "restriction") String restriction) {
 
         try {
-            // codigo provisorio
-
+            // TODO - codigo provisorio
             if (restriction == null || restriction.isEmpty()) {
                 restriction = "0";
             }
@@ -69,7 +68,6 @@ public class PlayervideoController extends BaseController {
     }
 
     public boolean verifyRestriction(String restriction, int id) {
-
         if (restriction == null || restriction.isEmpty() || "0".equals(restriction)) {
             return true;
         }
@@ -111,7 +109,7 @@ public class PlayervideoController extends BaseController {
 
             return convertToDto(playervideoService.findAllByContent(content.get(), pageable));
         } catch (Exception e) {
-            return new ArrayList<PlayervideoDTO>();
+            return new ArrayList<>();
         }
     }
 

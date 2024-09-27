@@ -3,9 +3,6 @@ package com.polifono.config;
 import java.io.IOException;
 import java.util.Collection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -19,16 +16,16 @@ import com.polifono.service.impl.LoginServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@RequiredArgsConstructor
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomAuthenticationSuccessHandler.class);
-
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-
-    @Autowired
-    private LoginServiceImpl loginService;
+    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private final LoginServiceImpl loginService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -43,7 +40,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             String targetUrl = determineTargetUrl(authentication);
 
             if (response.isCommitted()) {
-                LOGGER.debug("Response has already been committed. Unable to redirect to " + targetUrl);
+                log.debug("Response has already been committed. Unable to redirect to {}", targetUrl);
                 return;
             }
 
@@ -53,11 +50,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         }
     }
 
-    private final void registerLogin(Authentication authentication) {
+    private void registerLogin(Authentication authentication) {
         loginService.registerLogin(currentAuthenticatedUser(authentication).getUser());
     }
 
-    private final CurrentUser currentAuthenticatedUser(Authentication authentication) {
+    private CurrentUser currentAuthenticatedUser(Authentication authentication) {
         CurrentUser currentUser = null;
 
         if (authentication != null && authentication.getPrincipal() instanceof CurrentUser) {

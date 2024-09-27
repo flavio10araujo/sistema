@@ -10,15 +10,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
+    private final UserDetailsService userDetailsService;
+    private final CustomAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -48,9 +48,7 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/")
                 .permitAll());
 
-        http.csrf(csrf -> csrf
-                .ignoringRequestMatchers(request -> "/pagseguronotification".equals(request.getRequestURI())));
-        //http.csrf().ignoringAntMatchers("/pagseguronotification");
+        http.csrf(csrf -> csrf.ignoringRequestMatchers(request -> "/pagseguronotification".equals(request.getRequestURI())));
 
         return http.build();
     }

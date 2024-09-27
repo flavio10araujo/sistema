@@ -28,7 +28,7 @@ public class ComboController extends BaseController {
 
     @RequestMapping("/comboMap")
     public List<Combo> comboMap(@RequestParam(value = "gameId") String gameId, @RequestParam(value = "levelId") String levelId) {
-        List<Combo> list = new ArrayList<Combo>();
+        List<Combo> list = new ArrayList<>();
 
         List<Map> auxiliar = mapService.findMapsByGameAndLevel(Integer.parseInt(gameId), Integer.parseInt(levelId));
 
@@ -42,7 +42,7 @@ public class ComboController extends BaseController {
 
     @RequestMapping(value = "/comboPhase", produces = "application/json; charset=UTF-8")
     public List<Combo> comboPhase(@RequestParam(value = "mapId") String mapId) {
-        List<Combo> list = new ArrayList<Combo>();
+        List<Combo> list = new ArrayList<>();
 
         List<Phase> auxiliar = phaseService.findByMap(Integer.parseInt(mapId));
 
