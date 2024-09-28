@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.SavedRequest;
@@ -17,14 +16,12 @@ import com.polifono.service.impl.LoginServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private final RedirectStrategy redirectStrategy;
     private final LoginServiceImpl loginService;
 
     @Override
@@ -33,14 +30,13 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         handle(request, response, authentication);
     }
 
-    protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+    private void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         SavedRequest savedRequest = (SavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
 
         if (savedRequest == null) {
             String targetUrl = determineTargetUrl(authentication);
 
             if (response.isCommitted()) {
-                log.debug("Response has already been committed. Unable to redirect to {}", targetUrl);
                 return;
             }
 
@@ -67,7 +63,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     /**
      * Builds the target URL according to the logic defined in the main class Javadoc.
      */
-    protected String determineTargetUrl(Authentication authentication) {
+    private String determineTargetUrl(Authentication authentication) {
         boolean isUser = false, isTeacher = false, isAdmin = false;
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
