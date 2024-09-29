@@ -89,7 +89,7 @@ public class GameController extends BaseController {
         if (game == null)
             return REDIRECT_HOME;
 
-        int levelPermitted = 0;
+        int levelPermitted;
 
         // Checking what is the last phase completed by this player in this game.
         PlayerPhase lastPlayerPhaseCompleted = playerPhaseService.findLastPhaseCompleted(

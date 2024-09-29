@@ -32,5 +32,5 @@ public class Phase {
     private Map map;
 
     @Transient
-    boolean opened = false;
+    private boolean opened = false;
 }

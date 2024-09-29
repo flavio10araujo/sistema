@@ -29,5 +29,5 @@ public class Level {
     private boolean active;
 
     @Transient
-    boolean opened = false;
+    private boolean opened = false;
 }

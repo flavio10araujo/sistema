@@ -36,8 +36,8 @@ public class Map {
     private Level level;
 
     @Transient
-    boolean levelCompleted = false;
+    private boolean levelCompleted = false;
 
     @Transient
-    boolean gameCompleted = false;
+    private boolean gameCompleted = false;
 }

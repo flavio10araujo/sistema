@@ -22,154 +22,102 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
+@Setter @Getter
 @Entity
 @Table(name = "t001_player")
 public class Player {
-    @Setter @Getter
     @Id
     @Column(name = "c001_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Setter @Getter
     @Column(name = "c001_dt_inc")
     private Date dtInc;
 
-    @Setter @Getter
     @Column(name = "c001_active")
     private boolean active;
 
-    @Setter @Getter
     @Column(name = "c001_email")
     private String email;
 
-    @Setter @Getter
     @JsonIgnore
     @Column(name = "c001_password")
     private String password;
 
-    @Setter @Getter
     @Column(name = "c001_name")
     private String name;
 
-    @Getter @Setter
     @Column(name = "c001_last_name")
     private String lastName;
 
-    @Transient
-    private String fullName;
-
-    @Setter @Getter
     @Column(name = "c001_score")
     private int score;
 
-    @Setter @Getter
     @Column(name = "c001_credit")
     private int credit;
 
-    @Getter @Setter
     @Column(name = "c001_coin")
     private int coin;
 
     @Column(name = "c001_role")
     private String role;
 
-    @Getter @Setter
     @Column(name = "c001_ind_email_confirmed")
     private boolean indEmailConfirmed;
 
-    @Getter @Setter
     @JsonIgnore
     @Column(name = "c001_email_confirmed")
     private String emailConfirmed;
 
-    @Getter @Setter
     @JsonIgnore
     @Column(name = "c001_password_reset")
     private String passwordReset;
 
-    @Setter @Getter
     @Column(name = "c001_phone")
     private String phone;
 
     // 1 = Male; 2 = Female.
-    @Setter @Getter
     @Column(name = "c001_sex")
     private int sex;
 
-    @Setter @Getter
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Column(name = "c001_dt_birth", columnDefinition = "DATE")
     private Date dtBirth;
 
-    @Transient
-    private String dtBirthStr;
-
-    @Setter
-    @Transient
-    private int dtBirthDay;
-
-    @Setter
-    @Transient
-    private int dtBirthMonth;
-
-    @Setter
-    @Transient
-    private int dtBirthYear;
-
-    @Setter @Getter
     @Column(name = "c001_address")
     private String address;
 
-    @Getter @Setter
     @JsonIgnore
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
     private List<PlayerGame> playerGameList;
 
-    @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "c001_id_creator")
     private Player creator;
 
-    @Getter @Setter
     @Column(name = "c001_login")
     private String login;
 
-    @Getter @Setter
     @Column(name = "c001_nationality")
     private String nationality;
 
-    @Getter @Setter
     @Column(name = "c001_city_of_birth")
     private String cityOfBirth;
 
-    @Getter @Setter
     @Column(name = "c001_doc_01")
     private String rg;
 
-    @Getter @Setter
     @Column(name = "c001_doc_01_exp")
     private String rgOrgExp;
 
-    @Getter @Setter
     @Column(name = "c001_about", columnDefinition = "TEXT")
     private String about;
 
-    @Getter @Setter
     @Column(name = "c018_id")
     private Long idFacebook;
-
-    public String getEmailMD5() {
-        if (this.email == null || email.isEmpty()) {
-            return "";
-        }
-
-        return MD5Util.md5Hex(email.toLowerCase());
-    }
 
     public Role getRole() {
         return Role.valueOf(role);
@@ -179,16 +127,19 @@ public class Player {
         this.role = (role == null) ? null : role.toString();
     }
 
-    public String getDtBirthStr() {
-        return DateUtil.formatDate(this.dtBirth);
+    /**
+     * Used to get the www.gravatar.com/avatar/
+     */
+    public String getEmailMD5() {
+        if (this.email == null || email.isEmpty()) {
+            return "";
+        }
+
+        return MD5Util.md5Hex(email.toLowerCase());
     }
 
-    public void setDtBirthStr(String dtBirthStr) {
-        try {
-            this.dtBirth = DateUtil.parseDate(dtBirthStr);
-        } catch (Exception e) {
-            this.dtBirth = null;
-        }
+    public String getDtBirthStr() {
+        return DateUtil.formatDate(this.dtBirth);
     }
 
     public int getDtBirthDay() {
@@ -225,13 +176,13 @@ public class Player {
      * Return the total quantity of credits: credit + specificCredit.
      */
     public int getTotalCredit() {
-        return getCredit() + getSpecifiCredit();
+        return getCredit() + getSpecificCredit();
     }
 
     /**
      * Return the quantity of specific credits.
      */
-    public int getSpecifiCredit() {
+    private int getSpecificCredit() {
         List<PlayerGame> list = getPlayerGameList();
 
         if (list == null) {
@@ -264,7 +215,6 @@ public class Player {
      * From 24001 to infinity = Level 10 = Gold
      */
     public Rank getRank() {
-
         int score = this.getScore();
 
         if (score <= 1000) {
