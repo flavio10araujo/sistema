@@ -25,6 +25,13 @@ public class CompressResponseFilter implements Filter {
     private HtmlCompressor compressor;
 
     @Override
+    public void init(FilterConfig config) throws ServletException {
+        compressor = new HtmlCompressor();
+        compressor.setCompressCss(true);
+        //compressor.setCompressJavaScript(true); // Warning: Do not use! It does not work well with Thymeleaf.
+    }
+
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
 
@@ -42,22 +49,15 @@ public class CompressResponseFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig config) throws ServletException {
-        compressor = new HtmlCompressor();
-        compressor.setCompressCss(true);
-        //compressor.setCompressJavaScript(true);
-    }
-
-    @Override
     public void destroy() {
     }
 
     /**
      * Return true if the content need to be compressed.
      */
-    public boolean shouldCompress(String uri) {
+    private boolean shouldCompress(String uri) {
         Set<String> excludedExtensions = Set.of(".js", ".css", ".ico", ".png", ".jpg", ".gif", ".bmp", ".pdf");
-        Set<String> excludedPaths = Set.of("/static/", "/vendors/", "/diploma/");
+        Set<String> excludedPaths = Set.of("/static/", "/vendors/");
 
         for (String ext : excludedExtensions) {
             if (uri.contains(ext)) {

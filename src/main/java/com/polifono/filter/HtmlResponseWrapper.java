@@ -33,7 +33,7 @@ public class HtmlResponseWrapper extends HttpServletResponseWrapper {
         if (output == null) {
             output = new ServletOutputStream() {
                 @Override
-                public void write(int b) throws IOException {
+                public void write(int b) {
                     capture.write(b);
                 }
 
