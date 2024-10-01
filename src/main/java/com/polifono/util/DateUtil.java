@@ -59,9 +59,9 @@ public class DateUtil {
         return calendar.getTime();
     }
 
-    public static java.util.Date subtractMonth(java.util.Date currentDate, int subtract) {
+    public static java.util.Date subtractMonth(java.util.Date date, int subtract) {
         Calendar cal = Calendar.getInstance();
-        cal.setTime(currentDate);
+        cal.setTime(date);
         cal.add(Calendar.MONTH, (subtract * -1));
         return cal.getTime();
     }

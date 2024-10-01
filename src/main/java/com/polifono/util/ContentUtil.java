@@ -133,7 +133,7 @@ public class ContentUtil {
     }
 
     /**
-     * This method will add an html "a href" around the image.
+     * This method will add a html "a href" around the image.
      * With this, it is possible to click on the image to see it in its original size in a popup.
      * <p>
      * Ex.:
