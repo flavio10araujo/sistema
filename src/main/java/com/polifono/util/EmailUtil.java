@@ -258,12 +258,17 @@ public class EmailUtil {
      * Validate a password.
      * Return true if the password is valid. False if the password is not valid.
      * Rules:
+     * - size between 6 and 20;
      * - at least one number;
      * - at least one letter;
      * - no spaces.
      */
     public static boolean validatePassword(String s) {
         if (s == null || s.isEmpty()) {
+            return false;
+        }
+
+        if (s.length() < 6 || s.length() > 20) {
             return false;
         }
 
@@ -279,7 +284,7 @@ public class EmailUtil {
      * Rules:
      * - size between 6 and 20;
      * - only number and letters;
-     * - underline is accepted;
+     * - underline and hyphen are accepted;
      * - no spaces and other special characters.
      */
     public static boolean validateLogin(String s) {
@@ -307,6 +312,10 @@ public class EmailUtil {
         email = email.toLowerCase();
         String domain = email.substring(indexAt);
 
-        return DOMAIN_CORRECTIONS.getOrDefault(domain, email);
+        if (DOMAIN_CORRECTIONS.containsKey(domain)) {
+            return email.replaceAll(domain, DOMAIN_CORRECTIONS.get(domain));
+        }
+
+        return email;
     }
 }

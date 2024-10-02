@@ -105,7 +105,6 @@ public class EmailSendUtil {
             try {
                 MultiPartEmail hm = new MultiPartEmail();
 
-				// AWS configuration.
                 hm.setHostName(emailHostName);
                 hm.setSmtpPort(Integer.parseInt(emailSmtpPort));
                 hm.setAuthentication(emailLogin, emailPassword);
@@ -119,7 +118,7 @@ public class EmailSendUtil {
 
                 hm.addPart(message, org.apache.commons.mail.Email.TEXT_HTML);
 
-                hm.send(); //(DES)COMENTAR AQUI E NO OUTRO TMB
+                hm.send();
 
                 System.out.println("E-mail enviado!");
             } catch (Exception e) {
@@ -147,7 +146,6 @@ public class EmailSendUtil {
             try {
                 MultiPartEmail hm = new MultiPartEmail();
 
-				// AWS configuration.
                 hm.setHostName(emailHostName);
                 hm.setSmtpPort(Integer.parseInt(emailSmtpPort));
                 hm.setAuthentication(emailLogin, emailPassword);
@@ -161,9 +159,7 @@ public class EmailSendUtil {
 
                 hm.addPart(message, org.apache.commons.mail.Email.TEXT_HTML);
 
-                hm.send(); //(DES)COMENTAR AQUI E NO OUTRO TMB
-
-                System.out.println("E-mail enviado!");
+                hm.send();
             } catch (Exception e) {
                 log.error("An email was not sent: ", e);
                 throw new RuntimeException("An email was not sent: ", e);
@@ -171,9 +167,10 @@ public class EmailSendUtil {
         }
     }
 
-    public static void sendHtmlMail(boolean async, int messageType, String to, String[] args) {
+    private static void sendHtmlMail(boolean async, int messageType, String to, String[] args) {
         String from = "", subject = "", message = "";
 
+        // TODO - i18n
         if (messageType == 1) {
             from = emailNoReply;
             subject = "Confirme seu cadastro na " + emailCompany;
@@ -276,7 +273,7 @@ public class EmailSendUtil {
         }
     }
 
-    public static void sendMessageCommunication(boolean async, int messageType, String to, String[] args) {
+    private static void sendMessageCommunication(boolean async, int messageType, String to, String[] args) {
         String from = "", subject = "", message = "";
 
         if (messageType == 4) {
@@ -379,7 +376,7 @@ public class EmailSendUtil {
      * @param args    the string to replace into the email string.
      * @return The new string email with the correct messages.
      */
-    public static String replaceParamsMessage(String message, String[] args) {
+    private static String replaceParamsMessage(String message, String[] args) {
         for (int i = 0; i < args.length; i++) {
             if (args[i] != null) {
                 message = message.replace("{" + i + "}", args[i]);
@@ -422,7 +419,7 @@ public class EmailSendUtil {
     }
 
     /**
-     * Send one email of the type 3 (payment registered).
+     * Send one email of type 3 (payment registered).
      */
     public static void sendEmailPaymentRegistered(Player player, int quantity) {
         String[] args = new String[2];
@@ -439,7 +436,7 @@ public class EmailSendUtil {
     }
 
     /**
-     * Send one email of the type 4 (invitation to class).
+     * Send one email of type 4 (invitation to class).
      */
     public static void sendEmailInvitationToClass(Player player, ClassPlayer classPlayer) {
         String[] args = new String[3];
@@ -455,7 +452,7 @@ public class EmailSendUtil {
     }
 
     /**
-     * Send one email of the type 5 (contact).
+     * Send one email of type 5 (contact).
      */
     public static void sendEmailContact(String email, String message) {
         String[] args = new String[2];
