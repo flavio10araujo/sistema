@@ -33,17 +33,16 @@ public class ContentUtil {
     }
 
     public static Content formatContent(Content content) {
-
         if (content == null) {
             return null;
         }
 
         String formatted = content.getContent();
 
-        String[] imgsOriginal = getImages(formatted);
-        String[] imgsFormatted = formatImages(imgsOriginal);
+        String[] imagesOriginal = getImages(formatted);
+        String[] imagesFormatted = formatImages(imagesOriginal);
 
-        formatted = replaceImages(formatted, imgsOriginal, imgsFormatted);
+        formatted = replaceImages(formatted, imagesOriginal, imagesFormatted);
         formatted = addClassText(formatted);
         formatted = removeSpaces(formatted);
         formatted = addFullScreenToVideo(formatted);
@@ -53,36 +52,36 @@ public class ContentUtil {
         return content;
     }
 
-    public static String[] getImages(String content) {
+    private static String[] getImages(String content) {
         String htmlImgOpen = "<img ";
-        String[] imgs = content.split(htmlImgOpen);
+        String[] images = content.split(htmlImgOpen);
 
-        for (int i = 1; i < imgs.length; i++) {
-            imgs[i] = htmlImgOpen + imgs[i].substring(0, imgs[i].indexOf("/>") + 2);
+        for (int i = 1; i < images.length; i++) {
+            images[i] = htmlImgOpen + images[i].substring(0, images[i].indexOf("/>") + 2);
         }
 
-        return imgs;
+        return images;
     }
 
-    public static String[] formatImages(String[] imgsOriginal) {
-        String[] imgsFormatted = new String[imgsOriginal.length];
+    private static String[] formatImages(String[] imagesOriginal) {
+        String[] imagesFormatted = new String[imagesOriginal.length];
 
-        for (int i = 1; i < imgsOriginal.length; i++) {
-            imgsFormatted[i] = formatClassImgResponsive(imgsOriginal[i]);
-            imgsFormatted[i] = formatImgWidthAndHeight(imgsFormatted[i]);
-            imgsFormatted[i] = addLazyLoadingToImage(addPopupToImage(imgsFormatted[i]));
+        for (int i = 1; i < imagesOriginal.length; i++) {
+            imagesFormatted[i] = formatClassImgResponsive(imagesOriginal[i]);
+            imagesFormatted[i] = formatImgWidthAndHeight(imagesFormatted[i]);
+            imagesFormatted[i] = addLazyLoadingToImage(addPopupToImage(imagesFormatted[i]));
         }
 
-        return imgsFormatted;
+        return imagesFormatted;
     }
 
-    public static String formatClassImgResponsive(String content) {
+    private static String formatClassImgResponsive(String content) {
         content = content.replaceAll("fr-dib fr-draggable ", "");
         content = content.replaceAll("class=\"img-responsive\" ", "");
         return content.replaceAll("<img ", "<img class=\"img-responsive\" ");
     }
 
-    public static String addClassText(String content) {
+    private static String addClassText(String content) {
         content = addClassFontSize(content);
         return content;
     }
@@ -92,7 +91,7 @@ public class ContentUtil {
      * This method will add a different css class for each font-size.
      * Thus, it will be possible to use the functionality increase-decrease text.
      */
-    public static String addClassFontSize(String content) {
+    private static String addClassFontSize(String content) {
         content = content.replaceAll("style=\"font-size:24px\"", "class=\"fontSize24px\" style=\"font-size:24px\"");
         content = content.replaceAll("style=\"font-size:20px\"", "class=\"fontSize20px\" style=\"font-size:20px\"");
         content = content.replaceAll("style=\"font-size:16px\"", "class=\"fontSize16px\" style=\"font-size:16px\"");
@@ -103,7 +102,7 @@ public class ContentUtil {
     /**
      * Ex.: style="height:705px; width:1000px" => height="705" width="1000"
      */
-    public static String formatImgWidthAndHeight(String content) {
+    private static String formatImgWidthAndHeight(String content) {
         String htmlHeight = "height=\"X\" ";
         String htmlWidth = "width=\"X\"";
         String style, height, width;
@@ -126,7 +125,7 @@ public class ContentUtil {
             htmlHeight = htmlHeight.replace("X", height);
             htmlWidth = htmlWidth.replace("X", width);
 
-            content = content.replace(style, htmlHeight + "" + htmlWidth);
+            content = content.replace(style, htmlHeight + htmlWidth);
         }
 
         return content;
@@ -144,7 +143,7 @@ public class ContentUtil {
      * <img src="https://media.polifono.com/img/recorder_1_1_001_1_01.jpg" width="75" height="75" />
      * </a>
      */
-    public static String addPopupToImage(String content) {
+    private static String addPopupToImage(String content) {
         String htmlABegin = "<a class=\"image-popup-no-margins\" href=\"X\" title=\"\">";
         htmlABegin = htmlABegin.replace("X", getURLImageFromCompleteTagHTML(content));
         return htmlABegin + content + "</a>";
@@ -152,7 +151,7 @@ public class ContentUtil {
 
     /**
      * This method will prepare the image to work with the jquery lazy-loading function.
-     * With this, the image will be sent to the user only when the image seen on the screen.
+     * With this, the image will be sent to the user only when the image is displayed on the screen.
      * <p>
      * Ex.:
      * From:
@@ -164,7 +163,7 @@ public class ContentUtil {
      * <img src="" data-url="https://media.polifono.com/img/recorder_1_1_001_1_01.jpg" width="75" height="75" data-min-width="0" data-max-width="999999" />
      * </a>
      */
-    public static String addLazyLoadingToImage(String content) {
+    private static String addLazyLoadingToImage(String content) {
         content = content.replace("image-popup-no-margins", "image-popup-no-margins lazy-img");
         content = content.replace("/>", " data-min-width=\"0\" data-max-width=\"999999\" />");
 
@@ -181,7 +180,7 @@ public class ContentUtil {
      * tagImg = <img class="img-responsive" alt="" src="https://media.polifono.com/img/sax_1_1_001_1_01.png" height="705" width="1000" />
      * return = https://media.polifono.com/img/sax_1_1_001_1_01.png
      */
-    public static String getURLImageFromCompleteTagHTML(String tagImg) {
+    private static String getURLImageFromCompleteTagHTML(String tagImg) {
         String img = "";
 
         int indexSrc = tagImg.indexOf("src=\"");
@@ -194,24 +193,23 @@ public class ContentUtil {
         return img;
     }
 
-    public static String replaceImages(String content, String[] imgsOriginal, String[] imgsFormatted) {
-        for (int i = 1; i < imgsOriginal.length; i++) {
-            content = content.replace(imgsOriginal[i], imgsFormatted[i]);
+    private static String replaceImages(String content, String[] imagesOriginal, String[] imagesFormatted) {
+        for (int i = 1; i < imagesOriginal.length; i++) {
+            content = content.replace(imagesOriginal[i], imagesFormatted[i]);
         }
 
         return content;
     }
 
-    public static String removeSpaces(String content) {
+    private static String removeSpaces(String content) {
         return content.replaceAll("<p>&nbsp;</p>", "");
     }
 
     /**
      * This method is just to confirm that the video has the properties to be fullscreen.
      */
-    public static String addFullScreenToVideo(String content) {
-
-        String iframe = "", newIframe = "";
+    private static String addFullScreenToVideo(String content) {
+        String iframe, newIframe;
         int indexIframe = content.indexOf("<iframe");
 
         if (indexIframe > 0) {
