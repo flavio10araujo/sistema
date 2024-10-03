@@ -113,8 +113,8 @@ public class EmailSendUtil {
                 hm.setFrom(senderAddress);
                 hm.addTo(recipientAddress);
 
-                message = HTMLEntitiesUtil.unHtmlEntities(message);
-                message = HTMLEntitiesUtil.htmlEntities(message);
+                message = HTMLEntitiesUtil.decodeHtmlEntities(message);
+                message = HTMLEntitiesUtil.encodeHtmlEntities(message);
 
                 hm.addPart(message, org.apache.commons.mail.Email.TEXT_HTML);
 
@@ -154,8 +154,8 @@ public class EmailSendUtil {
                 hm.setFrom(senderAddress);
                 hm.addTo(recipientAddress);
 
-                message = HTMLEntitiesUtil.unHtmlEntities(message);
-                message = HTMLEntitiesUtil.htmlEntities(message);
+                message = HTMLEntitiesUtil.decodeHtmlEntities(message);
+                message = HTMLEntitiesUtil.encodeHtmlEntities(message);
 
                 hm.addPart(message, org.apache.commons.mail.Email.TEXT_HTML);
 
@@ -396,7 +396,7 @@ public class EmailSendUtil {
         args[2] = player.getEmailConfirmed();
 
         try {
-            EmailSendUtil.sendHtmlMail(true, 1, player.getEmail(), args);
+            sendHtmlMail(true, 1, player.getEmail(), args);
         } catch (Exception e) {
             log.error("sendEmailConfirmRegister", e);
         }
@@ -412,7 +412,7 @@ public class EmailSendUtil {
         args[2] = player.getPasswordReset();
 
         try {
-            EmailSendUtil.sendHtmlMail(true, 2, player.getEmail(), args);
+            sendHtmlMail(true, 2, player.getEmail(), args);
         } catch (Exception e) {
             log.error("sendEmailPasswordReset", e);
         }
@@ -428,7 +428,7 @@ public class EmailSendUtil {
 
         try {
             if (player.getEmail() != null && !player.getEmail().isEmpty()) {
-                EmailSendUtil.sendHtmlMail(true, 3, player.getEmail(), args);
+                sendHtmlMail(true, 3, player.getEmail(), args);
             }
         } catch (Exception e) {
             log.error("sendEmailPaymentRegistered", e);
@@ -445,7 +445,7 @@ public class EmailSendUtil {
         args[2] = classPlayer.getClazz().getName();
 
         try {
-            EmailSendUtil.sendHtmlMail(true, 4, classPlayer.getPlayer().getEmail(), args);
+            sendHtmlMail(true, 4, classPlayer.getPlayer().getEmail(), args);
         } catch (Exception e) {
             log.error("sendEmailInvitationToClass", e);
         }
@@ -460,7 +460,7 @@ public class EmailSendUtil {
         args[1] = message;
 
         try {
-            EmailSendUtil.sendHtmlMail(true, 5, "", args);
+            sendHtmlMail(true, 5, "", args);
         } catch (Exception e) {
             log.error("sendEmailContact", e);
         }
@@ -479,7 +479,7 @@ public class EmailSendUtil {
             args[4] = "(" + player.getRankLevel() + ") " + player.getRankColor();
 
             try {
-                EmailSendUtil.sendMessageCommunication(false, groupCommunicationId, player.getEmail(), args);
+                sendMessageCommunication(false, groupCommunicationId, player.getEmail(), args);
             } catch (Exception e) {
                 log.error("sendEmailCommunication", e);
             }
