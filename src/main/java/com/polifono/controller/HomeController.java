@@ -2,8 +2,6 @@ package com.polifono.controller;
 
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,19 +16,19 @@ import com.polifono.util.EmailUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class HomeController extends BaseController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
-
     public static final String URL_INDEX = "index";
     public static final String URL_CONTACT = "contact";
     public static final String URL_CONTACT_OPEN = "index";
     public static final String REDIRECT_GAMES = "redirect:/games";
 
     private final RecaptchaService captchaService;
+    private final EmailSendUtil emailSendUtil;
 
     @RequestMapping(value = { "/" }, method = RequestMethod.GET)
     public final String index(final Model model) {
@@ -46,7 +44,7 @@ public class HomeController extends BaseController {
 
     @RequestMapping(value = { "/login" }, method = RequestMethod.GET)
     public final String index(final Model model, @RequestParam Optional<String> error) {
-        LOGGER.debug("Getting login page, error={}", error);
+        log.debug("Getting login page, error={}", error);
         model.addAttribute("player", new Player());
         model.addAttribute("playerResend", new Player());
         model.addAttribute("error", error);
@@ -110,7 +108,7 @@ public class HomeController extends BaseController {
             }
         }
 
-        EmailSendUtil.sendEmailContact(email, message);
+        emailSendUtil.sendEmailContact(email, message);
 
         model.addAttribute("message", "success");
 

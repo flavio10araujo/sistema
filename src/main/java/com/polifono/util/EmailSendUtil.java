@@ -2,172 +2,37 @@ package com.polifono.util;
 
 import java.util.List;
 
-import org.apache.commons.mail.MultiPartEmail;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class EmailSendUtil {
 
-    private static String emailLogin;
-    private static String emailPassword;
-    private static String emailHostName;
-    private static String emailSmtpPort;
-    private static String emailCharset;
-    private static String emailCompany;
-    private static String emailCompanySlogan;
-    private static String emailUrl;
-    private static String emailGeneral;
-    private static String emailNoReply;
-    private static String emailGeneralTo;
-
-    @Value("${app.email.authentication.login}")
-    public void setEmailLogin(String emailLogin) {
-        EmailSendUtil.emailLogin = emailLogin;
-    }
-
-    @Value("${app.email.authentication.password}")
-    public void setEmailPassword(String emailPassword) {
-        EmailSendUtil.emailPassword = emailPassword;
-    }
-
-    @Value("${app.email.hostName}")
-    public void setEmailHostName(String emailHostName) {
-        EmailSendUtil.emailHostName = emailHostName;
-    }
-
-    @Value("${app.email.smtpPort}")
-    public void setEmailSmtpPort(String emailSmtpPort) {
-        EmailSendUtil.emailSmtpPort = emailSmtpPort;
-    }
-
-    @Value("${app.email.charset}")
-    public void setEmailCharset(String emailCharset) {
-        EmailSendUtil.emailCharset = emailCharset;
-    }
-
     @Value("${app.general.name}")
-    public void setEmailCompany(String emailCompany) {
-        EmailSendUtil.emailCompany = emailCompany;
-    }
-
+    private String emailCompany;
     @Value("${app.general.slogan}")
-    public void setEmailCompanySlogan(String emailCompanySlogan) {
-        EmailSendUtil.emailCompanySlogan = emailCompanySlogan;
-    }
-
+    private String emailCompanySlogan;
     @Value("${app.general.url}")
-    public void setEmailUrl(String emailUrl) {
-        EmailSendUtil.emailUrl = emailUrl;
-    }
-
+    private String emailUrl;
     @Value("${app.email.accounts.general.address}")
-    public void setEmailGeneral(String emailGeneral) {
-        EmailSendUtil.emailGeneral = emailGeneral;
-    }
-
+    private String emailGeneral;
     @Value("${app.email.accounts.noReply.address}")
-    public void setEmailNoReply(String emailNoReply) {
-        EmailSendUtil.emailNoReply = emailNoReply;
-    }
-
+    private String emailNoReply;
     @Value("${app.email.accounts.general.to}")
-    public void setEmailGeneralTo(String emailGeneralTo) {
-        EmailSendUtil.emailGeneralTo = emailGeneralTo;
-    }
+    private String emailGeneralTo;
 
-    /**
-     * The class MailThread can send an email asynchronously.
-     * If it is used this method, the method that called this method can not know if the email was sent.
-     */
-    static class MailAsync extends Thread {
+    private final MailAsync mailAsync;
+    private final MailSync mailSync;
 
-        private final String senderAddress;
-        private final String recipientAddress;
-        private final String subject;
-        private String message;
-
-        public MailAsync(String senderAddress, String subject, String message, String recipientAddress) {
-            this.senderAddress = senderAddress;
-            this.subject = subject;
-            this.message = message;
-            this.recipientAddress = recipientAddress;
-        }
-
-        @Override
-        public void run() {
-            try {
-                MultiPartEmail hm = new MultiPartEmail();
-
-                hm.setHostName(emailHostName);
-                hm.setSmtpPort(Integer.parseInt(emailSmtpPort));
-                hm.setAuthentication(emailLogin, emailPassword);
-                hm.setCharset(emailCharset);
-                hm.setSubject(subject);
-                hm.setFrom(senderAddress);
-                hm.addTo(recipientAddress);
-
-                message = HTMLEntitiesUtil.decodeHtmlEntities(message);
-                message = HTMLEntitiesUtil.encodeHtmlEntities(message);
-
-                hm.addPart(message, org.apache.commons.mail.Email.TEXT_HTML);
-
-                hm.send();
-
-                System.out.println("E-mail enviado!");
-            } catch (Exception e) {
-                log.error("An email was not sent: ", e);
-                throw new RuntimeException("An email was not sent: ", e);
-            }
-        }
-    }
-
-    static class MailSync {
-
-        private final String senderAddress;
-        private final String recipientAddress;
-        private final String subject;
-        private String message;
-
-        public MailSync(String senderAddress, String subject, String message, String recipientAddress) {
-            this.senderAddress = senderAddress;
-            this.subject = subject;
-            this.message = message;
-            this.recipientAddress = recipientAddress;
-        }
-
-        public void start() {
-            try {
-                MultiPartEmail hm = new MultiPartEmail();
-
-                hm.setHostName(emailHostName);
-                hm.setSmtpPort(Integer.parseInt(emailSmtpPort));
-                hm.setAuthentication(emailLogin, emailPassword);
-                hm.setCharset(emailCharset);
-                hm.setSubject(subject);
-                hm.setFrom(senderAddress);
-                hm.addTo(recipientAddress);
-
-                message = HTMLEntitiesUtil.decodeHtmlEntities(message);
-                message = HTMLEntitiesUtil.encodeHtmlEntities(message);
-
-                hm.addPart(message, org.apache.commons.mail.Email.TEXT_HTML);
-
-                hm.send();
-            } catch (Exception e) {
-                log.error("An email was not sent: ", e);
-                throw new RuntimeException("An email was not sent: ", e);
-            }
-        }
-    }
-
-    private static void sendHtmlMail(boolean async, int messageType, String to, String[] args) {
+    private void sendHtmlMail(boolean async, int messageType, String to, String[] args) {
         String from = "", subject = "", message = "";
 
         // TODO - i18n
@@ -267,13 +132,13 @@ public class EmailSendUtil {
         }
 
         if (async) {
-            new EmailSendUtil.MailAsync(from, subject, message, to).start();
+            mailAsync.sendEmail(from, subject, message, to);
         } else {
-            new EmailSendUtil.MailSync(from, subject, message, to).start();
+            mailSync.sendEmail(from, subject, message, to);
         }
     }
 
-    private static void sendMessageCommunication(boolean async, int messageType, String to, String[] args) {
+    private void sendMessageCommunication(boolean async, int messageType, String to, String[] args) {
         String from = "", subject = "", message = "";
 
         if (messageType == 4) {
@@ -360,9 +225,9 @@ public class EmailSendUtil {
         }
 
         if (async) {
-            new EmailSendUtil.MailAsync(from, subject, message, to).start();
+            mailAsync.sendEmail(from, subject, message, to);
         } else {
-            new EmailSendUtil.MailSync(from, subject, message, to).start();
+            mailSync.sendEmail(from, subject, message, to);
         }
     }
 
@@ -376,7 +241,7 @@ public class EmailSendUtil {
      * @param args    the string to replace into the email string.
      * @return The new string email with the correct messages.
      */
-    private static String replaceParamsMessage(String message, String[] args) {
+    private String replaceParamsMessage(String message, String[] args) {
         for (int i = 0; i < args.length; i++) {
             if (args[i] != null) {
                 message = message.replace("{" + i + "}", args[i]);
@@ -389,7 +254,7 @@ public class EmailSendUtil {
     /**
      * This method is used to send the email to the user confirm his email.
      */
-    public static void sendEmailConfirmRegister(Player player) {
+    public void sendEmailConfirmRegister(Player player) {
         String[] args = new String[3];
         args[0] = player.getName();
         args[1] = player.getEmail();
@@ -405,7 +270,7 @@ public class EmailSendUtil {
     /**
      * This method is used to send the email to the user when he doesn't remember his password.
      */
-    public static void sendEmailPasswordReset(Player player) {
+    public void sendEmailPasswordReset(Player player) {
         String[] args = new String[3];
         args[0] = player.getName();
         args[1] = player.getEmail();
@@ -421,7 +286,7 @@ public class EmailSendUtil {
     /**
      * Send one email of type 3 (payment registered).
      */
-    public static void sendEmailPaymentRegistered(Player player, int quantity) {
+    public void sendEmailPaymentRegistered(Player player, int quantity) {
         String[] args = new String[2];
         args[0] = player.getName();
         args[1] = "" + quantity;
@@ -438,7 +303,7 @@ public class EmailSendUtil {
     /**
      * Send one email of type 4 (invitation to class).
      */
-    public static void sendEmailInvitationToClass(Player player, ClassPlayer classPlayer) {
+    public void sendEmailInvitationToClass(Player player, ClassPlayer classPlayer) {
         String[] args = new String[3];
         args[0] = classPlayer.getPlayer().getName(); // Student
         args[1] = player.getName(); // Teacher
@@ -454,7 +319,7 @@ public class EmailSendUtil {
     /**
      * Send one email of type 5 (contact).
      */
-    public static void sendEmailContact(String email, String message) {
+    public void sendEmailContact(String email, String message) {
         String[] args = new String[2];
         args[0] = email;
         args[1] = message;
@@ -469,7 +334,7 @@ public class EmailSendUtil {
     /**
      * This method is used to send the email to list of players from the group communication of type groupCommunicationId.
      */
-    public static void sendEmailCommunication(int groupCommunicationId, List<Player> players) {
+    public void sendEmailCommunication(int groupCommunicationId, List<Player> players) {
         for (Player player : players) {
             String[] args = new String[5];
             args[0] = player.getName();

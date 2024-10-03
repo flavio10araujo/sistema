@@ -30,6 +30,7 @@ public class AdminMessageController {
     private final IPlayerService playerService;
     private final ICommunicationService communicationService;
     private final IPlayerCommunicationService playerCommunicationService;
+    private final EmailSendUtil emailSendUtil;
 
     @RequestMapping(value = { "/group04" }, method = RequestMethod.GET)
     public String group04(Model model) {
@@ -42,7 +43,7 @@ public class AdminMessageController {
         groupcommunication.setId(4);
 
         List<Player> players = playerService.findCommunicationGroup04();
-        EmailSendUtil.sendEmailCommunication(groupcommunication.getId(), players);
+        emailSendUtil.sendEmailCommunication(groupcommunication.getId(), players);
 
         registerMessages(groupcommunication, players);
 
@@ -64,7 +65,7 @@ public class AdminMessageController {
 
         List<Player> players = playerService.findCommunicationGroup05();
 
-        EmailSendUtil.sendEmailCommunication(groupcommunication.getId(), players);
+        emailSendUtil.sendEmailCommunication(groupcommunication.getId(), players);
 
         registerMessages(groupcommunication, players);
 

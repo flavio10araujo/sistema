@@ -36,6 +36,7 @@ public class StudentController extends BaseController {
     private final IClassService classService;
     private final IPlayerService playerService;
     private final IClassPlayerService classPlayerService;
+    private final EmailSendUtil emailSendUtil;
 
     public static final String REDIRECT_HOME = "redirect:/";
 
@@ -165,7 +166,7 @@ public class StudentController extends BaseController {
                 return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
             }
 
-            EmailSendUtil.sendEmailInvitationToClass(Objects.requireNonNull(currentAuthenticatedUser()).getUser(), current.get());
+            emailSendUtil.sendEmailInvitationToClass(Objects.requireNonNull(currentAuthenticatedUser()).getUser(), current.get());
 
             redirectAttributes.addFlashAttribute("message", "emailSent");
         } catch (Exception e) {

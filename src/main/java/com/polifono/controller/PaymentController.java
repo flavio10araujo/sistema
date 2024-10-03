@@ -42,6 +42,7 @@ public class PaymentController extends BaseController {
     private final ConfigsCreditsProperties configsCreditsProperties;
     private final ITransactionService transactionService;
     private final IPlayerService playerService;
+    private final EmailSendUtil emailSendUtil;
 
     @RequestMapping(value = { "/buycredits" }, method = RequestMethod.GET)
     public final String buyCredits(final Model model) {
@@ -207,7 +208,7 @@ public class PaymentController extends BaseController {
             transactionService.save(transaction);
 
             // Send e-mail.
-            EmailSendUtil.sendEmailPaymentRegistered(transaction.getPlayer(), transaction.getQuantity());
+            emailSendUtil.sendEmailPaymentRegistered(transaction.getPlayer(), transaction.getQuantity());
         }
 
         return URL_BUY_CREDITS;
@@ -288,7 +289,7 @@ public class PaymentController extends BaseController {
             transactionService.save(transaction);
 
             // Send e-mail.
-            EmailSendUtil.sendEmailPaymentRegistered(transaction.getPlayer(), transaction.getQuantity());
+            emailSendUtil.sendEmailPaymentRegistered(transaction.getPlayer(), transaction.getQuantity());
         }
 
         return URL_BUY_CREDITS;

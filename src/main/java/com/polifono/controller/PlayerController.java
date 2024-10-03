@@ -48,6 +48,7 @@ public class PlayerController extends BaseController {
     private final IPlayerService playerService;
     private final IClassPlayerService classPlayerService;
     private final LoginServiceImpl loginService;
+    private final EmailSendUtil emailSendUtil;
 
     @RequestMapping(value = { "/player/create" }, method = RequestMethod.POST)
     public final synchronized String createPlayer(HttpServletRequest request, final Model model, @ModelAttribute("player") Player player) {
@@ -93,7 +94,7 @@ public class PlayerController extends BaseController {
 
                 model.addAttribute("player", playerService.create(player));
                 model.addAttribute("codRegister", 1);
-                EmailSendUtil.sendEmailConfirmRegister(player);
+                emailSendUtil.sendEmailConfirmRegister(player);
 
                 try {
                     request.login(player.getEmail(), password);
@@ -196,7 +197,7 @@ public class PlayerController extends BaseController {
             } else {
                 playerOld.setEmailConfirmed(new RandomStringUtil(10).nextString());
                 playerService.save(playerOld);
-                EmailSendUtil.sendEmailConfirmRegister(playerOld);
+                emailSendUtil.sendEmailConfirmRegister(playerOld);
 
                 model.addAttribute("codRegister", 1);
                 model.addAttribute("playerResend", new Player());
@@ -249,12 +250,12 @@ public class PlayerController extends BaseController {
             if (!byLogin) {
                 model.addAttribute("msgRegister",
                         "<br />O código para alterar a senha foi enviado para " + playerOld.getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
-                EmailSendUtil.sendEmailPasswordReset(playerOld);
+                emailSendUtil.sendEmailPasswordReset(playerOld);
             } else {
                 Player teacher = playerOld.getCreator();
                 teacher.setName(playerOld.getName());
                 teacher.setPasswordReset(playerOld.getPasswordReset());
-                EmailSendUtil.sendEmailPasswordReset(teacher);
+                emailSendUtil.sendEmailPasswordReset(teacher);
                 model.addAttribute("msgRegister",
                         "<br />O código para alterar a senha foi enviado para " + teacher.getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
             }
