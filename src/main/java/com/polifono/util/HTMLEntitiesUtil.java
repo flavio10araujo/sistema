@@ -20,74 +20,74 @@ public class HTMLEntitiesUtil {
             { "&agrave;", 224 },
             { "&alefsym;", 8501 },
             { "&Alpha;", 913 },
-            { "&alpha;", 945},
-            { "&amp;", 38},
-            { "&and;", 8743},
-            { "&ang;", 8736},
-            { "&Aring;", 197},
-            { "&aring;", 229},
-            { "&asymp;", 8776},
-            { "&Atilde;", 195},
-            { "&atilde;", 227},
-            { "&Auml;", 196},
-            { "&auml;", 228},
-            { "&bdquo;", 8222},
-            { "&Beta;", 914},
-            { "&beta;", 946},
-            { "&brvbar;", 166},
-            { "&bull;", 8226},
-            { "&cap;", 8745},
-            { "&Ccedil;", 199},
-            { "&ccedil;", 231},
-            { "&cedil;", 184},
-            { "&cent;", 162},
-            { "&Chi;", 935},
-            { "&chi;", 967},
-            { "&circ;", 710},
-            { "&clubs;", 9827},
-            { "&cong;", 8773},
-            { "&copy;", 169},
-            { "&crarr;", 8629},
-            { "&cup;", 8746},
-            { "&curren;", 164},
-            { "&dagger;", 8224},
-            { "&Dagger;", 8225},
-            { "&darr;", 8595},
-            { "&dArr;", 8659},
-            { "&deg;", 176},
-            { "&Delta;", 916},
-            { "&delta;", 948},
-            { "&diams;", 9830},
-            { "&divide;", 247},
-            { "&Eacute;", 201},
-            { "&eacute;", 233},
-            { "&Ecirc;", 202},
-            { "&ecirc;", 234},
-            { "&Egrave;", 200},
-            { "&egrave;", 232},
-            { "&empty;", 8709},
-            { "&emsp;", 8195},
-            { "&ensp;", 8194},
-            { "&Epsilon;", 917},
-            { "&epsilon;", 949},
-            { "&equiv;", 8801},
-            { "&Eta;", 919},
-            { "&eta;", 951},
-            { "&ETH;", 208},
-            { "&eth;", 240},
-            { "&Euml;", 203},
-            { "&euml;", 235},
-            { "&euro;", 8364},
-            { "&exist;", 8707},
-            { "&fnof;", 402},
-            { "&forall;", 8704},
-            { "&frac12;", 189},
-            { "&frac14;", 188},
-            { "&frac34;", 190},
-            { "&frasl;", 8260},
-            { "&Gamma;", 915},
-            { "&gamma;", 947},
-            { "&ge;", 8805},
+            { "&alpha;", 945 },
+            { "&amp;", 38 },
+            { "&and;", 8743 },
+            { "&ang;", 8736 },
+            { "&Aring;", 197 },
+            { "&aring;", 229 },
+            { "&asymp;", 8776 },
+            { "&Atilde;", 195 },
+            { "&atilde;", 227 },
+            { "&Auml;", 196 },
+            { "&auml;", 228 },
+            { "&bdquo;", 8222 },
+            { "&Beta;", 914 },
+            { "&beta;", 946 },
+            { "&brvbar;", 166 },
+            { "&bull;", 8226 },
+            { "&cap;", 8745 },
+            { "&Ccedil;", 199 },
+            { "&ccedil;", 231 },
+            { "&cedil;", 184 },
+            { "&cent;", 162 },
+            { "&Chi;", 935 },
+            { "&chi;", 967 },
+            { "&circ;", 710 },
+            { "&clubs;", 9827 },
+            { "&cong;", 8773 },
+            { "&copy;", 169 },
+            { "&crarr;", 8629 },
+            { "&cup;", 8746 },
+            { "&curren;", 164 },
+            { "&dagger;", 8224 },
+            { "&Dagger;", 8225 },
+            { "&darr;", 8595 },
+            { "&dArr;", 8659 },
+            { "&deg;", 176 },
+            { "&Delta;", 916 },
+            { "&delta;", 948 },
+            { "&diams;", 9830 },
+            { "&divide;", 247 },
+            { "&Eacute;", 201 },
+            { "&eacute;", 233 },
+            { "&Ecirc;", 202 },
+            { "&ecirc;", 234 },
+            { "&Egrave;", 200 },
+            { "&egrave;", 232 },
+            { "&empty;", 8709 },
+            { "&emsp;", 8195 },
+            { "&ensp;", 8194 },
+            { "&Epsilon;", 917 },
+            { "&epsilon;", 949 },
+            { "&equiv;", 8801 },
+            { "&Eta;", 919 },
+            { "&eta;", 951 },
+            { "&ETH;", 208 },
+            { "&eth;", 240 },
+            { "&Euml;", 203 },
+            { "&euml;", 235 },
+            { "&euro;", 8364 },
+            { "&exist;", 8707 },
+            { "&fnof;", 402 },
+            { "&forall;", 8704 },
+            { "&frac12;", 189 },
+            { "&frac14;", 188 },
+            { "&frac34;", 190 },
+            { "&frasl;", 8260 },
+            { "&Gamma;", 915 },
+            { "&gamma;", 947 },
+            { "&ge;", 8805 },
             { "&harr;", 8596 },
             { "&hArr;", 8660 },
             { "&hearts;", 9829 },
@@ -266,7 +266,7 @@ public class HTMLEntitiesUtil {
     private static final Hashtable htmlEntitiesMap = new Hashtable();
 
     /**
-     * Map to convert html entities in exteden characters.
+     * Map to convert html entities in extended characters.
      */
     @SuppressWarnings("rawtypes")
     private static final Hashtable unHtmlEntitiesMap = new Hashtable();
@@ -295,32 +295,29 @@ public class HTMLEntitiesUtil {
      *
      * @param str input string
      * @return formatted string
-     * @see #unHtmlEntities(String)
+     * @see #decodeHtmlEntities(String)
      */
-    public static String htmlEntities(String str) {
-
+    public static String encodeHtmlEntities(String str) {
         if (str == null) {
             return "";
         }
 
-        // Initialize HTML translation maps table the first time is called.
         if (htmlEntitiesMap.isEmpty()) {
             initializeEntitiesTables();
         }
 
-        StringBuilder buf = new StringBuilder(); // The output string buffer.
+        StringBuilder buf = new StringBuilder();
 
         for (int i = 0; i < str.length(); ++i) {
             char ch = str.charAt(i);
             String entity = (String) htmlEntitiesMap.get((int) ch); // Get equivalent HTML entity.
 
-            // If entity has not been found.
             if (entity == null) {
-                // Check if is an extended character.
+                // Check if it is an extended character.
                 if (((int) ch) > 128) {
                     buf.append("&#").append((int) ch).append(";"); // Convert extended character.
                 } else {
-                    buf.append(ch); // Append the character as is.
+                    buf.append(ch); // Append the character as it is.
                 }
             } else {
                 buf.append(entity); // Append the HTML entity.
@@ -335,11 +332,9 @@ public class HTMLEntitiesUtil {
      *
      * @param str input string
      * @return formatted string
-     * @see #htmlEntities(String)
+     * @see #encodeHtmlEntities(String)
      */
-    public static String unHtmlEntities(String str) {
-
-        // Initialize HTML translation maps table the first time is called.
+    public static String decodeHtmlEntities(String str) {
         if (htmlEntitiesMap.isEmpty()) {
             initializeEntitiesTables();
         }
@@ -348,8 +343,10 @@ public class HTMLEntitiesUtil {
 
         for (int i = 0; i < str.length(); ++i) {
             char ch = str.charAt(i);
+
             if (ch == '&') {
                 int semi = str.indexOf(';', i + 1);
+
                 if ((semi == -1) || ((semi - i) > 7)) {
                     buf.append(ch);
                     continue;
