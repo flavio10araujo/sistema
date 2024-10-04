@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.polifono.common.properties.EmailProperties;
 import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
 
@@ -30,10 +29,9 @@ public class EmailSendUtil {
     @Value("${app.email.accounts.general.to}")
     private String emailGeneralTo;
 
-    private final MailSync mailSync;
-    private final EmailProperties emailProperties;
+    private final SendEmailService sendEmailService;
 
-    private void sendHtmlMail(boolean async, int messageType, String to, String[] args) {
+    private void sendHtmlMail(boolean sync, int messageType, String to, String[] args) {
         String from = "", subject = "", message = "";
 
         // TODO - i18n
@@ -132,14 +130,10 @@ public class EmailSendUtil {
             message = replaceParamsMessage(message, args);
         }
 
-        if (async) {
-            new MailAsync(emailProperties, from, subject, message, to).start();
-        } else {
-            mailSync.sendEmail(emailProperties, from, subject, message, to);
-        }
+        sendEmailService.sendEmail(sync, from, subject, message, to);
     }
 
-    private void sendMessageCommunication(boolean async, int messageType, String to, String[] args) {
+    private void sendMessageCommunication(boolean sync, int messageType, String to, String[] args) {
         String from = "", subject = "", message = "";
 
         if (messageType == 4) {
@@ -225,11 +219,7 @@ public class EmailSendUtil {
             message = replaceParamsMessage(message, args);
         }
 
-        if (async) {
-            new MailAsync(emailProperties, from, subject, message, to).start();
-        } else {
-            mailSync.sendEmail(emailProperties, from, subject, message, to);
-        }
+        sendEmailService.sendEmail(sync, from, subject, message, to);
     }
 
     /**
@@ -262,7 +252,7 @@ public class EmailSendUtil {
         args[2] = player.getEmailConfirmed();
 
         try {
-            sendHtmlMail(true, 1, player.getEmail(), args);
+            sendHtmlMail(false, 1, player.getEmail(), args);
         } catch (Exception e) {
             log.error("sendEmailConfirmRegister", e);
         }
@@ -278,7 +268,7 @@ public class EmailSendUtil {
         args[2] = player.getPasswordReset();
 
         try {
-            sendHtmlMail(true, 2, player.getEmail(), args);
+            sendHtmlMail(false, 2, player.getEmail(), args);
         } catch (Exception e) {
             log.error("sendEmailPasswordReset", e);
         }
@@ -294,7 +284,7 @@ public class EmailSendUtil {
 
         try {
             if (player.getEmail() != null && !player.getEmail().isEmpty()) {
-                sendHtmlMail(true, 3, player.getEmail(), args);
+                sendHtmlMail(false, 3, player.getEmail(), args);
             }
         } catch (Exception e) {
             log.error("sendEmailPaymentRegistered", e);
@@ -311,7 +301,7 @@ public class EmailSendUtil {
         args[2] = classPlayer.getClazz().getName();
 
         try {
-            sendHtmlMail(true, 4, classPlayer.getPlayer().getEmail(), args);
+            sendHtmlMail(false, 4, classPlayer.getPlayer().getEmail(), args);
         } catch (Exception e) {
             log.error("sendEmailInvitationToClass", e);
         }
@@ -326,7 +316,7 @@ public class EmailSendUtil {
         args[1] = message;
 
         try {
-            sendHtmlMail(true, 5, "", args);
+            sendHtmlMail(false, 5, "", args);
         } catch (Exception e) {
             log.error("sendEmailContact", e);
         }
@@ -345,7 +335,7 @@ public class EmailSendUtil {
             args[4] = "(" + player.getRankLevel() + ") " + player.getRankColor();
 
             try {
-                sendMessageCommunication(false, groupCommunicationId, player.getEmail(), args);
+                sendMessageCommunication(true, groupCommunicationId, player.getEmail(), args);
             } catch (Exception e) {
                 log.error("sendEmailCommunication", e);
             }
