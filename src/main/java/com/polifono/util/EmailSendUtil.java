@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.polifono.common.properties.EmailProperties;
 import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
 
@@ -29,8 +30,8 @@ public class EmailSendUtil {
     @Value("${app.email.accounts.general.to}")
     private String emailGeneralTo;
 
-    private final MailAsync mailAsync;
     private final MailSync mailSync;
+    private final EmailProperties emailProperties;
 
     private void sendHtmlMail(boolean async, int messageType, String to, String[] args) {
         String from = "", subject = "", message = "";
@@ -132,9 +133,9 @@ public class EmailSendUtil {
         }
 
         if (async) {
-            mailAsync.sendEmail(from, subject, message, to);
+            new MailAsync(emailProperties, from, subject, message, to).start();
         } else {
-            mailSync.sendEmail(from, subject, message, to);
+            mailSync.sendEmail(emailProperties, from, subject, message, to);
         }
     }
 
@@ -225,9 +226,9 @@ public class EmailSendUtil {
         }
 
         if (async) {
-            mailAsync.sendEmail(from, subject, message, to);
+            new MailAsync(emailProperties, from, subject, message, to).start();
         } else {
-            mailSync.sendEmail(from, subject, message, to);
+            mailSync.sendEmail(emailProperties, from, subject, message, to);
         }
     }
 

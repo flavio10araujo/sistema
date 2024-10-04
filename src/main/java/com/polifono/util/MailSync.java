@@ -5,15 +5,10 @@ import org.springframework.stereotype.Component;
 
 import com.polifono.common.properties.EmailProperties;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 @Component
 public class MailSync {
 
-    private final EmailProperties emailProperties;
-
-    public boolean sendEmail(String senderAddress, String recipientAddress, String subject, String message) {
+    public boolean sendEmail(EmailProperties emailProperties, String senderAddress, String subject, String message, String recipientAddress) {
         try {
             MultiPartEmail hm = new MultiPartEmail();
 

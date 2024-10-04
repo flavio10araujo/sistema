@@ -1,21 +1,15 @@
 package com.polifono.util;
 
 import org.apache.commons.mail.MultiPartEmail;
-import org.springframework.stereotype.Component;
 
 import com.polifono.common.properties.EmailProperties;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
-@Component
 public class MailAsync extends Thread {
 
     private final EmailProperties emailProperties;
-
-    private String senderAddress;
-    private String recipientAddress;
-    private String subject;
+    private final String senderAddress;
+    private final String recipientAddress;
+    private final String subject;
     private String message;
 
     @Override
@@ -41,12 +35,12 @@ public class MailAsync extends Thread {
             throw new RuntimeException("An email was not sent: ", e);
         }
     }
-
-    public void sendEmail(String senderAddress, String recipientAddress, String subject, String message) {
+    
+    public MailAsync(EmailProperties emailProperties, String senderAddress, String subject, String message, String recipientAddress) {
+        this.emailProperties = emailProperties;
         this.senderAddress = senderAddress;
         this.recipientAddress = recipientAddress;
         this.subject = subject;
         this.message = message;
-        this.start();
     }
 }
