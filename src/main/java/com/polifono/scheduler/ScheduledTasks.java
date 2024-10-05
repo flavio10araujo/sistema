@@ -16,7 +16,7 @@ import com.polifono.domain.PlayerCommunication;
 import com.polifono.service.ICommunicationService;
 import com.polifono.service.IPlayerCommunicationService;
 import com.polifono.service.IPlayerService;
-import com.polifono.util.EmailSendUtil;
+import com.polifono.service.impl.SendEmailService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class ScheduledTasks {
     private final IPlayerService playerService;
     private final ICommunicationService communicationService;
     private final IPlayerCommunicationService playerCommunicationService;
-    private final EmailSendUtil emailSendUtil;
+    private final SendEmailService emailSendUtil;
 
     /**
      * initialDelay = How many milliseconds this method will be called after the start of the application.

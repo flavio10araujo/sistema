@@ -17,7 +17,7 @@ import com.polifono.domain.ClassPlayer;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
 import com.polifono.service.IPlayerService;
-import com.polifono.util.EmailSendUtil;
+import com.polifono.service.impl.SendEmailService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class StudentController extends BaseController {
     private final IClassService classService;
     private final IPlayerService playerService;
     private final IClassPlayerService classPlayerService;
-    private final EmailSendUtil emailSendUtil;
+    private final SendEmailService sendEmailService;
 
     public static final String REDIRECT_HOME = "redirect:/";
 
@@ -166,7 +166,7 @@ public class StudentController extends BaseController {
                 return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
             }
 
-            emailSendUtil.sendEmailInvitationToClass(Objects.requireNonNull(currentAuthenticatedUser()).getUser(), current.get());
+            sendEmailService.sendEmailInvitationToClass(Objects.requireNonNull(currentAuthenticatedUser()).getUser(), current.get());
 
             redirectAttributes.addFlashAttribute("message", "emailSent");
         } catch (Exception e) {

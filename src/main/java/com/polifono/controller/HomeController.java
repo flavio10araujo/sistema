@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.polifono.domain.Player;
 import com.polifono.domain.bean.CurrentUser;
 import com.polifono.service.impl.RecaptchaService;
-import com.polifono.util.EmailSendUtil;
+import com.polifono.service.impl.SendEmailService;
 import com.polifono.util.EmailUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +28,7 @@ public class HomeController extends BaseController {
     public static final String REDIRECT_GAMES = "redirect:/games";
 
     private final RecaptchaService captchaService;
-    private final EmailSendUtil emailSendUtil;
+    private final SendEmailService sendEmailService;
 
     @RequestMapping(value = { "/" }, method = RequestMethod.GET)
     public final String index(final Model model) {
@@ -108,7 +108,7 @@ public class HomeController extends BaseController {
             }
         }
 
-        emailSendUtil.sendEmailContact(email, message);
+        sendEmailService.sendEmailContact(email, message);
 
         model.addAttribute("message", "success");
 

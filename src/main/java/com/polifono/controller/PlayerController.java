@@ -22,7 +22,7 @@ import com.polifono.domain.bean.PlayerFacebook;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.impl.LoginServiceImpl;
-import com.polifono.util.EmailSendUtil;
+import com.polifono.service.impl.SendEmailService;
 import com.polifono.util.EmailUtil;
 import com.polifono.util.RandomStringUtil;
 import com.polifono.util.StringUtil;
@@ -48,7 +48,7 @@ public class PlayerController extends BaseController {
     private final IPlayerService playerService;
     private final IClassPlayerService classPlayerService;
     private final LoginServiceImpl loginService;
-    private final EmailSendUtil emailSendUtil;
+    private final SendEmailService emailSendUtil;
 
     @RequestMapping(value = { "/player/create" }, method = RequestMethod.POST)
     public final synchronized String createPlayer(HttpServletRequest request, final Model model, @ModelAttribute("player") Player player) {

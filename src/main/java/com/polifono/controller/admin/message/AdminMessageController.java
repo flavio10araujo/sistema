@@ -15,7 +15,7 @@ import com.polifono.domain.PlayerCommunication;
 import com.polifono.service.ICommunicationService;
 import com.polifono.service.IPlayerCommunicationService;
 import com.polifono.service.IPlayerService;
-import com.polifono.util.EmailSendUtil;
+import com.polifono.service.impl.SendEmailService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +30,7 @@ public class AdminMessageController {
     private final IPlayerService playerService;
     private final ICommunicationService communicationService;
     private final IPlayerCommunicationService playerCommunicationService;
-    private final EmailSendUtil emailSendUtil;
+    private final SendEmailService sendEmailService;
 
     @RequestMapping(value = { "/group04" }, method = RequestMethod.GET)
     public String group04(Model model) {
@@ -43,7 +43,7 @@ public class AdminMessageController {
         groupcommunication.setId(4);
 
         List<Player> players = playerService.findCommunicationGroup04();
-        emailSendUtil.sendEmailCommunication(groupcommunication.getId(), players);
+        sendEmailService.sendEmailCommunication(groupcommunication.getId(), players);
 
         registerMessages(groupcommunication, players);
 
@@ -65,7 +65,7 @@ public class AdminMessageController {
 
         List<Player> players = playerService.findCommunicationGroup05();
 
-        emailSendUtil.sendEmailCommunication(groupcommunication.getId(), players);
+        sendEmailService.sendEmailCommunication(groupcommunication.getId(), players);
 
         registerMessages(groupcommunication, players);
 

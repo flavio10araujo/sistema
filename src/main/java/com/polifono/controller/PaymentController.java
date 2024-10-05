@@ -19,7 +19,7 @@ import com.polifono.domain.Player;
 import com.polifono.domain.Transaction;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.ITransactionService;
-import com.polifono.util.EmailSendUtil;
+import com.polifono.service.impl.SendEmailService;
 
 import br.com.uol.pagseguro.domain.checkout.Checkout;
 import br.com.uol.pagseguro.enums.Currency;
@@ -42,7 +42,7 @@ public class PaymentController extends BaseController {
     private final ConfigsCreditsProperties configsCreditsProperties;
     private final ITransactionService transactionService;
     private final IPlayerService playerService;
-    private final EmailSendUtil emailSendUtil;
+    private final SendEmailService emailSendUtil;
 
     @RequestMapping(value = { "/buycredits" }, method = RequestMethod.GET)
     public final String buyCredits(final Model model) {

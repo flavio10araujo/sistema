@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.polifono.domain.Player;
+import com.polifono.service.impl.SendEmailService;
 
 @ExtendWith(MockitoExtension.class)
 public class EmailSendUtilTest {
@@ -17,7 +18,7 @@ public class EmailSendUtilTest {
     public static final String EMAIL_COMPANY_SLOGAN = "Company Slogan";
 
     @Mock
-    private EmailSendUtil emailSendUtil;
+    private SendEmailService emailSendUtil;
 
     @InjectMocks
     private EmailSendUtilTest emailSendUtilTest;
