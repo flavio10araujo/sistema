@@ -1,9 +1,10 @@
-package com.polifono.util;
+package com.polifono.service.impl;
 
 import org.apache.commons.mail.MultiPartEmail;
 import org.springframework.stereotype.Component;
 
 import com.polifono.common.properties.EmailProperties;
+import com.polifono.util.HTMLEntitiesUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class SendEmailService {
+public class EmailSender {
 
     private final EmailProperties emailProperties;
     private String senderAddress;
