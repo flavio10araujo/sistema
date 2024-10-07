@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,13 +18,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.polifono.domain.Game;
 import com.polifono.repository.IGameRepository;
-import com.polifono.service.impl.GameServiceImpl;
 
 /**
  * Unit test methods for the GameService.
  */
 @ExtendWith(MockitoExtension.class)
-public class GameServiceTest {
+public class GameServiceImplTest {
 
     @InjectMocks
     private GameServiceImpl service;

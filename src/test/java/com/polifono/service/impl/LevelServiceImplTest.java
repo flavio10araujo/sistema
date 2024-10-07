@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,13 +18,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.polifono.domain.Level;
 import com.polifono.repository.ILevelRepository;
-import com.polifono.service.impl.LevelServiceImpl;
 
 /**
  * Unit test methods for the LevelService.
  */
 @ExtendWith(MockitoExtension.class)
-public class LevelServiceTest {
+public class LevelServiceImplTest {
 
     @InjectMocks
     private LevelServiceImpl service;

@@ -1,56 +1,75 @@
 package com.polifono.service.impl;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import lombok.Setter;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-@Setter
-@Component
-public class EmailMessageBuilder {
+public class EmailMessageBuilderTest {
 
-    @Value("${app.general.name}")
-    private String emailCompany;
-    @Value("${app.general.slogan}")
-    private String emailCompanySlogan;
-    @Value("${app.general.url}")
-    private String emailUrl;
-    @Value("${app.email.accounts.general.address}")
-    private String emailGeneral;
-    @Value("${app.email.accounts.noReply.address}")
-    private String emailNoReply;
+    public static final String emailCompany = "Company Name";
+    public static final String emailCompanySlogan = "Test Company Slogan";
+    public static final String emailUrl = "www.company.com";
+    public static final String emailGeneral = "company@email.com";
+    public static final String emailNoReply = "noreply@email.com";
 
-    public String getEmailFrom(int messageType) {
-        return switch (messageType) {
-            case 1, 2 -> emailNoReply;
-            case 3, 4, 5, 104, 105 -> emailGeneral;
-            default -> throw new IllegalArgumentException("Invalid message type");
-        };
+    private static EmailMessageBuilder emailMessageBuilder;
+
+    @BeforeAll
+    public static void setUp() {
+        emailMessageBuilder = new EmailMessageBuilder();
+        emailMessageBuilder.setEmailCompany(emailCompany);
+        emailMessageBuilder.setEmailCompanySlogan(emailCompanySlogan);
+        emailMessageBuilder.setEmailUrl(emailUrl);
+        emailMessageBuilder.setEmailGeneral(emailGeneral);
+        emailMessageBuilder.setEmailNoReply(emailNoReply);
     }
 
-    public String getEmailSubject(int messageType, String[] args) {
-        return switch (messageType) {
-            case 1 -> "Confirme seu cadastro na " + emailCompany;
-            case 2 -> "Sua solicitação de alteração de senha na " + emailCompany;
-            case 3 -> "Sua compra de créditos foi confirmada na " + emailCompany;
-            case 4 -> "Você foi convidado para uma sala de aula na " + emailCompany;
-            case 5 -> "Novo contato: " + args[0];
-            case 104, 105 -> "Sentimos sua falta na " + emailCompany + "... Acesse sua conta para continuar a aprender música!";
-            default -> throw new IllegalArgumentException("Invalid message type");
-        };
+    @Test
+    public void givenMessageType_WhenGetEmailFrom_ThenReturnRightEmail() {
+        assertEquals(emailNoReply, emailMessageBuilder.getEmailFrom(1));
+        assertEquals(emailNoReply, emailMessageBuilder.getEmailFrom(2));
+        assertEquals(emailGeneral, emailMessageBuilder.getEmailFrom(3));
+        assertEquals(emailGeneral, emailMessageBuilder.getEmailFrom(4));
+        assertEquals(emailGeneral, emailMessageBuilder.getEmailFrom(5));
+        assertEquals(emailGeneral, emailMessageBuilder.getEmailFrom(104));
+        assertEquals(emailGeneral, emailMessageBuilder.getEmailFrom(105));
+        assertThrows(IllegalArgumentException.class, () -> emailMessageBuilder.getEmailFrom(999));
     }
 
-    public String getEmailMessage(int messageType, String[] args) {
-        return switch (messageType) {
-            case 1 -> getMessageType1();
-            case 2 -> getMessageType2();
-            case 3 -> getMessageType3();
-            case 4 -> getMessageType4();
-            case 5 -> getMessageType5();
-            case 104 -> getMessageType104();
-            case 105 -> getMessageType105(args);
-            default -> throw new IllegalArgumentException("Invalid message type");
-        };
+    @Test
+    public void givenMessageType_WhenGetEmailSubject_ThenReturnRightEmailSubject() {
+        assertEquals("Confirme seu cadastro na " + emailCompany, emailMessageBuilder.getEmailSubject(1, null));
+        assertEquals("Sua solicitação de alteração de senha na " + emailCompany, emailMessageBuilder.getEmailSubject(2, null));
+        assertEquals("Sua compra de créditos foi confirmada na " + emailCompany, emailMessageBuilder.getEmailSubject(3, null));
+        assertEquals("Você foi convidado para uma sala de aula na " + emailCompany, emailMessageBuilder.getEmailSubject(4, null));
+        assertEquals("Novo contato: " + emailCompany, emailMessageBuilder.getEmailSubject(5, new String[] { emailCompany }));
+        assertEquals("Sentimos sua falta na " + emailCompany + "... Acesse sua conta para continuar a aprender música!",
+                emailMessageBuilder.getEmailSubject(104, null));
+        assertEquals("Sentimos sua falta na " + emailCompany + "... Acesse sua conta para continuar a aprender música!",
+                emailMessageBuilder.getEmailSubject(105, null));
+        assertThrows(IllegalArgumentException.class, () -> emailMessageBuilder.getEmailSubject(999, null));
+    }
+
+    @Test
+    public void givenMessageType_WhenGetEmailMessage_ThenReturnRightEmailMessage() {
+        assertTrue(areStringsEquivalent(getMessageType1(), emailMessageBuilder.getEmailMessage(1, new String[] {})));
+        assertTrue(areStringsEquivalent(getMessageType2(), emailMessageBuilder.getEmailMessage(2, new String[] {})));
+        assertTrue(areStringsEquivalent(getMessageType3(), emailMessageBuilder.getEmailMessage(3, new String[] {})));
+        assertTrue(areStringsEquivalent(getMessageType4(), emailMessageBuilder.getEmailMessage(4, new String[] {})));
+        assertTrue(areStringsEquivalent(getMessageType5(), emailMessageBuilder.getEmailMessage(5, new String[] {})));
+        assertTrue(areStringsEquivalent(getMessageType104(), emailMessageBuilder.getEmailMessage(104, new String[] {})));
+        assertTrue(areStringsEquivalent(getMessageType105WithCredits(), emailMessageBuilder.getEmailMessage(105, new String[] { "", "", "10" })));
+        assertTrue(areStringsEquivalent(getMessageType105WithoutCredits(), emailMessageBuilder.getEmailMessage(105, new String[] { "", "", "0" })));
+        assertThrows(IllegalArgumentException.class, () -> emailMessageBuilder.getEmailMessage(999, new String[] {}));
+    }
+
+    public boolean areStringsEquivalent(String str1, String str2) {
+        String normalizedStr1 = str1.replaceAll("\\s+", "");
+        String normalizedStr2 = str2.replaceAll("\\s+", "");
+        return normalizedStr1.equals(normalizedStr2);
     }
 
     private String getMessageType1() {
@@ -512,8 +531,8 @@ public class EmailMessageBuilder {
                 """.formatted(emailCompany, emailCompany, emailUrl, emailUrl, emailCompany, emailCompany, emailCompanySlogan, emailUrl, emailUrl);
     }
 
-    private String getMessageType105(String[] args) {
-        String message = """
+    private String getMessageType105WithCredits() {
+        return """
                 <table cellpadding="0" cellspacing="0" align="center" width="550" summary="">
                     <thead>
                         <tr>
@@ -543,20 +562,11 @@ public class EmailMessageBuilder {
                                         Estamos sempre melhorando nosso sistema, criando novas funcionalidades e adicionando novas aulas.
                                     </font>
                                 </p>
-                """.formatted(emailCompany, emailCompany);
-
-        // Credits > 0
-        if (Integer.parseInt(args[2]) > 0) {
-            message = message + """
-                            <p>
-                                <font face="arial" size="2">
-                                    Você ainda tem créditos em sua conta da sua última compra!
-                                </font>
-                            </p>
-                    """;
-        }
-
-        return message + """
+                                <p>
+                                    <font face="arial" size="2">
+                                        Você ainda tem créditos em sua conta da sua última compra!
+                                    </font>
+                                </p>
                                 <p>
                                     <font face="arial" size="2">
                                         Mini relatório do aluno:
@@ -632,6 +642,115 @@ public class EmailMessageBuilder {
                         </tr>
                     </tbody>
                 </table>
-                """.formatted(emailUrl, emailUrl, emailCompany, emailCompany, emailCompanySlogan, emailUrl, emailUrl);
+                """.formatted(emailCompany, emailCompany, emailUrl, emailUrl, emailCompany, emailCompany, emailCompanySlogan, emailUrl, emailUrl);
+    }
+
+    private String getMessageType105WithoutCredits() {
+        return """
+                <table cellpadding="0" cellspacing="0" align="center" width="550" summary="">
+                    <thead>
+                        <tr>
+                            <td align="center">
+                                <font color="#7EBB3B" face="arial" size="+2" style="text-transform:uppercase">
+                                    <b>%s</b>
+                                </font>
+                                <hr size="3" color="#7EBB3B">
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p>
+                                    <font color="#7EBB3B" face="arial" size="+1">
+                                        <b>Olá {0},</b>
+                                    </font>
+                                </p>
+                                <p>
+                                    <font face="arial" size="2">
+                                        Sentimos sua falta! Já faz tempo que você não acessa a %s!
+                                    </font>
+                                </p>
+                                <p>
+                                    <font face="arial" size="2">
+                                        Estamos sempre melhorando nosso sistema, criando novas funcionalidades e adicionando novas aulas.
+                                    </font>
+                                </p>
+                                <p>
+                                    <font face="arial" size="2">
+                                        Mini relatório do aluno:
+                                    </font>
+                                </p>
+                                <p>
+                                    <font face="arial" size="2">
+                                        - Créditos em conta: {2}
+                                    </font>
+                                </p>
+                                <p>
+                                    <font face="arial" size="2">
+                                        - Pontuação total: {3}
+                                    </font>
+                                </p>
+                                <p>
+                                    <font face="arial" size="2">
+                                        - Nível musical: {4}
+                                    </font>
+                                </p>
+                                <p>
+                                    <font face="arial" size="2">
+                                        <br />
+                                        Acesse <a href="https://%s">%s</a> e continue estudando para subir de nível!
+                                    </font>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <font face="arial" size="-1">
+                                    <br />
+                                    Aguardamos você!
+                                    <br />
+                                    Equipe %s
+                                    <br /><br />
+                                    <strong>%s</strong> - %s
+                                </font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <hr size="2" color="#EFEFEF">
+                                <font face="arial" size="-1">
+                                    DÚVIDAS? Acesse <a href="https://%s/#faq">%s/#faq</a>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <hr size="2" color="#EFEFEF">
+                                <font face="arial" size="-1"></font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>
+                                    <font color="#7EBB3B" face="arial" size="+1">
+                                        <b>Promoções e novidades:</b>
+                                    </font>
+                                </p>
+                                <p>
+                                    <font face="arial" size="2">
+                                        Siga-nos nas redes sociais para aproveitar as promoções e ganhar créditos!
+                                    </font>
+                                </p>
+                                <p>
+                                    <font face="arial" size="2">
+                                        <a href="https://www.facebook.com/polifonooficial/">Facebook</a> - <a href="https://www.youtube.com/c/PolifonoOficial">Youtube</a> - <a href="https://www.instagram.com/polifono_music/">Instagram</a>
+                                    </font>
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                """.formatted(emailCompany, emailCompany, emailUrl, emailUrl, emailCompany, emailCompany, emailCompanySlogan, emailUrl, emailUrl);
     }
 }

@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
@@ -24,13 +24,13 @@ import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.repository.IMapRepository;
-import com.polifono.service.impl.MapServiceImpl;
+import com.polifono.service.IPhaseService;
 
 /**
  * Unit test methods for the MapService.
  */
 @ExtendWith(MockitoExtension.class)
-public class MapServiceTest {
+public class MapServiceImplTest {
 
     @InjectMocks
     private MapServiceImpl service;

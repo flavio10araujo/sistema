@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
@@ -24,13 +24,12 @@ import com.polifono.domain.Level;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
 import com.polifono.repository.IContentRepository;
-import com.polifono.service.impl.ContentServiceImpl;
 
 /**
  * Unit test methods for the ContentService.
  */
 @ExtendWith(MockitoExtension.class)
-public class ContentServiceTest {
+public class ContentServiceImplTest {
 
     @InjectMocks
     private ContentServiceImpl service;
