@@ -9,8 +9,10 @@ import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+@Setter
 @Slf4j
 @RequiredArgsConstructor
 @Component
