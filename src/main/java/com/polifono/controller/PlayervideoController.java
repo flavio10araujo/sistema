@@ -21,6 +21,7 @@ import com.polifono.dto.PlayervideoDTO;
 import com.polifono.service.IContentService;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.IPlayervideoService;
+import com.polifono.util.YouTubeUrlFormatter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -156,7 +157,7 @@ public class PlayervideoController extends BaseController {
                     playervideo.getPlayer().getId(),
                     playervideo.getPlayer().getName(),
                     playervideo.getPlayer().getLastName(),
-                    playervideo.getUrlFormatted())
+                    YouTubeUrlFormatter.formatUrl(playervideo.getUrl()))
             );
         }
 

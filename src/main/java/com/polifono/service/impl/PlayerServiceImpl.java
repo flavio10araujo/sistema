@@ -20,6 +20,7 @@ import com.polifono.service.IPlayerService;
 import com.polifono.util.DateUtil;
 import com.polifono.util.EmailUtil;
 import com.polifono.util.StringUtil;
+import com.polifono.util.YouTubeUrlFormatter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -297,7 +298,7 @@ public class PlayerServiceImpl implements IPlayerService {
             return "<br />Você ainda não tem permissão para adicionar vídeos.<br />Continue estudando para desbloquear essa funcionalidade!";
         } else if (playervideo.getContent() == null || playervideo.getContent().getPhase() == null || playervideo.getContent().getPhase().getId() == 0) {
             msg = msg + "<br />Por favor, selecione uma fase.";
-        } else if (playervideo.getUrlFormatted().isEmpty()) {
+        } else if (YouTubeUrlFormatter.formatUrl(playervideo.getUrl()).isEmpty()) {
             msg = msg + "<br />O endereço do vídeo informado não parece estar correto.";
         }
 
