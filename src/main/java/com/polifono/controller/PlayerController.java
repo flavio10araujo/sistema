@@ -27,7 +27,7 @@ import com.polifono.service.impl.SendEmailService;
 import com.polifono.util.EmailUtil;
 import com.polifono.util.PasswordUtil;
 import com.polifono.util.PlayerUtil;
-import com.polifono.util.Util;
+import com.polifono.util.UrlReaderUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -378,7 +378,7 @@ public class PlayerController extends BaseController {
     public final synchronized String loginfb(HttpServletRequest request, final Model model, String code) {
         try {
             JSONObject resp = new JSONObject(
-                    Util.readURL(new URL("https://graph.facebook.com/v2.12/me?fields=email,first_name,last_name&access_token=" + code)));
+                    UrlReaderUtil.readURL(new URL("https://graph.facebook.com/v2.12/me?fields=email,first_name,last_name&access_token=" + code)));
             PlayerFacebook playerFacebook = new PlayerFacebook(resp);
 
             if (playerFacebook.getId() == null) {
