@@ -38,4 +38,35 @@ public class Playervideo {
 
     @Column(name = "c022_url")
     private String url;
+
+    public String getUrlFormatted() {
+        if (this.url == null || this.url.isEmpty()) {
+            return "";
+        }
+
+        String videoId = extractYoutubeVideoIdFromUrl();
+        if (videoId.isEmpty()) {
+            return "";
+        }
+
+        return "https://www.youtube.com/embed/" + videoId;
+    }
+
+    private String extractYoutubeVideoIdFromUrl() {
+        String videoId = "";
+
+        if (this.url.startsWith("https://www.youtube.com/watch?v=")) {
+            videoId = this.url.substring(this.url.indexOf("?v=") + 3);
+        } else if (this.url.startsWith("https://youtu.be/")) {
+            videoId = this.url.substring(this.url.indexOf(".be/") + 4);
+        } else if (this.url.startsWith("https://m.youtube.com/watch?v=")) {
+            videoId = this.url.substring(this.url.indexOf("?v=") + 3);
+        }
+
+        if (videoId.contains("&")) {
+            videoId = videoId.substring(0, videoId.indexOf("&"));
+        }
+
+        return videoId;
+    }
 }

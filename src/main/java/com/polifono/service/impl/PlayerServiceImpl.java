@@ -297,7 +297,7 @@ public class PlayerServiceImpl implements IPlayerService {
             return "<br />Você ainda não tem permissão para adicionar vídeos.<br />Continue estudando para desbloquear essa funcionalidade!";
         } else if (playervideo.getContent() == null || playervideo.getContent().getPhase() == null || playervideo.getContent().getPhase().getId() == 0) {
             msg = msg + "<br />Por favor, selecione uma fase.";
-        } else if ("".equals(StringUtil.formatYoutubeUrl(playervideo.getUrl()))) {
+        } else if (playervideo.getUrlFormatted().isEmpty()) {
             msg = msg + "<br />O endereço do vídeo informado não parece estar correto.";
         }
 
