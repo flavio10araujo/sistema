@@ -7,31 +7,6 @@ import com.polifono.domain.Content;
  */
 public class ContentUtil {
 
-    public static void main(String args[]) {
-
-        Content original = new Content();
-
-        original.setContent(""
-                + "<p><span style=\"font-size:14px\"><span style=\"font-family:Verdana,Geneva,sans-serif\">Apesar de serem de diferentes tamanhos, todos esses tipos de saxofones s&atilde;o tocados da mesma forma com as mesmas posi&ccedil;&otilde;es dos dedos nas notas. Por&eacute;m, pelo fato de serem instrumentos em tonalidades diferentes, o resultado sonoro de cada nota &eacute; diferente. Com o passar dos nossos estudos, entenderemos com mais clareza essas particularidades de cada tipo de saxofone.</span></span></p>"
-
-                + "<p><img alt=\"\" class=\"img-responsive\" src=\"https://media.polifono.com/img/sax_1_1_001_1_01.png\" style=\"height:705px; width:1000px\" /></p>"
-
-                + "<p><span style=\"font-size:14px\"><span style=\"font-family:Verdana,Geneva,sans-serif\"><strong>Aten&ccedil;&atilde;o</strong>: Neste curso, utilizaremos o <u><strong>Saxofone Alto</strong></u>, que tem a afina&ccedil;&atilde;o em Mi bemol. No entanto como dito, voc&ecirc; poder&aacute; treinar os exerc&iacute;cios com qualquer modelo da fam&iacute;lia do saxofone.</span></span></p>"
-        );
-
-        //Content resultado = formatContent(original);
-
-        //System.out.println(resultado.getContent());
-
-        //System.out.println(getURLImageFromCompleteTagHTML("<img class=\"img-responsive\" alt=\"\" src=\"https://media.polifono.com/img/sax_1_1_001_1_01.png\" height=\"705\" width=\"1000\" />"));
-
-        addFullScreenToVideo(
-                "<div class='embed-container'><iframe src='https://player.vimeo.com/video/179239622' frameborder='0' webkitAllowFullScreen=\"true\" mozallowfullscreen=\"true\" allowFullScreen=\"true\"></iframe></div><p><br />");
-
-        addFullScreenToVideo(
-                "<div class=\"embed-container\"><iframe frameborder=\"0\" src=\"https://player.vimeo.com/video/179239622\"></iframe></div><p><br />");
-    }
-
     public static Content formatContent(Content content) {
         if (content == null) {
             return null;

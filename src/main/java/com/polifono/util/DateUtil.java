@@ -8,23 +8,6 @@ public class DateUtil {
 
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-    public static void main(String[] args) {
-        //try {
-        //System.out.println(getFirstDayOfTheCurrentMonth());
-        //System.out.println(getLastDayOfTheCurrentMonth());
-
-        //String d1Str = "2019-01-05";
-        //String d1Str = "05/01/2019";
-        //java.util.Date d1 = parseDateYearMonthDayFormat(d1Str);
-        //System.out.println(d1);
-
-        //System.out.println(subtractMonth(new java.util.Date(), 2));
-
-        //} catch (Exception e) {
-        //e.printStackTrace();
-        //}
-    }
-
     /**
      * This method converts an Object to a String of format dd/MM/yyyy.
      *

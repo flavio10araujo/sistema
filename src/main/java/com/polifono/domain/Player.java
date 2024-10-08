@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.polifono.domain.enums.Rank;
 import com.polifono.domain.enums.Role;
 import com.polifono.util.DateUtil;
-import com.polifono.util.MD5Util;
+import com.polifono.util.HashingUtil;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -140,7 +140,7 @@ public class Player {
             return "";
         }
 
-        return MD5Util.md5Hex(email.toLowerCase());
+        return HashingUtil.generateMD5Hash(email.toLowerCase());
     }
 
     public String getDtBirthStr() {
