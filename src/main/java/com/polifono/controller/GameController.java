@@ -33,8 +33,8 @@ import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.IQuestionService;
+import com.polifono.service.impl.GenerateRandomStringService;
 import com.polifono.util.ContentUtil;
-import com.polifono.util.RandomStringUtil;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +53,7 @@ public class GameController extends BaseController {
     private final IQuestionService questionService;
     private final IPlayerPhaseService playerPhaseService;
     private final IDiplomaService diplomaService;
+    private final GenerateRandomStringService generateRandomStringService;
 
     public static final String URL_GAMES_INDEX = "games/index";
     public static final String URL_GAMES_LEVEL = "games/level";
@@ -448,7 +449,7 @@ public class GameController extends BaseController {
         diploma.setLevel(level);
 
         diploma.setDt(new Date());
-        diploma.setCode(player.getId() + "-" + game.getId() + "-" + level.getId() + "-" + new RandomStringUtil(10).nextString());
+        diploma.setCode(player.getId() + "-" + game.getId() + "-" + level.getId() + "-" + generateRandomStringService.generate(10));
 
         return diploma;
     }

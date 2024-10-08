@@ -21,10 +21,10 @@ import com.polifono.domain.Player;
 import com.polifono.domain.bean.PlayerFacebook;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IPlayerService;
+import com.polifono.service.impl.GenerateRandomStringService;
 import com.polifono.service.impl.LoginServiceImpl;
 import com.polifono.service.impl.SendEmailService;
 import com.polifono.util.EmailUtil;
-import com.polifono.util.RandomStringUtil;
 import com.polifono.util.StringUtil;
 import com.polifono.util.Util;
 
@@ -49,6 +49,7 @@ public class PlayerController extends BaseController {
     private final IClassPlayerService classPlayerService;
     private final LoginServiceImpl loginService;
     private final SendEmailService emailSendUtil;
+    private final GenerateRandomStringService generateRandomStringService;
 
     @RequestMapping(value = { "/player/create" }, method = RequestMethod.POST)
     public final synchronized String createPlayer(HttpServletRequest request, final Model model, @ModelAttribute("player") Player player) {
@@ -195,7 +196,7 @@ public class PlayerController extends BaseController {
                 // TODO - pegar msg do messages.
                 model.addAttribute("msgRegister", "<br />Este cadastro já se encontra ativo.");
             } else {
-                playerOld.setEmailConfirmed(new RandomStringUtil(10).nextString());
+                playerOld.setEmailConfirmed(generateRandomStringService.generate(10));
                 playerService.save(playerOld);
                 emailSendUtil.sendEmailConfirmRegister(playerOld);
 
@@ -244,7 +245,7 @@ public class PlayerController extends BaseController {
             // TODO - pegar msg do messages.
             model.addAttribute("msgRegister", "<br />O login " + playerResend.getEmail() + " não está cadastrado no sistema.");
         } else {
-            playerOld.setPasswordReset(new RandomStringUtil(10).nextString());
+            playerOld.setPasswordReset(generateRandomStringService.generate(10));
             playerService.save(playerOld);
 
             if (!byLogin) {
@@ -420,7 +421,7 @@ public class PlayerController extends BaseController {
                         player.setName(playerFacebook.getFirstName());
                         player.setLastName(playerFacebook.getLastName());
                         player.setEmail(playerFacebook.getEmail());
-                        player.setPassword(new RandomStringUtil(6).nextString());
+                        player.setPassword(generateRandomStringService.generate(6));
                         player.setIndEmailConfirmed(false);
 
                         playerService.create(player);
@@ -438,7 +439,7 @@ public class PlayerController extends BaseController {
                     player.setIdFacebook(playerFacebook.getId());
                     player.setName(playerFacebook.getFirstName());
                     player.setLastName(playerFacebook.getLastName());
-                    player.setPassword(new RandomStringUtil(6).nextString());
+                    player.setPassword(generateRandomStringService.generate(6));
                     player.setLogin(playerFacebook.getId() + "");
                     player.setIndEmailConfirmed(false);
 

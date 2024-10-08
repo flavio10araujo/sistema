@@ -41,7 +41,7 @@ public class LevelServiceImplTest {
     }
 
     private List<Level> getEntityListStubData() {
-        List<Level> list = new ArrayList<Level>();
+        List<Level> list = new ArrayList<>();
 
         Level entity1 = getEntityStubData().get();
         Level entity2 = getEntityStubData().get();
