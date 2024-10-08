@@ -19,7 +19,7 @@ import com.polifono.service.IPlayerGameService;
 import com.polifono.service.IPlayerService;
 import com.polifono.util.DateUtil;
 import com.polifono.util.EmailUtil;
-import com.polifono.util.StringUtil;
+import com.polifono.util.PasswordUtil;
 import com.polifono.util.YouTubeUrlFormatter;
 
 import lombok.RequiredArgsConstructor;
@@ -42,7 +42,7 @@ public class PlayerServiceImpl implements IPlayerService {
     public Player preparePlayerForCreation(Player player) {
         player.setDtInc(new Date());
         player.setActive(true);
-        player.setPassword(StringUtil.encryptPassword(player.getPassword()));
+        player.setPassword(PasswordUtil.encryptPassword(player.getPassword()));
         player.setCredit(configsCreditsProperties.getCreation()); // n credits are given to the player when he creates the account.
         player.setRole(Role.USER);
         player.setEmailConfirmed(generateRandomStringService.generate(10)); // This field is sent to the player's email to confirm if the email is real.

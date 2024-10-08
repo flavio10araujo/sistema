@@ -24,7 +24,7 @@ import com.polifono.domain.PlayerGame;
 import com.polifono.domain.enums.Role;
 import com.polifono.repository.IPlayerRepository;
 import com.polifono.service.IPlayerGameService;
-import com.polifono.util.StringUtil;
+import com.polifono.util.PasswordUtil;
 
 /**
  * Unit test methods for the PlayerService.
@@ -353,7 +353,7 @@ public class PlayerServiceImplTest {
     @Test
     public void encryptPassword_WhenEverythingIsOK_ReturnTextEncrypted() {
         String rawPassword = "12345";
-        String ret = StringUtil.encryptPassword(rawPassword);
+        String ret = PasswordUtil.encryptPassword(rawPassword);
         Assertions.assertNotNull("failure - expected not null", ret);
         Assertions.assertTrue(ret.length() > 0, "failure - expected size bigger than 0");
     }

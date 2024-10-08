@@ -33,7 +33,7 @@ import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.IPlayervideoService;
 import com.polifono.service.ITransactionService;
-import com.polifono.util.StringUtil;
+import com.polifono.util.PlayerUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -343,7 +343,7 @@ public class ProfileController extends BaseController {
         }
 
         try {
-            player.get().setName(StringUtil.formatNamePlayer(edit.getName().trim() + " " + edit.getLastName().trim()));
+            player.get().setName(PlayerUtil.formatNamePlayer(edit.getName().trim() + " " + edit.getLastName().trim()));
 
             String name = player.get().getName();
             name = name.substring(0, name.indexOf(" "));

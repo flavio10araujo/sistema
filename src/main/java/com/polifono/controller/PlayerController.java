@@ -25,7 +25,8 @@ import com.polifono.service.impl.GenerateRandomStringService;
 import com.polifono.service.impl.LoginServiceImpl;
 import com.polifono.service.impl.SendEmailService;
 import com.polifono.util.EmailUtil;
-import com.polifono.util.StringUtil;
+import com.polifono.util.PasswordUtil;
+import com.polifono.util.PlayerUtil;
 import com.polifono.util.Util;
 
 import jakarta.servlet.ServletException;
@@ -82,7 +83,7 @@ public class PlayerController extends BaseController {
             if (msg.isEmpty()) {
                 String password = player.getPassword();
 
-                player.setName(StringUtil.formatNamePlayer(player.getName()));
+                player.setName(PlayerUtil.formatNamePlayer(player.getName()));
 
                 String name = player.getName();
                 name = name.substring(0, name.indexOf(" "));
@@ -307,7 +308,7 @@ public class PlayerController extends BaseController {
 
                 // If there is no errors.
                 if (msg.isEmpty()) {
-                    playerOld.setPassword(StringUtil.encryptPassword(playerOld.getPassword()));
+                    playerOld.setPassword(PasswordUtil.encryptPassword(playerOld.getPassword()));
                     playerOld.setPasswordReset(""); // If the user has changed the password successfully, the reset code is cleaned.
                     playerService.save(playerOld);
 
