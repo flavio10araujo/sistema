@@ -6,11 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class MD5Util {
 
-    public static void main(String[] args) {
-        System.out.println(md5Hex("flavio@email.com"));
-    }
-
-    public static String hex(byte[] array) {
+    private static String hex(byte[] array) {
         StringBuilder sb = new StringBuilder();
 
         for (byte b : array) {
@@ -21,13 +17,15 @@ public class MD5Util {
     }
 
     public static String md5Hex(String message) {
+        if (message == null || message.isEmpty()) {
+            return "";
+        }
+
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             return hex(md.digest(message.getBytes("CP1252")));
-        } catch (NoSuchAlgorithmException e) {
-        } catch (UnsupportedEncodingException e) {
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            return "";
         }
-
-        return null;
     }
 }
