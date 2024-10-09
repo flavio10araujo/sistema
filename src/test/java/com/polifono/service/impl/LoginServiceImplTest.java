@@ -43,38 +43,6 @@ public class LoginServiceImplTest {
     private final Integer PLAYER_ID_EXISTENT = 1;
     private final Integer PLAYER_ID_INEXISTENT = Integer.MAX_VALUE;
 
-    /* stubs - begin */
-    private Optional<Login> getEntityStubData() {
-        Login entity = new Login();
-        entity.setId(2);
-        return Optional.of(entity);
-    }
-
-    private List<Login> getEntityListStubData() {
-        List<Login> list = new ArrayList<Login>();
-
-        Login entity1 = getEntityStubData().get();
-        Login entity2 = getEntityStubData().get();
-
-        list.add(entity1);
-        list.add(entity2);
-
-        return list;
-    }
-
-    private List<Date> getEntityListDateStubData() {
-        List<Date> list = new ArrayList<>();
-
-        Date entity1 = new Date();
-        Date entity2 = new Date();
-
-        list.add(entity1);
-        list.add(entity2);
-
-        return list;
-    }
-    /* stubs - end */
-
     /* registerLogin - begin */
     @Test
     public void registerLogin_WhenPlayerExistent_RegisterLogin() {
@@ -130,4 +98,24 @@ public class LoginServiceImplTest {
         verifyNoMoreInteractions(repository);
     }
     /* findByPlayer - end */
+
+    /* stubs - begin */
+    private Optional<Login> getEntityStubData() {
+        Login entity = new Login();
+        entity.setId(2);
+        return Optional.of(entity);
+    }
+
+    private List<Date> getEntityListDateStubData() {
+        List<Date> list = new ArrayList<>();
+
+        Date entity1 = new Date();
+        Date entity2 = new Date();
+
+        list.add(entity1);
+        list.add(entity2);
+
+        return list;
+    }
+    /* stubs - end */
 }

@@ -37,33 +37,6 @@ public class ClassServiceImplTest {
     private final Integer TEACHER_ID_EXISTENT = 2;
     private final Integer TEACHER_ID_INEXISTENT = Integer.MAX_VALUE;
 
-    /* stubs - begin */
-    private Optional<com.polifono.domain.Class> getEntityStubData() {
-        Player player = new Player();
-        player.setId(123);
-
-        com.polifono.domain.Class clazz = new com.polifono.domain.Class();
-        clazz.setId(CLASS_ID_EXISTENT);
-        clazz.setName("Class Name");
-        clazz.setDescription("Class Description");
-        clazz.setPlayer(player);
-
-        return Optional.of(clazz);
-    }
-
-    private List<com.polifono.domain.Class> getEntityListStubData() {
-        List<com.polifono.domain.Class> list = new ArrayList<com.polifono.domain.Class>();
-
-        com.polifono.domain.Class entity1 = getEntityStubData().get();
-        com.polifono.domain.Class entity2 = getEntityStubData().get();
-
-        list.add(entity1);
-        list.add(entity2);
-
-        return list;
-    }
-    /* stubs - end */
-
     /* save - begin */
     @Test
     public void save_WhenSaveClass_ReturnClassSaved() {
@@ -202,7 +175,7 @@ public class ClassServiceImplTest {
 
     @Test
     public void findByTeacherAndStatus_WhenSearchByTeacherAndStatusInexistents_ReturnEmptyList() {
-        when(repository.findByTeacherAndStatus(TEACHER_ID_INEXISTENT, false)).thenReturn(new ArrayList<com.polifono.domain.Class>());
+        when(repository.findByTeacherAndStatus(TEACHER_ID_INEXISTENT, false)).thenReturn(new ArrayList<>());
 
         List<com.polifono.domain.Class> listReturned = service.findByTeacherAndStatus(TEACHER_ID_INEXISTENT, false);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -213,7 +186,7 @@ public class ClassServiceImplTest {
 
     @Test
     public void findByTeacherAndStatus_WhenSearchByTeacherExistentButStatusInexistent_ReturnEmptyList() {
-        when(repository.findByTeacherAndStatus(TEACHER_ID_EXISTENT, false)).thenReturn(new ArrayList<com.polifono.domain.Class>());
+        when(repository.findByTeacherAndStatus(TEACHER_ID_EXISTENT, false)).thenReturn(new ArrayList<>());
 
         List<com.polifono.domain.Class> listReturned = service.findByTeacherAndStatus(TEACHER_ID_EXISTENT, false);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -224,7 +197,7 @@ public class ClassServiceImplTest {
 
     @Test
     public void findByTeacherAndStatus_WhenSearchStatusExistentButTeacherInexistent_ReturnEmptyList() {
-        when(repository.findByTeacherAndStatus(TEACHER_ID_INEXISTENT, true)).thenReturn(new ArrayList<com.polifono.domain.Class>());
+        when(repository.findByTeacherAndStatus(TEACHER_ID_INEXISTENT, true)).thenReturn(new ArrayList<>());
 
         List<com.polifono.domain.Class> listReturned = service.findByTeacherAndStatus(TEACHER_ID_INEXISTENT, true);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -233,4 +206,31 @@ public class ClassServiceImplTest {
         verifyNoMoreInteractions(repository);
     }
     /* findByTeacherAndStatus - end */
+
+    /* stubs - begin */
+    private Optional<com.polifono.domain.Class> getEntityStubData() {
+        Player player = new Player();
+        player.setId(123);
+
+        com.polifono.domain.Class clazz = new com.polifono.domain.Class();
+        clazz.setId(CLASS_ID_EXISTENT);
+        clazz.setName("Class Name");
+        clazz.setDescription("Class Description");
+        clazz.setPlayer(player);
+
+        return Optional.of(clazz);
+    }
+
+    private List<com.polifono.domain.Class> getEntityListStubData() {
+        List<com.polifono.domain.Class> list = new ArrayList<>();
+
+        com.polifono.domain.Class entity1 = getEntityStubData().get();
+        com.polifono.domain.Class entity2 = getEntityStubData().get();
+
+        list.add(entity1);
+        list.add(entity2);
+
+        return list;
+    }
+    /* stubs - end */
 }

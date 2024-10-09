@@ -51,7 +51,7 @@ public class AnswerServiceImplTest {
 
     /* save - begin */
     @Test
-    public void givenAnswer_WhenSave_ThenReturnAnswerSaved() {
+    public void givenAnswer_whenSave_thenReturnAnswerSaved() {
         Optional<Answer> entity = getEntityStubData();
 
         when(repository.save(entity.get())).thenReturn(entity.get());
@@ -72,7 +72,7 @@ public class AnswerServiceImplTest {
 
     /* delete - begin */
     @Test
-    public void givenAnswer_WhenDelete_ThenReturnTrue() {
+    public void givenAnswer_whenDelete_thenReturnTrue() {
         Optional<Answer> entity = getEntityStubData();
 
         when(repository.findById(ANSWER_ID_EXISTENT)).thenReturn(entity);
@@ -85,7 +85,7 @@ public class AnswerServiceImplTest {
     }
 
     @Test
-    public void givenInexistentAnswer_WhenDelete_ThenReturnFalse() {
+    public void givenInexistentAnswer_whenDelete_thenReturnFalse() {
         when(repository.findById(ANSWER_ID_INEXISTENT)).thenReturn(Optional.empty());
 
         Assertions.assertFalse(service.delete(ANSWER_ID_INEXISTENT), "failure - expected return false");
@@ -97,7 +97,7 @@ public class AnswerServiceImplTest {
 
     /* findById - begin */
     @Test
-    public void givenAnswer_WhenFindById_ThenReturnAnswer() {
+    public void givenAnswer_whenFindById_thenReturnAnswer() {
         Optional<Answer> entity = getEntityStubData();
 
         when(repository.findById(ANSWER_ID_EXISTENT)).thenReturn(entity);
@@ -112,7 +112,7 @@ public class AnswerServiceImplTest {
     }
 
     @Test
-    public void givenInexistentAnswer_WhenFindById_ThenReturnNull() {
+    public void givenInexistentAnswer_whenFindById_thenReturnNull() {
         when(repository.findById(ANSWER_ID_INEXISTENT)).thenReturn(null);
 
         Optional<Answer> entityReturned = service.findById(ANSWER_ID_INEXISTENT);
@@ -126,7 +126,7 @@ public class AnswerServiceImplTest {
 
     /* findAll - begin */
     @Test
-    public void givenAnswers_WhenFindAll_ThenReturnList() {
+    public void givenAnswers_whenFindAll_thenReturnList() {
         List<Answer> list = getEntityListStubData();
 
         when(repository.findAll()).thenReturn(list);
@@ -142,7 +142,7 @@ public class AnswerServiceImplTest {
 
     /* findByGame - begin */
     @Test
-    public void givenGame_WhenFindByGame_ThenReturnList() {
+    public void givenGame_whenFindByGame_thenReturnList() {
         List<Answer> list = getEntityListStubData();
 
         when(repository.findByGame(GAME_ID_EXISTENT)).thenReturn(list);
@@ -156,7 +156,7 @@ public class AnswerServiceImplTest {
     }
 
     @Test
-    public void givenInexistentGame_WhenFindByGame_ThenReturnEmptyList() {
+    public void givenInexistentGame_whenFindByGame_thenReturnEmptyList() {
         when(repository.findByGame(GAME_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<Answer> listReturned = service.findByGame(GAME_ID_INEXISTENT);
@@ -169,7 +169,7 @@ public class AnswerServiceImplTest {
 
     /* findByGameAndLevel - begin */
     @Test
-    public void givenGameAndLevel_WhenFindByGameAndLevel_ThenReturnList() {
+    public void givenGameAndLevel_whenFindByGameAndLevel_thenReturnList() {
         List<Answer> list = getEntityListStubData();
 
         when(repository.findByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT)).thenReturn(list);
@@ -183,7 +183,7 @@ public class AnswerServiceImplTest {
     }
 
     @Test
-    public void givenInexistentGameAndLevel_WhenFindByGameAndLevel_ThenReturnEmptyList() {
+    public void givenInexistentGameAndLevel_whenFindByGameAndLevel_thenReturnEmptyList() {
         when(repository.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT)).thenReturn(new ArrayList<Answer>());
 
         List<Answer> listReturned = service.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT);
@@ -194,7 +194,7 @@ public class AnswerServiceImplTest {
     }
 
     @Test
-    public void givenGameExistentButLevelInexistent_WhenFindByGameAndLevel_ThenReturnEmptyList() {
+    public void givenGameExistentButLevelInexistent_whenFindByGameAndLevel_thenReturnEmptyList() {
         when(repository.findByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT)).thenReturn(new ArrayList<Answer>());
 
         List<Answer> listReturned = service.findByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT);
@@ -205,7 +205,7 @@ public class AnswerServiceImplTest {
     }
 
     @Test
-    public void givenLevelExistentButGameInexistent_WhenFindByGameAndLevel_ThenReturnEmptyList() {
+    public void givenLevelExistentButGameInexistent_whenFindByGameAndLevel_thenReturnEmptyList() {
         when(repository.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT)).thenReturn(new ArrayList<Answer>());
 
         List<Answer> listReturned = service.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT);
@@ -218,7 +218,7 @@ public class AnswerServiceImplTest {
 
     /* findByMap - begin */
     @Test
-    public void givenMap_WhenFindByMap_ThenReturnList() {
+    public void givenMap_whenFindByMap_thenReturnList() {
         List<Answer> list = getEntityListStubData();
 
         when(repository.findByMap(MAP_ID_EXISTENT)).thenReturn(list);
@@ -232,7 +232,7 @@ public class AnswerServiceImplTest {
     }
 
     @Test
-    public void givenMapInexistent_WhenFindByMap_ThenReturnEmptyList() {
+    public void givenMapInexistent_whenFindByMap_thenReturnEmptyList() {
         when(repository.findByMap(MAP_ID_INEXISTENT)).thenReturn(new ArrayList<Answer>());
 
         List<Answer> listReturned = service.findByMap(MAP_ID_INEXISTENT);
@@ -245,7 +245,7 @@ public class AnswerServiceImplTest {
 
     /* findByPhase - begin */
     @Test
-    public void givenPhase_WhenFindByPhase_ThenReturnList() {
+    public void givenPhase_whenFindByPhase_thenReturnList() {
         List<Answer> list = getEntityListStubData();
 
         when(repository.findByPhase(PHASE_ID_EXISTENT)).thenReturn(list);
@@ -259,7 +259,7 @@ public class AnswerServiceImplTest {
     }
 
     @Test
-    public void givenPhaseInexistent_WhenFindByPhase_ThenReturnEmptyList() {
+    public void givenPhaseInexistent_whenFindByPhase_thenReturnEmptyList() {
         when(repository.findByPhase(PHASE_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<Answer> listReturned = service.findByPhase(PHASE_ID_INEXISTENT);
@@ -272,7 +272,7 @@ public class AnswerServiceImplTest {
 
     /* findByQuestion - begin */
     @Test
-    public void givenQuestion_WhenFindByQuestion_ThenReturnList() {
+    public void givenQuestion_whenFindByQuestion_thenReturnList() {
         List<Answer> list = getEntityListStubData();
 
         when(repository.findByQuestion(QUESTION_ID_EXISTENT)).thenReturn(list);
@@ -286,7 +286,7 @@ public class AnswerServiceImplTest {
     }
 
     @Test
-    public void givenQuestionInexistent_WhenFindByQuestion_ThenReturnEmptyList() {
+    public void givenQuestionInexistent_whenFindByQuestion_thenReturnEmptyList() {
         when(repository.findByQuestion(QUESTION_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<Answer> list = service.findByQuestion(QUESTION_ID_INEXISTENT);

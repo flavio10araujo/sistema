@@ -33,25 +33,6 @@ public class GameServiceImplTest {
 
     private final String NAME_LINK = "recorder";
 
-    /* stubs - begin */
-    public Optional<Game> getEntityStubData() {
-        Game game = new Game();
-        return Optional.of(game);
-    }
-
-    private List<Game> getEntityListStubData() {
-        List<Game> list = new ArrayList<Game>();
-
-        Game entity1 = getEntityStubData().get();
-        Game entity2 = getEntityStubData().get();
-
-        list.add(entity1);
-        list.add(entity2);
-
-        return list;
-    }
-    /* stubs - end */
-
     /* findAll - begin */
     @Test
     public void findAll_WhenListAllGames_ReturnList() {
@@ -126,4 +107,23 @@ public class GameServiceImplTest {
 
     /* getPhaseOfTheTest - begin */
     /* getPhaseOfTheTest - end */
+
+    /* stubs - begin */
+    public Optional<Game> getEntityStubData() {
+        Game game = new Game();
+        return Optional.of(game);
+    }
+
+    private List<Game> getEntityListStubData() {
+        List<Game> list = new ArrayList<>();
+
+        Game entity1 = getEntityStubData().get();
+        Game entity2 = getEntityStubData().get();
+
+        list.add(entity1);
+        list.add(entity2);
+
+        return list;
+    }
+    /* stubs - end */
 }

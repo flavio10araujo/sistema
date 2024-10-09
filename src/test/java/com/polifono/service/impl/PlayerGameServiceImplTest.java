@@ -29,43 +29,34 @@ public class PlayerGameServiceImplTest {
     @Mock
     private IPlayerGameRepository repository;
 
-    private final Integer PLAYERGAME_ID_EXISTENT = 1;
-    private final Integer PLAYERGAME_ID_INEXISTENT = Integer.MAX_VALUE;
-
-    /* stubs - begin */
-    private Optional<PlayerGame> getEntityStubData() {
-        PlayerGame playerGame = new PlayerGame();
-        playerGame.setId(PLAYERGAME_ID_EXISTENT);
-
-        return Optional.of(playerGame);
-    }
-    /* stubs - end */
+    private final Integer PLAYER_GAME_ID_EXISTENT = 1;
+    private final Integer PLAYER_GAME_ID_INEXISTENT = Integer.MAX_VALUE;
 
     /* findOne - begin */
     @Test
     public void findOne_WhenPlayerGameIsExistent_ReturnAnswer() {
         Optional<PlayerGame> entity = getEntityStubData();
 
-        when(repository.findById(PLAYERGAME_ID_EXISTENT)).thenReturn(entity);
+        when(repository.findById(PLAYER_GAME_ID_EXISTENT)).thenReturn(entity);
 
-        Optional<PlayerGame> entityReturned = service.findById(PLAYERGAME_ID_EXISTENT);
+        Optional<PlayerGame> entityReturned = service.findById(PLAYER_GAME_ID_EXISTENT);
 
         Assertions.assertNotNull(entityReturned, "failure - expected not null");
-        Assertions.assertEquals(PLAYERGAME_ID_EXISTENT.intValue(), entityReturned.get().getId(), "failure - expected id attribute match");
+        Assertions.assertEquals(PLAYER_GAME_ID_EXISTENT.intValue(), entityReturned.get().getId(), "failure - expected id attribute match");
 
-        verify(repository, times(1)).findById(PLAYERGAME_ID_EXISTENT);
+        verify(repository, times(1)).findById(PLAYER_GAME_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
     }
 
     @Test
     public void findOne_WhenPlayerGameIsInexistent_ReturnNull() {
-        when(repository.findById(PLAYERGAME_ID_INEXISTENT)).thenReturn(null);
+        when(repository.findById(PLAYER_GAME_ID_INEXISTENT)).thenReturn(null);
 
-        Optional<PlayerGame> entityReturned = service.findById(PLAYERGAME_ID_INEXISTENT);
+        Optional<PlayerGame> entityReturned = service.findById(PLAYER_GAME_ID_INEXISTENT);
 
         Assertions.assertNull(entityReturned, "failure - expected null");
 
-        verify(repository, times(1)).findById(PLAYERGAME_ID_INEXISTENT);
+        verify(repository, times(1)).findById(PLAYER_GAME_ID_INEXISTENT);
         verifyNoMoreInteractions(repository);
     }
     /* findOne - end */
@@ -80,10 +71,19 @@ public class PlayerGameServiceImplTest {
         PlayerGame entityReturned = service.removeCreditsFromPlayer(entity.get(), 1);
 
         Assertions.assertNotNull(entityReturned, "failure - expected not null");
-        Assertions.assertEquals(PLAYERGAME_ID_EXISTENT.intValue(), entityReturned.getId(), "failure - expected id attribute match");
+        Assertions.assertEquals(PLAYER_GAME_ID_EXISTENT.intValue(), entityReturned.getId(), "failure - expected id attribute match");
 
         verify(repository, times(1)).save(entity.get());
         verifyNoMoreInteractions(repository);
     }
     /* removeCreditsFromPlayer - end */
+
+    /* stubs - begin */
+    private Optional<PlayerGame> getEntityStubData() {
+        PlayerGame playerGame = new PlayerGame();
+        playerGame.setId(PLAYER_GAME_ID_EXISTENT);
+
+        return Optional.of(playerGame);
+    }
+    /* stubs - end */
 }

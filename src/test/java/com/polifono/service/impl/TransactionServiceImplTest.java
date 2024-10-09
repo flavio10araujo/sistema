@@ -41,34 +41,6 @@ public class TransactionServiceImplTest {
     private final String CODE_EXISTENT = "F5456E04-2474-4DC5-B188-319183075F04";
     private final String CODE_INEXISTENT = "-1";
 
-    /* stubs - begin */
-    private Optional<Transaction> getEntityStubData() {
-        Player player = new Player();
-        player.setId(PLAYER_ID_EXISTENT);
-
-        Transaction entity = new Transaction();
-        entity.setId(TRANSACTION_ID_EXISTENT);
-        entity.setPlayer(player);
-        entity.setQuantity(27);
-        entity.setDtInc(new Date());
-        entity.setClosed(false);
-
-        return Optional.of(entity);
-    }
-
-    private List<Transaction> getEntityListStubData() {
-        List<Transaction> list = new ArrayList<Transaction>();
-
-        Transaction entity1 = getEntityStubData().get();
-        Transaction entity2 = getEntityStubData().get();
-
-        list.add(entity1);
-        list.add(entity2);
-
-        return list;
-    }
-    /* stubs - end */
-
     /* save - begin */
     @Test
     public void save_WhenSaveTransaction_ReturnTransactionSaved() {
@@ -139,4 +111,32 @@ public class TransactionServiceImplTest {
         verifyNoMoreInteractions(repository);
     }
     /* findByCode - end */
+
+    /* stubs - begin */
+    private Optional<Transaction> getEntityStubData() {
+        Player player = new Player();
+        player.setId(PLAYER_ID_EXISTENT);
+
+        Transaction entity = new Transaction();
+        entity.setId(TRANSACTION_ID_EXISTENT);
+        entity.setPlayer(player);
+        entity.setQuantity(27);
+        entity.setDtInc(new Date());
+        entity.setClosed(false);
+
+        return Optional.of(entity);
+    }
+
+    private List<Transaction> getEntityListStubData() {
+        List<Transaction> list = new ArrayList<>();
+
+        Transaction entity1 = getEntityStubData().get();
+        Transaction entity2 = getEntityStubData().get();
+
+        list.add(entity1);
+        list.add(entity2);
+
+        return list;
+    }
+    /* stubs - end */
 }

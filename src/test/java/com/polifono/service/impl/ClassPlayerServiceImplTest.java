@@ -67,7 +67,7 @@ public class ClassPlayerServiceImplTest {
     }
 
     private List<ClassPlayer> getEntityListStubData() {
-        List<ClassPlayer> list = new ArrayList<ClassPlayer>();
+        List<ClassPlayer> list = new ArrayList<>();
 
         ClassPlayer entity1 = getEntityStubData().get();
         ClassPlayer entity2 = getEntityStubData().get();
@@ -288,7 +288,7 @@ public class ClassPlayerServiceImplTest {
 
     @Test
     public void findClassPlayersByTeacherAndClass_WhenSearchByClassExistentButTeacherInexistent_ReturnEmptyList() {
-        when(repository.findByTeacherAndClass(TEACHER_ID_INEXISTENT, CLASS_ID_EXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByTeacherAndClass(TEACHER_ID_INEXISTENT, CLASS_ID_EXISTENT)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByTeacherAndClass(TEACHER_ID_INEXISTENT, CLASS_ID_EXISTENT);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -337,7 +337,7 @@ public class ClassPlayerServiceImplTest {
 
     @Test
     public void findClassPlayersByClassAndStatus_WhenSearchByStatusExistentButClassInexistent_ReturnEmptyList() {
-        when(repository.findByClassAndStatus(CLASS_ID_INEXISTENT, STATUS_CONFIRMED)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByClassAndStatus(CLASS_ID_INEXISTENT, STATUS_CONFIRMED)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> list = service.findByClassAndStatus(CLASS_ID_INEXISTENT, STATUS_CONFIRMED);
         Assertions.assertEquals(0, list.size(), "failure - expected empty list");
@@ -364,7 +364,7 @@ public class ClassPlayerServiceImplTest {
 
     @Test
     public void findClassPlayersByClassAndPlayer_WhenSearchByClassAndPlayerInexistents_ReturnEmptyList() {
-        when(repository.findByClassAndPlayer(CLASS_ID_INEXISTENT, PLAYER_ID_INEXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByClassAndPlayer(CLASS_ID_INEXISTENT, PLAYER_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByClassAndPlayer(CLASS_ID_INEXISTENT, PLAYER_ID_INEXISTENT);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -375,7 +375,7 @@ public class ClassPlayerServiceImplTest {
 
     @Test
     public void findClassPlayersByClassAndPlayer_WhenSearchByClassExistentButPlayerInexistent_ReturnEmptyList() {
-        when(repository.findByClassAndPlayer(CLASS_ID_EXISTENT, PLAYER_ID_INEXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByClassAndPlayer(CLASS_ID_EXISTENT, PLAYER_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByClassAndPlayer(CLASS_ID_EXISTENT, PLAYER_ID_INEXISTENT);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -386,7 +386,7 @@ public class ClassPlayerServiceImplTest {
 
     @Test
     public void findClassPlayersByClassAndPlayer_WhenSearchByPlayerExistentButClassInexistent_ReturnEmptyList() {
-        when(repository.findByClassAndPlayer(CLASS_ID_INEXISTENT, PLAYER_ID_EXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByClassAndPlayer(CLASS_ID_INEXISTENT, PLAYER_ID_EXISTENT)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByClassAndPlayer(CLASS_ID_INEXISTENT, PLAYER_ID_EXISTENT);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -413,7 +413,7 @@ public class ClassPlayerServiceImplTest {
 
     @Test
     public void findClassPlayersByPlayerAndStatus_WhenSearchByPlayerAndStatusInexistents_ReturnEmptyList() {
-        when(repository.findByPlayerAndStatus(PLAYER_ID_INEXISTENT, 0)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByPlayerAndStatus(PLAYER_ID_INEXISTENT, 0)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByPlayerAndStatus(PLAYER_ID_INEXISTENT, 0);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -424,7 +424,7 @@ public class ClassPlayerServiceImplTest {
 
     @Test
     public void findClassPlayersByPlayerAndStatus_WhenSearchByPlayerExistentButStatusInexistent_ReturnEmptyList() {
-        when(repository.findByPlayerAndStatus(PLAYER_ID_EXISTENT, 0)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByPlayerAndStatus(PLAYER_ID_EXISTENT, 0)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByPlayerAndStatus(PLAYER_ID_EXISTENT, 0);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -435,7 +435,7 @@ public class ClassPlayerServiceImplTest {
 
     @Test
     public void findClassPlayersByPlayerAndStatus_WhenSearchByStatusExistentButPlayerInexistent_ReturnEmptyList() {
-        when(repository.findByPlayerAndStatus(PLAYER_ID_INEXISTENT, STATUS_CONFIRMED)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByPlayerAndStatus(PLAYER_ID_INEXISTENT, STATUS_CONFIRMED)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByPlayerAndStatus(PLAYER_ID_INEXISTENT, STATUS_CONFIRMED);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -462,7 +462,7 @@ public class ClassPlayerServiceImplTest {
 
     @Test
     public void findClassPlayersByTeacherAndStudent_WhenSearchByTeacherAndStudentInexistents_ReturnEmptyList() {
-        when(repository.findByTeacherAndStudent(TEACHER_ID_INEXISTENT, STUDENT_ID_INEXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByTeacherAndStudent(TEACHER_ID_INEXISTENT, STUDENT_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByTeacherAndStudent(TEACHER_ID_INEXISTENT, STUDENT_ID_INEXISTENT);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -473,7 +473,7 @@ public class ClassPlayerServiceImplTest {
 
     @Test
     public void findClassPlayersByTeacherAndStudent_WhenSearchByTeacherExistentButStudentInexistent_ReturnEmptyList() {
-        when(repository.findByTeacherAndStudent(TEACHER_ID_EXISTENT, STUDENT_ID_INEXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByTeacherAndStudent(TEACHER_ID_EXISTENT, STUDENT_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByTeacherAndStudent(TEACHER_ID_EXISTENT, STUDENT_ID_INEXISTENT);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -484,7 +484,7 @@ public class ClassPlayerServiceImplTest {
 
     @Test
     public void findClassPlayersByTeacherAndStudent_WhenSearchByStudentExistentButTeacherInexistent_ReturnEmptyList() {
-        when(repository.findByTeacherAndStudent(TEACHER_ID_INEXISTENT, STUDENT_ID_EXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByTeacherAndStudent(TEACHER_ID_INEXISTENT, STUDENT_ID_EXISTENT)).thenReturn(new ArrayList<>());
 
         List<ClassPlayer> listReturned = service.findByTeacherAndStudent(TEACHER_ID_INEXISTENT, STUDENT_ID_EXISTENT);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -521,7 +521,7 @@ public class ClassPlayerServiceImplTest {
         Player student = new Player();
         student.setId(PLAYER_ID_INEXISTENT);
 
-        when(repository.findByTeacherAndStudent(TEACHER_ID_EXISTENT, PLAYER_ID_INEXISTENT)).thenReturn(new ArrayList<ClassPlayer>());
+        when(repository.findByTeacherAndStudent(TEACHER_ID_EXISTENT, PLAYER_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         Assertions.assertFalse(service.isMyStudent(teacher, student));
 

@@ -47,29 +47,8 @@ public class PlayerPhaseServiceImplTest {
     private final Integer PHASE_ID_EXISTENT = 1;
     private final Integer PHASE_ID_INEXISTENT = Integer.MAX_VALUE;
 
-    private final Integer PHASESTATUS_ONGOING = 2;
-    private final Integer PHASESTATUS_CONCLUDED = 3;
-
-    /* stubs - begin */
-    private Optional<PlayerPhase> getEntityStubData() {
-        Phase phase = new Phase();
-        phase.setId(PLAYER_ID_EXISTENT);
-
-        Player player = new Player();
-        player.setId(PHASE_ID_EXISTENT);
-
-        Phasestatus phasestatus = new Phasestatus();
-        phasestatus.setId(PHASESTATUS_ONGOING);
-
-        PlayerPhase entity = new PlayerPhase();
-        entity.setNumAttempts(1);
-        entity.setPhase(phase);
-        entity.setPlayer(player);
-        entity.setPhasestatus(phasestatus);
-
-        return Optional.of(entity);
-    }
-    /* stubs - end */
+    private final Integer PHASE_STATUS_ONGOING = 2;
+    private final Integer PHASE_STATUS_CONCLUDED = 3;
 
     /* save - begin */
     @Test
@@ -81,7 +60,7 @@ public class PlayerPhaseServiceImplTest {
         phase.setId(PHASE_ID_EXISTENT);
 
         Phasestatus phasestatus = new Phasestatus();
-        phasestatus.setId(PHASESTATUS_ONGOING);
+        phasestatus.setId(PHASE_STATUS_ONGOING);
 
         PlayerPhase playerPhase = new PlayerPhase();
         playerPhase.setPlayer(player);
@@ -101,7 +80,7 @@ public class PlayerPhaseServiceImplTest {
         Assertions.assertNotEquals(0, entity.getId(), "failure - expected id attribute bigger than 0");
         Assertions.assertEquals(PLAYER_ID_EXISTENT.intValue(), entity.getPlayer().getId(), "failure - expected id player attribute match");
         Assertions.assertEquals(PHASE_ID_EXISTENT.intValue(), entity.getPhase().getId(), "failure - expected id phase attribute match");
-        Assertions.assertEquals(PHASESTATUS_ONGOING.intValue(), entity.getPhasestatus().getId(), "failure - expected phase status attribute match");
+        Assertions.assertEquals(PHASE_STATUS_ONGOING.intValue(), entity.getPhasestatus().getId(), "failure - expected phase status attribute match");
         Assertions.assertEquals(0d, entity.getGrade(), 0, "failure - expected grade attribute match");
         Assertions.assertNotNull(entity.getDtTest(), "failure - expected not null");
         Assertions.assertEquals(1, entity.getNumAttempts(), "failure - expected num attempts attribute match");
@@ -171,19 +150,19 @@ public class PlayerPhaseServiceImplTest {
     /* findByPlayerPhaseAndStatus - begin */
     @Test
     public void findByPlayerPhaseAndStatus_WhenSearchByPlayerPhaseAndStatusExistents_ReturnPlayerPhase() {
-        int playerId = PLAYER_ID_EXISTENT, phaseId = PHASE_ID_EXISTENT, phasestatusId = PHASESTATUS_CONCLUDED;
+        int playerId = PLAYER_ID_EXISTENT, phaseId = PHASE_ID_EXISTENT, phasestatusId = PHASE_STATUS_CONCLUDED;
         PlayerPhase playerPhase = new PlayerPhase();
         playerPhase.setId(1);
         when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(playerPhase);
 
-        PlayerPhase entity = service.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASESTATUS_CONCLUDED);
+        PlayerPhase entity = service.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASE_STATUS_CONCLUDED);
         Assertions.assertNotNull(entity, "failure - expected not null");
         Assertions.assertNotEquals(0, entity.getId(), "failure - expected id attribute bigger than 0");
     }
 
     @Test
     public void findByPlayerPhaseAndStatus_WhenSearchByPlayerAndPhaseInexistentAndStatusConcluded_ReturnNull() {
-        PlayerPhase entity = service.findByPlayerPhaseAndStatus(PLAYER_ID_INEXISTENT, PHASE_ID_INEXISTENT, PHASESTATUS_CONCLUDED);
+        PlayerPhase entity = service.findByPlayerPhaseAndStatus(PLAYER_ID_INEXISTENT, PHASE_ID_INEXISTENT, PHASE_STATUS_CONCLUDED);
         Assertions.assertNull(entity, "failure - expected not null");
     }
     /* findByPlayerPhaseAndStatus - end */
@@ -192,7 +171,7 @@ public class PlayerPhaseServiceImplTest {
     @Test
     public void findPlayerPhasesByPlayer_WhenSearchByPlayerExistent_ReturnList() {
         int playerId = PLAYER_ID_EXISTENT;
-        List<PlayerPhase> listReturned = new ArrayList<PlayerPhase>();
+        List<PlayerPhase> listReturned = new ArrayList<>();
         listReturned.add(new PlayerPhase());
         when(repository.findByPlayer(playerId)).thenReturn(listReturned);
 
@@ -262,7 +241,7 @@ public class PlayerPhaseServiceImplTest {
         PlayerPhase entity = getEntityStubData().get();
         entity.setNumAttempts(2);
 
-        when(repository.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASESTATUS_ONGOING)).thenReturn(entity);
+        when(repository.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASE_STATUS_ONGOING)).thenReturn(entity);
         when(repository.save(entity)).thenReturn(entity);
 
         Player player = new Player();
@@ -277,7 +256,7 @@ public class PlayerPhaseServiceImplTest {
         Assertions.assertEquals(entity.getPhase().getId(), entityReturned.getPhase().getId(), "failure match phase attribute");
         Assertions.assertTrue((entityReturned.getNumAttempts() > 1), "failure expected numAttempts attribute bigger than 1");
 
-        verify(repository, times(1)).findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASESTATUS_ONGOING);
+        verify(repository, times(1)).findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASE_STATUS_ONGOING);
         verify(repository, times(1)).save(entity);
         verifyNoMoreInteractions(repository);
     }
@@ -287,7 +266,7 @@ public class PlayerPhaseServiceImplTest {
         PlayerPhase entity = getEntityStubData().get();
         entity.setNumAttempts(1);
 
-        when(repository.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASESTATUS_ONGOING)).thenReturn(null);
+        when(repository.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASE_STATUS_ONGOING)).thenReturn(null);
         when(repository.save(ArgumentMatchers.any(PlayerPhase.class))).thenReturn(entity);
 
         Player player = new Player();
@@ -302,9 +281,30 @@ public class PlayerPhaseServiceImplTest {
         Assertions.assertEquals(entity.getPhase().getId(), entityReturned.getPhase().getId(), "failure match phase attribute");
         Assertions.assertEquals(1, entity.getNumAttempts(), "failure match numAttempts attribute");
 
-        verify(repository, times(1)).findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASESTATUS_ONGOING);
+        verify(repository, times(1)).findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASE_STATUS_ONGOING);
         verify(repository, times(1)).save(ArgumentMatchers.any(PlayerPhase.class));
         verifyNoMoreInteractions(repository);
     }
     /* setTestAttempt - end */
+
+    /* stubs - begin */
+    private Optional<PlayerPhase> getEntityStubData() {
+        Phase phase = new Phase();
+        phase.setId(PLAYER_ID_EXISTENT);
+
+        Player player = new Player();
+        player.setId(PHASE_ID_EXISTENT);
+
+        Phasestatus phasestatus = new Phasestatus();
+        phasestatus.setId(PHASE_STATUS_ONGOING);
+
+        PlayerPhase entity = new PlayerPhase();
+        entity.setNumAttempts(1);
+        entity.setPhase(phase);
+        entity.setPlayer(player);
+        entity.setPhasestatus(phasestatus);
+
+        return Optional.of(entity);
+    }
+    /* stubs - end */
 }

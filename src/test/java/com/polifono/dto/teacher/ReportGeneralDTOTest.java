@@ -13,7 +13,7 @@ import com.polifono.domain.PlayerPhase;
 public class ReportGeneralDTOTest {
 
     @Test
-    public void givenPlayerPhases_WhenGetScore_ThenReturnSumOfScores() {
+    public void givenPlayerPhases_whenGetScore_thenReturnSumOfScores() {
         Player player = new Player();
         PlayerPhase phase1 = new PlayerPhase();
         phase1.setScore(10);
@@ -28,7 +28,7 @@ public class ReportGeneralDTOTest {
     }
 
     @Test
-    public void givenNoPlayerPhases_WhenGetScore_ThenReturnZero() {
+    public void givenNoPlayerPhases_whenGetScore_thenReturnZero() {
         Player player = new Player();
         List<PlayerPhase> playerPhases = List.of();
 
@@ -39,7 +39,7 @@ public class ReportGeneralDTOTest {
     }
 
     @Test
-    public void givenPlayerPhases_WhenGetAverage_ThenReturnCorrectAverage() {
+    public void givenPlayerPhases_whenGetAverage_thenReturnCorrectAverage() {
         Player player = new Player();
         PlayerPhase phase1 = new PlayerPhase();
         phase1.setScore(10);
@@ -54,7 +54,7 @@ public class ReportGeneralDTOTest {
     }
 
     @Test
-    public void givenNoPlayerPhases_WhenGetAverage_ThenReturnZero() {
+    public void givenNoPlayerPhases_whenGetAverage_thenReturnZero() {
         Player player = new Player();
         List<PlayerPhase> playerPhases = List.of();
 

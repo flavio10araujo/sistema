@@ -51,33 +51,6 @@ public class QuestionServiceImplTest {
     private final Integer QUESTION_ID_EXISTENT = 1;
     private final Integer QUESTION_ID_INEXISTENT = Integer.MAX_VALUE;
 
-    /* stubs - begin */
-    private Optional<Question> getEntityStubData() {
-        Content content = new Content();
-        content.setId(CONTENT_ID_EXISTENT);
-
-        Question entity = new Question();
-        entity.setId(QUESTION_ID_EXISTENT);
-        entity.setContent(content);
-        entity.setName("QUESTION 01");
-        entity.setOrder(1);
-
-        return Optional.of(entity);
-    }
-
-    private List<Question> getEntityListStubData() {
-        List<Question> list = new ArrayList<Question>();
-
-        Question entity1 = getEntityStubData().get();
-        Question entity2 = getEntityStubData().get();
-
-        list.add(entity1);
-        list.add(entity2);
-
-        return list;
-    }
-    /* stubs - end */
-
     /* save - begin */
     @Test
     public void save_WhenSaveQuestion_ReturnQuestionSaved() {
@@ -186,7 +159,7 @@ public class QuestionServiceImplTest {
 
     @Test
     public void findByGame_WhenSearchByGameInexistent_ReturnEmptyList() {
-        when(repository.findByGame(GAME_ID_INEXISTENT)).thenReturn(new ArrayList<Question>());
+        when(repository.findByGame(GAME_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<Question> list = service.findByGame(GAME_ID_INEXISTENT);
         Assertions.assertEquals(0, list.size(), "failure - expected empty list");
@@ -213,7 +186,7 @@ public class QuestionServiceImplTest {
 
     @Test
     public void findByGameAndLevel_WhenSearchByGameAndLevelInexistents_ReturnEmptyList() {
-        when(repository.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT)).thenReturn(new ArrayList<Question>());
+        when(repository.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<Question> listReturned = service.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -224,7 +197,7 @@ public class QuestionServiceImplTest {
 
     @Test
     public void findByGameAndLevel_WhenSearchByGameExistentButLevelInexistent_ReturnEmptyList() {
-        when(repository.findByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT)).thenReturn(new ArrayList<Question>());
+        when(repository.findByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<Question> listReturned = service.findByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -235,7 +208,7 @@ public class QuestionServiceImplTest {
 
     @Test
     public void findByGameAndLevel_WhenSearchByLevelExistentButGameInexistent_ReturnEmptyList() {
-        when(repository.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT)).thenReturn(new ArrayList<Question>());
+        when(repository.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT)).thenReturn(new ArrayList<>());
 
         List<Question> listReturned = service.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -262,7 +235,7 @@ public class QuestionServiceImplTest {
 
     @Test
     public void findByMap_WhenSearchByMapInexistent_ReturnEmptyList() {
-        when(repository.findByMap(MAP_ID_INEXISTENT)).thenReturn(new ArrayList<Question>());
+        when(repository.findByMap(MAP_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<Question> listReturned = service.findByMap(MAP_ID_INEXISTENT);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -289,7 +262,7 @@ public class QuestionServiceImplTest {
 
     @Test
     public void findByPhase_WhenSearchByPhaseInexistent_ReturnEmptyList() {
-        when(repository.findByPhase(PHASE_ID_INEXISTENT)).thenReturn(new ArrayList<Question>());
+        when(repository.findByPhase(PHASE_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<Question> listReturned = service.findByPhase(PHASE_ID_INEXISTENT);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -316,7 +289,7 @@ public class QuestionServiceImplTest {
 
     @Test
     public void findByContent_WhenSearchByContentInexistent_ReturnEmptyList() {
-        when(repository.findByContent(CONTENT_ID_INEXISTENT)).thenReturn(new ArrayList<Question>());
+        when(repository.findByContent(CONTENT_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<Question> listReturned = service.findByContent(CONTENT_ID_INEXISTENT);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
@@ -325,4 +298,31 @@ public class QuestionServiceImplTest {
         verifyNoMoreInteractions(repository);
     }
     /* findByContent - end */
+
+    /* stubs - begin */
+    private Optional<Question> getEntityStubData() {
+        Content content = new Content();
+        content.setId(CONTENT_ID_EXISTENT);
+
+        Question entity = new Question();
+        entity.setId(QUESTION_ID_EXISTENT);
+        entity.setContent(content);
+        entity.setName("QUESTION 01");
+        entity.setOrder(1);
+
+        return Optional.of(entity);
+    }
+
+    private List<Question> getEntityListStubData() {
+        List<Question> list = new ArrayList<>();
+
+        Question entity1 = getEntityStubData().get();
+        Question entity2 = getEntityStubData().get();
+
+        list.add(entity1);
+        list.add(entity2);
+
+        return list;
+    }
+    /* stubs - end */
 }

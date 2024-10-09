@@ -16,14 +16,16 @@ public class HashingUtil {
         return sb.toString();
     }
 
-    public static String generateMD5Hash(String message) {
-        if (message == null || message.isEmpty()) {
+    public static String generateMD5Hash(String s) {
+        if (s == null || s.isEmpty()) {
             return "";
         }
 
+        s = s.toLowerCase();
+
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            return hex(md.digest(message.getBytes("CP1252")));
+            return hex(md.digest(s.getBytes("CP1252")));
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             return "";
         }

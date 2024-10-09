@@ -49,66 +49,6 @@ public class PlayerServiceImplTest {
 
     private final Integer GAME_ID_EXISTENT = 2;
 
-    /* stubs - begin */
-    private Optional<Player> getEntityStubData() {
-        List<PlayerGame> playerGameList = new ArrayList<PlayerGame>();
-
-        Player entity = new Player();
-        entity.setId(PLAYER_ID_EXISTENT);
-        entity.setName("Name of the Player");
-        entity.setEmail(PLAYER_EMAIL_EXISTENT);
-        entity.setPassword("password");
-        entity.setRole(Role.USER);
-
-        entity.setPlayerGameList(playerGameList);
-
-        return Optional.of(entity);
-    }
-
-    private List<Player> getEntityListStubData() {
-        List<Player> list = new ArrayList<Player>();
-
-        Player entity1 = getEntityStubData().get();
-        Player entity2 = getEntityStubData().get();
-
-        list.add(entity1);
-        list.add(entity2);
-
-        return list;
-    }
-
-    private Player getPlayerWithSpecificCreditsStubData() {
-        Game game = new Game();
-        game.setId(GAME_ID_EXISTENT);
-
-        List<PlayerGame> playerGameList = new ArrayList<PlayerGame>();
-
-        PlayerGame playerGame = new PlayerGame();
-        playerGame.setCredit(20);
-        playerGame.setGame(game);
-
-        playerGameList.add(playerGame);
-
-        Player player = new Player();
-        player.setId(PLAYER_ID_EXISTENT);
-        player.setCredit(0); // With no generic credits.
-        player.setPlayerGameList(playerGameList); // With specific credits.
-
-        return player;
-    }
-
-    private Phase getPhaseStubData() {
-        Phase phase = new Phase();
-        Map map = new Map();
-        Game game = new Game();
-        game.setId(GAME_ID_EXISTENT);
-        map.setGame(game);
-        phase.setMap(map);
-
-        return phase;
-    }
-    /* stubs - end */
-
     /* create - begin */
     /*@Test
     public void create_WhenCreatePlayer_ReturnPlayerCreated() {
@@ -650,4 +590,64 @@ public class PlayerServiceImplTest {
         Assertions.assertEquals("failure - expected msg returned equals", "O nome precisa ser informado.<br />", service.validateUpdateProfile(player));
     }*/
     /* validateUpdateProfile - end */
+
+    /* stubs - begin */
+    private Optional<Player> getEntityStubData() {
+        List<PlayerGame> playerGameList = new ArrayList<>();
+
+        Player entity = new Player();
+        entity.setId(PLAYER_ID_EXISTENT);
+        entity.setName("Name of the Player");
+        entity.setEmail(PLAYER_EMAIL_EXISTENT);
+        entity.setPassword("password");
+        entity.setRole(Role.USER);
+
+        entity.setPlayerGameList(playerGameList);
+
+        return Optional.of(entity);
+    }
+
+    private List<Player> getEntityListStubData() {
+        List<Player> list = new ArrayList<>();
+
+        Player entity1 = getEntityStubData().get();
+        Player entity2 = getEntityStubData().get();
+
+        list.add(entity1);
+        list.add(entity2);
+
+        return list;
+    }
+
+    private Player getPlayerWithSpecificCreditsStubData() {
+        Game game = new Game();
+        game.setId(GAME_ID_EXISTENT);
+
+        List<PlayerGame> playerGameList = new ArrayList<>();
+
+        PlayerGame playerGame = new PlayerGame();
+        playerGame.setCredit(20);
+        playerGame.setGame(game);
+
+        playerGameList.add(playerGame);
+
+        Player player = new Player();
+        player.setId(PLAYER_ID_EXISTENT);
+        player.setCredit(0); // With no generic credits.
+        player.setPlayerGameList(playerGameList); // With specific credits.
+
+        return player;
+    }
+
+    private Phase getPhaseStubData() {
+        Phase phase = new Phase();
+        Map map = new Map();
+        Game game = new Game();
+        game.setId(GAME_ID_EXISTENT);
+        map.setGame(game);
+        phase.setMap(map);
+
+        return phase;
+    }
+    /* stubs - end */
 }

@@ -62,35 +62,35 @@ public class CustomAuthenticationSuccessHandlerTest {
     }
 
     @Test
-    public void givenOnAuthenticationSuccess_WhenRegisterLogin_ThenShouldRegisterTheRightUser() throws IOException {
+    public void givenOnAuthenticationSuccess_whenRegisterLogin_thenShouldRegisterTheRightUser() throws IOException {
         customAuthenticationSuccessHandler.onAuthenticationSuccess(request, response, getAuthenticationUserTypeUser());
 
         verify(loginService, times(1)).registerLogin(currentUserTypeUser.getUser());
     }
 
     @Test
-    public void givenOnAuthenticationSuccess_WhenUserOfTypeAdminOpensDefaultPage_ThenShouldRedirectToTheRightPage() throws IOException {
+    public void givenOnAuthenticationSuccess_whenUserOfTypeAdminOpensDefaultPage_thenShouldRedirectToTheRightPage() throws IOException {
         customAuthenticationSuccessHandler.onAuthenticationSuccess(request, response, getAuthenticationUserTypeAdmin());
 
         verify(redirectStrategy, times(1)).sendRedirect(request, response, "/admin");
     }
 
     @Test
-    public void givenOnAuthenticationSuccess_WhenUserOfTypeTeacherOpensDefaultPage_ThenShouldRedirectToTheRightPage() throws IOException {
+    public void givenOnAuthenticationSuccess_whenUserOfTypeTeacherOpensDefaultPage_thenShouldRedirectToTheRightPage() throws IOException {
         customAuthenticationSuccessHandler.onAuthenticationSuccess(request, response, getAuthenticationUserTypeTeacher());
 
         verify(redirectStrategy, times(1)).sendRedirect(request, response, "/teacher/report");
     }
 
     @Test
-    public void givenOnAuthenticationSuccess_WhenUserOfTypeUserOpensDefaultPage_ThenShouldRedirectToTheRightPage() throws IOException {
+    public void givenOnAuthenticationSuccess_whenUserOfTypeUserOpensDefaultPage_thenShouldRedirectToTheRightPage() throws IOException {
         customAuthenticationSuccessHandler.onAuthenticationSuccess(request, response, getAuthenticationUserTypeUser());
 
         verify(redirectStrategy, times(1)).sendRedirect(request, response, "/");
     }
 
     @Test
-    public void givenOnAuthenticationSuccess_WhenUserTriedToOpenPageBeforeLogin_ThenShouldRedirectToTheDesiredPage() throws IOException {
+    public void givenOnAuthenticationSuccess_whenUserTriedToOpenPageBeforeLogin_thenShouldRedirectToTheDesiredPage() throws IOException {
         when(session.getAttribute("SPRING_SECURITY_SAVED_REQUEST")).thenReturn(getSavedRequest());
 
         customAuthenticationSuccessHandler.onAuthenticationSuccess(request, response, getAuthenticationUserTypeUser());

@@ -34,25 +34,6 @@ public class LevelServiceImplTest {
     private final Integer GAME_ID_EXISTENT = 1;
     private final Integer GAME_ID_INEXISTENT = Integer.MAX_VALUE;
 
-    /* stubs - begin */
-    private Optional<Level> getEntityStubData() {
-        Level level = new Level();
-        return Optional.of(level);
-    }
-
-    private List<Level> getEntityListStubData() {
-        List<Level> list = new ArrayList<>();
-
-        Level entity1 = getEntityStubData().get();
-        Level entity2 = getEntityStubData().get();
-
-        list.add(entity1);
-        list.add(entity2);
-
-        return list;
-    }
-    /* stubs - end */
-
     /* findAll - begin */
     @Test
     public void findAll_WhenListAllLevels_ReturnList() {
@@ -86,7 +67,7 @@ public class LevelServiceImplTest {
 
     @Test
     public void findByGame_WhenSearchByGameInexistent_ReturnEmptyList() {
-        when(repository.findByGame(GAME_ID_INEXISTENT)).thenReturn(new ArrayList<Level>());
+        when(repository.findByGame(GAME_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<Level> listReturned = service.findByGame(GAME_ID_INEXISTENT);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected list size 0");
@@ -98,4 +79,23 @@ public class LevelServiceImplTest {
 
     /* flagLevelsToOpenedOrNot - begin */
     /* flagLevelsToOpenedOrNot - end */
+
+    /* stubs - begin */
+    private Optional<Level> getEntityStubData() {
+        Level level = new Level();
+        return Optional.of(level);
+    }
+
+    private List<Level> getEntityListStubData() {
+        List<Level> list = new ArrayList<>();
+
+        Level entity1 = getEntityStubData().get();
+        Level entity2 = getEntityStubData().get();
+
+        list.add(entity1);
+        list.add(entity2);
+
+        return list;
+    }
+    /* stubs - end */
 }

@@ -143,7 +143,7 @@ public class PhaseServiceImplTest {
     /* findAll - begin */
     @Test
     public void findAll_WhenListAllPhases_ReturnList() {
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         listReturned.add(new Phase());
         when(repository.findAll()).thenReturn(listReturned);
 
@@ -157,7 +157,7 @@ public class PhaseServiceImplTest {
     @Test
     public void findPhasesByGame_WhenSearchByGameExistent_ReturnList() {
         int gameId = GAME_ID_EXISTENT;
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         listReturned.add(new Phase());
         when(repository.findByGame(gameId)).thenReturn(listReturned);
 
@@ -169,7 +169,7 @@ public class PhaseServiceImplTest {
     @Test
     public void findPhasesByGame_WhenSearchByGameInexistent_ReturnEmptyList() {
         int gameId = GAME_ID_INEXISTENT;
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         when(repository.findByGame(gameId)).thenReturn(listReturned);
 
         List<Phase> list = service.findByGame(GAME_ID_INEXISTENT);
@@ -181,7 +181,7 @@ public class PhaseServiceImplTest {
     @Test
     public void findByGameAndLevel_WhenSearchByGameAndLevelExistents_ReturnList() {
         int gameId = GAME_ID_EXISTENT, levelId = LEVEL_ID_EXISTENT;
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         listReturned.add(new Phase());
         when(repository.findByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
 
@@ -193,7 +193,7 @@ public class PhaseServiceImplTest {
     @Test
     public void findByGameAndLevel_WhenSearchByGameAndLevelInexistents_ReturnEmptyList() {
         int gameId = GAME_ID_INEXISTENT, levelId = LEVEL_ID_INEXISTENT;
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         when(repository.findByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
 
         List<Phase> list = service.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_INEXISTENT);
@@ -203,7 +203,7 @@ public class PhaseServiceImplTest {
     @Test
     public void findByGameAndLevel_WhenSearchByGameExistentButLevelInexistent_ReturnEmptyList() {
         int gameId = GAME_ID_EXISTENT, levelId = LEVEL_ID_INEXISTENT;
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         when(repository.findByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
 
         List<Phase> list = service.findByGameAndLevel(GAME_ID_EXISTENT, LEVEL_ID_INEXISTENT);
@@ -213,7 +213,7 @@ public class PhaseServiceImplTest {
     @Test
     public void findByGameAndLevel_WhenSearchByLevelExistentButGameInexistent_ReturnEmptyList() {
         int gameId = GAME_ID_INEXISTENT, levelId = LEVEL_ID_EXISTENT;
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         when(repository.findByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
 
         List<Phase> list = service.findByGameAndLevel(GAME_ID_INEXISTENT, LEVEL_ID_EXISTENT);
@@ -225,7 +225,7 @@ public class PhaseServiceImplTest {
     @Test
     public void findByMap_WhenSearchByMapExistent_ReturnList() {
         int mapId = MAP_ID_EXISTENT;
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         listReturned.add(new Phase());
         when(repository.findByMap(mapId)).thenReturn(listReturned);
 
@@ -237,7 +237,7 @@ public class PhaseServiceImplTest {
     @Test
     public void findByMap_WhenSearchByMapInexistent_ReturnEmptyList() {
         int mapId = MAP_ID_INEXISTENT;
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         when(repository.findByMap(mapId)).thenReturn(listReturned);
 
         List<Phase> list = service.findByMap(MAP_ID_INEXISTENT);
@@ -263,7 +263,7 @@ public class PhaseServiceImplTest {
     @Test
     public void findPhasesCheckedByMap_WhenThePlayerHasNeverCompletedAnyPhaseOfThisGame_ReturnListOfPhasesWithTheFirstPhaseOpened() {
         int mapId = MAP_ID_EXISTENT;
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         listReturned.add(new Phase());
         when(repository.findByMap(mapId)).thenReturn(listReturned);
 
@@ -280,7 +280,7 @@ public class PhaseServiceImplTest {
     @Test
     public void findPhasesCheckedByMap_WhenThePlayerHasAlreadyCompletedAtLeastOnePhaseOfTheGame_ReturnListOfPhaseWithAllPhasesOpenedUntilTheNextPhase() {
         int mapId = MAP_ID_EXISTENT;
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         Phase p1 = new Phase();
         p1.setOrder(1);
         Phase p2 = new Phase();
@@ -389,7 +389,7 @@ public class PhaseServiceImplTest {
     public void findLastPhaseDoneByPlayerAndGame_WhenPlayerHasAlreadyFinishedAtLeastOnePhase_ReturnLastPhaseDone() {
         int playerId = PLAYER_ID_EXISTENT, gameId = GAME_ID_EXISTENT;
 
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         Phase phase = new Phase();
         phase.setId(123);
         listReturned.add(phase);
@@ -411,7 +411,7 @@ public class PhaseServiceImplTest {
         Map mapItemReturned = new Map();
         mapItemReturned.setId(2);
         itemReturned.setMap(mapItemReturned);
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         listReturned.add(itemReturned);
         when(repository.findLastPhaseOfTheLevel(gameId, levelId)).thenReturn(listReturned);
 
@@ -432,7 +432,7 @@ public class PhaseServiceImplTest {
     @Test
     public void findGamesForProfile_WhenPlayerIsExistent_ReturnList() {
         int playerId = PLAYER_ID_EXISTENT;
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         Phase item = new Phase();
         Game game = new Game();
         game.setId(4);
@@ -493,7 +493,7 @@ public class PhaseServiceImplTest {
         Player user = new Player();
         user.setId(playerId);
 
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         Phase item = new Phase();
         item.setOrder(25); // Last phase done.
         listReturned.add(item);
@@ -518,7 +518,7 @@ public class PhaseServiceImplTest {
         Player user = new Player();
         user.setId(playerId);
 
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         Phase item = new Phase();
         item.setOrder(19); // Last phase done.
         listReturned.add(item);
@@ -543,7 +543,7 @@ public class PhaseServiceImplTest {
         Player user = new Player();
         user.setId(playerId);
 
-        List<Phase> listReturned = new ArrayList<Phase>();
+        List<Phase> listReturned = new ArrayList<>();
         Phase item = new Phase();
         item.setOrder(15); // Last phase done.
         listReturned.add(item);
