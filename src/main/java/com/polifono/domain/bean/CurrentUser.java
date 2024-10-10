@@ -14,12 +14,12 @@ public class CurrentUser extends org.springframework.security.core.userdetails.U
 
     public CurrentUser(Player user) {
         super(
-        	(user.getEmail() == null ? user.getLogin() : user.getEmail()),
-        	user.getPassword(),
-        	AuthorityUtils.createAuthorityList(user.getRole().toString())
+                (user.getEmail() == null ? user.getLogin() : user.getEmail()),
+                user.getPassword(),
+                AuthorityUtils.createAuthorityList(user.getRole().toString())
         );
 
-    	this.user = user;
+        this.user = user;
     }
 
     public Long getId() {
