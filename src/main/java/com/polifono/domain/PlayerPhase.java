@@ -12,11 +12,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter @Getter
 @Entity
 @Table(name = "t007_player_phase")
 public class PlayerPhase {
-
     @Id
     @Column(name = "c007_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,68 +48,4 @@ public class PlayerPhase {
 
     @Column(name = "c007_score")
     private int score;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public Phase getPhase() {
-        return phase;
-    }
-
-    public void setPhase(Phase phase) {
-        this.phase = phase;
-    }
-
-    public Phasestatus getPhasestatus() {
-        return phasestatus;
-    }
-
-    public void setPhasestatus(Phasestatus phasestatus) {
-        this.phasestatus = phasestatus;
-    }
-
-    public double getGrade() {
-        return grade;
-    }
-
-    public void setGrade(double grade) {
-        this.grade = grade;
-    }
-
-    public Date getDtTest() {
-        return dtTest;
-    }
-
-    public void setDtTest(Date dtTest) {
-        this.dtTest = dtTest;
-    }
-
-    public int getNumAttempts() {
-        return numAttempts;
-    }
-
-    public void setNumAttempts(int numAttempts) {
-        this.numAttempts = numAttempts;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
 }

@@ -10,11 +10,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter @Getter
 @Entity
 @Table(name = "t013_login")
 public class Login {
-
     @Id
     @Column(name = "c013_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,28 +28,4 @@ public class Login {
 
     @Column(name = "c013_dt_login")
     private Date dtLogin;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public Date getDtLogin() {
-        return dtLogin;
-    }
-
-    public void setDtLogin(Date dtLogin) {
-        this.dtLogin = dtLogin;
-    }
 }
