@@ -10,11 +10,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter @Getter
 @Entity
 @Table(name = "t015_class_player")
 public class ClassPlayer {
-
     @Id
     @Column(name = "c015_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,60 +41,4 @@ public class ClassPlayer {
 
     @Column(name = "c015_status")
     private int status;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Class getClazz() {
-        return clazz;
-    }
-
-    public void setClazz(Class clazz) {
-        this.clazz = clazz;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public Date getDtInc() {
-        return dtInc;
-    }
-
-    public void setDtInc(Date dtInc) {
-        this.dtInc = dtInc;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Date getDtExc() {
-        return dtExc;
-    }
-
-    public void setDtExc(Date dtExc) {
-        this.dtExc = dtExc;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 }
