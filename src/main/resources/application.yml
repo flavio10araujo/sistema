@@ -108,9 +108,8 @@ app:
     charset: UTF-8
     hostName: email-smtp.sa-east-1.amazonaws.com
     smtpPort: 587
-    authentication:
-      login: ${EMAIL_AUTH_LOGIN}
-      password: ${EMAIL_AUTH_PASSWORD}
+    authenticationLogin: ${EMAIL_AUTH_LOGIN}
+    authenticationPassword: ${EMAIL_AUTH_PASSWORD}
     accounts:
       general:
         address: polifono@polifono.com

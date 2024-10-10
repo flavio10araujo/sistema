@@ -1,20 +1,5 @@
 package com.polifono.domain.bean;
 
-public class Combo {
-
-	private int id;
-	private String name;
-	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+// TODO - Why this class is inside the bean package?
+public record Combo(int id, String name) {
 }

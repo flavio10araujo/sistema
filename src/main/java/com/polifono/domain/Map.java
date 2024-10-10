@@ -9,11 +9,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter @Getter
 @Entity
 @Table(name = "t004_map")
 public class Map {
-
     @Id
     @Column(name = "c004_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,64 +36,8 @@ public class Map {
     private Level level;
 
     @Transient
-    boolean levelCompleted = false;
+    private boolean levelCompleted = false;
 
     @Transient
-    boolean gameCompleted = false;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
-    public Level getLevel() {
-        return level;
-    }
-
-    public void setLevel(Level level) {
-        this.level = level;
-    }
-
-    public boolean isLevelCompleted() {
-        return levelCompleted;
-    }
-
-    public void setLevelCompleted(boolean levelCompleted) {
-        this.levelCompleted = levelCompleted;
-    }
-
-    public boolean isGameCompleted() {
-        return gameCompleted;
-    }
-
-    public void setGameCompleted(boolean gameCompleted) {
-        this.gameCompleted = gameCompleted;
-    }
+    private boolean gameCompleted = false;
 }
