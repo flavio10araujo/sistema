@@ -24,12 +24,12 @@ public class EmailSendUtil {
     private static String emailNoReply;
     private static String emailGeneralTo;
 
-    @Value("${app.email.authentication.login}")
+    @Value("${app.email.authenticationLogin}")
     public void setEmailLogin(String emailLogin) {
         EmailSendUtil.emailLogin = emailLogin;
     }
 
-    @Value("${app.email.authentication.password}")
+    @Value("${app.email.authenticationPassword}")
     public void setEmailPassword(String emailPassword) {
         EmailSendUtil.emailPassword = emailPassword;
     }
@@ -102,7 +102,7 @@ public class EmailSendUtil {
             try {
                 MultiPartEmail hm = new MultiPartEmail();
 
-				// AWS configuration.
+                // AWS configuration.
                 hm.setHostName(emailHostName);
                 hm.setSmtpPort(Integer.parseInt(emailSmtpPort));
                 hm.setAuthentication(emailLogin, emailPassword);
@@ -144,7 +144,7 @@ public class EmailSendUtil {
             try {
                 MultiPartEmail hm = new MultiPartEmail();
 
-				// AWS configuration.
+                // AWS configuration.
                 hm.setHostName(emailHostName);
                 hm.setSmtpPort(Integer.parseInt(emailSmtpPort));
                 hm.setAuthentication(emailLogin, emailPassword);

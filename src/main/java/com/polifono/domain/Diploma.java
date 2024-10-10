@@ -1,9 +1,10 @@
 package com.polifono.domain;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.polifono.util.DateUtil;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,18 +14,20 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter @Getter
 @Entity
 @Table(name = "t017_diploma")
 public class Diploma {
-
     @Id
     @Column(name = "c017_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "c017_dt")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @Column(name = "c017_dt", columnDefinition = "DATE")
     private Date dt;
 
     @ManyToOne
@@ -42,102 +45,18 @@ public class Diploma {
     @Column(name = "c017_code")
     private String code;
 
-    @Transient
-    private int qtdHours; // Quantity of hour to get this diploma.
-
-    @Transient
-    private String dtStr; // dt in dd/MM/yyyy format.
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Date getDt() {
-        return dt;
-    }
-
-    public void setDt(Date dt) {
-        this.dt = dt;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
-    public Level getLevel() {
-        return level;
-    }
-
-    public void setLevel(Level level) {
-        this.level = level;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public int getQtdHours() {
-
-        if (this.getLevel() != null) {
-            if (this.getLevel().getOrder() == 1) {
-                // 30 classes
-                return 15;
-            } else if (this.getLevel().getOrder() == 2) {
-                // 60 classes
-                return 15;
-            } else if (this.getLevel().getOrder() == 3) {
-                // 90 classes
-                return 15;
-            } else if (this.getLevel().getOrder() == 4) {
-                // 120 classes
-                return 15;
-            } else if (this.getLevel().getOrder() == 5) {
-                // 150 classes
-                return 15;
-            } else {
-                return 0;
-            }
-        } else {
+        if (getLevel() == null) {
             return 0;
         }
-    }
 
-    public void setQtdHours(int qtdHours) {
-        this.qtdHours = qtdHours;
+        return switch (this.getLevel().getOrder()) {
+            case 1, 2, 3, 4, 5 -> 15;
+            default -> 0;
+        };
     }
 
     public String getDtStr() {
-
-        if (this.getDt() != null) {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
-            ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(this.getDt().toInstant(), ZoneId.systemDefault());
-            return dateTimeFormatter.format(zonedDateTime);
-        } else {
-            return "";
-        }
-    }
-
-    public void setDtStr(String dtStr) {
-        this.dtStr = dtStr;
+        return DateUtil.formatDate(this.dt);
     }
 }

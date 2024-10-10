@@ -6,11 +6,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter @Getter
 @Entity
 @Table(name = "t002_game")
 public class Game {
-
     @Id
     @Column(name = "c002_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,44 +29,4 @@ public class Game {
 
     @Column(name = "c002_active")
     private boolean active;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getNamelink() {
-        return namelink;
-    }
-
-    public void setNamelink(String namelink) {
-        this.namelink = namelink;
-    }
-
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
 }

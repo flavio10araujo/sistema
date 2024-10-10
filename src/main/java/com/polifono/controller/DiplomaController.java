@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +20,8 @@ import com.polifono.domain.Diploma;
 import com.polifono.domain.Player;
 import com.polifono.service.IDiplomaService;
 
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -31,14 +30,11 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 
+@RequiredArgsConstructor
 @Controller
 public class DiplomaController extends BaseController {
 
-    @Autowired
-    private IDiplomaService diplomaService;
-
-    @Autowired
-    ServletContext context;
+    private final IDiplomaService diplomaService;
 
     public static final String URL_DIPLOMA_SEARCH = "diplomaSearch";
     public static final String URL_DIPLOMAOPEN_SEARCH = "diplomaSearchOpen";
@@ -58,7 +54,7 @@ public class DiplomaController extends BaseController {
     @RequestMapping(value = { "/diploma" }, method = RequestMethod.POST)
     public final String diplomaSearchSubmit(final Model model, @RequestParam(value = "code", defaultValue = "") String code) {
 
-        if (code == null || "".equals(code)) {
+        if (code == null || code.isEmpty()) {
             // If the user is logged in.
             if (currentAuthenticatedUser() != null) {
                 return URL_DIPLOMA_SEARCH;
@@ -91,7 +87,7 @@ public class DiplomaController extends BaseController {
 
     @RequestMapping(value = { "/diploma/{code}" }, method = RequestMethod.GET)
     public final String diplomaGet(HttpServletResponse response, final Model model, @PathVariable("code") String code) throws JRException, IOException {
-        if (code == null || "".equals(code)) {
+        if (code == null || code.isEmpty()) {
             if (currentAuthenticatedUser() != null) {
                 return URL_DIPLOMA_SEARCH;
             } else {
