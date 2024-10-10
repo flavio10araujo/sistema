@@ -30,7 +30,7 @@ public class ScheduledTasks {
     private final IPlayerService playerService;
     private final ICommunicationService communicationService;
     private final IPlayerCommunicationService playerCommunicationService;
-    private final SendEmailService emailSendUtil;
+    private final SendEmailService sendEmailService;
 
     /**
      * initialDelay = How many milliseconds this method will be called after the start of the application.
@@ -45,14 +45,14 @@ public class ScheduledTasks {
         Groupcommunication groupCommunicationG4 = new Groupcommunication();
         groupCommunicationG4.setId(4);
         List<Player> playersG4 = playerService.findCommunicationGroup04();
-        emailSendUtil.sendEmailCommunication(groupCommunicationG4.getId(), playersG4);
+        sendEmailService.sendEmailCommunication(groupCommunicationG4.getId(), playersG4);
         registerMessages(groupCommunicationG4, playersG4);
 
         // GROUP 05
         Groupcommunication groupCommunicationG5 = new Groupcommunication();
         groupCommunicationG5.setId(5);
         List<Player> playersG5 = playerService.findCommunicationGroup05();
-        emailSendUtil.sendEmailCommunication(groupCommunicationG5.getId(), playersG5);
+        sendEmailService.sendEmailCommunication(groupCommunicationG5.getId(), playersG5);
         registerMessages(groupCommunicationG5, playersG5);
 
         try {
