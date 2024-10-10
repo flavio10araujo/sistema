@@ -4,11 +4,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +19,7 @@ import com.polifono.domain.Player;
 import com.polifono.domain.Transaction;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.ITransactionService;
-import com.polifono.util.EmailSendUtil;
+import com.polifono.service.impl.SendEmailService;
 
 import br.com.uol.pagseguro.domain.checkout.Checkout;
 import br.com.uol.pagseguro.enums.Currency;
@@ -30,35 +28,31 @@ import br.com.uol.pagseguro.properties.PagSeguroConfig;
 import br.com.uol.pagseguro.properties.PagSeguroSystem;
 import br.com.uol.pagseguro.service.NotificationService;
 import br.com.uol.pagseguro.service.TransactionSearchService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@RequiredArgsConstructor
 @Controller
 public class PaymentController extends BaseController {
 
-    @Autowired
-    private ConfigsCreditsProperties configsCreditsProperties;
-
-    @Autowired
-    private ITransactionService transactionService;
-
-    @Autowired
-    private IPlayerService playerService;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(PaymentController.class);
-
-    public static final String URL_BUYCREDITS = "buycredits";
-    public static final String URL_EMAILCONFIRMATION = "emailconfirmation";
-
+    public static final String URL_BUY_CREDITS = "buycredits";
     public static final String REDIRECT_HOME = "redirect:/";
 
+    private final ConfigsCreditsProperties configsCreditsProperties;
+    private final ITransactionService transactionService;
+    private final IPlayerService playerService;
+    private final SendEmailService emailSendUtil;
+
     @RequestMapping(value = { "/buycredits" }, method = RequestMethod.GET)
-    public final String buycredits(final Model model) {
-        return URL_BUYCREDITS;
+    public final String buyCredits(final Model model) {
+        return URL_BUY_CREDITS;
     }
 
     @RequestMapping(value = { "/buycredits" }, method = RequestMethod.POST)
-    public final String buycreditssubmit(final Model model, @RequestParam("quantity") Integer quantity) {
+    public final String buyCreditsSubmit(final Model model, @RequestParam("quantity") Integer quantity) {
 
-        Player player = currentAuthenticatedUser().getUser();
+        Player player = Objects.requireNonNull(currentAuthenticatedUser()).getUser();
 
         // If the player has not confirmed his e-mail yet.
         // And the player has not informed his/her facebook.
@@ -68,7 +62,7 @@ public class PaymentController extends BaseController {
             model.addAttribute("codRegister", "2");
             model.addAttribute("msg",
                     "Para poder adquirir créditos é necessário primeiramente confirmar o seu e-mail.<br />No momento do seu cadastro, nós lhe enviamos um e-mail com um código de ativação.<br />Acesse seu email e verifique o código enviado.<br />Caso não tenha mais o código, clique <a href='/emailconfirmation'>aqui</a>.");
-            return URL_BUYCREDITS;
+            return URL_BUY_CREDITS;
         }
 
         // TEACHER and ADMIN don't have limitations to buy credits.
@@ -79,7 +73,7 @@ public class PaymentController extends BaseController {
             if (quantity < creditsBuyMin || quantity > creditsBuyMax) {
                 model.addAttribute("codRegister", "2");
                 model.addAttribute("msg", "A quantidade de créditos deve ser entre " + creditsBuyMin + " e " + creditsBuyMax + ".");
-                return URL_BUYCREDITS;
+                return URL_BUY_CREDITS;
             }
         }
 
@@ -96,12 +90,11 @@ public class PaymentController extends BaseController {
         try {
             return "redirect:" + openPagSeguro(t, player, quantity);
         } catch (PagSeguroServiceException e) {
-            LOGGER.debug("error={}", e);
-            System.out.println(e.getMessage());
+            log.debug("Error buying credits", e);
 
             model.addAttribute("codRegister", "2");
             model.addAttribute("msg", messagesResourceBundle.getString("msg.credits.error.access"));
-            return URL_BUYCREDITS;
+            return URL_BUY_CREDITS;
         }
     }
 
@@ -110,12 +103,6 @@ public class PaymentController extends BaseController {
      * This code is the checkout.
      * The payment system return and URL. Ex.: https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code=EAE29CA5383892D224E9AF9FEFF0FC43
      * This code is not the transaction code yet.
-     *
-     * @param t
-     * @param player
-     * @param quantity
-     * @return
-     * @throws PagSeguroServiceException
      */
     public String openPagSeguro(Transaction t, Player player, int quantity) throws PagSeguroServiceException {
         Checkout checkout = new Checkout();
@@ -125,7 +112,7 @@ public class PaymentController extends BaseController {
                 PagSeguroSystem.getPagSeguroPaymentServiceNfDescription(), // Item's name.
                 quantity, // Item's quantity.
                 this.getPriceForEachUnity(quantity), // Price for each unity.
-                new Long(0), // Weight.
+                0L, // Weight.
                 null // ShippingCost
         );
 
@@ -144,18 +131,18 @@ public class PaymentController extends BaseController {
         Boolean onlyCheckoutCode = false;
         String checkoutURL = checkout.register(PagSeguroConfig.getAccountCredentials(), onlyCheckoutCode);
 
-        LOGGER.debug(checkoutURL);
+        log.debug(checkoutURL);
 
         return checkoutURL;
     }
 
     @RequestMapping(value = { "/pagseguroreturn" }, method = RequestMethod.GET)
-    public final String returnpagseguro(final Model model, @RequestParam("tid") String transactionCode) {
+    public final String returnPagSeguro(final Model model, @RequestParam("tid") String transactionCode) {
 
-        LOGGER.debug("/pagseguroreturn tid=", transactionCode);
+        log.debug("/pagseguroreturn tid=", transactionCode);
         System.out.println("/pagseguroreturn tid=" + transactionCode);
 
-        if (transactionCode == null || "".equals(transactionCode))
+        if (transactionCode == null || transactionCode.isEmpty())
             return REDIRECT_HOME;
 
         List<Transaction> transactions = transactionService.findByCode(transactionCode);
@@ -164,30 +151,26 @@ public class PaymentController extends BaseController {
         model.addAttribute("msg", messagesResourceBundle.getString("msg.credits.thanks"));
 
         // If the transaction is already registered.
-        if (transactions != null && transactions.size() > 0)
-            return URL_BUYCREDITS;
+        if (transactions != null && !transactions.isEmpty())
+            return URL_BUY_CREDITS;
 
         br.com.uol.pagseguro.domain.Transaction pagSeguroTransaction = null;
 
         try {
             pagSeguroTransaction = TransactionSearchService.searchByCode(PagSeguroConfig.getAccountCredentials(), transactionCode);
         } catch (PagSeguroServiceException e) {
-            LOGGER.debug("/pagseguroreturn ERROR with tid=", transactionCode);
-            System.out.println("/pagseguroreturn ERROR with tid=" + transactionCode);
-            LOGGER.debug("error={}", e);
-            System.err.println(e.getMessage());
+            log.debug("/pagseguroreturn ERROR with tid= {} ", transactionCode);
 
             // If the transactionCode is not valid.
             if (pagSeguroTransaction == null) {
-                LOGGER.debug("/pagseguroreturn TID not valid tid=", transactionCode);
-                System.out.println("/pagseguroreturn TID not valid tid=" + transactionCode);
+                log.debug("/pagseguroreturn TID not valid tid {}", transactionCode);
                 return REDIRECT_HOME;
             }
         }
 
         Optional<Transaction> transactionOpt = transactionService.findById(Integer.parseInt(pagSeguroTransaction.getReference()));
 
-        if (!transactionOpt.isPresent()) {
+        if (transactionOpt.isEmpty()) {
             return REDIRECT_HOME;
         }
 
@@ -225,19 +208,18 @@ public class PaymentController extends BaseController {
             transactionService.save(transaction);
 
             // Send e-mail.
-            EmailSendUtil.sendEmailPaymentRegistered(transaction.getPlayer(), transaction.getQuantity());
+            emailSendUtil.sendEmailPaymentRegistered(transaction.getPlayer(), transaction.getQuantity());
         }
 
-        return URL_BUYCREDITS;
+        return URL_BUY_CREDITS;
     }
 
     @RequestMapping(value = "/pagseguronotification", method = RequestMethod.POST)
     public @ResponseBody String pagseguronotification(final Model model, @RequestParam("notificationCode") String notificationCode) {
 
-        LOGGER.debug("/pagseguronotification notificationCode=",
-                notificationCode); //System.out.println("/pagseguronotification notificationCode=" + notificationCode);
+        log.debug("/pagseguronotification notificationCode = {}", notificationCode);
 
-        if (notificationCode == null || "".equals(notificationCode))
+        if (notificationCode == null || notificationCode.isEmpty())
             return null;
 
         br.com.uol.pagseguro.domain.Transaction pagSeguroTransaction = null;
@@ -245,25 +227,22 @@ public class PaymentController extends BaseController {
         try {
             pagSeguroTransaction = NotificationService.checkTransaction(PagSeguroConfig.getAccountCredentials(), notificationCode);
         } catch (PagSeguroServiceException e) {
-            LOGGER.debug("/pagseguronotification ERROR with notificationCode=",
-                    notificationCode); // System.out.println("/pagseguronotification ERROR with notificationCode=" + notificationCode);
-            LOGGER.debug("error={}", e); // System.err.println(e.getMessage());
+            log.debug("/pagseguronotification ERROR with notificationCode = {}", notificationCode);
+            log.debug("error", e);
 
             // If the notificationCode is not valid.
             if (pagSeguroTransaction == null) {
-                LOGGER.debug("/pagseguronotification TID not valid notificationCode=",
-                        notificationCode); //System.out.println("/pagseguronotification TID not valid notificationCode=" + notificationCode);
+                log.debug("/pagseguronotification TID not valid notificationCode = {}", notificationCode);
                 return null;
             }
         }
 
         // TODO - preciso entender melhor como funcionam os status da transação.
         // TODO - posso considerar o status PAID ou CANCELLED como sendo o último?
-
         // pagSeguroTransaction.getReference() == T012.C012_ID
         Optional<Transaction> transactionOpt = transactionService.findById(Integer.parseInt(pagSeguroTransaction.getReference()));
 
-        if (!transactionOpt.isPresent()) {
+        if (transactionOpt.isEmpty()) {
             return null;
         }
 
@@ -310,10 +289,10 @@ public class PaymentController extends BaseController {
             transactionService.save(transaction);
 
             // Send e-mail.
-            EmailSendUtil.sendEmailPaymentRegistered(transaction.getPlayer(), transaction.getQuantity());
+            emailSendUtil.sendEmailPaymentRegistered(transaction.getPlayer(), transaction.getQuantity());
         }
 
-        return URL_BUYCREDITS;
+        return URL_BUY_CREDITS;
     }
 
     private BigDecimal getPriceForEachUnity(int quantity) {
