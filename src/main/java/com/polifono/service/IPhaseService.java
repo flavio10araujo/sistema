@@ -10,33 +10,33 @@ import com.polifono.domain.PlayerPhase;
 
 public interface IPhaseService {
 
-    public Phase save(Phase o);
+    Phase save(Phase o);
 
-    public Boolean delete(Integer id);
+    boolean delete(Integer id);
 
-    public Optional<Phase> findById(int id);
+    Optional<Phase> findById(int id);
 
-    public List<Phase> findAll();
+    List<Phase> findAll();
 
-    public List<Phase> findByGame(int gameId);
+    List<Phase> findByGame(int gameId);
 
-    public List<Phase> findByGameAndLevel(int gameId, int levelId);
+    List<Phase> findByGameAndLevel(int gameId, int levelId);
 
-    public List<Phase> findByMap(int mapId);
+    List<Phase> findByMap(int mapId);
 
-    public Phase findByMapAndOrder(int mapId, int phaseOrder);
+    Phase findByMapAndOrder(int mapId, int phaseOrder);
 
-    public Phase findNextPhaseInThisMap(int mapId, int phaseOrder);
+    Phase findNextPhaseInThisMap(int mapId, int phaseOrder);
 
-    public Phase findLastPhaseDoneByPlayerAndGame(int playerId, int gameId);
+    Phase findLastPhaseDoneByPlayerAndGame(int playerId, int gameId);
 
-    public Phase findLastPhaseOfTheLevel(int gameId, int levelId);
+    Phase findLastPhaseOfTheLevel(int gameId, int levelId);
 
-    public List<Phase> findGamesForProfile(int playerId);
+    List<Phase> findGamesForProfile(int playerId);
 
-    public List<Phase> findPhasesCheckedByMap(Map map, PlayerPhase lastPhaseCompleted);
+    List<Phase> findPhasesCheckedByMap(Map map, PlayerPhase lastPhaseCompleted);
 
-    public boolean playerCanAccessThisPhase(Phase phase, Player user);
+    boolean playerCanAccessThisPhase(Phase phase, Player user);
 
-    public List<Phase> findPhasesBySearchAndUser(String q, int playerId);
+    List<Phase> findPhasesBySearchAndUser(String q, int playerId);
 }

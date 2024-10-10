@@ -1,6 +1,7 @@
 package com.polifono.controller.teacher;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Objects;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,24 +13,20 @@ import com.polifono.domain.Player;
 import com.polifono.service.IPlayerService;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/teacher")
 public class TeacherPlayerController extends BaseController {
 
     public static final String URL_ADMIN_BASIC_INDEX = "teacher/player/index";
-    public static final String URL_ADMIN_BASIC_EDIT = "teacher/player/editPage";
-    public static final String URL_ADMIN_BASIC_SAVEPAGE = "teacher/player/savepage";
 
-    public static final String REDIRECT_HOME = "redirect:/";
-
-    @Autowired
-    private IPlayerService playerService;
+    private final IPlayerService playerService;
 
     @RequestMapping(value = { "/player", "/player/create" }, method = RequestMethod.GET)
     public String indexPage(HttpSession session, Model model) {
         model.addAttribute("player", new Player());
-
         return URL_ADMIN_BASIC_INDEX;
     }
 
@@ -53,7 +50,7 @@ public class TeacherPlayerController extends BaseController {
             String msg = playerService.validateCreatePlayerByTeacher(player);
 
             // If there are not errors.
-            if (msg.equals("")) {
+            if (msg.isEmpty()) {
                 String name = player.getName().trim();
                 name = name.substring(0, name.indexOf(" "));
 
@@ -63,7 +60,7 @@ public class TeacherPlayerController extends BaseController {
                 player.setLastName(lastName);
                 player.setName(name);
 
-                Player teacher = this.currentAuthenticatedUser().getUser();
+                Player teacher = Objects.requireNonNull(this.currentAuthenticatedUser()).getUser();
                 player.setCreator(teacher);
                 model.addAttribute("player", playerService.create(player));
                 model.addAttribute("codRegister", 1);

@@ -6,11 +6,11 @@ import com.polifono.domain.PlayerGame;
 
 public interface IPlayerGameService {
 
-    public PlayerGame save(PlayerGame o);
+    PlayerGame save(PlayerGame o);
 
-    public Optional<PlayerGame> findById(int id);
+    Optional<PlayerGame> findById(int id);
 
-    public PlayerGame findByPlayerAndGame(int playerId, int gameId);
+    PlayerGame findByPlayerAndGame(int playerId, int gameId);
 
-    public PlayerGame removeCreditsFromPlayer(PlayerGame playerGame, int qtdCredits);
+    PlayerGame removeCreditsFromPlayer(PlayerGame playerGame, int qtdCredits);
 }

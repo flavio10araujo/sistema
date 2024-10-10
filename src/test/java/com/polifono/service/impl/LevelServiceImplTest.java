@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,13 +18,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.polifono.domain.Level;
 import com.polifono.repository.ILevelRepository;
-import com.polifono.service.impl.LevelServiceImpl;
 
 /**
  * Unit test methods for the LevelService.
  */
 @ExtendWith(MockitoExtension.class)
-public class LevelServiceTest {
+public class LevelServiceImplTest {
 
     @InjectMocks
     private LevelServiceImpl service;
@@ -34,25 +33,6 @@ public class LevelServiceTest {
 
     private final Integer GAME_ID_EXISTENT = 1;
     private final Integer GAME_ID_INEXISTENT = Integer.MAX_VALUE;
-
-    /* stubs - begin */
-    private Optional<Level> getEntityStubData() {
-        Level level = new Level();
-        return Optional.of(level);
-    }
-
-    private List<Level> getEntityListStubData() {
-        List<Level> list = new ArrayList<Level>();
-
-        Level entity1 = getEntityStubData().get();
-        Level entity2 = getEntityStubData().get();
-
-        list.add(entity1);
-        list.add(entity2);
-
-        return list;
-    }
-    /* stubs - end */
 
     /* findAll - begin */
     @Test
@@ -87,7 +67,7 @@ public class LevelServiceTest {
 
     @Test
     public void findByGame_WhenSearchByGameInexistent_ReturnEmptyList() {
-        when(repository.findByGame(GAME_ID_INEXISTENT)).thenReturn(new ArrayList<Level>());
+        when(repository.findByGame(GAME_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<Level> listReturned = service.findByGame(GAME_ID_INEXISTENT);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected list size 0");
@@ -99,4 +79,23 @@ public class LevelServiceTest {
 
     /* flagLevelsToOpenedOrNot - begin */
     /* flagLevelsToOpenedOrNot - end */
+
+    /* stubs - begin */
+    private Optional<Level> getEntityStubData() {
+        Level level = new Level();
+        return Optional.of(level);
+    }
+
+    private List<Level> getEntityListStubData() {
+        List<Level> list = new ArrayList<>();
+
+        Level entity1 = getEntityStubData().get();
+        Level entity2 = getEntityStubData().get();
+
+        list.add(entity1);
+        list.add(entity2);
+
+        return list;
+    }
+    /* stubs - end */
 }

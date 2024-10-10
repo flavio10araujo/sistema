@@ -1,164 +1,105 @@
 package com.polifono.util;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class EmailUtil {
 
-    public static void main(String[] args) {
+    private static final Map<String, String> DOMAIN_CORRECTIONS = new HashMap<>();
 
-		/*String senha = "F123456";
-
-		if (validatePassword(senha)) {
-			System.out.println(senha + " é SENHA BOA");
-		}
-		else {
-			System.out.println(senha + " é SENHA RUIM");
-		}
-
-		senha = "123456";
-
-		if (validatePassword(senha)) {
-			System.out.println(senha + " é SENHA BOA");
-		}
-		else {
-			System.out.println(senha + " é SENHA RUIM");
-		}
-
-		senha = "AAAAAA";
-
-		if (validatePassword(senha)) {
-			System.out.println(senha + " é SENHA BOA");
-		}
-		else {
-			System.out.println(senha + " é SENHA RUIM");
-		}
-
-		senha = "F123 456";
-
-		if (validatePassword(senha)) {
-			System.out.println(senha + " é SENHA BOA");
-		}
-		else {
-			System.out.println(senha + " é SENHA RUIM");
-		}
-
-		senha = "F123*456";
-
-		if (validatePassword(senha)) {
-			System.out.println(senha + " é SENHA BOA");
-		}
-		else {
-			System.out.println(senha + " é SENHA RUIM");
-		}
-
-		senha = "F123(¨%*&*456";
-
-		if (validatePassword(senha)) {
-			System.out.println(senha + " é SENHA BOA");
-		}
-		else {
-			System.out.println(senha + " é SENHA RUIM");
-		}*/
-
-		/*String login = "flavio"; // OK
-
-		if (validateLogin(login)) {
-			System.out.println(login + " é LOGIN BOM");
-		}
-		else {
-			System.out.println(login + " é LOGIN RUIM");
-		}
-
-		login = "1234567890123456"; // OK
-
-		if (validateLogin(login)) {
-			System.out.println(login + " é LOGIN BOM");
-		}
-		else {
-			System.out.println(login + " é LOGIN RUIM");
-		}
-
-		login = "flavio10araujo"; // OK
-
-		if (validateLogin(login)) {
-			System.out.println(login + " é LOGIN BOM");
-		}
-		else {
-			System.out.println(login + " é LOGIN RUIM");
-		}
-
-		login = "flavio_araujo"; // ERROR
-
-		if (validateLogin(login)) {
-			System.out.println(login + " é LOGIN BOM");
-		}
-		else {
-			System.out.println(login + " é LOGIN RUIM");
-		}
-
-		login = "flavio araujo"; // ERROR
-
-		if (validateLogin(login)) {
-			System.out.println(login + " é LOGIN BOM");
-		}
-		else {
-			System.out.println(login + " é LOGIN RUIM");
-		}
-
-		login = "flavio*araujo"; // ERROR
-
-		if (validateLogin(login)) {
-			System.out.println(login + " é LOGIN BOM");
-		}
-		else {
-			System.out.println(login + " é LOGIN RUIM");
-		}
-
-		login = "flávio"; // ERROR
-
-		if (validateLogin(login)) {
-			System.out.println(login + " é LOGIN BOM");
-		}
-		else {
-			System.out.println(login + " é LOGIN RUIM");
-		}
-
-		login = "acão"; // ERROR
-
-		if (validateLogin(login)) {
-			System.out.println(login + " é LOGIN BOM");
-		}
-		else {
-			System.out.println(login + " é LOGIN RUIM");
-		}*/
-
-		/*System.out.println(avoidWrongDomain("test1@bol.com"));
-		System.out.println(avoidWrongDomain("test1@bol.com.br"));
-		System.out.println(avoidWrongDomain("test1@gmail.com"));
-		System.out.println(avoidWrongDomain("test1@gmail.com.br"));
-		System.out.println(avoidWrongDomain("test1@yahoo.com"));
-		System.out.println(avoidWrongDomain("test1@yahoo.com.br"));
-		System.out.println(avoidWrongDomain("test1@hotmail.com"));
-		System.out.println(avoidWrongDomain("test1@hotmail.com.br"));
-		System.out.println(avoidWrongDomain("test1@outlook.com"));
-		System.out.println(avoidWrongDomain("test1@outlook.com.br"));*/
-
-        System.out.println(avoidWrongDomain("test1@gmail.co"));
-        System.out.println(avoidWrongDomain("test1@gmail.comm"));
-        System.out.println(avoidWrongDomain("test1@gamail.com"));
-        System.out.println(avoidWrongDomain("test1@gamil.com"));
+    static {
+        DOMAIN_CORRECTIONS.put("@gmail.com.br", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmail.co", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmail.comm", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gamail.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gamil.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gemeil.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gemil.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gimal.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmai.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmaiil.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmaio.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmakl.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmeil.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmil.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmial.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gnail.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@g-mail.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gemail.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmail.cm", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmal.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmaill.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmail.om", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmail.org", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmail.comk", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmail.ccom", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmais.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gma.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@gmail.vom", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@fmail.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@hmail.com", "@gmail.com");
+        DOMAIN_CORRECTIONS.put("@hotmail.co", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hotmail.comm", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hitmail.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@homail.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hot.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hotail.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hotamil.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hotimail.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hotmaeil.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hotmayl.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hotmsil.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hptmail.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@htmail.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@rotmail.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hotmil.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hotnail.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hotmal.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hotmaill.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hotmailk.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hormail.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hotmaol.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@jotmail.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hotmai.com", "@hotmail.com");
+        DOMAIN_CORRECTIONS.put("@hitmail.com.br", "@hotmail.com.br");
+        DOMAIN_CORRECTIONS.put("@homail.com.br", "@hotmail.com.br");
+        DOMAIN_CORRECTIONS.put("@hot.com.br", "@hotmail.com.br");
+        DOMAIN_CORRECTIONS.put("@hotail.com.br", "@hotmail.com.br");
+        DOMAIN_CORRECTIONS.put("@hotamil.com.br", "@hotmail.com.br");
+        DOMAIN_CORRECTIONS.put("@hotimail.com.br", "@hotmail.com.br");
+        DOMAIN_CORRECTIONS.put("@hotmaeil.com.br", "@hotmail.com.br");
+        DOMAIN_CORRECTIONS.put("@hotmayl.com.br", "@hotmail.com.br");
+        DOMAIN_CORRECTIONS.put("@hotmsil.com.br", "@hotmail.com.br");
+        DOMAIN_CORRECTIONS.put("@hptmail.com.br", "@hotmail.com.br");
+        DOMAIN_CORRECTIONS.put("@htmail.com.br", "@hotmail.com.br");
+        DOMAIN_CORRECTIONS.put("@rotmail.com.br", "@hotmail.com.br");
+        DOMAIN_CORRECTIONS.put("@hotmil.com.br", "@hotmail.com.br");
+        DOMAIN_CORRECTIONS.put("@yaho.com.br", "@yahoo.com.br");
+        DOMAIN_CORRECTIONS.put("@yhoo.com.br", "@yahoo.com.br");
+        DOMAIN_CORRECTIONS.put("@uahoo.com.br", "@yahoo.com.br");
+        DOMAIN_CORRECTIONS.put("@yahoo.co.br", "@yahoo.com.br");
+        DOMAIN_CORRECTIONS.put("@yahoo.vom.br", "@yahoo.com.br");
+        DOMAIN_CORRECTIONS.put("@ahoo.com.br", "@yahoo.com.br");
+        DOMAIN_CORRECTIONS.put("@yaho.com", "@yahoo.com");
+        DOMAIN_CORRECTIONS.put("@yhoo.com", "@yahoo.com");
+        DOMAIN_CORRECTIONS.put("@uahoo.com", "@yahoo.com");
+        DOMAIN_CORRECTIONS.put("@boll.com.br", "@bol.com.br");
+        DOMAIN_CORRECTIONS.put("@bl.com.br", "@bol.com.br");
+        DOMAIN_CORRECTIONS.put("@bol.co.br", "@bol.com.br");
+        DOMAIN_CORRECTIONS.put("@outllok.com", "@outlook.com");
+        DOMAIN_CORRECTIONS.put("@outluoock.com", "@outlook.com");
+        DOMAIN_CORRECTIONS.put("@otlook.com", "@outlook.com");
+        DOMAIN_CORRECTIONS.put("@aiclod.com", "@icloud.com");
     }
 
     /**
      * Validate an email.
      * Return true if the email is valid. False if the email is not valid.
-     *
-     * @param s
-     * @return
      */
     public static boolean validateEmail(String s) {
-        if (s == null || "".equals(s)) {
+        if (s == null || s.isEmpty()) {
             return false;
         }
 
@@ -172,15 +113,17 @@ public class EmailUtil {
      * Validate a password.
      * Return true if the password is valid. False if the password is not valid.
      * Rules:
+     * - size between 6 and 20;
      * - at least one number;
      * - at least one letter;
      * - no spaces.
-     *
-     * @param s
-     * @return
      */
     public static boolean validatePassword(String s) {
-        if (s == null || "".equals(s)) {
+        if (s == null || s.isEmpty()) {
+            return false;
+        }
+
+        if (s.length() < 6 || s.length() > 20) {
             return false;
         }
 
@@ -196,14 +139,11 @@ public class EmailUtil {
      * Rules:
      * - size between 6 and 20;
      * - only number and letters;
-     * - underline is accepted;
+     * - underline and hyphen are accepted;
      * - no spaces and other special characters.
-     *
-     * @param s
-     * @return
      */
     public static boolean validateLogin(String s) {
-        if (s == null || "".equals(s)) {
+        if (s == null || s.isEmpty()) {
             return false;
         }
 
@@ -214,10 +154,7 @@ public class EmailUtil {
     }
 
     public static String avoidWrongDomain(String email) {
-
-        //System.out.print(email + " => ");
-
-        if (email == null || "".equals(email)) {
+        if (email == null || email.isEmpty()) {
             return email;
         }
 
@@ -228,280 +165,10 @@ public class EmailUtil {
         }
 
         email = email.toLowerCase();
-        String domain = email.substring(indexAt); //System.out.println("Domain = [" + domain + "]");
+        String domain = email.substring(indexAt);
 
-        String gmailCom = "@gmail.com";
-        String hotmailCom = "@hotmail.com";
-        String hotmailComBr = "@hotmail.com.br";
-        String yahooCom = "@yahoo.com";
-        String yahooComBr = "@yahoo.com.br";
-        String bolComBr = "@bol.com.br";
-        String outlookCom = "@outlook.com";
-        String icloudCom = "@icloud.com";
-
-        //gmail.com
-        if (domain.equals("@gmail.com.br")) {
-            return email.replaceAll("@gmail.com.br", gmailCom);
-        }
-        if (domain.equals("@gmail.co")) {
-            return email.replaceAll("@gmail.co", gmailCom);
-        }
-        if (domain.equals("@gmail.comm")) {
-            return email.replaceAll("@gmail.comm", gmailCom);
-        }
-        if (domain.equals("@gamail.com")) {
-            return email.replaceAll("@gamail.com", gmailCom);
-        }
-        if (domain.equals("@gamil.com")) {
-            return email.replaceAll("@gamil.com", gmailCom);
-        }
-        if (domain.equals("@gemeil.com")) {
-            return email.replaceAll("@gemeil.com", gmailCom);
-        }
-        if (domain.equals("@gemil.com")) {
-            return email.replaceAll("@gemil.com", gmailCom);
-        }
-        if (domain.equals("@gimal.com")) {
-            return email.replaceAll("@gimal.com", gmailCom);
-        }
-        if (domain.equals("@gmai.com")) {
-            return email.replaceAll("@gmai.com", gmailCom);
-        }
-        if (domain.equals("@gmaiil.com")) {
-            return email.replaceAll("@gmaiil.com", gmailCom);
-        }
-        if (domain.equals("@gmaio.com")) {
-            return email.replaceAll("@gmaio.com", gmailCom);
-        }
-        if (domain.equals("@gmakl.com")) {
-            return email.replaceAll("@gmakl.com", gmailCom);
-        }
-        if (domain.equals("@gmeil.com")) {
-            return email.replaceAll("@gmeil.com", gmailCom);
-        }
-        if (domain.equals("@gmil.com")) {
-            return email.replaceAll("@gmil.com", gmailCom);
-        }
-        if (domain.equals("@gmial.com")) {
-            return email.replaceAll("@gmial.com", gmailCom);
-        }
-        if (domain.equals("@gnail.com")) {
-            return email.replaceAll("@gnail.com", gmailCom);
-        }
-        if (domain.equals("@g-mail.com")) {
-            return email.replaceAll("@g-mail.com", gmailCom);
-        }
-        if (domain.equals("@gemail.com")) {
-            return email.replaceAll("@gemail.com", gmailCom);
-        }
-        if (domain.equals("@gmail.cm")) {
-            return email.replaceAll("@gmail.cm", gmailCom);
-        }
-        if (domain.equals("@gmal.com")) {
-            return email.replaceAll("@gmal.com", gmailCom);
-        }
-        if (domain.equals("@gmaill.com")) {
-            return email.replaceAll("@gmaill.com", gmailCom);
-        }
-        if (domain.equals("@gmail.om")) {
-            return email.replaceAll("@gmail.om", gmailCom);
-        }
-        if (domain.equals("@gmail.org")) {
-            return email.replaceAll("@gmail.org", gmailCom);
-        }
-        if (domain.equals("@gmail.comk")) {
-            return email.replaceAll("@gmail.comk", gmailCom);
-        }
-        if (domain.equals("@gmail.ccom")) {
-            return email.replaceAll("@gmail.ccom", gmailCom);
-        }
-        if (domain.equals("@gmais.com")) {
-            return email.replaceAll("@gmais.com", gmailCom);
-        }
-        if (domain.equals("@gma.com")) {
-            return email.replaceAll("@gma.com", gmailCom);
-        }
-        if (domain.equals("@gmail.vom")) {
-            return email.replaceAll("@gmail.vom", gmailCom);
-        }
-        if (domain.equals("@fmail.com")) {
-            return email.replaceAll("@fmail.com", gmailCom);
-        }
-        if (domain.equals("@hmail.com")) {
-            return email.replaceAll("@hmail.com", gmailCom);
-        }
-
-        //hotmail.com
-        if (domain.equals("@hotmail.co")) {
-            return email.replaceAll("@hotmail.co", hotmailCom);
-        }
-        if (domain.equals("@hotmail.comm")) {
-            return email.replaceAll("@hotmail.comm", hotmailCom);
-        }
-        if (domain.equals("@hitmail.com")) {
-            return email.replaceAll("@hitmail.com", hotmailCom);
-        }
-        if (domain.equals("@homail.com")) {
-            return email.replaceAll("@homail.com", hotmailCom);
-        }
-        if (domain.equals("@hot.com")) {
-            return email.replaceAll("@hot.com", hotmailCom);
-        }
-        if (domain.equals("@hotail.com")) {
-            return email.replaceAll("@hotail.com", hotmailCom);
-        }
-        if (domain.equals("@hotamil.com")) {
-            return email.replaceAll("@hotamil.com", hotmailCom);
-        }
-        if (domain.equals("@hotimail.com")) {
-            return email.replaceAll("@hotimail.com", hotmailCom);
-        }
-        if (domain.equals("@hotmaeil.com")) {
-            return email.replaceAll("@hotmaeil.com", hotmailCom);
-        }
-        if (domain.equals("@hotmayl.com")) {
-            return email.replaceAll("@hotmayl.com", hotmailCom);
-        }
-        if (domain.equals("@hotmsil.com")) {
-            return email.replaceAll("@hotmsil.com", hotmailCom);
-        }
-        if (domain.equals("@hptmail.com")) {
-            return email.replaceAll("@hptmail.com", hotmailCom);
-        }
-        if (domain.equals("@htmail.com")) {
-            return email.replaceAll("@htmail.com", hotmailCom);
-        }
-        if (domain.equals("@rotmail.com")) {
-            return email.replaceAll("@rotmail.com", hotmailCom);
-        }
-        if (domain.equals("@hotmil.com")) {
-            return email.replaceAll("@hotmil.com", hotmailCom);
-        }
-        if (domain.equals("@hotnail.com")) {
-            return email.replaceAll("@hotnail.com", hotmailCom);
-        }
-        if (domain.equals("@hotmal.com")) {
-            return email.replaceAll("@hotmal.com", hotmailCom);
-        }
-        if (domain.equals("@hotmaill.com")) {
-            return email.replaceAll("@hotmaill.com", hotmailCom);
-        }
-        if (domain.equals("@hotmailk.com")) {
-            return email.replaceAll("@hotmailk.com", hotmailCom);
-        }
-        if (domain.equals("@hormail.com")) {
-            return email.replaceAll("@hormail.com", hotmailCom);
-        }
-        if (domain.equals("@hotmaol.com")) {
-            return email.replaceAll("@hotmaol.com", hotmailCom);
-        }
-        if (domain.equals("@jotmail.com")) {
-            return email.replaceAll("@jotmail.com", hotmailCom);
-        }
-        if (domain.equals("@hotmai.com")) {
-            return email.replaceAll("@hotmai.com", hotmailCom);
-        }
-
-        //hotmail.com.br
-        if (domain.equals("@hitmail.com.br")) {
-            return email.replaceAll("@hitmail.com.br", hotmailComBr);
-        }
-        if (domain.equals("@homail.com.br")) {
-            return email.replaceAll("@homail.com.br", hotmailComBr);
-        }
-        if (domain.equals("@hot.com.br")) {
-            return email.replaceAll("@hot.com.br", hotmailComBr);
-        }
-        if (domain.equals("@hotail.com.br")) {
-            return email.replaceAll("@hotail.com.br", hotmailComBr);
-        }
-        if (domain.equals("@hotamil.com.br")) {
-            return email.replaceAll("@hotamil.com.br", hotmailComBr);
-        }
-        if (domain.equals("@hotimail.com.br")) {
-            return email.replaceAll("@hotimail.com.br", hotmailComBr);
-        }
-        if (domain.equals("@hotmaeil.com.br")) {
-            return email.replaceAll("@hotmaeil.com.br", hotmailComBr);
-        }
-        if (domain.equals("@hotmayl.com.br")) {
-            return email.replaceAll("@hotmayl.com.br", hotmailComBr);
-        }
-        if (domain.equals("@hotmsil.com.br")) {
-            return email.replaceAll("@hotmsil.com.br", hotmailComBr);
-        }
-        if (domain.equals("@hptmail.com.br")) {
-            return email.replaceAll("@hptmail.com.br", hotmailComBr);
-        }
-        if (domain.equals("@htmail.com.br")) {
-            return email.replaceAll("@htmail.com.br", hotmailComBr);
-        }
-        if (domain.equals("@rotmail.com.br")) {
-            return email.replaceAll("@rotmail.com.br", hotmailComBr);
-        }
-        if (domain.equals("@hotmil.com.br")) {
-            return email.replaceAll("@hotmil.com.br", hotmailComBr);
-        }
-
-        //yahoo.com.br
-        if (domain.equals("@yaho.com.br")) {
-            return email.replaceAll("@yaho.com.br", yahooComBr);
-        }
-        if (domain.equals("@yhoo.com.br")) {
-            return email.replaceAll("@yhoo.com.br", yahooComBr);
-        }
-        if (domain.equals("@uahoo.com.br")) {
-            return email.replaceAll("@uahoo.com.br", yahooComBr);
-        }
-        if (domain.equals("@yahoo.co.br")) {
-            return email.replaceAll("@yahoo.co.br", yahooComBr);
-        }
-        if (domain.equals("@yahoo.vom.br")) {
-            return email.replaceAll("@yahoo.vom.br", yahooComBr);
-        }
-        if (domain.equals("@ahoo.com.br")) {
-            return email.replaceAll("@ahoo.com.br", yahooComBr);
-        }
-
-        //yahoo.com
-        if (domain.equals("@yaho.com")) {
-            return email.replaceAll("@yaho.com", yahooCom);
-        }
-        if (domain.equals("@yhoo.com")) {
-            return email.replaceAll("@yhoo.com", yahooCom);
-        }
-        if (domain.equals("@uahoo.com")) {
-            return email.replaceAll("@uahoo.com", yahooCom);
-        }
-
-        //bol.com.br
-        if (domain.equals("@boll.com.br")) {
-            return email.replaceAll("@boll.com.br", bolComBr);
-        }
-        if (domain.equals("@bl.com.br")) {
-            return email.replaceAll("@bl.com.br", bolComBr);
-        }
-        if (domain.equals("@bol.co.br")) {
-            return email.replaceAll("@bol.co.br", bolComBr);
-        }
-
-        //outlook.com
-        if (domain.equals("@outllok.com")) {
-            return email.replaceAll("@outllok.com", outlookCom);
-        }
-        if (domain.equals("@outllok.com")) {
-            return email.replaceAll("@outllok.com", outlookCom);
-        }
-        if (domain.equals("@outluoock.com")) {
-            return email.replaceAll("@outluoock.com", outlookCom);
-        }
-        if (domain.equals("@otlook.com")) {
-            return email.replaceAll("@otlook.com", outlookCom);
-        }
-
-        //icloud.com
-        if (domain.equals("@aiclod.com")) {
-            return email.replaceAll("@aiclod.com", icloudCom);
+        if (DOMAIN_CORRECTIONS.containsKey(domain)) {
+            return email.replaceAll(domain, DOMAIN_CORRECTIONS.get(domain));
         }
 
         return email;

@@ -5,20 +5,19 @@ import java.util.Optional;
 
 public interface IClassService {
 
-    public com.polifono.domain.Class save(com.polifono.domain.Class o);
+    com.polifono.domain.Class save(com.polifono.domain.Class o);
 
-    public Boolean delete(Integer id);
+    boolean delete(Integer id);
 
-    public Optional<com.polifono.domain.Class> findById(int id);
+    Optional<com.polifono.domain.Class> findById(int id);
 
-    public List<com.polifono.domain.Class> findAll();
+    List<com.polifono.domain.Class> findAll();
 
-    public List<com.polifono.domain.Class> findByTeacherAndStatus(int playerId, boolean status);
+    List<com.polifono.domain.Class> findByTeacherAndStatus(int playerId, boolean status);
 
-    public com.polifono.domain.Class clone(com.polifono.domain.Class clazz);
+    com.polifono.domain.Class clone(com.polifono.domain.Class clazz);
 
-    public com.polifono.domain.Class prepareClassForCreation(com.polifono.domain.Class clazz);
+    com.polifono.domain.Class prepareClassForCreation(com.polifono.domain.Class clazz);
 
-    public com.polifono.domain.Class prepareClassForChangingStatus(com.polifono.domain.Class clazz, boolean status);
-
+    com.polifono.domain.Class prepareClassForChangingStatus(com.polifono.domain.Class clazz, boolean status);
 }

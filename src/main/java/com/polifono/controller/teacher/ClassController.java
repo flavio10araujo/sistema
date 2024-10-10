@@ -1,10 +1,9 @@
 package com.polifono.controller.teacher;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,7 +18,9 @@ import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/teacher")
 public class ClassController extends BaseController {
@@ -30,26 +31,20 @@ public class ClassController extends BaseController {
 
     public static final String REDIRECT_HOME = "redirect:/";
 
-    @Autowired
-    private IClassService classService;
-
-    @Autowired
-    private IClassPlayerService classPlayerService;
+    private final IClassService classService;
+    private final IClassPlayerService classPlayerService;
 
     @RequestMapping(value = { "/class", "/class/savepage" }, method = RequestMethod.GET)
     public String savePage(HttpSession session, Model model) {
         model.addAttribute("class", new com.polifono.domain.Class());
-        model.addAttribute("classes",
-                (ArrayList<com.polifono.domain.Class>) classService.findByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
-
+        model.addAttribute("classes", classService.findByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
         return URL_ADMIN_BASIC_INDEX;
     }
 
     @RequestMapping(value = { "/class/save" }, method = RequestMethod.POST)
     public String save(@ModelAttribute("class") com.polifono.domain.Class clazz, final RedirectAttributes redirectAttributes) {
-
         try {
-            clazz.setPlayer(this.currentAuthenticatedUser().getUser());
+            clazz.setPlayer(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser());
             classService.save(classService.prepareClassForCreation(clazz));
             redirectAttributes.addFlashAttribute("save", "success");
         } catch (Exception e) {
@@ -66,16 +61,18 @@ public class ClassController extends BaseController {
         // The teacher only can edit/delete/duplicate his own classes.
         com.polifono.domain.Class current = classService.findById(id.intValue()).get();
 
-        if (current.getPlayer().getId() != this.currentAuthenticatedUser().getUser().getId())
+        if (current.getPlayer().getId() != Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId())
             return REDIRECT_HOME;
 
-        if (operation.equals("delete")) {
+        switch (operation) {
+        case "delete" -> {
             if (classService.delete(id.intValue())) {
                 redirectAttributes.addFlashAttribute("deletion", "success");
             } else {
                 redirectAttributes.addFlashAttribute("deletion", "unsuccess");
             }
-        } else if (operation.equals("edit")) {
+        }
+        case "edit" -> {
             Optional<com.polifono.domain.Class> edit = classService.findById(id.intValue());
 
             if (edit.isPresent()) {
@@ -84,7 +81,8 @@ public class ClassController extends BaseController {
             } else {
                 redirectAttributes.addFlashAttribute("status", "notfound");
             }
-        } else if (operation.equals("duplicate")) {
+        }
+        case "duplicate" -> {
             com.polifono.domain.Class newClass = classService.clone(current);
             newClass.setName(newClass.getName() + " CLONE");
             newClass = classService.save(classService.prepareClassForCreation(newClass));
@@ -101,6 +99,7 @@ public class ClassController extends BaseController {
 
             redirectAttributes.addFlashAttribute("save", "success");
         }
+        }
 
         return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
     }
@@ -111,7 +110,7 @@ public class ClassController extends BaseController {
         com.polifono.domain.Class current = classService.findById(edit.getId()).get();
 
         // The teacher only can edit his own classes.
-        if (current.getPlayer().getId() != currentAuthenticatedUser().getUser().getId())
+        if (current.getPlayer().getId() != Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId())
             return REDIRECT_HOME;
 
         edit.setPlayer(current.getPlayer());

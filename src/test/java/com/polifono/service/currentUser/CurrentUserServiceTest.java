@@ -23,13 +23,13 @@ public class CurrentUserServiceTest {
 
     /* canAccessUser - begin */
     @Test
-    public void canAccessUser_WhenCurrentUserIsNull_ReturnFalse() {
+    public void givenCanAccessUser_whenCurrentUserIsNull_thenReturnFalse() {
         CurrentUser currentUser = null;
         Assertions.assertFalse(service.canAccessUser(currentUser, PLAYER_ID_EXISTENT.longValue()));
     }
 
     @Test
-    public void canAccessUser_WhenRoleIsAdmin_ReturnTrue() {
+    public void givenCanAccessUser_whenRoleIsAdmin_thenReturnTrue() {
         Player player = new Player();
         player.setRole(Role.ADMIN);
         player.setEmail("test@email.com");
@@ -39,7 +39,7 @@ public class CurrentUserServiceTest {
     }
 
     @Test
-    public void canAccessUser_WhenCurrentUserIdIsEqualsUserId_ReturnTrue() {
+    public void givenCanAccessUser_whenCurrentUserIdIsEqualsUserId_thenReturnTrue() {
         Player player = new Player();
         player.setRole(Role.ADMIN);
         player.setEmail("test@email.com");

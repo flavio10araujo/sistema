@@ -11,50 +11,47 @@ import com.polifono.domain.Playervideo;
 
 public interface IPlayerService {
 
-    public Player save(Player o);
+    Player save(Player o);
 
-    public Optional<Player> findById(int id);
+    Optional<Player> findById(int id);
 
-    public List<Player> findAll();
+    List<Player> findAll();
 
-    public Player findByEmail(String email);
+    Player findByEmail(String email);
 
-    public Player findByEmailAndStatus(String email, boolean status);
+    Player findByEmailAndStatus(String email, boolean status);
 
-    public Player findByLogin(String login);
+    Player findByLogin(String login);
 
-    public Player findByIdFacebook(Long id);
+    Player findByIdFacebook(Long id);
 
-    public List<Player> findByDateIncRange(Date dateBegin, Date dateEnd);
+    List<Player> findByDateIncRange(Date dateBegin, Date dateEnd);
 
-    public Player create(Player o);
+    Player create(Player o);
 
-    public Optional<Player> findByEmailAndStatusForLogin(String email, boolean status);
+    Optional<Player> findByEmailAndStatusForLogin(String email, boolean status);
 
-    public Player addCreditsToPlayer(int playerId, int qtdCredits);
+    Player addCreditsToPlayer(int playerId, int qtdCredits);
 
-    public Player removeCreditsFromPlayer(int playerId, int qtdCredits);
+    Player removeCreditsFromPlayer(int playerId, int qtdCredits);
 
-    public Player removeOneCreditFromPlayer(Player player, Game game);
+    Player removeOneCreditFromPlayer(Player player, Game game);
 
-    public boolean playerHasCredits(Player user, Phase phase);
+    boolean playerHasCredits(Player user, Phase phase);
 
-    public boolean isEmailConfirmed(Player user);
+    boolean isEmailConfirmed(Player user);
 
-    public String validateCreatePlayer(Player player);
+    String validateCreatePlayer(Player player);
 
-    public String validateCreatePlayerByTeacher(Player player);
+    String validateCreatePlayerByTeacher(Player player);
 
-    public String validateUpdateProfile(Player edit);
+    String validateUpdateProfile(Player edit);
 
-    public String validateChangePasswordPlayer(Player player);
+    String validateChangePasswordPlayer(Player player);
 
-    public String validateAddVideo(Playervideo playervideo);
+    String validateAddVideo(Playervideo playervideo);
 
-    //Communication - begin
-    public List<Player> findCommunicationGroup04();
+    List<Player> findCommunicationGroup04();
 
-    public List<Player> findCommunicationGroup05();
-    //Communication - end
-
+    List<Player> findCommunicationGroup05();
 }

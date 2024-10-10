@@ -3,7 +3,6 @@ package com.polifono.controller.admin.basic;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,10 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.controller.BaseController;
 import com.polifono.domain.Content;
-import com.polifono.domain.Game;
-import com.polifono.domain.Level;
-import com.polifono.domain.Map;
-import com.polifono.domain.Phase;
 import com.polifono.domain.Question;
 import com.polifono.form.admin.basic.QuestionFilterForm;
 import com.polifono.service.IContentService;
@@ -28,7 +23,9 @@ import com.polifono.service.IPhaseService;
 import com.polifono.service.IQuestionService;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/admin/basic")
 public class QuestionController extends BaseController {
@@ -36,33 +33,22 @@ public class QuestionController extends BaseController {
     public static final String URL_ADMIN_BASIC = "admin/basic/question";
     public static final String URL_ADMIN_BASIC_INDEX = "admin/basic/question/index";
     public static final String URL_ADMIN_BASIC_EDIT = "admin/basic/question/editPage";
-    public static final String URL_ADMIN_BASIC_SAVEPAGE = "admin/basic/question/savepage";
+    public static final String URL_ADMIN_BASIC_SAVE_PAGE = "admin/basic/question/savepage";
 
-    @Autowired
-    private IGameService gameService;
-
-    @Autowired
-    private ILevelService levelService;
-
-    @Autowired
-    private IMapService mapService;
-
-    @Autowired
-    private IPhaseService phaseService;
-
-    @Autowired
-    private IContentService contentService;
-
-    @Autowired
-    private IQuestionService questionService;
+    private final IGameService gameService;
+    private final ILevelService levelService;
+    private final IMapService mapService;
+    private final IPhaseService phaseService;
+    private final IContentService contentService;
+    private final IQuestionService questionService;
 
     @RequestMapping(value = { "/question", "/question/savepage" }, method = RequestMethod.GET)
     public String savePage(HttpSession session, Model model) {
         model.addAttribute("question", new Question());
 
         // Filter.
-        model.addAttribute("games", (ArrayList<Game>) gameService.findAll());
-        model.addAttribute("levels", (ArrayList<Level>) levelService.findAll());
+        model.addAttribute("games", gameService.findAll());
+        model.addAttribute("levels", levelService.findAll());
 
         QuestionFilterForm questionFilterForm = (QuestionFilterForm) session.getAttribute("questionFilterForm");
 
@@ -72,37 +58,36 @@ public class QuestionController extends BaseController {
 
             if (questionFilterForm.getLevel().getId() > 0) {
                 // Filter.
-                model.addAttribute("maps",
-                        (ArrayList<Map>) mapService.findMapsByGameAndLevel(questionFilterForm.getGame().getId(), questionFilterForm.getLevel().getId()));
+                model.addAttribute("maps", mapService.findMapsByGameAndLevel(questionFilterForm.getGame().getId(), questionFilterForm.getLevel().getId()));
 
                 if (questionFilterForm.getMap().getId() > 0) {
                     // Filter.
-                    model.addAttribute("phases", (ArrayList<Phase>) phaseService.findByMap(questionFilterForm.getMap().getId()));
+                    model.addAttribute("phases", phaseService.findByMap(questionFilterForm.getMap().getId()));
 
                     if (questionFilterForm.getPhase().getId() > 0) {
                         // Filter
-                        model.addAttribute("contents", (ArrayList<Content>) contentService.findContentsTestByPhase(questionFilterForm.getPhase().getId()));
+                        model.addAttribute("contents", contentService.findContentsTestByPhase(questionFilterForm.getPhase().getId()));
                         // List
-                        model.addAttribute("questions", (ArrayList<Question>) questionService.findByPhase(questionFilterForm.getPhase().getId()));
+                        model.addAttribute("questions", questionService.findByPhase(questionFilterForm.getPhase().getId()));
                     } else {
                         // Filter
-                        model.addAttribute("contents", (ArrayList<Content>) contentService.findContentsTestByMap(questionFilterForm.getMap().getId()));
+                        model.addAttribute("contents", contentService.findContentsTestByMap(questionFilterForm.getMap().getId()));
                         // List
-                        model.addAttribute("questions", (ArrayList<Question>) questionService.findByMap(questionFilterForm.getMap().getId()));
+                        model.addAttribute("questions", questionService.findByMap(questionFilterForm.getMap().getId()));
                     }
                 } else {
                     // Filter
-                    model.addAttribute("contents", (ArrayList<Content>) contentService.findContentsTestByGameAndLevel(questionFilterForm.getGame().getId(),
+                    model.addAttribute("contents", contentService.findContentsTestByGameAndLevel(questionFilterForm.getGame().getId(),
                             questionFilterForm.getLevel().getId()));
                     // List
-                    model.addAttribute("questions", (ArrayList<Question>) questionService.findByGameAndLevel(questionFilterForm.getGame().getId(),
+                    model.addAttribute("questions", questionService.findByGameAndLevel(questionFilterForm.getGame().getId(),
                             questionFilterForm.getLevel().getId()));
                 }
             } else {
                 // Filter
-                model.addAttribute("contents", (ArrayList<Content>) contentService.findContentsTestByGame(questionFilterForm.getGame().getId()));
+                model.addAttribute("contents", contentService.findContentsTestByGame(questionFilterForm.getGame().getId()));
                 // List
-                model.addAttribute("questions", (ArrayList<Question>) questionService.findByGame(questionFilterForm.getGame().getId()));
+                model.addAttribute("questions", questionService.findByGame(questionFilterForm.getGame().getId()));
             }
         } else {
             // Form
@@ -124,14 +109,13 @@ public class QuestionController extends BaseController {
 
     @RequestMapping(value = { "/question/save" }, method = RequestMethod.POST)
     public String save(@ModelAttribute("question") Question question, final RedirectAttributes redirectAttributes) {
-
         if (questionService.save(question) != null) {
             redirectAttributes.addFlashAttribute("save", "success");
         } else {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/question/{operation}/{id}", method = RequestMethod.GET)
@@ -156,7 +140,7 @@ public class QuestionController extends BaseController {
             }
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/question/update", method = RequestMethod.POST)
@@ -169,6 +153,6 @@ public class QuestionController extends BaseController {
             redirectAttributes.addFlashAttribute("edit", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
     }
 }

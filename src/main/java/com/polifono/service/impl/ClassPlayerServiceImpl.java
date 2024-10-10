@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.ClassPlayer;
@@ -12,15 +11,13 @@ import com.polifono.domain.Player;
 import com.polifono.repository.IClassPlayerRepository;
 import com.polifono.service.IClassPlayerService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class ClassPlayerServiceImpl implements IClassPlayerService {
 
-    private IClassPlayerRepository repository;
-
-    @Autowired
-    public ClassPlayerServiceImpl(IClassPlayerRepository repository) {
-        this.repository = repository;
-    }
+    private final IClassPlayerRepository repository;
 
     @Override
     public final ClassPlayer save(ClassPlayer classPlayer) {
@@ -28,7 +25,7 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
     }
 
     @Override
-    public Boolean delete(Integer id) {
+    public boolean delete(Integer id) {
         Optional<ClassPlayer> temp = repository.findById(id);
 
         if (temp.isPresent()) {
@@ -57,9 +54,6 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
     /**
      * Get all the students of this teacher (playerId).
      * Get only student in the status 1 (pending) and 2 (confirmed).
-     *
-     * @param playerId
-     * @return
      */
     @Override
     public final List<ClassPlayer> findByTeacher(int playerId) {
@@ -69,10 +63,6 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
     /**
      * Get all the students of a specific class (clazzId) of this teacher (playerId).
      * Get only student in the status 1 (pending) and 2 (confirmed).
-     *
-     * @param playerId
-     * @param clazzId
-     * @return
      */
     @Override
     public final List<ClassPlayer> findByTeacherAndClass(int playerId, int clazzId) {
@@ -97,10 +87,6 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
     /**
      * Method used to see if studentId is student of teacherId in any class.
      * The studentId must be in status 2 (confirmed).
-     *
-     * @param teacherId
-     * @param studentId
-     * @return
      */
     @Override
     public final List<ClassPlayer> findByTeacherAndStudent(int teacherId, int studentId) {
@@ -115,20 +101,11 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
     /**
      * Method used to see if student is student of teacher in any class.
      * Return true if student is student of teacher.
-     *
-     * @param teacher
-     * @param student
-     * @return
      */
     @Override
     public boolean isMyStudent(Player teacher, Player student) {
         List<ClassPlayer> classPlayers = this.findByTeacherAndStudent(teacher.getId(), student.getId());
-
-        if (classPlayers != null && classPlayers.size() > 0) {
-            return true;
-        }
-
-        return false;
+        return classPlayers != null && !classPlayers.isEmpty();
     }
 
     public final ClassPlayer prepareClassPlayerForCreation(ClassPlayer classPlayer) {
@@ -139,7 +116,7 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
     }
 
     @Override
-    public final Boolean changeStatus(int id, int status) {
+    public final boolean changeStatus(int id, int status) {
         Optional<ClassPlayer> temp = repository.findById(id);
 
         if (temp.isPresent()) {

@@ -2,7 +2,6 @@ package com.polifono.service.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Answer;
@@ -13,21 +12,17 @@ import com.polifono.repository.IGameRepository;
 import com.polifono.service.IGameService;
 import com.polifono.service.IQuestionService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class GameServiceImpl implements IGameService {
 
-    private IGameRepository repository;
-
-    @Autowired
-    private IQuestionService questionService;
-
-    @Autowired
-    public GameServiceImpl(IGameRepository repository) {
-        this.repository = repository;
-    }
+    private final IGameRepository repository;
+    private final IQuestionService questionService;
 
     public final List<Game> findAll() {
-        return (List<Game>) repository.findAll();
+        return repository.findAll();
     }
 
     @Override
@@ -41,10 +36,6 @@ public class GameServiceImpl implements IGameService {
 
     /**
      * This method is used to calculate the correct score to the player.
-     *
-     * @param numAttempts
-     * @param grade
-     * @return
      */
     public int calculateScore(int numAttempts, int grade) {
 		/*
@@ -109,15 +100,11 @@ public class GameServiceImpl implements IGameService {
      * questionsId is an array with the IDs of the questions answered.
      * playerAnswers are the answers of the player.
      * This method returns the percentage of right answers given by the player.
-     *
-     * @param questionsId
-     * @param playerAnswers
-     * @return
      */
     public int calculateGrade(List<Integer> questionsId, java.util.Map<String, String> playerAnswers) {
-        Question questionAux = null;
+        Question questionAux;
         int countQuestionsRight = 0, phaseOrder = 0;
-        String playerAnswer = null;
+        String playerAnswer;
 
         // For each question submitted:
         for (Integer questionId : questionsId) {
@@ -136,7 +123,6 @@ public class GameServiceImpl implements IGameService {
                     // If the player has chosen the right answer.
                     if ((answer.getId() == Integer.parseInt(playerAnswer)) && answer.isRight()) {
                         countQuestionsRight++;
-                        continue;
                     }
                 }
             }
@@ -147,9 +133,6 @@ public class GameServiceImpl implements IGameService {
 
     /**
      * Get the phase of a test based on the ID of the last question of the test.
-     *
-     * @param questionsId
-     * @return
      */
     public final Phase getPhaseOfTheTest(List<Integer> questionsId) {
         Integer questionId = questionsId.get(questionsId.size() - 1);

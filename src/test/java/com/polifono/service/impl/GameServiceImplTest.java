@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,13 +18,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.polifono.domain.Game;
 import com.polifono.repository.IGameRepository;
-import com.polifono.service.impl.GameServiceImpl;
 
 /**
  * Unit test methods for the GameService.
  */
 @ExtendWith(MockitoExtension.class)
-public class GameServiceTest {
+public class GameServiceImplTest {
 
     @InjectMocks
     private GameServiceImpl service;
@@ -33,25 +32,6 @@ public class GameServiceTest {
     private IGameRepository repository;
 
     private final String NAME_LINK = "recorder";
-
-    /* stubs - begin */
-    public Optional<Game> getEntityStubData() {
-        Game game = new Game();
-        return Optional.of(game);
-    }
-
-    private List<Game> getEntityListStubData() {
-        List<Game> list = new ArrayList<Game>();
-
-        Game entity1 = getEntityStubData().get();
-        Game entity2 = getEntityStubData().get();
-
-        list.add(entity1);
-        list.add(entity2);
-
-        return list;
-    }
-    /* stubs - end */
 
     /* findAll - begin */
     @Test
@@ -127,4 +107,23 @@ public class GameServiceTest {
 
     /* getPhaseOfTheTest - begin */
     /* getPhaseOfTheTest - end */
+
+    /* stubs - begin */
+    public Optional<Game> getEntityStubData() {
+        Game game = new Game();
+        return Optional.of(game);
+    }
+
+    private List<Game> getEntityListStubData() {
+        List<Game> list = new ArrayList<>();
+
+        Game entity1 = getEntityStubData().get();
+        Game entity2 = getEntityStubData().get();
+
+        list.add(entity1);
+        list.add(entity2);
+
+        return list;
+    }
+    /* stubs - end */
 }

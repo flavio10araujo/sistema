@@ -9,5 +9,5 @@ import com.polifono.domain.PlayerGame;
 public interface IPlayerGameRepository extends JpaRepository<PlayerGame, Integer> {
 
 	@Query("SELECT playerGame FROM PlayerGame playerGame WHERE playerGame.player.id = :playerId AND playerGame.game.id = :gameId")
-	public PlayerGame findByPlayerAndGame(@Param("playerId") int playerId, @Param("gameId") int gameId);
+	PlayerGame findByPlayerAndGame(@Param("playerId") int playerId, @Param("gameId") int gameId);
 }

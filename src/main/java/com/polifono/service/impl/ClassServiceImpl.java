@@ -4,27 +4,24 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.repository.IClassRepository;
 import com.polifono.service.IClassService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class ClassServiceImpl implements IClassService {
 
-    private IClassRepository repository;
-
-    @Autowired
-    public ClassServiceImpl(IClassRepository repository) {
-        this.repository = repository;
-    }
+    private final IClassRepository repository;
 
     public final com.polifono.domain.Class save(com.polifono.domain.Class clazz) {
         return repository.save(clazz);
     }
 
-    public Boolean delete(Integer id) {
+    public boolean delete(Integer id) {
         Optional<com.polifono.domain.Class> temp = repository.findById(id);
 
         if (temp.isPresent()) {

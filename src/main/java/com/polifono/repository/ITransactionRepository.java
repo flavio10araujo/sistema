@@ -9,7 +9,7 @@ import com.polifono.domain.Transaction;
 
 public interface ITransactionRepository extends JpaRepository<Transaction, Integer> {
 
-	public List<Transaction> findByCode(String code);
-	
-	public List<Transaction> findByPlayerAndStatus(Player player, int status);
+	List<Transaction> findByCode(String code);
+
+	List<Transaction> findByPlayerAndStatus(Player player, int status);
 }

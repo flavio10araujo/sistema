@@ -10,6 +10,9 @@ import jakarta.servlet.WriteListener;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletResponseWrapper;
 
+/**
+ * This class is used to capture the response content.
+ */
 public class HtmlResponseWrapper extends HttpServletResponseWrapper {
 
     private final ByteArrayOutputStream capture;
@@ -24,14 +27,13 @@ public class HtmlResponseWrapper extends HttpServletResponseWrapper {
     @Override
     public ServletOutputStream getOutputStream() {
         if (writer != null) {
-            throw new IllegalStateException(
-                    "getWriter() has already been called on this response.");
+            throw new IllegalStateException("getWriter() has already been called on this response.");
         }
 
         if (output == null) {
             output = new ServletOutputStream() {
                 @Override
-                public void write(int b) throws IOException {
+                public void write(int b) {
                     capture.write(b);
                 }
 
@@ -62,13 +64,11 @@ public class HtmlResponseWrapper extends HttpServletResponseWrapper {
     @Override
     public PrintWriter getWriter() throws IOException {
         if (output != null) {
-            throw new IllegalStateException(
-                    "getOutputStream() has already been called on this response.");
+            throw new IllegalStateException("getOutputStream() has already been called on this response.");
         }
 
         if (writer == null) {
-            writer = new PrintWriter(new OutputStreamWriter(capture,
-                    getCharacterEncoding()));
+            writer = new PrintWriter(new OutputStreamWriter(capture, getCharacterEncoding()));
         }
 
         return writer;
@@ -98,5 +98,4 @@ public class HtmlResponseWrapper extends HttpServletResponseWrapper {
     public String getCaptureAsString() throws IOException {
         return new String(getCaptureAsBytes(), getCharacterEncoding());
     }
-
 }

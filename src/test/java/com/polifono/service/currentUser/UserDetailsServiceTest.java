@@ -15,8 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.polifono.domain.Player;
 import com.polifono.domain.bean.CurrentUser;
 import com.polifono.domain.enums.Role;
-import com.polifono.repository.IPlayerRepository;
-import com.polifono.service.IPlayerGameService;
 import com.polifono.service.IPlayerService;
 
 /**
@@ -31,18 +29,12 @@ public class UserDetailsServiceTest {
     @Mock
     private IPlayerService userService;
 
-    @Mock
-    private IPlayerGameService playerGameService;
-
-    @Mock
-    private IPlayerRepository playerRepository;
-
     private final String PLAYER_EMAIL_EXISTENT = "flavio10araujo@yahoo.com.br";
     private final String PLAYER_EMAIL_INEXISTENT = "email_inexistent";
 
     /* loadUserByUsername - begin */
     @Test
-    public void loadUserByUsername_WhenUserNotFoundByEmailAndStatus_ThrowUsernameNotFoundException() {
+    public void givenLoadUserByUsername_whenUserNotFoundByEmailAndStatus_thenThrowUsernameNotFoundException() {
         when(userService.findByEmailAndStatusForLogin(PLAYER_EMAIL_INEXISTENT, true)).thenReturn(Optional.empty());
 
         Assertions.assertThrows(UsernameNotFoundException.class, () -> {
@@ -51,7 +43,7 @@ public class UserDetailsServiceTest {
     }
 
     @Test
-    public void loadUserByUsername_WhenUserIsFoundByEmailAndStatus_ReturnUser() {
+    public void givenLoadUserByUsername_whenUserIsFoundByEmailAndStatus_thenReturnUser() {
         Player player = new Player();
         player.setId(123);
         player.setRole(Role.USER);

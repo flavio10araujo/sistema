@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,65 +21,61 @@ import com.polifono.dto.PlayervideoDTO;
 import com.polifono.service.IContentService;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.IPlayervideoService;
-import com.polifono.util.StringUtil;
+import com.polifono.util.YouTubeUrlFormatter;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Controller
 public class PlayervideoController extends BaseController {
 
-    @Autowired
-    private IPlayervideoService playervideoService;
-
-    @Autowired
-    private IContentService contentService;
-
-    @Autowired
-    private IPlayerService playerService;
+    private final IPlayervideoService playervideoService;
+    private final IContentService contentService;
+    private final IPlayerService playerService;
 
     @GetMapping(value = "/playervideos", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public List<PlayervideoDTO> playervideosGeneral(@RequestParam(value = "restriction") String restriction) {
+    public List<PlayervideoDTO> playerVideosGeneral(@RequestParam(value = "restriction") String restriction) {
 
         try {
-            // codigo provisorio
-
-            if (restriction == null || "".equals(restriction)) {
+            // TODO - codigo provisorio
+            if (restriction == null || restriction.isEmpty()) {
                 restriction = "0";
             }
 
             List<PlayervideoDTO> playervideoDTOList = convertToDto(playervideoService.findRandomWithRestriction(restriction));
 
             // adicionar IDs na lista de restriction
-            List<PlayervideoDTO> playervideoDTOReturn = new ArrayList<>();
+            List<PlayervideoDTO> playerVideoDTOReturn = new ArrayList<>();
 
             label:
             {
                 for (PlayervideoDTO p : playervideoDTOList) {
-                    if (verifyRestriction(restriction, p.getId())) {
-                        playervideoDTOReturn.add(p);
+                    if (verifyRestriction(restriction, p.id())) {
+                        playerVideoDTOReturn.add(p);
                     }
 
-                    if (playervideoDTOReturn.size() >= 3) {
+                    if (playerVideoDTOReturn.size() >= 3) {
                         break label;
                     }
                 }
             }
 
-            return playervideoDTOReturn;
+            return playerVideoDTOReturn;
         } catch (Exception e) {
-            return new ArrayList<PlayervideoDTO>();
+            return new ArrayList<>();
         }
     }
 
     public boolean verifyRestriction(String restriction, int id) {
-
-        if (restriction == null || "".equals(restriction) || "0".equals(restriction)) {
+        if (restriction == null || restriction.isEmpty() || "0".equals(restriction)) {
             return true;
         }
 
         String[] restrictionArr = restriction.split(",");
 
-        for (int i = 0; i < restrictionArr.length; i++) {
-            if (restrictionArr[i].equals(id + "")) {
+        for (String s : restrictionArr) {
+            if (s.equals(id + "")) {
                 return false;
             }
         }
@@ -90,13 +85,13 @@ public class PlayervideoController extends BaseController {
 
     @GetMapping(value = "/playervideos/content/{contentId}", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public List<PlayervideoDTO> playervideosByContent(@PathVariable("contentId") Integer contentId, @RequestParam(value = "page") String pageStr,
+    public List<PlayervideoDTO> playerVideosByContent(@PathVariable("contentId") Integer contentId, @RequestParam(value = "page") String pageStr,
             @RequestParam(value = "size") String sizeStr) {
 
         Optional<Content> content = contentService.findById(contentId);
 
-        if (!content.isPresent())
-            return new ArrayList<PlayervideoDTO>();
+        if (content.isEmpty())
+            return new ArrayList<>();
 
         try {
             int page = Integer.parseInt(pageStr);
@@ -114,19 +109,19 @@ public class PlayervideoController extends BaseController {
 
             return convertToDto(playervideoService.findAllByContent(content.get(), pageable));
         } catch (Exception e) {
-            return new ArrayList<PlayervideoDTO>();
+            return new ArrayList<>();
         }
     }
 
     @GetMapping(value = "/playervideos/player/{playerId}", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public List<PlayervideoDTO> playervideosByPlayer(@PathVariable("playerId") Integer playerId, @RequestParam(value = "page") String pageStr,
+    public List<PlayervideoDTO> playerVideosByPlayer(@PathVariable("playerId") Integer playerId, @RequestParam(value = "page") String pageStr,
             @RequestParam(value = "size") String sizeStr) {
 
         Optional<Player> playerOpt = playerService.findById(playerId);
 
-        if (!playerOpt.isPresent())
-            return new ArrayList<PlayervideoDTO>();
+        if (playerOpt.isEmpty())
+            return new ArrayList<>();
 
         Player player = playerOpt.get();
 
@@ -146,26 +141,24 @@ public class PlayervideoController extends BaseController {
 
             return convertToDto(playervideoService.findAllByPlayer(player, pageable));
         } catch (Exception e) {
-            return new ArrayList<PlayervideoDTO>();
+            return new ArrayList<>();
         }
     }
 
     private List<PlayervideoDTO> convertToDto(List<Playervideo> playervideoList) {
-        List<PlayervideoDTO> dtoList = new ArrayList<PlayervideoDTO>();
+        List<PlayervideoDTO> dtoList = new ArrayList<>();
 
         for (Playervideo playervideo : playervideoList) {
-            PlayervideoDTO dto = new PlayervideoDTO();
-
-            dto.setId(playervideo.getId());
-            dto.setGameName(playervideo.getContent().getPhase().getMap().getGame().getName());
-            dto.setLevelName(playervideo.getContent().getPhase().getMap().getLevel().getName());
-            dto.setPhaseOrder(playervideo.getContent().getPhase().getOrder());
-            dto.setPlayerId(playervideo.getPlayer().getId());
-            dto.setPlayerFirstName(playervideo.getPlayer().getName());
-            dto.setPlayerLastName(playervideo.getPlayer().getLastName());
-            dto.setUrl(StringUtil.formatYoutubeUrl(playervideo.getUrl()));
-
-            dtoList.add(dto);
+            dtoList.add(new PlayervideoDTO(
+                    playervideo.getId(),
+                    playervideo.getContent().getPhase().getMap().getGame().getName(),
+                    playervideo.getContent().getPhase().getMap().getLevel().getName(),
+                    playervideo.getContent().getPhase().getOrder(),
+                    playervideo.getPlayer().getId(),
+                    playervideo.getPlayer().getName(),
+                    playervideo.getPlayer().getLastName(),
+                    YouTubeUrlFormatter.formatUrl(playervideo.getUrl()))
+            );
         }
 
         return dtoList;

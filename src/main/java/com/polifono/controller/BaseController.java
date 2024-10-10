@@ -23,7 +23,7 @@ public abstract class BaseController {
 
     public static ResourceBundle messagesResourceBundle;
 
-    private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
+    private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
     static {
         messagesResourceBundle = ResourceBundle.getBundle("messages/messages", Locale.getDefault());

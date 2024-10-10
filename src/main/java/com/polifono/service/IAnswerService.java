@@ -7,22 +7,21 @@ import com.polifono.domain.Answer;
 
 public interface IAnswerService {
 
-    public Answer save(Answer o);
+    Answer save(Answer o);
 
-    public Boolean delete(Integer id);
+    Boolean delete(Integer id);
 
-    public Optional<Answer> findById(int id);
+    Optional<Answer> findById(int id);
 
-    public List<Answer> findAll();
+    List<Answer> findAll();
 
-    public List<Answer> findByGame(int gameId);
+    List<Answer> findByGame(int gameId);
 
-    public List<Answer> findByGameAndLevel(int gameId, int levelId);
+    List<Answer> findByGameAndLevel(int gameId, int levelId);
 
-    public List<Answer> findByMap(int mapId);
+    List<Answer> findByMap(int mapId);
 
-    public List<Answer> findByPhase(int phaseId);
+    List<Answer> findByPhase(int phaseId);
 
-    public List<Answer> findByQuestion(int questionId);
-
+    List<Answer> findByQuestion(int questionId);
 }
