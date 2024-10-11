@@ -2,7 +2,6 @@ package com.polifono.service.impl;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Promo;
@@ -15,19 +14,19 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class PromoServiceImpl implements IPromoService {
 
-	private final IPromoRepository repository;
+    private final IPromoRepository repository;
 
-	public final Promo save(Promo promo) {
-		return repository.save(promo);
-	}
+    public final Promo save(Promo promo) {
+        return repository.save(promo);
+    }
 
-	@Override
-	public Promo findByCode(String code) {
-		return repository.findByCode(code);
-	}
+    @Override
+    public Promo findByCode(String code) {
+        return repository.findByCode(code);
+    }
 
-	@Override
-	public Promo findByCodeAndDate(String code, Date dt) {
-		return repository.findByCodeAndDate(code, dt);
-	}
+    @Override
+    public Promo findByCodeAndDate(String code, Date dt) {
+        return repository.findByCodeAndDate(code, dt);
+    }
 }

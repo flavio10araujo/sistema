@@ -12,10 +12,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class PlayerCommunicationServiceImpl implements IPlayerCommunicationService {
 
-	private final IPlayerCommunicationRepository repository;
+    private final IPlayerCommunicationRepository repository;
 
-	@Override
-	public PlayerCommunication save(PlayerCommunication o) {
-		return repository.save(o);
-	}
+    @Override
+    public PlayerCommunication save(PlayerCommunication o) {
+        return repository.save(o);
+    }
 }

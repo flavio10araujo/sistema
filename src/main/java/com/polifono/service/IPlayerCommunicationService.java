@@ -4,5 +4,5 @@ import com.polifono.domain.PlayerCommunication;
 
 public interface IPlayerCommunicationService {
 
-	PlayerCommunication save(PlayerCommunication o);
+    PlayerCommunication save(PlayerCommunication o);
 }

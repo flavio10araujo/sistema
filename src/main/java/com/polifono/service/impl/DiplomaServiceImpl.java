@@ -14,25 +14,25 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class DiplomaServiceImpl implements IDiplomaService {
 
-	private final IDiplomaRepository repository;
+    private final IDiplomaRepository repository;
 
-	public final Diploma save(Diploma diploma) {
-		return repository.save(diploma);
-	}
+    public final Diploma save(Diploma diploma) {
+        return repository.save(diploma);
+    }
 
-	@Override
-	public List<Diploma> findByPlayer(int playerId) {
-		List<Diploma> list = repository.findByPlayer(playerId);
+    @Override
+    public List<Diploma> findByPlayer(int playerId) {
+        List<Diploma> list = repository.findByPlayer(playerId);
 
-		if (list == null || list.isEmpty()) {
-			return null;
-		}
+        if (list == null || list.isEmpty()) {
+            return null;
+        }
 
-		return list;
-	}
+        return list;
+    }
 
-	@Override
-	public Diploma findByCode(String code) {
-		return repository.findByCode(code);
-	}
+    @Override
+    public Diploma findByCode(String code) {
+        return repository.findByCode(code);
+    }
 }

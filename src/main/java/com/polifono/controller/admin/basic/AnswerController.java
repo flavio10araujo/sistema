@@ -83,7 +83,8 @@ public class AnswerController extends BaseController {
                     }
                 } else {
                     // Filter.
-                    model.addAttribute("questions", questionService.findByGameAndLevel(answerFilterForm.getGame().getId(), answerFilterForm.getLevel().getId()));
+                    model.addAttribute("questions",
+                            questionService.findByGameAndLevel(answerFilterForm.getGame().getId(), answerFilterForm.getLevel().getId()));
                     // List
                     model.addAttribute("answers", answerService.findByGameAndLevel(answerFilterForm.getGame().getId(), answerFilterForm.getLevel().getId()));
                 }

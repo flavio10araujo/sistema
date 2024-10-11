@@ -6,9 +6,9 @@ import com.polifono.domain.Promo;
 
 public interface IPromoService {
 
-	Promo save(Promo o);
+    Promo save(Promo o);
 
-	Promo findByCode(String code);
+    Promo findByCode(String code);
 
-	Promo findByCodeAndDate(String code, Date dt);
+    Promo findByCodeAndDate(String code, Date dt);
 }

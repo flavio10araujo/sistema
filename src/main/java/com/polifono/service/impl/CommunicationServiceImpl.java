@@ -12,10 +12,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class CommunicationServiceImpl implements ICommunicationService {
 
-	private final ICommunicationRepository repository;
+    private final ICommunicationRepository repository;
 
-	@Override
-	public Communication save(Communication o) {
-		return repository.save(o);
-	}
+    @Override
+    public Communication save(Communication o) {
+        return repository.save(o);
+    }
 }

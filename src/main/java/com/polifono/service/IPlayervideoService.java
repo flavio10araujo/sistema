@@ -11,17 +11,17 @@ import com.polifono.domain.Playervideo;
 
 public interface IPlayervideoService {
 
-	Playervideo save(Playervideo o);
+    Playervideo save(Playervideo o);
 
-	List<Playervideo> findAll();
+    List<Playervideo> findAll();
 
-	List<Playervideo> findAll(Pageable pageable);
+    List<Playervideo> findAll(Pageable pageable);
 
-	List<Playervideo> findAllByContent(Content content, Pageable pageable);
+    List<Playervideo> findAllByContent(Content content, Pageable pageable);
 
-	List<Playervideo> findAllByPlayer(Player player, Pageable pageable);
+    List<Playervideo> findAllByPlayer(Player player, Pageable pageable);
 
-	Playervideo findByPlayerAndPhase(Player player, Phase phase);
+    Playervideo findByPlayerAndPhase(Player player, Phase phase);
 
-	List<Playervideo> findRandomWithRestriction(String restriction);
+    List<Playervideo> findRandomWithRestriction(String restriction);
 }

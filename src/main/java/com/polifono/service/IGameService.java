@@ -7,15 +7,15 @@ import com.polifono.domain.Phase;
 
 public interface IGameService {
 
-	List<Game> findAll();
+    List<Game> findAll();
 
-	List<Game> findByActive(boolean active);
+    List<Game> findByActive(boolean active);
 
-	Game findByNamelink(String namelink);
+    Game findByNamelink(String namelink);
 
-	int calculateScore(int numAttempts, int grade);
+    int calculateScore(int numAttempts, int grade);
 
-	int calculateGrade(List<Integer> questionsId, java.util.Map<String, String> playerAnswers);
+    int calculateGrade(List<Integer> questionsId, java.util.Map<String, String> playerAnswers);
 
-	Phase getPhaseOfTheTest(List<Integer> questionsId);
+    Phase getPhaseOfTheTest(List<Integer> questionsId);
 }

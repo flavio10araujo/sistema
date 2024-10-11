@@ -6,9 +6,9 @@ import com.polifono.domain.Diploma;
 
 public interface IDiplomaService {
 
-	Diploma save(Diploma o);
+    Diploma save(Diploma o);
 
-	Diploma findByCode(String code);
+    Diploma findByCode(String code);
 
-	List<Diploma> findByPlayer(int playerId);
+    List<Diploma> findByPlayer(int playerId);
 }

@@ -12,14 +12,14 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class PlayerPromoServiceImpl implements IPlayerPromoService {
 
-	private final IPlayerPromoRepository repository;
+    private final IPlayerPromoRepository repository;
 
-	public final PlayerPromo save(PlayerPromo playerPromo) {
-		return repository.save(playerPromo);
-	}
+    public final PlayerPromo save(PlayerPromo playerPromo) {
+        return repository.save(playerPromo);
+    }
 
-	@Override
-	public PlayerPromo findByPlayerAndPromo(int playerId, int promoId) {
-		return repository.findByPlayerAndPromo(playerId, promoId);
-	}
+    @Override
+    public PlayerPromo findByPlayerAndPromo(int playerId, int promoId) {
+        return repository.findByPlayerAndPromo(playerId, promoId);
+    }
 }

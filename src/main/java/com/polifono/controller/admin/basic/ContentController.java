@@ -14,9 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.polifono.controller.BaseController;
 import com.polifono.domain.Content;
 import com.polifono.domain.Contenttype;
-import com.polifono.domain.Game;
-import com.polifono.domain.Level;
-import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
 import com.polifono.form.admin.basic.ContentFilterForm;
 import com.polifono.service.impl.ContentServiceImpl;
@@ -81,7 +78,8 @@ public class ContentController extends BaseController {
                     // Filter.
                     model.addAttribute("phases", phaseService.findByGameAndLevel(contentFilterForm.getGame().getId(), contentFilterForm.getLevel().getId()));
                     // List
-                    model.addAttribute("contents", contentService.findContentsTextByGameAndLevel(contentFilterForm.getGame().getId(), contentFilterForm.getLevel().getId()));
+                    model.addAttribute("contents",
+                            contentService.findContentsTextByGameAndLevel(contentFilterForm.getGame().getId(), contentFilterForm.getLevel().getId()));
                 }
             } else {
                 model.addAttribute("phases", phaseService.findByGame(contentFilterForm.getGame().getId()));

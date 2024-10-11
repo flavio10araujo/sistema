@@ -4,5 +4,5 @@ import com.polifono.domain.Communication;
 
 public interface ICommunicationService {
 
-	Communication save(Communication o);
+    Communication save(Communication o);
 }

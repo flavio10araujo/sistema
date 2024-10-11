@@ -7,7 +7,7 @@ import com.polifono.domain.Player;
 
 public interface ILoginService {
 
-	List<Login> findByPlayer(int playerId);
+    List<Login> findByPlayer(int playerId);
 
-	Login registerLogin(Player player);
+    Login registerLogin(Player player);
 }

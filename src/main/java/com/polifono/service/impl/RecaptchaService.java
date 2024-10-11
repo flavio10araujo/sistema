@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,8 @@ public class RecaptchaService {
         body.put("response", recaptchaResponse);
         body.put("remoteip", ip);
 
-        ResponseEntity<Map> recaptchaResponseEntity = restTemplateBuilder.build().postForEntity(GOOGLE_RECAPTCHA_VERIFY_URL + "?secret={secret}&response={response}&remoteip={remoteip}", body, Map.class, body);
+        ResponseEntity<Map> recaptchaResponseEntity = restTemplateBuilder.build()
+                .postForEntity(GOOGLE_RECAPTCHA_VERIFY_URL + "?secret={secret}&response={response}&remoteip={remoteip}", body, Map.class, body);
 
         Map<String, Object> responseBody = recaptchaResponseEntity.getBody();
         boolean recaptchaSuccess = (Boolean) responseBody.get("success");
