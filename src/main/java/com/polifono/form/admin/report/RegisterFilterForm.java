@@ -9,14 +9,14 @@ import lombok.Data;
 @Data
 public class RegisterFilterForm {
 
-	private Date dateBegin;
-	private Date dateEnd;
+    private Date dateBegin;
+    private Date dateEnd;
 
     public String getDateBeginStr() {
-		return DateUtil.formatDate(this.dateBegin);
-	}
+        return DateUtil.formatDate(this.dateBegin);
+    }
 
     public String getDateEndStr() {
-		return DateUtil.formatDate(this.dateEnd);
-	}
+        return DateUtil.formatDate(this.dateEnd);
+    }
 }

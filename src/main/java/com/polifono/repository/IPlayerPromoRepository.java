@@ -10,6 +10,6 @@ import com.polifono.domain.PlayerPromo;
 
 public interface IPlayerPromoRepository extends JpaRepository<PlayerPromo, UUID> {
 
-	@Query("SELECT playerPromo FROM PlayerPromo playerPromo WHERE playerPromo.player.id = :playerId AND playerPromo.promo.id = :promoId")
-	PlayerPromo findByPlayerAndPromo(@Param("playerId") int playerId, @Param("promoId") int promoId);
+    @Query("SELECT playerPromo FROM PlayerPromo playerPromo WHERE playerPromo.player.id = :playerId AND playerPromo.promo.id = :promoId")
+    PlayerPromo findByPlayerAndPromo(@Param("playerId") int playerId, @Param("promoId") int promoId);
 }

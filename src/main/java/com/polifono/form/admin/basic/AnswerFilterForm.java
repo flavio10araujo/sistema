@@ -11,17 +11,17 @@ import lombok.Data;
 @Data
 public class AnswerFilterForm {
 
-	private Game game;
-	private Level level;
-	private Map map;
-	private Phase phase;
-	private Question question;
+    private Game game;
+    private Level level;
+    private Map map;
+    private Phase phase;
+    private Question question;
 
-	public AnswerFilterForm() {
-		this.game = new Game();
-		this.level = new Level();
-		this.map = new Map();
-		this.phase = new Phase();
-		this.question = new Question();
-	}
+    public AnswerFilterForm() {
+        this.game = new Game();
+        this.level = new Level();
+        this.map = new Map();
+        this.phase = new Phase();
+        this.question = new Question();
+    }
 }

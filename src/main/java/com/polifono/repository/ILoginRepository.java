@@ -12,6 +12,6 @@ import com.polifono.domain.Login;
 
 public interface ILoginRepository extends JpaRepository<Login, Integer> {
 
-	@Query("SELECT DISTINCT(login.dtLogin) FROM Login login WHERE login.player.id = :playerId ORDER BY login.dtLogin DESC")
+    @Query("SELECT DISTINCT(login.dtLogin) FROM Login login WHERE login.player.id = :playerId ORDER BY login.dtLogin DESC")
     List<Date> findByPlayer(@Param("playerId") int playerId, Pageable pageable);
 }

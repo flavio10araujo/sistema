@@ -11,9 +11,9 @@ import com.polifono.domain.Game;
 
 public interface IGameRepository extends JpaRepository<Game, UUID> {
 
-	@Query("SELECT game FROM Game game WHERE game.active = :active")
-	List<Game> findByActive(@Param("active") boolean active);
+    @Query("SELECT game FROM Game game WHERE game.active = :active")
+    List<Game> findByActive(@Param("active") boolean active);
 
-	@Query("SELECT game FROM Game game WHERE LOWER(game.namelink) LIKE LOWER(:namelink)")
-	Game findByNamelink(@Param("namelink") String namelink);
+    @Query("SELECT game FROM Game game WHERE LOWER(game.namelink) LIKE LOWER(:namelink)")
+    Game findByNamelink(@Param("namelink") String namelink);
 }

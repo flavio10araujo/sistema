@@ -10,15 +10,15 @@ import lombok.Data;
 @Data
 public class QuestionFilterForm {
 
-	private Game game;
-	private Level level;
-	private Map map;
-	private Phase phase;
+    private Game game;
+    private Level level;
+    private Map map;
+    private Phase phase;
 
-	public QuestionFilterForm() {
-		this.game = new Game();
-		this.level = new Level();
-		this.map = new Map();
-		this.phase = new Phase();
-	}
+    public QuestionFilterForm() {
+        this.game = new Game();
+        this.level = new Level();
+        this.map = new Map();
+        this.phase = new Phase();
+    }
 }
