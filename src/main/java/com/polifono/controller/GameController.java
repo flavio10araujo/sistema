@@ -3,9 +3,11 @@ package com.polifono.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +46,7 @@ import lombok.RequiredArgsConstructor;
 public class GameController extends BaseController {
 
     private final ConfigsCreditsProperties configsCreditsProperties;
+    private final MessageSource messagesResource;
     private final IPlayerService playerService;
     private final IGameService gameService;
     private final ILevelService levelService;
@@ -171,8 +174,8 @@ public class GameController extends BaseController {
 
     /**
      * List all the phases of the current map of the player logged in.
-     * If the player didn't play any phase of this game, the first phase of the first map of the game will be showed.
-     * If the player has already played a phase of this game, it will be showed the right map with the next phase unlocked.
+     * If the player didn't play any phase of this game, the first phase of the first map of the game will be shown.
+     * If the player has already played a phase of this game, it will be shown the right map with the next phase unlocked.
      */
     @RequestMapping(value = { "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}" }, method = RequestMethod.GET)
     public final String initPhase(
@@ -180,7 +183,8 @@ public class GameController extends BaseController {
             @PathVariable("gameName") String gameName,
             @PathVariable("levelOrder") Integer levelOrder,
             @PathVariable("mapOrder") Integer mapOrder,
-            @PathVariable("phaseOrder") Integer phaseOrder
+            @PathVariable("phaseOrder") Integer phaseOrder,
+            Locale locale
     ) {
 
         Game game = gameService.findByNamelink(gameName);
@@ -222,7 +226,7 @@ public class GameController extends BaseController {
 
             // If the player is trying to access a phase that he has already finished, it's OK. Otherwise, he can't access this phase.
             if (lastPhaseDone.getOrder() < phase.getOrder()) {
-                model.addAttribute("msg", messagesResourceBundle.getString("msg.credits.insufficient"));
+                model.addAttribute("msg", messagesResource.getMessage("msg.credits.insufficient", null, locale));
                 return URL_BUY_CREDITS;
             }
         }
@@ -242,7 +246,8 @@ public class GameController extends BaseController {
             @PathVariable("gameName") String gameName,
             @PathVariable("levelOrder") Integer levelOrder,
             @PathVariable("mapOrder") Integer mapOrder,
-            @PathVariable("phaseOrder") Integer phaseOrder
+            @PathVariable("phaseOrder") Integer phaseOrder,
+            Locale locale
     ) {
 
         Game game = gameService.findByNamelink(gameName);
@@ -281,7 +286,7 @@ public class GameController extends BaseController {
 
             // If the player is trying to access a phase that he has already finished, it's OK. Otherwise, he can't access this phase.
             if (lastPhaseDone.getOrder() < phase.getOrder()) {
-                model.addAttribute("msg", messagesResourceBundle.getString("msg.credits.insufficient"));
+                model.addAttribute("msg", messagesResource.getMessage("msg.credits.insufficient", null, locale));
                 return URL_BUY_CREDITS;
             }
         }

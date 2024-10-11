@@ -1,8 +1,5 @@
 package com.polifono.controller;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 import javax.annotation.Nullable;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,13 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public abstract class BaseController {
 
-    public static ResourceBundle messagesResourceBundle;
-
     private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
-
-    static {
-        messagesResourceBundle = ResourceBundle.getBundle("messages/messages", Locale.getDefault());
-    }
 
     /**
      * Used by child class controllers to obtain the currently authenticated user from Spring Security.

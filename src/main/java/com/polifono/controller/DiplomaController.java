@@ -6,8 +6,10 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +36,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 @Controller
 public class DiplomaController extends BaseController {
 
+    private final MessageSource messagesResource;
     private final IDiplomaService diplomaService;
 
     public static final String URL_DIPLOMA_SEARCH = "diplomaSearch";
@@ -86,7 +89,8 @@ public class DiplomaController extends BaseController {
     }
 
     @RequestMapping(value = { "/diploma/{code}" }, method = RequestMethod.GET)
-    public final String diplomaGet(HttpServletResponse response, final Model model, @PathVariable("code") String code) throws JRException, IOException {
+    public final String diplomaGet(HttpServletResponse response, final Model model, @PathVariable("code") String code, Locale locale)
+            throws JRException, IOException {
         if (code == null || code.isEmpty()) {
             if (currentAuthenticatedUser() != null) {
                 return URL_DIPLOMA_SEARCH;
@@ -117,8 +121,8 @@ public class DiplomaController extends BaseController {
         InputStream jasperStream = this.getClass().getResourceAsStream("/reports/compiled/diploma.jasper");
 
         Map<String, Object> params = new HashMap<>();
-        params.put("company", messagesResourceBundle.getString("diploma.company"));
-        params.put("url", messagesResourceBundle.getString("url") + "/diploma");
+        params.put("company", messagesResource.getMessage("diploma.company", null, locale));
+        params.put("url", messagesResource.getMessage("url", null, locale) + "/diploma");
 
         // Load images from classpath as URLs
         params.put("img_selo", new ClassPathResource("img/diploma/selo.png").getURL());

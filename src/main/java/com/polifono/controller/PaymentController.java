@@ -4,9 +4,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +42,7 @@ public class PaymentController extends BaseController {
     public static final String REDIRECT_HOME = "redirect:/";
 
     private final ConfigsCreditsProperties configsCreditsProperties;
+    private final MessageSource messagesResource;
     private final ITransactionService transactionService;
     private final IPlayerService playerService;
     private final SendEmailService emailSendUtil;
@@ -50,7 +53,7 @@ public class PaymentController extends BaseController {
     }
 
     @RequestMapping(value = { "/buycredits" }, method = RequestMethod.POST)
-    public final String buyCreditsSubmit(final Model model, @RequestParam("quantity") Integer quantity) {
+    public final String buyCreditsSubmit(final Model model, @RequestParam("quantity") Integer quantity, Locale locale) {
 
         Player player = Objects.requireNonNull(currentAuthenticatedUser()).getUser();
 
@@ -93,7 +96,7 @@ public class PaymentController extends BaseController {
             log.debug("Error buying credits", e);
 
             model.addAttribute("codRegister", "2");
-            model.addAttribute("msg", messagesResourceBundle.getString("msg.credits.error.access"));
+            model.addAttribute("msg", messagesResource.getMessage("msg.credits.error.access", null, locale));
             return URL_BUY_CREDITS;
         }
     }
@@ -137,7 +140,7 @@ public class PaymentController extends BaseController {
     }
 
     @RequestMapping(value = { "/pagseguroreturn" }, method = RequestMethod.GET)
-    public final String returnPagSeguro(final Model model, @RequestParam("tid") String transactionCode) {
+    public final String returnPagSeguro(final Model model, @RequestParam("tid") String transactionCode, Locale locale) {
 
         log.debug("/pagseguroreturn tid=", transactionCode);
         System.out.println("/pagseguroreturn tid=" + transactionCode);
@@ -148,7 +151,7 @@ public class PaymentController extends BaseController {
         List<Transaction> transactions = transactionService.findByCode(transactionCode);
 
         model.addAttribute("codRegister", "1");
-        model.addAttribute("msg", messagesResourceBundle.getString("msg.credits.thanks"));
+        model.addAttribute("msg", messagesResource.getMessage("msg.credits.thanks", null, locale));
 
         // If the transaction is already registered.
         if (transactions != null && !transactions.isEmpty())
