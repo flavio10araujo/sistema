@@ -1,16 +1,5 @@
 package com.polifono.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import com.polifono.AbstractControllerTest;
-
 /**
  * Unit tests for the CustomErrorController using Spring MVC Mocks.
  * <p>
