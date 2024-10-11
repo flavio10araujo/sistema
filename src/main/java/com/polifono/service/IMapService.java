@@ -10,26 +10,25 @@ import com.polifono.domain.PlayerPhase;
 
 public interface IMapService {
 
-    public Map save(Map o);
+    Map save(Map o);
 
-    public Boolean delete(Integer id);
+    boolean delete(Integer id);
 
-    public Optional<Map> findById(int id);
+    Optional<Map> findById(int id);
 
-    public List<Map> findAll();
+    List<Map> findAll();
 
-    public List<Map> findMapsByGame(int gameId);
+    List<Map> findMapsByGame(int gameId);
 
-    public List<Map> findMapsByGameAndLevel(int gameId, int levelId);
+    List<Map> findMapsByGameAndLevel(int gameId, int levelId);
 
-    public Map findByGameAndLevel(int gameId, int levelId);
+    Map findByGameAndLevel(int gameId, int levelId);
 
-    public Map findByGameLevelAndOrder(int gameId, int levelId, int mapOrder);
+    Map findByGameLevelAndOrder(int gameId, int levelId, int mapOrder);
 
-    public Map findNextMapSameLevel(Map mapCurrent);
+    Map findNextMapSameLevel(Map mapCurrent);
 
-    public boolean playerCanAccessThisMap(Map map, Player user);
+    boolean playerCanAccessThisMap(Map map, Player user);
 
-    public Map findCurrentMap(Game game, PlayerPhase playerPhase);
-
+    Map findCurrentMap(Game game, PlayerPhase playerPhase);
 }

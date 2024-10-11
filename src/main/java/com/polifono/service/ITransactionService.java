@@ -8,11 +8,11 @@ import com.polifono.domain.Transaction;
 
 public interface ITransactionService {
 
-    public Transaction save(Transaction o);
+    Transaction save(Transaction o);
 
-    public Optional<Transaction> findById(int id);
+    Optional<Transaction> findById(int id);
 
-    public List<Transaction> findByCode(String code);
+    List<Transaction> findByCode(String code);
 
-    public List<Transaction> findByPlayerAndStatus(Player player, int status);
+    List<Transaction> findByPlayerAndStatus(Player player, int status);
 }

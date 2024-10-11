@@ -3,22 +3,19 @@ package com.polifono.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Question;
 import com.polifono.repository.IQuestionRepository;
 import com.polifono.service.IQuestionService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class QuestionServiceImpl implements IQuestionService {
 
-    private IQuestionRepository repository;
-
-    @Autowired
-    public QuestionServiceImpl(IQuestionRepository repository) {
-        this.repository = repository;
-    }
+    private final IQuestionRepository repository;
 
     public final Question save(Question question) {
         return repository.save(question);
@@ -45,7 +42,7 @@ public class QuestionServiceImpl implements IQuestionService {
     }
 
     public final List<Question> findAll() {
-        return (List<Question>) repository.findAll();
+        return repository.findAll();
     }
 
     public final List<Question> findByGame(int gameId) {
@@ -65,7 +62,6 @@ public class QuestionServiceImpl implements IQuestionService {
     }
 
     public final List<Question> findByContent(int contentId) {
-        List<Question> question = repository.findByContent(contentId);
-        return question;
+        return repository.findByContent(contentId);
     }
 }
