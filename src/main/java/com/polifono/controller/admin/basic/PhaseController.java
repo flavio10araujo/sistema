@@ -1,5 +1,10 @@
 package com.polifono.controller.admin.basic;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_PHASE;
+import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_PHASE_SAVE_PAGE;
+import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_PHASE_EDIT_PAGE;
+import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_PHASE_INDEX;
+
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -25,11 +30,6 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/admin/basic")
 public class PhaseController extends BaseController {
-
-    public static final String URL_ADMIN_BASIC = "admin/basic/phase";
-    public static final String URL_ADMIN_BASIC_INDEX = "admin/basic/phase/index";
-    public static final String URL_ADMIN_BASIC_EDIT = "admin/basic/phase/editPage";
-    public static final String URL_ADMIN_BASIC_SAVEPAGE = "admin/basic/phase/savepage";
 
     private final IGameService gameService;
     private final ILevelService levelService;
@@ -76,13 +76,13 @@ public class PhaseController extends BaseController {
             model.addAttribute("phases", phaseService.findAll());
         }
 
-        return URL_ADMIN_BASIC_INDEX;
+        return URL_ADMIN_BASIC_PHASE_INDEX;
     }
 
     @RequestMapping(value = { "/phase" }, method = RequestMethod.POST)
     public String setFilter(HttpSession session, @ModelAttribute("phaseFilterForm") PhaseFilterForm phaseFilterForm) {
         session.setAttribute("phaseFilterForm", phaseFilterForm);
-        return "redirect:/" + URL_ADMIN_BASIC;
+        return REDIRECT_ADMIN_BASIC_PHASE;
     }
 
     @RequestMapping(value = { "/phase/save" }, method = RequestMethod.POST)
@@ -93,7 +93,7 @@ public class PhaseController extends BaseController {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return REDIRECT_ADMIN_BASIC_PHASE_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/phase/{operation}/{id}", method = RequestMethod.GET)
@@ -112,13 +112,13 @@ public class PhaseController extends BaseController {
             if (edit.isPresent()) {
                 model.addAttribute("phase", edit.get());
                 model.addAttribute("maps", mapService.findAll());
-                return URL_ADMIN_BASIC_EDIT;
+                return URL_ADMIN_BASIC_PHASE_EDIT_PAGE;
             } else {
                 redirectAttributes.addFlashAttribute("status", "notfound");
             }
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return REDIRECT_ADMIN_BASIC_PHASE_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/phase/update", method = RequestMethod.POST)
@@ -130,6 +130,6 @@ public class PhaseController extends BaseController {
             redirectAttributes.addFlashAttribute("edit", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return REDIRECT_ADMIN_BASIC_PHASE_SAVE_PAGE;
     }
 }

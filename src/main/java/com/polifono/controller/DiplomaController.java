@@ -1,5 +1,8 @@
 package com.polifono.controller;
 
+import static com.polifono.common.TemplateConstants.URL_DIPLOMA_OPEN_SEARCH;
+import static com.polifono.common.TemplateConstants.URL_DIPLOMA_SEARCH;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -39,9 +42,6 @@ public class DiplomaController extends BaseController {
     private final MessageSource messagesResource;
     private final IDiplomaService diplomaService;
 
-    public static final String URL_DIPLOMA_SEARCH = "diplomaSearch";
-    public static final String URL_DIPLOMAOPEN_SEARCH = "diplomaSearchOpen";
-
     @RequestMapping(value = { "/diploma" }, method = RequestMethod.GET)
     public final String diplomaSearch(final Model model) {
         // If the user is logged in.
@@ -50,7 +50,7 @@ public class DiplomaController extends BaseController {
         } else {
             model.addAttribute("player", new Player());
             model.addAttribute("playerResend", new Player());
-            return URL_DIPLOMAOPEN_SEARCH;
+            return URL_DIPLOMA_OPEN_SEARCH;
         }
     }
 
@@ -64,7 +64,7 @@ public class DiplomaController extends BaseController {
             } else {
                 model.addAttribute("player", new Player());
                 model.addAttribute("playerResend", new Player());
-                return URL_DIPLOMAOPEN_SEARCH;
+                return URL_DIPLOMA_OPEN_SEARCH;
             }
         }
 
@@ -84,7 +84,7 @@ public class DiplomaController extends BaseController {
         } else {
             model.addAttribute("player", new Player());
             model.addAttribute("playerResend", new Player());
-            return URL_DIPLOMAOPEN_SEARCH;
+            return URL_DIPLOMA_OPEN_SEARCH;
         }
     }
 
@@ -97,7 +97,7 @@ public class DiplomaController extends BaseController {
             } else {
                 model.addAttribute("player", new Player());
                 model.addAttribute("playerResend", new Player());
-                return URL_DIPLOMAOPEN_SEARCH;
+                return URL_DIPLOMA_OPEN_SEARCH;
             }
         }
 
@@ -111,7 +111,7 @@ public class DiplomaController extends BaseController {
             } else {
                 model.addAttribute("player", new Player());
                 model.addAttribute("playerResend", new Player());
-                return URL_DIPLOMAOPEN_SEARCH;
+                return URL_DIPLOMA_OPEN_SEARCH;
             }
         }
 

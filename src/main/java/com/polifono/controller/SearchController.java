@@ -1,5 +1,8 @@
 package com.polifono.controller;
 
+import static com.polifono.common.TemplateConstants.URL_GAMES_INDEX;
+import static com.polifono.common.TemplateConstants.URL_GAMES_RESULT_SEARCH;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -19,8 +22,6 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class SearchController extends BaseController {
 
-    public static final String URL_GAMES_INDEX = "games/index";
-    public static final String URL_GAMES_RESULT_SEARCH = "games/resultSearch";
     private final IPhaseService phaseService;
 
     /**

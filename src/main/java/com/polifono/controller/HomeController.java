@@ -1,5 +1,8 @@
 package com.polifono.controller;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_GAMES;
+import static com.polifono.common.TemplateConstants.URL_INDEX;
+
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -9,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.domain.Player;
-import com.polifono.domain.bean.CurrentUser;
 import com.polifono.service.impl.RecaptchaService;
 import com.polifono.service.impl.SendEmailService;
 import com.polifono.util.EmailUtil;
@@ -22,17 +24,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Controller
 public class HomeController extends BaseController {
-    public static final String URL_INDEX = "index";
-    public static final String URL_CONTACT = "contact";
-    public static final String URL_CONTACT_OPEN = "index";
-    public static final String REDIRECT_GAMES = "redirect:/games";
 
     private final RecaptchaService captchaService;
     private final SendEmailService sendEmailService;
 
     @RequestMapping(value = { "/" }, method = RequestMethod.GET)
     public final String index(final Model model) {
-        // If the player is not logged.
         if (this.currentAuthenticatedUser() == null) {
             model.addAttribute("player", new Player());
             model.addAttribute("playerResend", new Player());
@@ -51,30 +48,10 @@ public class HomeController extends BaseController {
         return URL_INDEX;
     }
 
-    @RequestMapping(value = { "/contact" }, method = RequestMethod.GET)
-    public final String contact() {
-        // If the user is logged in.
-        if (this.currentAuthenticatedUser() != null) {
-            return URL_CONTACT;
-        } else {
-            return URL_CONTACT_OPEN;
-        }
-    }
-
     @RequestMapping(value = { "/contact" }, method = RequestMethod.POST)
     public final String contactSubmit(final Model model, @RequestParam(value = "email", defaultValue = "") String email,
             @RequestParam("message") String message,
             @RequestParam(name = "g-recaptcha-response") String recaptchaResponse, HttpServletRequest request) {
-
-        boolean logged = false;
-
-        CurrentUser currentUser = currentAuthenticatedUser();
-
-        // If the user is logged in, get his email.
-        if (currentUser != null) {
-            logged = true;
-            email = currentUser.getUser().getEmail();
-        }
 
         String captchaVerifyMessage = captchaService.verifyRecaptcha(request.getRemoteAddr(), recaptchaResponse);
 
@@ -83,13 +60,9 @@ public class HomeController extends BaseController {
             model.addAttribute("message", "error");
             model.addAttribute("messageContent", "Por favor, marque o campo Não sou um robô.");
 
-            if (logged) {
-                return URL_CONTACT;
-            } else {
-                model.addAttribute("player", new Player());
-                model.addAttribute("playerResend", new Player());
-                return URL_CONTACT_OPEN;
-            }
+            model.addAttribute("player", new Player());
+            model.addAttribute("playerResend", new Player());
+            return URL_INDEX;
         }
 
         String msg = this.validateContact(email, message);
@@ -99,26 +72,18 @@ public class HomeController extends BaseController {
             model.addAttribute("message", "error");
             model.addAttribute("messageContent", msg);
 
-            if (logged) {
-                return URL_CONTACT;
-            } else {
-                model.addAttribute("player", new Player());
-                model.addAttribute("playerResend", new Player());
-                return URL_CONTACT_OPEN;
-            }
+            model.addAttribute("player", new Player());
+            model.addAttribute("playerResend", new Player());
+            return URL_INDEX;
         }
 
         sendEmailService.sendEmailContact(email, message);
 
         model.addAttribute("message", "success");
 
-        if (logged) {
-            return URL_CONTACT;
-        } else {
-            model.addAttribute("player", new Player());
-            model.addAttribute("playerResend", new Player());
-            return URL_CONTACT_OPEN;
-        }
+        model.addAttribute("player", new Player());
+        model.addAttribute("playerResend", new Player());
+        return URL_INDEX;
     }
 
     public String validateContact(String email, String message) {

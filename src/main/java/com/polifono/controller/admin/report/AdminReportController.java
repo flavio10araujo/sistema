@@ -1,5 +1,7 @@
 package com.polifono.controller.admin.report;
 
+import static com.polifono.common.TemplateConstants.URL_ADMIN_REPORT_REGISTER;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,8 +22,6 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/admin/report")
 public class AdminReportController {
-
-    public static final String URL_ADMIN_REPORT_REGISTER = "admin/report/register";
 
     private final IPlayerService playerService;
 

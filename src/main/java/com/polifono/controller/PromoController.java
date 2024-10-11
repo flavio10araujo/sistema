@@ -1,5 +1,21 @@
 package com.polifono.controller;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.TemplateConstants.URL_PROMOS_PHASE_CONTENT_ACOUSTIC_GUITAR;
+import static com.polifono.common.TemplateConstants.URL_PROMOS_PHASE_CONTENT_ACOUSTIC_GUITAR_MIN;
+import static com.polifono.common.TemplateConstants.URL_PROMOS_PHASE_CONTENT_MUSIC_THEORY;
+import static com.polifono.common.TemplateConstants.URL_PROMOS_PHASE_CONTENT_MUSIC_THEORY_MIN;
+import static com.polifono.common.TemplateConstants.URL_PROMOS_PHASE_CONTENT_RECORDER;
+import static com.polifono.common.TemplateConstants.URL_PROMOS_PHASE_CONTENT_RECORDER_MIN;
+import static com.polifono.common.TemplateConstants.URL_PROMOS_PHASE_CONTENT_SAXOPHONE;
+import static com.polifono.common.TemplateConstants.URL_PROMOS_PHASE_CONTENT_SAXOPHONE_MIN;
+import static com.polifono.common.TemplateConstants.URL_PROMOS_PHASE_CONTENT_TESTE;
+import static com.polifono.common.TemplateConstants.URL_PROMOS_PHASE_CONTENT_TRUMPET;
+import static com.polifono.common.TemplateConstants.URL_PROMOS_PHASE_CONTENT_TRUMPET_MIN;
+import static com.polifono.common.TemplateConstants.URL_PROMOS_REGISTER;
+import static com.polifono.common.TemplateConstants.URL_PROMO_OPEN_SEARCH;
+import static com.polifono.common.TemplateConstants.URL_PROMO_SEARCH;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -33,26 +49,10 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class PromoController extends BaseController {
 
-    public static final String URL_PROMOS_REGISTER = "promos/register";
-    public static final String URL_PROMOS_PHASE_CONTENT_MUSIC_THEORY = "promos/musical_theory/general";
-    public static final String URL_PROMOS_PHASE_CONTENT_RECORDER = "promos/recorder/general";
-    public static final String URL_PROMOS_PHASE_CONTENT_ACOUSTIC_GUITAR = "promos/acoustic_guitar/general";
-    public static final String URL_PROMOS_PHASE_CONTENT_SAXOPHONE = "promos/saxophone/general";
-    public static final String URL_PROMOS_PHASE_CONTENT_TRUMPET = "promos/trumpet/general";
-    // minified versions (not dynamic)
-    public static final String URL_PROMOS_PHASE_CONTENT_MUSIC_THEORY_MIN = "promos/musical_theory/general.min";
-    public static final String URL_PROMOS_PHASE_CONTENT_RECORDER_MIN = "promos/recorder/general.min";
-    public static final String URL_PROMOS_PHASE_CONTENT_ACOUSTIC_GUITAR_MIN = "promos/acoustic_guitar/general.min";
-    public static final String URL_PROMOS_PHASE_CONTENT_SAXOPHONE_MIN = "promos/saxophone/general.min";
-    public static final String URL_PROMOS_PHASE_CONTENT_TRUMPET_MIN = "promos/trumpet/general.min";
     public static final int FIRST_PHASE_RECORDER = 1;
     public static final int FIRST_PHASE_ACOUSTIC_GUITAR = 92;
     public static final int FIRST_PHASE_SAXOPHONE = 152;
     public static final int FIRST_PHASE_TRUMPET = 212;
-    public static final String URL_PROMOS_PHASE_CONTENT_TESTE = "promos/phaseContent";
-    public static final String URL_PROMO_SEARCH = "promoSearch";
-    public static final String URL_PROMO_OPEN_SEARCH = "promoSearchOpen";
-    public static final String REDIRECT_HOME = "redirect:/";
 
     private final IPlayerService playerService;
     private final IGameService gameService;

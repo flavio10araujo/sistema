@@ -1,5 +1,10 @@
 package com.polifono.controller.admin.basic;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_MAP;
+import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_MAP_SAVE_PAGE;
+import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_MAP_EDIT_PAGE;
+import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_MAP_INDEX;
+
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -25,11 +30,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin/basic")
 public class MapController extends BaseController {
 
-    public static final String URL_ADMIN_BASIC = "admin/basic/map";
-    public static final String URL_ADMIN_BASIC_INDEX = "admin/basic/map/index";
-    public static final String URL_ADMIN_BASIC_EDIT = "admin/basic/map/editPage";
-    public static final String URL_ADMIN_BASIC_SAVEPAGE = "admin/basic/map/savepage";
-
     private final IGameService gameService;
     private final ILevelService levelService;
     private final IMapService mapService;
@@ -51,7 +51,7 @@ public class MapController extends BaseController {
             model.addAttribute("maps", mapService.findAll());
         }
 
-        return URL_ADMIN_BASIC_INDEX;
+        return URL_ADMIN_BASIC_MAP_INDEX;
     }
 
     @RequestMapping(value = { "/map" }, method = RequestMethod.POST)
@@ -62,7 +62,7 @@ public class MapController extends BaseController {
             session.setAttribute("mapGameId", null);
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC;
+        return REDIRECT_ADMIN_BASIC_MAP;
     }
 
     @RequestMapping(value = { "/map/save" }, method = RequestMethod.POST)
@@ -74,7 +74,7 @@ public class MapController extends BaseController {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return REDIRECT_ADMIN_BASIC_MAP_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/map/{operation}/{id}", method = RequestMethod.GET)
@@ -94,13 +94,13 @@ public class MapController extends BaseController {
                 model.addAttribute("map", edit.get());
                 model.addAttribute("games", gameService.findAll());
                 model.addAttribute("levels", levelService.findAll());
-                return URL_ADMIN_BASIC_EDIT;
+                return URL_ADMIN_BASIC_MAP_EDIT_PAGE;
             } else {
                 redirectAttributes.addFlashAttribute("status", "notfound");
             }
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return REDIRECT_ADMIN_BASIC_MAP_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/map/update", method = RequestMethod.POST)
@@ -111,6 +111,6 @@ public class MapController extends BaseController {
             redirectAttributes.addFlashAttribute("edit", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return REDIRECT_ADMIN_BASIC_MAP_SAVE_PAGE;
     }
 }

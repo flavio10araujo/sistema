@@ -1,5 +1,7 @@
 package com.polifono.controller.teacher;
 
+import static com.polifono.common.TemplateConstants.URL_TEACHER_REPORT_INDEX;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -38,7 +40,7 @@ public class TeacherReportController extends BaseController {
         // Form
         model.addAttribute("reportGeneralForm", new ReportGeneralForm());
 
-        return "teacher/report/index";
+        return URL_TEACHER_REPORT_INDEX;
     }
 
     @RequestMapping(value = { "/report" }, method = RequestMethod.POST)
@@ -54,11 +56,11 @@ public class TeacherReportController extends BaseController {
         if (!msg.isEmpty()) {
             model.addAttribute("message", "error");
             model.addAttribute("messageContent", msg);
-            return "teacher/report/index";
+            return URL_TEACHER_REPORT_INDEX;
         }
 
         List<ClassPlayer> classPlayers = classPlayerService.findByClassAndStatus(reportGeneralForm.getClazz().getId(), 2);
-        List<ReportGeneralDTO> list = new ArrayList<ReportGeneralDTO>();
+        List<ReportGeneralDTO> list = new ArrayList<>();
 
         for (ClassPlayer classPlayer : classPlayers) {
             list.add(new ReportGeneralDTO(reportGeneralForm.getPhaseBegin(), reportGeneralForm.getPhaseEnd(), classPlayer.getPlayer(),
@@ -68,7 +70,7 @@ public class TeacherReportController extends BaseController {
 
         model.addAttribute("reportGeneral", list);
 
-        return "teacher/report/index";
+        return URL_TEACHER_REPORT_INDEX;
     }
 
     public String validateReportGeneral(ReportGeneralForm reportGeneralForm) {

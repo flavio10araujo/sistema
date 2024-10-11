@@ -1,5 +1,17 @@
 package com.polifono.controller;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_GAMES;
+import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.TemplateConstants.URL_BUY_CREDITS;
+import static com.polifono.common.TemplateConstants.URL_GAMES_END_OF_GAME;
+import static com.polifono.common.TemplateConstants.URL_GAMES_END_OF_LEVEL;
+import static com.polifono.common.TemplateConstants.URL_GAMES_INDEX;
+import static com.polifono.common.TemplateConstants.URL_GAMES_LEVEL;
+import static com.polifono.common.TemplateConstants.URL_GAMES_MAP;
+import static com.polifono.common.TemplateConstants.URL_GAMES_PHASE_CONTENT;
+import static com.polifono.common.TemplateConstants.URL_GAMES_PHASE_TEST;
+import static com.polifono.common.TemplateConstants.URL_GAMES_RESULT_TEST;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -57,19 +69,6 @@ public class GameController extends BaseController {
     private final IPlayerPhaseService playerPhaseService;
     private final IDiplomaService diplomaService;
     private final GenerateRandomStringService generateRandomStringService;
-
-    public static final String URL_GAMES_INDEX = "games/index";
-    public static final String URL_GAMES_LEVEL = "games/level";
-    public static final String URL_GAMES_MAP = "games/map";
-    public static final String URL_GAMES_PHASE_CONTENT = "games/phaseContent";
-    public static final String URL_GAMES_PHASE_TEST = "games/phaseTest";
-    public static final String URL_GAMES_RESULT_TEST = "games/resultTest";
-    public static final String URL_GAMES_END_OF_LEVEL = "games/endoflevel";
-    public static final String URL_GAMES_END_OF_GAME = "games/endofgame";
-    public static final String URL_BUY_CREDITS = "buycredits";
-
-    public static final String REDIRECT_HOME = "redirect:/";
-    public static final String REDIRECT_GAMES = "redirect:/games";
 
     /**
      * Show the index page of the games.

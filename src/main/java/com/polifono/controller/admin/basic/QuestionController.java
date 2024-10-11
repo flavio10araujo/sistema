@@ -1,5 +1,10 @@
 package com.polifono.controller.admin.basic;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_QUESTION;
+import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_QUESTION_SAVE_PAGE;
+import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_QUESTION_EDIT_PAGE;
+import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_QUESTION_INDEX;
+
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -29,11 +34,6 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/admin/basic")
 public class QuestionController extends BaseController {
-
-    public static final String URL_ADMIN_BASIC = "admin/basic/question";
-    public static final String URL_ADMIN_BASIC_INDEX = "admin/basic/question/index";
-    public static final String URL_ADMIN_BASIC_EDIT = "admin/basic/question/editPage";
-    public static final String URL_ADMIN_BASIC_SAVE_PAGE = "admin/basic/question/savepage";
 
     private final IGameService gameService;
     private final ILevelService levelService;
@@ -98,13 +98,13 @@ public class QuestionController extends BaseController {
             model.addAttribute("questions", new ArrayList<Question>());
         }
 
-        return URL_ADMIN_BASIC_INDEX;
+        return URL_ADMIN_BASIC_QUESTION_INDEX;
     }
 
     @RequestMapping(value = { "/question" }, method = RequestMethod.POST)
     public String setFilter(HttpSession session, @ModelAttribute("questionFilterForm") QuestionFilterForm questionFilterForm) {
         session.setAttribute("questionFilterForm", questionFilterForm);
-        return "redirect:/" + URL_ADMIN_BASIC;
+        return REDIRECT_ADMIN_BASIC_QUESTION;
     }
 
     @RequestMapping(value = { "/question/save" }, method = RequestMethod.POST)
@@ -115,7 +115,7 @@ public class QuestionController extends BaseController {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_ADMIN_BASIC_QUESTION_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/question/{operation}/{id}", method = RequestMethod.GET)
@@ -134,13 +134,13 @@ public class QuestionController extends BaseController {
             if (edit.isPresent()) {
                 model.addAttribute("question", edit.get());
                 model.addAttribute("contents", (ArrayList<Content>) contentService.findAllTest());
-                return URL_ADMIN_BASIC_EDIT;
+                return URL_ADMIN_BASIC_QUESTION_EDIT_PAGE;
             } else {
                 redirectAttributes.addFlashAttribute("status", "notfound");
             }
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_ADMIN_BASIC_QUESTION_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/question/update", method = RequestMethod.POST)
@@ -153,6 +153,6 @@ public class QuestionController extends BaseController {
             redirectAttributes.addFlashAttribute("edit", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_ADMIN_BASIC_QUESTION_SAVE_PAGE;
     }
 }

@@ -1,5 +1,8 @@
 package com.polifono.controller;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.TemplateConstants.URL_BUY_CREDITS;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
@@ -37,9 +40,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Controller
 public class PaymentController extends BaseController {
-
-    public static final String URL_BUY_CREDITS = "buycredits";
-    public static final String REDIRECT_HOME = "redirect:/";
 
     private final ConfigsCreditsProperties configsCreditsProperties;
     private final MessageSource messagesResource;

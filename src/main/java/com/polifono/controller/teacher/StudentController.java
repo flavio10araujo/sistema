@@ -1,5 +1,10 @@
 package com.polifono.controller.teacher;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.TemplateConstants.REDIRECT_TEACHER_STUDENT;
+import static com.polifono.common.TemplateConstants.REDIRECT_TEACHER_STUDENT_SAVE_PAGE;
+import static com.polifono.common.TemplateConstants.URL_TEACHER_STUDENT_INDEX;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,16 +34,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/teacher")
 public class StudentController extends BaseController {
 
-    public static final String URL_ADMIN_BASIC = "teacher/student";
-    public static final String URL_ADMIN_BASIC_INDEX = "teacher/student/index";
-    public static final String URL_ADMIN_BASIC_SAVE_PAGE = "teacher/student/savepage";
-
     private final IClassService classService;
     private final IPlayerService playerService;
     private final IClassPlayerService classPlayerService;
     private final SendEmailService sendEmailService;
-
-    public static final String REDIRECT_HOME = "redirect:/";
 
     @RequestMapping(value = { "/student", "/student/savepage" }, method = RequestMethod.GET)
     public String savePage(HttpSession session, Model model) {
@@ -57,7 +56,7 @@ public class StudentController extends BaseController {
             model.addAttribute("classFilter", new com.polifono.domain.Class());
         }
 
-        return URL_ADMIN_BASIC_INDEX;
+        return URL_TEACHER_STUDENT_INDEX;
     }
 
     @RequestMapping(value = { "/student" }, method = RequestMethod.POST)
@@ -68,7 +67,7 @@ public class StudentController extends BaseController {
             session.setAttribute("clazzId", null);
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC;
+        return REDIRECT_TEACHER_STUDENT;
     }
 
     @RequestMapping(value = { "/student/save" }, method = RequestMethod.POST)
@@ -105,7 +104,7 @@ public class StudentController extends BaseController {
                 // If the login is not registered at the system as well.
                 if (classPlayer.getPlayer() == null) {
                     redirectAttributes.addFlashAttribute("message", "studentNotFound");
-                    return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+                    return REDIRECT_TEACHER_STUDENT_SAVE_PAGE;
                 }
             }
 
@@ -127,7 +126,7 @@ public class StudentController extends BaseController {
                     redirectAttributes.addFlashAttribute("message", "studentWasDisabled");
                 }
 
-                return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+                return REDIRECT_TEACHER_STUDENT_SAVE_PAGE;
             }
 
             //Originalmente, o aluno era cadastrado como pendente e ele somente passaria a integrar a sala de aula após confirmar sua participação através de um e-mail recebido.
@@ -142,7 +141,7 @@ public class StudentController extends BaseController {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_TEACHER_STUDENT_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/student/resendemail/{id}", method = RequestMethod.GET)
@@ -163,7 +162,7 @@ public class StudentController extends BaseController {
             // Verifying if the student is not in the Pending status anymore.
             if (current.get().getStatus() != 1) {
                 redirectAttributes.addFlashAttribute("message", "studentNotPending");
-                return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+                return REDIRECT_TEACHER_STUDENT_SAVE_PAGE;
             }
 
             sendEmailService.sendEmailInvitationToClass(Objects.requireNonNull(currentAuthenticatedUser()).getUser(), current.get());
@@ -173,7 +172,7 @@ public class StudentController extends BaseController {
             log.error("Error sending email to student: {}", e.getMessage());
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_TEACHER_STUDENT_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/student/{operation}/{id}", method = RequestMethod.GET)
@@ -203,6 +202,6 @@ public class StudentController extends BaseController {
             log.error("Error deleting student: {}", e.getMessage());
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_TEACHER_STUDENT_SAVE_PAGE;
     }
 }

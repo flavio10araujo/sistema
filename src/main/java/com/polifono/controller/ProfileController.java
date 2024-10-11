@@ -1,5 +1,17 @@
 package com.polifono.controller;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.TemplateConstants.URL_PROFILE_PROFILE_ATTENDANCE;
+import static com.polifono.common.TemplateConstants.URL_PROFILE_PROFILE_ATTENDANCE_OWNER;
+import static com.polifono.common.TemplateConstants.URL_PROFILE_PROFILE_CREDITS;
+import static com.polifono.common.TemplateConstants.URL_PROFILE_PROFILE_NOT_FOUND;
+import static com.polifono.common.TemplateConstants.URL_PROFILE_PROFILE_PLAYER;
+import static com.polifono.common.TemplateConstants.URL_PROFILE_PROFILE_PLAYER_ADD_VIDEO;
+import static com.polifono.common.TemplateConstants.URL_PROFILE_PROFILE_PLAYER_EDIT;
+import static com.polifono.common.TemplateConstants.URL_PROFILE_PROFILE_SCORE;
+import static com.polifono.common.TemplateConstants.URL_PROFILE_PROFILE_SCORE_OWNER;
+import static com.polifono.common.TemplateConstants.URL_PROFILE_PROFILE_VIDEOS;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,18 +55,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/profile")
 public class ProfileController extends BaseController {
-
-    public static final String URL_PROFILE_PROFILE_NOT_FOUND = "profile/profileNotFound";
-    public static final String URL_PROFILE_PROFILE_PLAYER = "profile/profilePlayer";
-    public static final String URL_PROFILE_PROFILE_PLAYER_EDIT = "profile/profilePlayerEdit";
-    public static final String URL_PROFILE_PROFILE_SCORE = "profile/profileScore";
-    public static final String URL_PROFILE_PROFILE_SCORE_OWNER = "profile/profileScoreOwner";
-    public static final String URL_PROFILE_PROFILE_ATTENDANCE = "profile/profileAttendance";
-    public static final String URL_PROFILE_PROFILE_ATTENDANCE_OWNER = "profile/profileAttendanceOwner";
-    public static final String URL_PROFILE_PROFILE_CREDITS = "profile/profileCredits";
-    public static final String URL_PROFILE_PROFILE_VIDEOS = "profile/profileVideos";
-    public static final String URL_PROFILE_PROFILE_PLAYER_ADD_VIDEO = "profile/profileVideosEdit";
-    public static final String REDIRECT_HOME = "redirect:/";
 
     private final IPlayerService playerService;
     private final IPhaseService phaseService;

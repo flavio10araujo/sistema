@@ -1,5 +1,7 @@
 package com.polifono.controller.teacher;
 
+import static com.polifono.common.TemplateConstants.URL_TEACHER_PLAYER_INDEX;
+
 import java.util.Objects;
 
 import org.springframework.stereotype.Controller;
@@ -12,7 +14,6 @@ import com.polifono.controller.BaseController;
 import com.polifono.domain.Player;
 import com.polifono.service.IPlayerService;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -20,14 +21,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/teacher")
 public class TeacherPlayerController extends BaseController {
 
-    public static final String URL_ADMIN_BASIC_INDEX = "teacher/player/index";
-
     private final IPlayerService playerService;
 
     @RequestMapping(value = { "/player", "/player/create" }, method = RequestMethod.GET)
-    public String indexPage(HttpSession session, Model model) {
+    public String indexPage(Model model) {
         model.addAttribute("player", new Player());
-        return URL_ADMIN_BASIC_INDEX;
+        return URL_TEACHER_PLAYER_INDEX;
     }
 
     @RequestMapping(value = { "/player/create" }, method = RequestMethod.POST)
@@ -35,7 +34,7 @@ public class TeacherPlayerController extends BaseController {
 
         if (player == null) {
             model.addAttribute("player", new Player());
-            return URL_ADMIN_BASIC_INDEX;
+            return URL_TEACHER_PLAYER_INDEX;
         }
 
         // Verify if the login is already in use.
@@ -73,6 +72,6 @@ public class TeacherPlayerController extends BaseController {
             }
         }
 
-        return URL_ADMIN_BASIC_INDEX;
+        return URL_TEACHER_PLAYER_INDEX;
     }
 }

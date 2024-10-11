@@ -1,5 +1,11 @@
 package com.polifono.controller;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_CLASS_INVITATION;
+import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.TemplateConstants.URL_CLASS_INVITATION;
+import static com.polifono.common.TemplateConstants.URL_EMAIL_CONFIRMATION;
+import static com.polifono.common.TemplateConstants.URL_INDEX;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -38,13 +44,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Controller
 public class PlayerController extends BaseController {
-
-    public static final String URL_INDEX = "index";
-    public static final String URL_EMAIL_CONFIRMATION = "emailconfirmation";
-    public static final String URL_PASSWORD_RESET = "index";
-    public static final String URL_CLASS_INVITATION = "classinvitation";
-    public static final String REDIRECT_HOME = "redirect:/";
-    public static final String REDIRECT_CLASS_INVITATION = "redirect:/classinvitation";
 
     private final IPlayerService playerService;
     private final IClassPlayerService classPlayerService;
@@ -216,7 +215,7 @@ public class PlayerController extends BaseController {
     public final String passwordReset(final Model model) {
         model.addAttribute("player", new Player());
         model.addAttribute("playerResend", new Player());
-        return URL_PASSWORD_RESET;
+        return URL_INDEX;
     }
 
     @RequestMapping(value = { "/passwordresetresend" }, method = RequestMethod.POST)
@@ -226,7 +225,7 @@ public class PlayerController extends BaseController {
 
         if (playerResend == null) {
             model.addAttribute("playerResend", new Player());
-            return URL_PASSWORD_RESET;
+            return URL_INDEX;
         }
 
         // Verify if there is a player with this email.
@@ -266,7 +265,7 @@ public class PlayerController extends BaseController {
             model.addAttribute("playerResend", new Player());
         }
 
-        return URL_PASSWORD_RESET;
+        return URL_INDEX;
     }
 
     @RequestMapping(value = { "/passwordreset" }, method = RequestMethod.POST)
@@ -275,7 +274,7 @@ public class PlayerController extends BaseController {
 
         if (player == null) {
             model.addAttribute("player", new Player());
-            return URL_PASSWORD_RESET;
+            return URL_INDEX;
         }
 
         // Verify if there is a player with this email.
@@ -328,7 +327,7 @@ public class PlayerController extends BaseController {
             }
         }
 
-        return URL_PASSWORD_RESET;
+        return URL_INDEX;
     }
 
     @RequestMapping(value = { "/classinvitation" }, method = RequestMethod.GET)

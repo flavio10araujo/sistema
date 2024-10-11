@@ -1,5 +1,8 @@
 package com.polifono.controller.teacher;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_TEACHER_CREDIT;
+import static com.polifono.common.TemplateConstants.URL_TEACHER_CREDIT_INDEX;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,8 +32,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/teacher")
 public class TransferCreditController extends BaseController {
 
-    public static final String URL_TEACHER_CREDIT = "teacher/credit";
-
     private final IGameService gameService;
     private final IPlayerService playerService;
     private final IClassService classService;
@@ -46,7 +47,7 @@ public class TransferCreditController extends BaseController {
         model.addAttribute("classes",
                 classService.findByTeacherAndStatus(Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId(), true));
 
-        return "teacher/credit/index";
+        return URL_TEACHER_CREDIT_INDEX;
     }
 
     @RequestMapping(value = { "/credit/individual" }, method = RequestMethod.POST)
@@ -76,14 +77,14 @@ public class TransferCreditController extends BaseController {
                 // If the login is not registered at the system as well.
                 if (playerGame.getPlayer() == null) {
                     redirectAttributes.addFlashAttribute("message", "studentNotFound");
-                    return "redirect:/" + URL_TEACHER_CREDIT;
+                    return REDIRECT_TEACHER_CREDIT;
                 }
             }
 
             // The quantity of credits must be between 1 and 30.
             if (playerGame.getCredit() < 1 || playerGame.getCredit() > 30) {
                 redirectAttributes.addFlashAttribute("message", "creditsBetweenXandY");
-                return "redirect:/" + URL_TEACHER_CREDIT;
+                return REDIRECT_TEACHER_CREDIT;
             }
 
             // Check if the logged player has enough credits to do this transaction.
@@ -92,14 +93,14 @@ public class TransferCreditController extends BaseController {
             // If the player is not found.
             if (playerLogged.isEmpty()) {
                 redirectAttributes.addFlashAttribute("message", "creditsInsufficient");
-                return "redirect:/" + URL_TEACHER_CREDIT;
+                return REDIRECT_TEACHER_CREDIT;
             }
 
             if (playerLogged.get().getCredit() < playerGame.getCredit()) {
                 redirectAttributes.addFlashAttribute("message", "creditsInsufficient");
                 // Update session user.
                 this.updateCurrentAuthenticateUser(playerLogged.get());
-                return "redirect:/" + URL_TEACHER_CREDIT;
+                return REDIRECT_TEACHER_CREDIT;
             }
 
             // Check if the student already has specific credits for this game.
@@ -119,7 +120,7 @@ public class TransferCreditController extends BaseController {
             // If the player is not found.
             if (playerLogged.isEmpty()) {
                 redirectAttributes.addFlashAttribute("message", "creditsInsufficient");
-                return "redirect:/" + URL_TEACHER_CREDIT;
+                return REDIRECT_TEACHER_CREDIT;
             }
 
             // Add specific credits to the student.
@@ -133,7 +134,7 @@ public class TransferCreditController extends BaseController {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/" + URL_TEACHER_CREDIT;
+        return REDIRECT_TEACHER_CREDIT;
     }
 
     @RequestMapping(value = { "/credit/group" }, method = RequestMethod.POST)
@@ -153,7 +154,7 @@ public class TransferCreditController extends BaseController {
             // The quantity of credits must be between 1 and 30.
             if (transferCreditGroupForm.getCredit() < 1 || transferCreditGroupForm.getCredit() > 30) {
                 redirectAttributes.addFlashAttribute("message", "creditsBetweenXandY");
-                return "redirect:/" + URL_TEACHER_CREDIT;
+                return REDIRECT_TEACHER_CREDIT;
             }
 
             // Get all the students of the class selected.
@@ -164,7 +165,7 @@ public class TransferCreditController extends BaseController {
 
             if (numberOfStudents == 0) {
                 redirectAttributes.addFlashAttribute("message", "classEmpty");
-                return "redirect:/" + URL_TEACHER_CREDIT;
+                return REDIRECT_TEACHER_CREDIT;
             }
 
             int totalCredits = transferCreditGroupForm.getCredit() * numberOfStudents;
@@ -175,14 +176,14 @@ public class TransferCreditController extends BaseController {
             // If the player is not found.
             if (playerLogged.isEmpty()) {
                 redirectAttributes.addFlashAttribute("message", "creditsInsufficient");
-                return "redirect:/" + URL_TEACHER_CREDIT;
+                return REDIRECT_TEACHER_CREDIT;
             }
 
             if (playerLogged.get().getCredit() < totalCredits) {
                 redirectAttributes.addFlashAttribute("message", "creditsInsufficient");
                 // Update session user.
                 this.updateCurrentAuthenticateUser(playerLogged.get());
-                return "redirect:/" + URL_TEACHER_CREDIT;
+                return REDIRECT_TEACHER_CREDIT;
             }
 
             // Remove generic credits from the teacher.
@@ -191,7 +192,7 @@ public class TransferCreditController extends BaseController {
             // If the player is not found.
             if (playerLogged.isEmpty()) {
                 redirectAttributes.addFlashAttribute("message", "creditsInsufficient");
-                return "redirect:/" + URL_TEACHER_CREDIT;
+                return REDIRECT_TEACHER_CREDIT;
             }
 
             PlayerGame playerGameExistent;
@@ -221,6 +222,6 @@ public class TransferCreditController extends BaseController {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/" + URL_TEACHER_CREDIT;
+        return REDIRECT_TEACHER_CREDIT;
     }
 }

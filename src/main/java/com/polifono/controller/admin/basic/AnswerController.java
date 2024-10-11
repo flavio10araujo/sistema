@@ -1,5 +1,10 @@
 package com.polifono.controller.admin.basic;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_ANSWER;
+import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_ANSWER_SAVE_PAGE;
+import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_ANSWER_EDIT_PAGE;
+import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_ANSWER_INDEX;
+
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -29,11 +34,6 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/admin/basic")
 public class AnswerController extends BaseController {
-
-    public static final String URL_ADMIN_BASIC = "admin/basic/answer";
-    public static final String URL_ADMIN_BASIC_INDEX = "admin/basic/answer/index";
-    public static final String URL_ADMIN_BASIC_EDIT = "admin/basic/answer/editPage";
-    public static final String URL_ADMIN_BASIC_SAVE_PAGE = "admin/basic/answer/savepage";
 
     private final IGameService gameService;
     private final ILevelService levelService;
@@ -103,13 +103,13 @@ public class AnswerController extends BaseController {
             model.addAttribute("answers", new ArrayList<Answer>());
         }
 
-        return URL_ADMIN_BASIC_INDEX;
+        return URL_ADMIN_BASIC_ANSWER_INDEX;
     }
 
     @RequestMapping(value = { "/answer" }, method = RequestMethod.POST)
     public String setFilter(HttpSession session, @ModelAttribute("answerFilterForm") AnswerFilterForm answerFilterForm) {
         session.setAttribute("answerFilterForm", answerFilterForm);
-        return "redirect:/" + URL_ADMIN_BASIC;
+        return REDIRECT_ADMIN_BASIC_ANSWER;
     }
 
     @RequestMapping(value = { "/answer/save" }, method = RequestMethod.POST)
@@ -121,7 +121,7 @@ public class AnswerController extends BaseController {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_ADMIN_BASIC_ANSWER_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/answer/{operation}/{id}", method = RequestMethod.GET)
@@ -140,13 +140,13 @@ public class AnswerController extends BaseController {
             if (edit.isPresent()) {
                 model.addAttribute("answer", edit.get());
                 model.addAttribute("questions", questionService.findAll());
-                return URL_ADMIN_BASIC_EDIT;
+                return URL_ADMIN_BASIC_ANSWER_EDIT_PAGE;
             } else {
                 redirectAttributes.addFlashAttribute("status", "notfound");
             }
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_ADMIN_BASIC_ANSWER_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/answer/update", method = RequestMethod.POST)
@@ -159,6 +159,6 @@ public class AnswerController extends BaseController {
             redirectAttributes.addFlashAttribute("edit", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_ADMIN_BASIC_ANSWER_SAVE_PAGE;
     }
 }

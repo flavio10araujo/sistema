@@ -1,5 +1,10 @@
 package com.polifono.controller.teacher;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.TemplateConstants.REDIRECT_TEACHER_CLASS_SAVE_PAGE;
+import static com.polifono.common.TemplateConstants.URL_TEACHER_CLASS_EDIT_PAGE;
+import static com.polifono.common.TemplateConstants.URL_TEACHER_CLASS_INDEX;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,12 +30,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/teacher")
 public class ClassController extends BaseController {
 
-    public static final String URL_ADMIN_BASIC_INDEX = "teacher/class/index";
-    public static final String URL_ADMIN_BASIC_EDIT = "teacher/class/editPage";
-    public static final String URL_ADMIN_BASIC_SAVEPAGE = "teacher/class/savepage";
-
-    public static final String REDIRECT_HOME = "redirect:/";
-
     private final IClassService classService;
     private final IClassPlayerService classPlayerService;
 
@@ -38,7 +37,7 @@ public class ClassController extends BaseController {
     public String savePage(HttpSession session, Model model) {
         model.addAttribute("class", new com.polifono.domain.Class());
         model.addAttribute("classes", classService.findByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
-        return URL_ADMIN_BASIC_INDEX;
+        return URL_TEACHER_CLASS_INDEX;
     }
 
     @RequestMapping(value = { "/class/save" }, method = RequestMethod.POST)
@@ -51,7 +50,7 @@ public class ClassController extends BaseController {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return REDIRECT_TEACHER_CLASS_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/class/{operation}/{id}", method = RequestMethod.GET)
@@ -77,7 +76,7 @@ public class ClassController extends BaseController {
 
             if (edit.isPresent()) {
                 model.addAttribute("class", edit.get());
-                return URL_ADMIN_BASIC_EDIT;
+                return URL_TEACHER_CLASS_EDIT_PAGE;
             } else {
                 redirectAttributes.addFlashAttribute("status", "notfound");
             }
@@ -101,7 +100,7 @@ public class ClassController extends BaseController {
         }
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return REDIRECT_TEACHER_CLASS_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/class/update", method = RequestMethod.POST)
@@ -123,6 +122,6 @@ public class ClassController extends BaseController {
             redirectAttributes.addFlashAttribute("edit", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return REDIRECT_TEACHER_CLASS_SAVE_PAGE;
     }
 }

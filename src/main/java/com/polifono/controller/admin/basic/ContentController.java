@@ -1,6 +1,13 @@
 package com.polifono.controller.admin.basic;
 
-import java.util.ArrayList;
+import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_CONTENT;
+import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_CONTENT_SAVE_PAGE;
+import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_CONTENT_TEST;
+import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_CONTENT_TEST_SAVE_PAGE;
+import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_CONTENT_EDIT_PAGE;
+import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_CONTENT_INDEX;
+import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_CONTENT_TEST_INDEX;
+
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -14,7 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.polifono.controller.BaseController;
 import com.polifono.domain.Content;
 import com.polifono.domain.Contenttype;
-import com.polifono.domain.Phase;
 import com.polifono.form.admin.basic.ContentFilterForm;
 import com.polifono.service.impl.ContentServiceImpl;
 import com.polifono.service.impl.GameServiceImpl;
@@ -29,15 +35,6 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/admin/basic")
 public class ContentController extends BaseController {
-
-    public static final String URL_ADMIN_BASIC = "admin/basic/content";
-    public static final String URL_ADMIN_BASIC_INDEX = "admin/basic/content/index";
-    public static final String URL_ADMIN_BASIC_EDIT = "admin/basic/content/editPage";
-    public static final String URL_ADMIN_BASIC_SAVE_PAGE = "admin/basic/content/savepage";
-
-    public static final String URL_ADMIN_BASIC_TEST = "admin/basic/contentTest";
-    public static final String URL_ADMIN_BASIC_INDEX_TEST = "admin/basic/contentTest/index";
-    public static final String URL_ADMIN_BASIC_SAVE_PAGE_TEST = "admin/basic/contentTest/savepage";
 
     private final GameServiceImpl gameService;
     private final LevelServiceImpl levelService;
@@ -94,7 +91,7 @@ public class ContentController extends BaseController {
             model.addAttribute("contents", contentService.findAllText());
         }
 
-        return URL_ADMIN_BASIC_INDEX;
+        return URL_ADMIN_BASIC_CONTENT_INDEX;
     }
 
     @RequestMapping(value = { "/contentTest", "/contentTest/savepage" }, method = RequestMethod.GET)
@@ -148,19 +145,19 @@ public class ContentController extends BaseController {
             model.addAttribute("contents", contentService.findAllTest());
         }
 
-        return URL_ADMIN_BASIC_INDEX_TEST;
+        return URL_ADMIN_BASIC_CONTENT_TEST_INDEX;
     }
 
     @RequestMapping(value = { "/content" }, method = RequestMethod.POST)
     public String setFilter(HttpSession session, @ModelAttribute("contentFilterForm") ContentFilterForm contentFilterForm) {
         session.setAttribute("contentFilterForm", contentFilterForm);
-        return "redirect:/" + URL_ADMIN_BASIC;
+        return REDIRECT_ADMIN_BASIC_CONTENT;
     }
 
     @RequestMapping(value = { "/contentTest" }, method = RequestMethod.POST)
     public String setFilterTest(HttpSession session, @ModelAttribute("contentTestFilterForm") ContentFilterForm contentFilterForm) {
         session.setAttribute("contentTestFilterForm", contentFilterForm);
-        return "redirect:/" + URL_ADMIN_BASIC_TEST;
+        return REDIRECT_ADMIN_BASIC_CONTENT_TEST;
     }
 
     @RequestMapping(value = { "/content/save" }, method = RequestMethod.POST)
@@ -175,7 +172,7 @@ public class ContentController extends BaseController {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_ADMIN_BASIC_CONTENT_SAVE_PAGE;
     }
 
     @RequestMapping(value = { "/contentTest/save" }, method = RequestMethod.POST)
@@ -192,7 +189,7 @@ public class ContentController extends BaseController {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE_TEST;
+        return REDIRECT_ADMIN_BASIC_CONTENT_TEST_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/content/{operation}/{id}", method = RequestMethod.GET)
@@ -210,20 +207,18 @@ public class ContentController extends BaseController {
 
             if (edit.isPresent()) {
                 model.addAttribute("content", edit.get());
-                model.addAttribute("phases", (ArrayList<Phase>) phaseService.findAll());
-                return URL_ADMIN_BASIC_EDIT;
+                model.addAttribute("phases", phaseService.findAll());
+                return URL_ADMIN_BASIC_CONTENT_EDIT_PAGE;
             } else {
                 redirectAttributes.addFlashAttribute("status", "notfound");
             }
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_ADMIN_BASIC_CONTENT_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/contentTest/{operation}/{id}", method = RequestMethod.GET)
-    public String editRemoveTest(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes,
-            Model model) {
-
+    public String editRemoveTest(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes) {
         if (operation.equals("delete")) {
             if (contentService.delete(id.intValue())) {
                 redirectAttributes.addFlashAttribute("deletion", "success");
@@ -232,7 +227,7 @@ public class ContentController extends BaseController {
             }
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE_TEST;
+        return REDIRECT_ADMIN_BASIC_CONTENT_TEST_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/content/update", method = RequestMethod.POST)
@@ -249,6 +244,6 @@ public class ContentController extends BaseController {
             redirectAttributes.addFlashAttribute("edit", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_ADMIN_BASIC_CONTENT_SAVE_PAGE;
     }
 }
