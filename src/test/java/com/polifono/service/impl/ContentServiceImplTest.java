@@ -1,4 +1,4 @@
-package com.polifono.service;
+package com.polifono.service.impl;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
@@ -24,13 +24,12 @@ import com.polifono.domain.Level;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
 import com.polifono.repository.IContentRepository;
-import com.polifono.service.impl.ContentServiceImpl;
 
 /**
  * Unit test methods for the ContentService.
  */
 @ExtendWith(MockitoExtension.class)
-public class ContentServiceTest {
+public class ContentServiceImplTest {
 
     @InjectMocks
     private ContentServiceImpl service;
@@ -40,124 +39,12 @@ public class ContentServiceTest {
 
     private final Integer CONTENT_ID_EXISTENT = 2;
     private final Integer CONTENT_ID_INEXISTENT = Integer.MAX_VALUE;
-
     private final Integer PHASE_ID_EXISTENT = 1;
-    //private final Integer PHASE_ID_INEXISTENT = Integer.MAX_VALUE;
-
-    private final Integer CONTENTTYPE_TEST = 1;
-    private final Integer CONTENTTYPE_TEXT = 2;
-
+    private final Integer CONTENT_TYPE_TEST = 1;
+    private final Integer CONTENT_TYPE_TEXT = 2;
     private final Integer GAME_ID_EXISTENT = 1;
-    //private final Integer GAME_ID_INEXISTENT = Integer.MAX_VALUE;
-
     private final Integer LEVEL_ID_EXISTENT = 1;
-    //private final Integer LEVEL_ID_INEXISTENT = Integer.MAX_VALUE;
-
     private final Integer MAP_ID_EXISTENT = 1;
-    //private final Integer MAP_ID_INEXISTENT = Integer.MAX_VALUE;
-
-    /* stubs - begin */
-    private Optional<Content> getEntityStubData() {
-        Phase phase = new Phase();
-        phase.setId(PHASE_ID_EXISTENT);
-
-        Contenttype contenttype = new Contenttype();
-        contenttype.setId(CONTENTTYPE_TEXT);
-
-        Content content = new Content();
-        content.setId(CONTENT_ID_EXISTENT);
-        content.setPhase(phase);
-        content.setContenttype(contenttype);
-        content.setContent("CONTENT");
-        content.setOrder(1);
-
-        return Optional.of(content);
-    }
-
-    private List<Content> getEntityListStubData() {
-        List<Content> list = new ArrayList<Content>();
-
-        Content entity1 = getEntityStubData().get();
-        Content entity2 = getEntityStubData().get();
-
-        list.add(entity1);
-        list.add(entity2);
-
-        return list;
-    }
-
-    private List<Content> getEntityListTypeTextStubData() {
-        List<Content> list = new ArrayList<Content>();
-
-        Contenttype contenttype = new Contenttype();
-        contenttype.setId(CONTENTTYPE_TEXT);
-
-        Phase phase = new Phase();
-        phase.setId(PHASE_ID_EXISTENT);
-
-        Map map = new Map();
-        map.setId(MAP_ID_EXISTENT);
-
-        Game game = new Game();
-        game.setId(GAME_ID_EXISTENT);
-
-        Level level = new Level();
-        level.setId(LEVEL_ID_EXISTENT);
-
-        map.setGame(game);
-        map.setLevel(level);
-        phase.setMap(map);
-
-        Content entity1 = getEntityStubData().get();
-        entity1.setContenttype(contenttype);
-        entity1.setPhase(phase);
-
-        Content entity2 = getEntityStubData().get();
-        entity2.setContenttype(contenttype);
-        entity2.setPhase(phase);
-
-        list.add(entity1);
-        list.add(entity2);
-
-        return list;
-    }
-
-    private List<Content> getEntityListTypeTestStubData() {
-        List<Content> list = new ArrayList<Content>();
-
-        Contenttype contenttype = new Contenttype();
-        contenttype.setId(CONTENTTYPE_TEST);
-
-        Phase phase = new Phase();
-        phase.setId(PHASE_ID_EXISTENT);
-
-        Map map = new Map();
-        map.setId(MAP_ID_EXISTENT);
-
-        Game game = new Game();
-        game.setId(GAME_ID_EXISTENT);
-
-        Level level = new Level();
-        level.setId(LEVEL_ID_EXISTENT);
-
-        map.setGame(game);
-        map.setLevel(level);
-        phase.setMap(map);
-
-        Content entity1 = getEntityStubData().get();
-        entity1.setContenttype(contenttype);
-        entity1.setPhase(phase);
-
-        Content entity2 = getEntityStubData().get();
-        entity2.setContenttype(contenttype);
-        entity2.setPhase(phase);
-
-        list.add(entity1);
-        list.add(entity2);
-
-        return list;
-    }
-    /* stubs - end */
 
     /* save - begin */
     @Test
@@ -262,7 +149,7 @@ public class ContentServiceTest {
         Assertions.assertNotEquals(0, listReturned.size(), "failure - not expected list size 0");
 
         for (Content entity : listReturned) {
-            Assertions.assertEquals(CONTENTTYPE_TEXT.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
+            Assertions.assertEquals(CONTENT_TYPE_TEXT.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
         }
 
         verify(repository, times(1)).findAllText();
@@ -283,7 +170,7 @@ public class ContentServiceTest {
         Assertions.assertNotEquals(0, listReturned.size(), "failure - not expected list size 0");
 
         for (Content entity : listReturned) {
-            Assertions.assertEquals(CONTENTTYPE_TEXT.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
+            Assertions.assertEquals(CONTENT_TYPE_TEXT.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
             Assertions.assertEquals(GAME_ID_EXISTENT.intValue(), entity.getPhase().getMap().getGame().getId(), "expected game attribute match");
         }
 
@@ -305,7 +192,7 @@ public class ContentServiceTest {
         Assertions.assertNotEquals(0, listReturned.size(), "failure - not expected list size 0");
 
         for (Content entity : listReturned) {
-            Assertions.assertEquals(CONTENTTYPE_TEXT.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
+            Assertions.assertEquals(CONTENT_TYPE_TEXT.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
             Assertions.assertEquals(GAME_ID_EXISTENT.intValue(), entity.getPhase().getMap().getGame().getId(), "expected game attribute match");
             Assertions.assertEquals(LEVEL_ID_EXISTENT.intValue(), entity.getPhase().getMap().getLevel().getId(), "expected level attribute match");
         }
@@ -328,7 +215,7 @@ public class ContentServiceTest {
         Assertions.assertNotEquals(0, listReturned.size(), "failure - not expected list size 0");
 
         for (Content entity : listReturned) {
-            Assertions.assertEquals(CONTENTTYPE_TEXT.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
+            Assertions.assertEquals(CONTENT_TYPE_TEXT.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
             Assertions.assertEquals(MAP_ID_EXISTENT.intValue(), entity.getPhase().getMap().getId(), "expected map attribute match");
         }
 
@@ -350,7 +237,7 @@ public class ContentServiceTest {
         Assertions.assertNotEquals(0, listReturned.size(), "failure - not expected list size 0");
 
         for (Content entity : listReturned) {
-            Assertions.assertEquals(CONTENTTYPE_TEXT.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
+            Assertions.assertEquals(CONTENT_TYPE_TEXT.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
             Assertions.assertEquals(PHASE_ID_EXISTENT.intValue(), entity.getPhase().getId(), "expected phase attribute match");
         }
 
@@ -372,7 +259,7 @@ public class ContentServiceTest {
         Assertions.assertNotEquals(0, listReturned.size(), "failure - not expected list size 0");
 
         for (Content entity : listReturned) {
-            Assertions.assertEquals(CONTENTTYPE_TEST.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
+            Assertions.assertEquals(CONTENT_TYPE_TEST.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
         }
 
         verify(repository, times(1)).findAllTest();
@@ -393,7 +280,7 @@ public class ContentServiceTest {
         Assertions.assertNotEquals(0, listReturned.size(), "failure - not expected list size 0");
 
         for (Content entity : listReturned) {
-            Assertions.assertEquals(CONTENTTYPE_TEST.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
+            Assertions.assertEquals(CONTENT_TYPE_TEST.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
             Assertions.assertEquals(GAME_ID_EXISTENT.intValue(), entity.getPhase().getMap().getGame().getId(), "expected game attribute match");
         }
 
@@ -415,7 +302,7 @@ public class ContentServiceTest {
         Assertions.assertNotEquals(0, listReturned.size(), "failure - not expected list size 0");
 
         for (Content entity : listReturned) {
-            Assertions.assertEquals(CONTENTTYPE_TEST.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
+            Assertions.assertEquals(CONTENT_TYPE_TEST.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
             Assertions.assertEquals(GAME_ID_EXISTENT.intValue(), entity.getPhase().getMap().getGame().getId(), "expected game attribute match");
             Assertions.assertEquals(LEVEL_ID_EXISTENT.intValue(), entity.getPhase().getMap().getLevel().getId(), "expected level attribute match");
         }
@@ -438,7 +325,7 @@ public class ContentServiceTest {
         Assertions.assertNotEquals(0, listReturned.size(), "failure - not expected list size 0");
 
         for (Content entity : listReturned) {
-            Assertions.assertEquals(CONTENTTYPE_TEST.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
+            Assertions.assertEquals(CONTENT_TYPE_TEST.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
             Assertions.assertEquals(MAP_ID_EXISTENT.intValue(), entity.getPhase().getMap().getId(), "expected map attribute match");
         }
 
@@ -460,7 +347,7 @@ public class ContentServiceTest {
         Assertions.assertNotEquals(0, listReturned.size(), "failure - not expected list size 0");
 
         for (Content entity : listReturned) {
-            Assertions.assertEquals(CONTENTTYPE_TEST.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
+            Assertions.assertEquals(CONTENT_TYPE_TEST.intValue(), entity.getContenttype().getId(), "expected content type attribute match");
             Assertions.assertEquals(PHASE_ID_EXISTENT.intValue(), entity.getPhase().getId(), "expected phase attribute match");
         }
 
@@ -485,4 +372,107 @@ public class ContentServiceTest {
         verifyNoMoreInteractions(repository);
     }
     /* findByPhaseAndOrder - end */
+
+    /* stubs - begin */
+    private Optional<Content> getEntityStubData() {
+        Phase phase = new Phase();
+        phase.setId(PHASE_ID_EXISTENT);
+
+        Contenttype contenttype = new Contenttype();
+        contenttype.setId(CONTENT_TYPE_TEXT);
+
+        Content content = new Content();
+        content.setId(CONTENT_ID_EXISTENT);
+        content.setPhase(phase);
+        content.setContenttype(contenttype);
+        content.setContent("CONTENT");
+        content.setOrder(1);
+
+        return Optional.of(content);
+    }
+
+    private List<Content> getEntityListStubData() {
+        List<Content> list = new ArrayList<>();
+
+        Content entity1 = getEntityStubData().get();
+        Content entity2 = getEntityStubData().get();
+
+        list.add(entity1);
+        list.add(entity2);
+
+        return list;
+    }
+
+    private List<Content> getEntityListTypeTextStubData() {
+        List<Content> list = new ArrayList<>();
+
+        Contenttype contenttype = new Contenttype();
+        contenttype.setId(CONTENT_TYPE_TEXT);
+
+        Phase phase = new Phase();
+        phase.setId(PHASE_ID_EXISTENT);
+
+        Map map = new Map();
+        map.setId(MAP_ID_EXISTENT);
+
+        Game game = new Game();
+        game.setId(GAME_ID_EXISTENT);
+
+        Level level = new Level();
+        level.setId(LEVEL_ID_EXISTENT);
+
+        map.setGame(game);
+        map.setLevel(level);
+        phase.setMap(map);
+
+        Content entity1 = getEntityStubData().get();
+        entity1.setContenttype(contenttype);
+        entity1.setPhase(phase);
+
+        Content entity2 = getEntityStubData().get();
+        entity2.setContenttype(contenttype);
+        entity2.setPhase(phase);
+
+        list.add(entity1);
+        list.add(entity2);
+
+        return list;
+    }
+
+    private List<Content> getEntityListTypeTestStubData() {
+        List<Content> list = new ArrayList<>();
+
+        Contenttype contenttype = new Contenttype();
+        contenttype.setId(CONTENT_TYPE_TEST);
+
+        Phase phase = new Phase();
+        phase.setId(PHASE_ID_EXISTENT);
+
+        Map map = new Map();
+        map.setId(MAP_ID_EXISTENT);
+
+        Game game = new Game();
+        game.setId(GAME_ID_EXISTENT);
+
+        Level level = new Level();
+        level.setId(LEVEL_ID_EXISTENT);
+
+        map.setGame(game);
+        map.setLevel(level);
+        phase.setMap(map);
+
+        Content entity1 = getEntityStubData().get();
+        entity1.setContenttype(contenttype);
+        entity1.setPhase(phase);
+
+        Content entity2 = getEntityStubData().get();
+        entity2.setContenttype(contenttype);
+        entity2.setPhase(phase);
+
+        list.add(entity1);
+        list.add(entity2);
+
+        return list;
+    }
+    /* stubs - end */
 }

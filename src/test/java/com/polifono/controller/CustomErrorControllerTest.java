@@ -15,7 +15,7 @@ public class CustomErrorControllerTest /*extends AbstractControllerTest*/ {
     }
 
     @Test
-    public void error404_WhenErro404Occurs_OpenError404Page() throws Exception {
+    public void whenError404Occurs_OpenError404Page() throws Exception {
         String uri = "/error404";
 
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri))
@@ -28,7 +28,7 @@ public class CustomErrorControllerTest /*extends AbstractControllerTest*/ {
     }
 
     @Test
-    public void error500_WhenError500Occurs_OpenError500Page() throws Exception {
+    public void whenError500Occurs_OpenError500Page() throws Exception {
         String uri = "/error500";
 
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri))
