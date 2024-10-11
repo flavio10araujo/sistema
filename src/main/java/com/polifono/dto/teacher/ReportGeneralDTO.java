@@ -5,69 +5,39 @@ import java.util.List;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 
+import lombok.Data;
+
+@Data
 public class ReportGeneralDTO {
+    private int phaseBegin;
+    private int phaseEnd;
+    private Player player;
+    private List<PlayerPhase> playerPhase;
 
-	private int phaseBegin;
-	private int phaseEnd;
-	private Player player;
-	private List<PlayerPhase> playerPhase;
-	
-	public ReportGeneralDTO(int phaseBegin, int phaseEnd, Player player, List<PlayerPhase> playerPhase) {
-		this.phaseBegin = phaseBegin;
-		this.phaseEnd = phaseEnd;
-		this.player = player;
-		this.playerPhase = playerPhase;
-	}
+    public ReportGeneralDTO(int phaseBegin, int phaseEnd, Player player, List<PlayerPhase> playerPhase) {
+        this.phaseBegin = phaseBegin;
+        this.phaseEnd = phaseEnd;
+        this.player = player;
+        this.playerPhase = playerPhase;
+    }
 
-	public Player getPlayer() {
-		return player;
-	}
+    public int getScore() {
+        int score = 0;
 
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
+        for (PlayerPhase playerPhase : this.playerPhase) {
+            score += playerPhase.getScore();
+        }
 
-	public List<PlayerPhase> getPlayerPhase() {
-		return playerPhase;
-	}
+        return score;
+    }
 
-	public void setPlayerPhase(List<PlayerPhase> playerPhase) {
-		this.playerPhase = playerPhase;
-	}
-	
-	public int getPhaseBegin() {
-		return phaseBegin;
-	}
+    public double getAverage() {
+        double average = ((double) getScore() / ((getPhaseEnd() - getPhaseBegin()) + 1));
 
-	public void setPhaseBegin(int phaseBegin) {
-		this.phaseBegin = phaseBegin;
-	}
+        average = average * 100;
+        average = Math.round(average);
+        average = average / 100;
 
-	public int getPhaseEnd() {
-		return phaseEnd;
-	}
-
-	public void setPhaseEnd(int phaseEnd) {
-		this.phaseEnd = phaseEnd;
-	}
-
-	public int getScore() {
-		int score = 0;
-		
-		for (PlayerPhase playerPhase : this.playerPhase) {
-			score += playerPhase.getScore();
-		}
-		
-		return score;
-	}
-	
-	public double getAverage() {
-		double average = ( (double) getScore() / ((getPhaseEnd() - getPhaseBegin()) + 1));
-		
-		average = average * 100;
-		average = Math.round(average);
-		average = average /100;
-		
-		return average;
-	}
+        return average;
+    }
 }

@@ -21,8 +21,8 @@ public interface IPlayervideoRepository extends JpaRepository<Playervideo, Integ
     List<Playervideo> findAllByContent(Content content, Pageable pageable);
 
     @Query("SELECT playervideo FROM Playervideo playervideo, Content content, Phase phase WHERE playervideo.content.id = content.id AND content.phase.id = phase.id AND content.order = 1 AND playervideo.player.id = :playerId AND phase.id = :phaseId")
-    public Playervideo findByPlayerAndPhase(@Param("playerId") int playerId, @Param("phaseId") int phaseId);
+    Playervideo findByPlayerAndPhase(@Param("playerId") int playerId, @Param("phaseId") int phaseId);
 
     @Query("SELECT playervideo FROM Playervideo playervideo WHERE playervideo.active = true ORDER BY RAND()")
-    public List<Playervideo> findRandomWithRestriction();
+    List<Playervideo> findRandomWithRestriction();
 }
