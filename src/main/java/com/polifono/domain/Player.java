@@ -144,33 +144,15 @@ public class Player {
     }
 
     public int getDtBirthDay() {
-        if (this.dtBirth == null) {
-            return -1;
-        }
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(this.dtBirth);
-        return cal.get(Calendar.DAY_OF_MONTH);
+        return DateUtil.getDateField(this.dtBirth, Calendar.DAY_OF_MONTH);
     }
 
     public int getDtBirthMonth() {
-        if (this.dtBirth == null) {
-            return -1;
-        }
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(this.dtBirth);
-        return cal.get(Calendar.MONTH);
+        return DateUtil.getDateField(this.dtBirth, Calendar.MONTH);
     }
 
     public int getDtBirthYear() {
-        if (this.dtBirth == null) {
-            return -1;
-        }
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(this.dtBirth);
-        return cal.get(Calendar.YEAR);
+        return DateUtil.getDateField(this.dtBirth, Calendar.YEAR);
     }
 
     /**
