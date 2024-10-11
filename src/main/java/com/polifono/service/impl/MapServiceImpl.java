@@ -3,7 +3,6 @@ package com.polifono.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Game;
@@ -15,24 +14,20 @@ import com.polifono.repository.IMapRepository;
 import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class MapServiceImpl implements IMapService {
 
-    private IMapRepository repository;
-
-    private IPhaseService phaseService;
-
-    @Autowired
-    public MapServiceImpl(IMapRepository repository, IPhaseService phaseService) {
-        this.repository = repository;
-        this.phaseService = phaseService;
-    }
+    private final IMapRepository repository;
+    private final IPhaseService phaseService;
 
     public final Map save(Map map) {
         return repository.save(map);
     }
 
-    public Boolean delete(Integer id) {
+    public boolean delete(Integer id) {
         Optional<Map> temp = repository.findById(id);
 
         if (temp.isPresent()) {
@@ -53,7 +48,7 @@ public class MapServiceImpl implements IMapService {
     }
 
     public final List<Map> findAll() {
-        return (List<Map>) repository.findAll();
+        return repository.findAll();
     }
 
     public final List<Map> findMapsByGame(int gameId) {
@@ -67,7 +62,7 @@ public class MapServiceImpl implements IMapService {
     public final Map findByGameAndLevel(int gameId, int levelId) {
         List<Map> maps = repository.findMapsByGameAndLevel(gameId, levelId);
 
-        if (maps.size() > 0) {
+        if (!maps.isEmpty()) {
             return maps.get(0);
         }
 
@@ -77,7 +72,7 @@ public class MapServiceImpl implements IMapService {
     public final Map findByGameLevelAndOrder(int gameId, int levelId, int mapOrder) {
         List<Map> maps = repository.findMapsByGameLevelAndOrder(gameId, levelId, mapOrder);
 
-        if (maps.size() > 0) {
+        if (!maps.isEmpty()) {
             return maps.get(0);
         }
 
@@ -91,10 +86,6 @@ public class MapServiceImpl implements IMapService {
     /**
      * Verify if the player has permission to access a specific map.
      * Return true if the player has the permission.
-     *
-     * @param map
-     * @param player
-     * @return
      */
     public boolean playerCanAccessThisMap(Map map, Player player) {
 
@@ -147,11 +138,7 @@ public class MapServiceImpl implements IMapService {
         // If the player is trying to access a map in the next level.
         if ((lastPhaseDone.getMap().getLevel().getOrder() + 1) == map.getLevel().getOrder()) {
             // If it is the first map.
-            if (map.getOrder() == 1) {
-                return true;
-            } else {
-                return false;
-            }
+            return map.getOrder() == 1;
         }
 
         return false;
@@ -161,9 +148,6 @@ public class MapServiceImpl implements IMapService {
      * Get the current map based on the last phase completed by the player in a specific game.
      * If the map is the last map of the level, it returns with the flag levelCompleted true.
      * If the map is the last map of the last level, it returns with the flag gameCompleted true.
-     *
-     * @param lastPhaseCompleted
-     * @return
      */
     public final Map findCurrentMap(Game game, PlayerPhase lastPhaseCompleted) {
 
@@ -197,9 +181,8 @@ public class MapServiceImpl implements IMapService {
 
                     // If it has found the first map of the next level.
                     if (firstMapNextLevel != null) {
-                        Map map = firstMapNextLevel;
-                        map.setLevelCompleted(true);
-                        return map;
+                        firstMapNextLevel.setLevelCompleted(true);
+                        return firstMapNextLevel;
                     }
                     // It doesn't exist a next map, because the player has already finished the last phase of the last level.
                     else {

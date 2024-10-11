@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Map;
@@ -14,21 +13,19 @@ import com.polifono.domain.PlayerPhase;
 import com.polifono.repository.IPhaseRepository;
 import com.polifono.service.IPhaseService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class PhaseServiceImpl implements IPhaseService {
 
-    private IPhaseRepository repository;
-
-    @Autowired
-    public PhaseServiceImpl(IPhaseRepository repository) {
-        this.repository = repository;
-    }
+    private final IPhaseRepository repository;
 
     public final Phase save(Phase phase) {
         return repository.save(phase);
     }
 
-    public Boolean delete(Integer id) {
+    public boolean delete(Integer id) {
         Optional<Phase> temp = repository.findById(id);
 
         if (temp.isPresent()) {
@@ -49,7 +46,7 @@ public class PhaseServiceImpl implements IPhaseService {
     }
 
     public final List<Phase> findAll() {
-        return (List<Phase>) repository.findAll();
+        return repository.findAll();
     }
 
     public final List<Phase> findByGame(int gameId) {
@@ -68,15 +65,12 @@ public class PhaseServiceImpl implements IPhaseService {
      * Get the phases of the map.
      * Check which phases are opened.
      * The phases opened are: all the phase that the player has already done + next phase.
-     *
-     * @param map
-     * @return
      */
     public final List<Phase> findPhasesCheckedByMap(Map map, PlayerPhase lastPhaseCompleted) {
         List<Phase> phases = this.findByMap(map.getId());
 
-        // If there are not phases in the map.
-        if (phases == null || phases.size() == 0) {
+        // If there are no phases in the map.
+        if (phases == null || phases.isEmpty()) {
             return null;
         }
 
@@ -88,9 +82,9 @@ public class PhaseServiceImpl implements IPhaseService {
         // If the player has already completed at least one phase of this game.
         else {
             // Open all phases until the next phase.
-            for (int i = 0; i < phases.size(); i++) {
-                if (phases.get(i).getOrder() <= (lastPhaseCompleted.getPhase().getOrder() + 1)) {
-                    phases.get(i).setOpened(true);
+            for (Phase phase : phases) {
+                if (phase.getOrder() <= (lastPhaseCompleted.getPhase().getOrder() + 1)) {
+                    phase.setOpened(true);
                 }
             }
         }
@@ -112,7 +106,7 @@ public class PhaseServiceImpl implements IPhaseService {
     public Phase findLastPhaseDoneByPlayerAndGame(int playerId, int gameId) {
         List<Phase> list = repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId);
 
-        if (list == null || list.size() == 0) {
+        if (list == null || list.isEmpty()) {
             return null;
         }
 
@@ -122,25 +116,21 @@ public class PhaseServiceImpl implements IPhaseService {
     public final Phase findLastPhaseOfTheLevel(int gameId, int levelId) {
         List<Phase> list = repository.findLastPhaseOfTheLevel(gameId, levelId);
 
-        if (list == null || list.size() == 0) {
+        if (list == null || list.isEmpty()) {
             return null;
         }
 
         return list.get(0);
     }
 
-    /**
-     * @param playerId
-     * @return
-     */
     public final List<Phase> findGamesForProfile(int playerId) {
         List<Phase> list = repository.findGamesForProfile(playerId);
 
-        if (list == null || list.size() == 0) {
+        if (list == null || list.isEmpty()) {
             return null;
         }
 
-        List<Phase> ret = new ArrayList<Phase>();
+        List<Phase> ret = new ArrayList<>();
 
         int gameId = 0;
 
@@ -157,9 +147,6 @@ public class PhaseServiceImpl implements IPhaseService {
     /**
      * Verify if the player has permission to access a specific phase.
      * Return true if the player has the permission.
-     *
-     * @param phase
-     * @return
      */
     public boolean playerCanAccessThisPhase(Phase phase, Player player) {
 
@@ -177,11 +164,7 @@ public class PhaseServiceImpl implements IPhaseService {
         }
 
         // If the player is trying to access a phase that he had already done OR the next phase in the right sequence.
-        if (lastPhaseDone.getOrder() >= (phase.getOrder() - 1)) {
-            return true;
-        }
-
-        return false;
+        return lastPhaseDone.getOrder() >= (phase.getOrder() - 1);
     }
 
     @Override

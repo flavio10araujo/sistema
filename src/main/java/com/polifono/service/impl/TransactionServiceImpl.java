@@ -3,7 +3,6 @@ package com.polifono.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Player;
@@ -11,20 +10,18 @@ import com.polifono.domain.Transaction;
 import com.polifono.repository.ITransactionRepository;
 import com.polifono.service.ITransactionService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class TransactionServiceImpl implements ITransactionService {
 
     private final ITransactionRepository repository;
 
-    @Autowired
-    public TransactionServiceImpl(final ITransactionRepository transactionRepository) {
-        this.repository = transactionRepository;
-    }
-
     public final Transaction save(Transaction transaction) {
         return repository.save(transaction);
     }
-	
+
     public final Optional<Transaction> findById(int transactionId) {
         return repository.findById(transactionId);
     }

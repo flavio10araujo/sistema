@@ -3,7 +3,6 @@ package com.polifono.controller.admin.basic;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,10 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.controller.BaseController;
 import com.polifono.domain.Answer;
-import com.polifono.domain.Game;
-import com.polifono.domain.Level;
-import com.polifono.domain.Map;
-import com.polifono.domain.Phase;
 import com.polifono.domain.Question;
 import com.polifono.form.admin.basic.AnswerFilterForm;
 import com.polifono.service.IAnswerService;
@@ -28,7 +23,9 @@ import com.polifono.service.IPhaseService;
 import com.polifono.service.IQuestionService;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/admin/basic")
 public class AnswerController extends BaseController {
@@ -36,33 +33,22 @@ public class AnswerController extends BaseController {
     public static final String URL_ADMIN_BASIC = "admin/basic/answer";
     public static final String URL_ADMIN_BASIC_INDEX = "admin/basic/answer/index";
     public static final String URL_ADMIN_BASIC_EDIT = "admin/basic/answer/editPage";
-    public static final String URL_ADMIN_BASIC_SAVEPAGE = "admin/basic/answer/savepage";
+    public static final String URL_ADMIN_BASIC_SAVE_PAGE = "admin/basic/answer/savepage";
 
-    @Autowired
-    private IGameService gameService;
-
-    @Autowired
-    private ILevelService levelService;
-
-    @Autowired
-    private IMapService mapService;
-
-    @Autowired
-    private IPhaseService phaseService;
-
-    @Autowired
-    private IQuestionService questionService;
-
-    @Autowired
-    private IAnswerService answerService;
+    private final IGameService gameService;
+    private final ILevelService levelService;
+    private final IMapService mapService;
+    private final IPhaseService phaseService;
+    private final IQuestionService questionService;
+    private final IAnswerService answerService;
 
     @RequestMapping(value = { "/answer", "/answer/savepage" }, method = RequestMethod.GET)
     public String savePage(HttpSession session, Model model) {
         model.addAttribute("answer", new Answer());
 
         // Filter.
-        model.addAttribute("games", (ArrayList<Game>) gameService.findAll());
-        model.addAttribute("levels", (ArrayList<Level>) levelService.findAll());
+        model.addAttribute("games", gameService.findAll());
+        model.addAttribute("levels", levelService.findAll());
 
         AnswerFilterForm answerFilterForm = (AnswerFilterForm) session.getAttribute("answerFilterForm");
 
@@ -72,43 +58,41 @@ public class AnswerController extends BaseController {
 
             if (answerFilterForm.getLevel().getId() > 0) {
                 // Filter.
-                model.addAttribute("maps",
-                        (ArrayList<Map>) mapService.findMapsByGameAndLevel(answerFilterForm.getGame().getId(), answerFilterForm.getLevel().getId()));
+                model.addAttribute("maps", mapService.findMapsByGameAndLevel(answerFilterForm.getGame().getId(), answerFilterForm.getLevel().getId()));
 
                 if (answerFilterForm.getMap().getId() > 0) {
                     // Filter.
-                    model.addAttribute("phases", (ArrayList<Phase>) phaseService.findByMap(answerFilterForm.getMap().getId()));
+                    model.addAttribute("phases", phaseService.findByMap(answerFilterForm.getMap().getId()));
 
                     if (answerFilterForm.getPhase().getId() > 0) {
                         // Filter
-                        model.addAttribute("questions", (ArrayList<Question>) questionService.findByPhase(answerFilterForm.getPhase().getId()));
+                        model.addAttribute("questions", questionService.findByPhase(answerFilterForm.getPhase().getId()));
 
                         if (answerFilterForm.getQuestion().getId() > 0) {
                             // List
-                            model.addAttribute("answers", (ArrayList<Answer>) answerService.findByQuestion(answerFilterForm.getQuestion().getId()));
+                            model.addAttribute("answers", answerService.findByQuestion(answerFilterForm.getQuestion().getId()));
                         } else {
                             // List
-                            model.addAttribute("answers", (ArrayList<Answer>) answerService.findByPhase(answerFilterForm.getPhase().getId()));
+                            model.addAttribute("answers", answerService.findByPhase(answerFilterForm.getPhase().getId()));
                         }
                     } else {
                         // Filter
-                        model.addAttribute("questions", (ArrayList<Question>) questionService.findByMap(answerFilterForm.getMap().getId()));
+                        model.addAttribute("questions", questionService.findByMap(answerFilterForm.getMap().getId()));
                         // List
-                        model.addAttribute("answers", (ArrayList<Answer>) answerService.findByMap(answerFilterForm.getMap().getId()));
+                        model.addAttribute("answers", answerService.findByMap(answerFilterForm.getMap().getId()));
                     }
                 } else {
                     // Filter.
                     model.addAttribute("questions",
-                            (ArrayList<Question>) questionService.findByGameAndLevel(answerFilterForm.getGame().getId(), answerFilterForm.getLevel().getId()));
+                            questionService.findByGameAndLevel(answerFilterForm.getGame().getId(), answerFilterForm.getLevel().getId()));
                     // List
-                    model.addAttribute("answers",
-                            (ArrayList<Answer>) answerService.findByGameAndLevel(answerFilterForm.getGame().getId(), answerFilterForm.getLevel().getId()));
+                    model.addAttribute("answers", answerService.findByGameAndLevel(answerFilterForm.getGame().getId(), answerFilterForm.getLevel().getId()));
                 }
             } else {
                 // Filter.
-                model.addAttribute("questions", (ArrayList<Question>) questionService.findByGame(answerFilterForm.getGame().getId()));
+                model.addAttribute("questions", questionService.findByGame(answerFilterForm.getGame().getId()));
                 // List
-                model.addAttribute("answers", (ArrayList<Answer>) answerService.findByGame(answerFilterForm.getGame().getId()));
+                model.addAttribute("answers", answerService.findByGame(answerFilterForm.getGame().getId()));
             }
         } else {
             // Form
@@ -137,7 +121,7 @@ public class AnswerController extends BaseController {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/answer/{operation}/{id}", method = RequestMethod.GET)
@@ -155,14 +139,14 @@ public class AnswerController extends BaseController {
 
             if (edit.isPresent()) {
                 model.addAttribute("answer", edit.get());
-                model.addAttribute("questions", (ArrayList<Question>) questionService.findAll());
+                model.addAttribute("questions", questionService.findAll());
                 return URL_ADMIN_BASIC_EDIT;
             } else {
                 redirectAttributes.addFlashAttribute("status", "notfound");
             }
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
     }
 
     @RequestMapping(value = "/answer/update", method = RequestMethod.POST)
@@ -175,6 +159,6 @@ public class AnswerController extends BaseController {
             redirectAttributes.addFlashAttribute("edit", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVEPAGE;
+        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
     }
 }

@@ -3,22 +3,19 @@ package com.polifono.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Answer;
 import com.polifono.repository.IAnswerRepository;
 import com.polifono.service.IAnswerService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class AnswerServiceImpl implements IAnswerService {
 
-    private IAnswerRepository repository;
-
-    @Autowired
-    public AnswerServiceImpl(IAnswerRepository repository) {
-        this.repository = repository;
-    }
+    private final IAnswerRepository repository;
 
     @Override
     public final Answer save(Answer answer) {
@@ -26,7 +23,7 @@ public class AnswerServiceImpl implements IAnswerService {
     }
 
     @Override
-    public Boolean delete(Integer id) {
+    public final Boolean delete(final Integer id) {
         Optional<Answer> temp = repository.findById(id);
 
         if (temp.isPresent()) {
@@ -49,7 +46,7 @@ public class AnswerServiceImpl implements IAnswerService {
 
     @Override
     public final List<Answer> findAll() {
-        return (List<Answer>) repository.findAll();
+        return repository.findAll();
     }
 
     @Override
