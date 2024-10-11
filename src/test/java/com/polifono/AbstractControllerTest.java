@@ -15,41 +15,44 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.polifono.controller.BaseController;
 
 /**
- * This class extends the functionality of AbstractTest. 
+ * This class extends the functionality of AbstractTest.
  * AbstractControllerTest is the parent of all web controller unit test classes.
  * The class ensures that a type of WebApplicationContext is built and prepares a MockMvc instance for use in test methods.
- * 
  */
 @WebAppConfiguration
 public abstract class AbstractControllerTest extends AbstractTest {
 
-	protected MockMvc mvc;
-	
-	@Autowired
+    protected MockMvc mvc;
+
+    @Autowired
     protected WebApplicationContext webApplicationContext;
-	
-	protected final int HTTP_STATUS_OK = 200;
-	protected final int HTTP_STATUS_REDIRECT = 302;
-	
-	/**
+
+    protected final int HTTP_STATUS_OK = 200;
+    protected final int HTTP_STATUS_REDIRECT = 302;
+
+    /**
      * Prepares the test class for execution of web tests. Builds a MockMvc instance.
      * Call this method from the concrete JUnit test class in the <code>@Before</code> setup method.
      */
     protected void setUp() {
-        mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build(); // webAppContextSetup method is used when we have already created a fully initialized WebApplicationContext object.
+        mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+                .build(); // webAppContextSetup method is used when we have already created a fully initialized WebApplicationContext object.
     }
-    
+
     /**
      * Prepares the test class for execution of web tests.
      * Builds a MockMvc instance using standalone configuration facilitating the injection of Mockito resources into the controller class.
+     *
      * @param controller A controller object to be tested.
      */
     protected void setUp(BaseController controller) {
-        mvc = MockMvcBuilders.standaloneSetup(controller).build(); // standaloneSetup method is used when we want to configure the tested controller and the required MVC components manually.
+        mvc = MockMvcBuilders.standaloneSetup(controller)
+                .build(); // standaloneSetup method is used when we want to configure the tested controller and the required MVC components manually.
     }
-    
+
     /**
      * Maps an Object into a JSON String. Uses a Jackson ObjectMapper.
+     *
      * @param obj The Object to map.
      * @return A String of JSON.
      * @throws JsonProcessingException Thrown if an error occurs while mapping.
@@ -62,12 +65,13 @@ public abstract class AbstractControllerTest extends AbstractTest {
     /**
      * Maps a String of JSON into an instance of a Class of type T. Uses a
      * Jackson ObjectMapper.
-     * @param json A String of JSON.
+     *
+     * @param json  A String of JSON.
      * @param clazz A Class of type T. The mapper will attempt to convert the JSON into an Object of this Class type.
      * @return An Object of type T.
-     * @throws JsonParseException Thrown if an error occurs while mapping.
+     * @throws JsonParseException   Thrown if an error occurs while mapping.
      * @throws JsonMappingException Thrown if an error occurs while mapping.
-     * @throws IOException Thrown if an error occurs while mapping.
+     * @throws IOException          Thrown if an error occurs while mapping.
      */
     protected <T> T mapFromJson(String json, Class<T> clazz) throws JsonParseException, JsonMappingException, IOException {
         ObjectMapper mapper = new ObjectMapper();
