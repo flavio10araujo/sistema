@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.polifono.controller.BaseController;
 import com.polifono.domain.ClassPlayer;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
 import com.polifono.service.IPlayerService;
+import com.polifono.service.impl.SecurityService;
 import com.polifono.service.impl.SendEmailService;
 
 import jakarta.servlet.http.HttpSession;
@@ -32,8 +32,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequestMapping("/teacher")
-public class StudentController extends BaseController {
+public class StudentController {
 
+    private final SecurityService securityService;
     private final IClassService classService;
     private final IPlayerService playerService;
     private final IClassPlayerService classPlayerService;
@@ -41,7 +42,8 @@ public class StudentController extends BaseController {
 
     @RequestMapping(value = { "/student", "/student/savepage" }, method = RequestMethod.GET)
     public String savePage(HttpSession session, Model model) {
-        model.addAttribute("classes", classService.findByTeacherAndStatus(Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId(), true));
+        model.addAttribute("classes",
+                classService.findByTeacherAndStatus(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId(), true));
         model.addAttribute("classPlayer", new ClassPlayer());
 
         if (session.getAttribute("clazzId") != null) {
@@ -50,7 +52,7 @@ public class StudentController extends BaseController {
             model.addAttribute("classFilter", filterClass);
 
             model.addAttribute("classPlayers",
-                    classPlayerService.findByTeacherAndClass(Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId(),
+                    classPlayerService.findByTeacherAndClass(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId(),
                             (int) session.getAttribute("clazzId")));
         } else {
             model.addAttribute("classFilter", new com.polifono.domain.Class());
@@ -86,7 +88,7 @@ public class StudentController extends BaseController {
             if (currentClass.isEmpty())
                 return REDIRECT_HOME;
 
-            if (currentClass.get().getPlayer().getId() != Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId())
+            if (currentClass.get().getPlayer().getId() != Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId())
                 return REDIRECT_HOME;
 
             String emailLogin = classPlayer.getPlayer().getEmail();
@@ -156,7 +158,7 @@ public class StudentController extends BaseController {
                 return REDIRECT_HOME;
 
             // Verifying if the teacher logged in is the owner of this class.
-            if (current.get().getClazz().getPlayer().getId() != Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId())
+            if (current.get().getClazz().getPlayer().getId() != Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId())
                 return REDIRECT_HOME;
 
             // Verifying if the student is not in the Pending status anymore.
@@ -165,7 +167,7 @@ public class StudentController extends BaseController {
                 return REDIRECT_TEACHER_STUDENT_SAVE_PAGE;
             }
 
-            sendEmailService.sendEmailInvitationToClass(Objects.requireNonNull(currentAuthenticatedUser()).getUser(), current.get());
+            sendEmailService.sendEmailInvitationToClass(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser(), current.get());
 
             redirectAttributes.addFlashAttribute("message", "emailSent");
         } catch (Exception e) {
@@ -188,7 +190,7 @@ public class StudentController extends BaseController {
                 return REDIRECT_HOME;
 
             // Verifying if the teacher logged in is the owner of this class.
-            if (current.get().getClazz().getPlayer().getId() != Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId())
+            if (current.get().getClazz().getPlayer().getId() != Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId())
                 return REDIRECT_HOME;
 
             if (operation.equals("delete")) {

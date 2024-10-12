@@ -10,17 +10,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.polifono.controller.BaseController;
 import com.polifono.domain.Player;
 import com.polifono.service.IPlayerService;
+import com.polifono.service.impl.SecurityService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/teacher")
-public class TeacherPlayerController extends BaseController {
+public class TeacherPlayerController {
 
+    private final SecurityService securityService;
     private final IPlayerService playerService;
 
     @RequestMapping(value = { "/player", "/player/create" }, method = RequestMethod.GET)
@@ -48,7 +49,7 @@ public class TeacherPlayerController extends BaseController {
         } else {
             String msg = playerService.validateCreatePlayerByTeacher(player);
 
-            // If there are not errors.
+            // If there are no errors.
             if (msg.isEmpty()) {
                 String name = player.getName().trim();
                 name = name.substring(0, name.indexOf(" "));
@@ -59,7 +60,7 @@ public class TeacherPlayerController extends BaseController {
                 player.setLastName(lastName);
                 player.setName(name);
 
-                Player teacher = Objects.requireNonNull(this.currentAuthenticatedUser()).getUser();
+                Player teacher = Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser();
                 player.setCreator(teacher);
                 model.addAttribute("player", playerService.create(player));
                 model.addAttribute("codRegister", 1);

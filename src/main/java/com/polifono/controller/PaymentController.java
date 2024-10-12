@@ -24,6 +24,7 @@ import com.polifono.domain.Player;
 import com.polifono.domain.Transaction;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.ITransactionService;
+import com.polifono.service.impl.SecurityService;
 import com.polifono.service.impl.SendEmailService;
 
 import br.com.uol.pagseguro.domain.checkout.Checkout;
@@ -39,10 +40,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class PaymentController extends BaseController {
+public class PaymentController {
 
     private final ConfigsCreditsProperties configsCreditsProperties;
     private final MessageSource messagesResource;
+    private final SecurityService securityService;
     private final ITransactionService transactionService;
     private final IPlayerService playerService;
     private final SendEmailService emailSendUtil;
@@ -55,7 +57,7 @@ public class PaymentController extends BaseController {
     @RequestMapping(value = { "/buycredits" }, method = RequestMethod.POST)
     public final String buyCreditsSubmit(final Model model, @RequestParam("quantity") Integer quantity, Locale locale) {
 
-        Player player = Objects.requireNonNull(currentAuthenticatedUser()).getUser();
+        Player player = Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser();
 
         // If the player has not confirmed his e-mail yet.
         // And the player has not informed his/her facebook.

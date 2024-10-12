@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.polifono.controller.BaseController;
 import com.polifono.domain.ClassPlayer;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
+import com.polifono.service.impl.SecurityService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -28,22 +28,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/teacher")
-public class ClassController extends BaseController {
+public class ClassController {
 
+    private final SecurityService securityService;
     private final IClassService classService;
     private final IClassPlayerService classPlayerService;
 
     @RequestMapping(value = { "/class", "/class/savepage" }, method = RequestMethod.GET)
     public String savePage(HttpSession session, Model model) {
         model.addAttribute("class", new com.polifono.domain.Class());
-        model.addAttribute("classes", classService.findByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
+        model.addAttribute("classes", classService.findByTeacherAndStatus(securityService.getCurrentAuthenticatedUser().getUser().getId(), true));
         return URL_TEACHER_CLASS_INDEX;
     }
 
     @RequestMapping(value = { "/class/save" }, method = RequestMethod.POST)
     public String save(@ModelAttribute("class") com.polifono.domain.Class clazz, final RedirectAttributes redirectAttributes) {
         try {
-            clazz.setPlayer(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser());
+            clazz.setPlayer(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser());
             classService.save(classService.prepareClassForCreation(clazz));
             redirectAttributes.addFlashAttribute("save", "success");
         } catch (Exception e) {
@@ -60,7 +61,7 @@ public class ClassController extends BaseController {
         // The teacher only can edit/delete/duplicate his own classes.
         com.polifono.domain.Class current = classService.findById(id.intValue()).get();
 
-        if (current.getPlayer().getId() != Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId())
+        if (current.getPlayer().getId() != Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId())
             return REDIRECT_HOME;
 
         switch (operation) {
@@ -109,7 +110,7 @@ public class ClassController extends BaseController {
         com.polifono.domain.Class current = classService.findById(edit.getId()).get();
 
         // The teacher only can edit his own classes.
-        if (current.getPlayer().getId() != Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId())
+        if (current.getPlayer().getId() != Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId())
             return REDIRECT_HOME;
 
         edit.setPlayer(current.getPlayer());

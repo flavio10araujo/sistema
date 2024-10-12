@@ -12,18 +12,22 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.domain.Diploma;
 import com.polifono.domain.Player;
 import com.polifono.service.IDiplomaService;
+import com.polifono.service.impl.SecurityService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -37,84 +41,67 @@ import net.sf.jasperreports.engine.util.JRLoader;
 
 @RequiredArgsConstructor
 @Controller
-public class DiplomaController extends BaseController {
+public class DiplomaController {
 
     private final MessageSource messagesResource;
+    private final SecurityService securityService;
     private final IDiplomaService diplomaService;
 
-    @RequestMapping(value = { "/diploma" }, method = RequestMethod.GET)
+    @GetMapping("/diploma")
     public final String diplomaSearch(final Model model) {
-        // If the user is logged in.
-        if (this.currentAuthenticatedUser() != null) {
-            return URL_DIPLOMA_SEARCH;
-        } else {
-            model.addAttribute("player", new Player());
-            model.addAttribute("playerResend", new Player());
-            return URL_DIPLOMA_OPEN_SEARCH;
-        }
+        return handleDiplomaSearch(model);
     }
 
-    @RequestMapping(value = { "/diploma" }, method = RequestMethod.POST)
-    public final String diplomaSearchSubmit(final Model model, @RequestParam(value = "code", defaultValue = "") String code) {
-
-        if (code == null || code.isEmpty()) {
-            // If the user is logged in.
-            if (currentAuthenticatedUser() != null) {
-                return URL_DIPLOMA_SEARCH;
-            } else {
-                model.addAttribute("player", new Player());
-                model.addAttribute("playerResend", new Player());
-                return URL_DIPLOMA_OPEN_SEARCH;
-            }
-        }
-
+    @Validated
+    @PostMapping("/diploma")
+    public final String diplomaSearchSubmit(final Model model, @RequestParam @NotBlank String code, Locale locale) {
         Diploma diploma = diplomaService.findByCode(code);
 
-        if (diploma != null) {
-            model.addAttribute("message", "success");
-            model.addAttribute("diploma", diploma);
-        } else {
-            model.addAttribute("message", "error");
-            model.addAttribute("messageContent", "O certificado informado não existe.");
+        if (diploma == null) {
+            return handleDiplomaNotFound(model, locale);
         }
 
-        // If the user is logged in.
-        if (currentAuthenticatedUser() != null) {
-            return URL_DIPLOMA_SEARCH;
-        } else {
-            model.addAttribute("player", new Player());
-            model.addAttribute("playerResend", new Player());
-            return URL_DIPLOMA_OPEN_SEARCH;
-        }
+        model.addAttribute("message", "success");
+        model.addAttribute("diploma", diploma);
+        return handleDiplomaSearch(model);
     }
 
-    @RequestMapping(value = { "/diploma/{code}" }, method = RequestMethod.GET)
-    public final String diplomaGet(HttpServletResponse response, final Model model, @PathVariable("code") String code, Locale locale)
+    @Validated
+    @GetMapping("/diploma/{code}")
+    public final String diplomaGet(HttpServletResponse response, final Model model, @PathVariable("code") @NotBlank String code, Locale locale)
             throws JRException, IOException {
-        if (code == null || code.isEmpty()) {
-            if (currentAuthenticatedUser() != null) {
-                return URL_DIPLOMA_SEARCH;
-            } else {
-                model.addAttribute("player", new Player());
-                model.addAttribute("playerResend", new Player());
-                return URL_DIPLOMA_OPEN_SEARCH;
-            }
-        }
 
         Diploma diploma = diplomaService.findByCode(code);
 
         if (diploma == null) {
-            model.addAttribute("message", "error");
-
-            if (currentAuthenticatedUser() != null) {
-                return URL_DIPLOMA_SEARCH;
-            } else {
-                model.addAttribute("player", new Player());
-                model.addAttribute("playerResend", new Player());
-                return URL_DIPLOMA_OPEN_SEARCH;
-            }
+            return handleDiplomaNotFound(model, locale);
         }
 
+        generateDiplomaPdf(response, diploma, locale);
+        return null;
+    }
+
+    private String handleDiplomaSearch(final Model model) {
+        if (securityService.isAuthenticated()) {
+            return URL_DIPLOMA_SEARCH;
+        } else {
+            prepareModelForUnauthenticatedUser(model);
+            return URL_DIPLOMA_OPEN_SEARCH;
+        }
+    }
+
+    private String handleDiplomaNotFound(final Model model, Locale locale) {
+        model.addAttribute("message", "error");
+        model.addAttribute("messageContent", messagesResource.getMessage("msg.TheInformedCertificateDoesNotExist", null, locale));
+        return handleDiplomaSearch(model);
+    }
+
+    private void prepareModelForUnauthenticatedUser(Model model) {
+        model.addAttribute("player", new Player());
+        model.addAttribute("playerResend", new Player());
+    }
+
+    private void generateDiplomaPdf(HttpServletResponse response, Diploma diploma, Locale locale) throws JRException, IOException {
         List<Diploma> list = new ArrayList<>();
         list.add(diploma);
 
@@ -123,8 +110,6 @@ public class DiplomaController extends BaseController {
         Map<String, Object> params = new HashMap<>();
         params.put("company", messagesResource.getMessage("diploma.company", null, locale));
         params.put("url", messagesResource.getMessage("url", null, locale) + "/diploma");
-
-        // Load images from classpath as URLs
         params.put("img_selo", new ClassPathResource("img/diploma/selo.png").getURL());
         params.put("img_logo", new ClassPathResource("img/diploma/logo.png").getURL());
         params.put("img_assinatura", new ClassPathResource("img/diploma/assinatura.png").getURL());
@@ -135,9 +120,7 @@ public class DiplomaController extends BaseController {
         response.setContentType("application/x-pdf");
         response.setHeader("Content-disposition", "inline; filename=diploma.pdf");
 
-        final OutputStream outStream = response.getOutputStream();
+        OutputStream outStream = response.getOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
-
-        return null;
     }
 }

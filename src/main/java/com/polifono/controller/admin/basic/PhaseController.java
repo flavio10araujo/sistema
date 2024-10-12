@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.polifono.controller.BaseController;
 import com.polifono.domain.Phase;
 import com.polifono.form.admin.basic.PhaseFilterForm;
 import com.polifono.service.IGameService;
@@ -29,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/admin/basic")
-public class PhaseController extends BaseController {
+public class PhaseController {
 
     private final IGameService gameService;
     private final ILevelService levelService;

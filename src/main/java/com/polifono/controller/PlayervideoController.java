@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-public class PlayervideoController extends BaseController {
+public class PlayervideoController {
 
     private final IPlayervideoService playervideoService;
     private final IContentService contentService;

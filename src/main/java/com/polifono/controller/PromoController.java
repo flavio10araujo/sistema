@@ -40,6 +40,7 @@ import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPromoService;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.IPromoService;
+import com.polifono.service.impl.SecurityService;
 import com.polifono.util.ContentUtil;
 import com.polifono.util.DateUtil;
 
@@ -47,13 +48,14 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-public class PromoController extends BaseController {
+public class PromoController {
 
     public static final int FIRST_PHASE_RECORDER = 1;
     public static final int FIRST_PHASE_ACOUSTIC_GUITAR = 92;
     public static final int FIRST_PHASE_SAXOPHONE = 152;
     public static final int FIRST_PHASE_TRUMPET = 212;
 
+    private final SecurityService securityService;
     private final IPlayerService playerService;
     private final IGameService gameService;
     private final IMapService mapService;
@@ -65,7 +67,7 @@ public class PromoController extends BaseController {
     @RequestMapping(value = { "/promo", "/promos" }, method = RequestMethod.GET)
     public final String promo(final Model model) {
         // If the user is logged in.
-        if (this.currentAuthenticatedUser() != null) {
+        if (securityService.isAuthenticated()) {
             return URL_PROMO_SEARCH;
         } else {
             return URL_PROMO_OPEN_SEARCH;
@@ -78,7 +80,7 @@ public class PromoController extends BaseController {
             return URL_PROMO_SEARCH;
         }
 
-        Player player = Objects.requireNonNull(currentAuthenticatedUser()).getUser();
+        Player player = Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser();
 
         // If the player has not confirmed his e-mail yet.
         if (!playerService.isEmailConfirmed(player)
@@ -102,7 +104,7 @@ public class PromoController extends BaseController {
                 return URL_PROMO_SEARCH;
             }
 
-            this.updateCurrentAuthenticateUser(playerService.addCreditsToPlayer(player.getId(), promo.getPrize()));
+            securityService.updateCurrentAuthenticatedUser(playerService.addCreditsToPlayer(player.getId(), promo.getPrize()));
 
             playerPromo = new PlayerPromo();
             playerPromo.setPlayer(player);

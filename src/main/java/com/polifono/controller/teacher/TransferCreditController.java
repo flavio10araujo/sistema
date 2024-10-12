@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.polifono.controller.BaseController;
 import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerGame;
@@ -24,14 +23,16 @@ import com.polifono.service.IClassService;
 import com.polifono.service.IGameService;
 import com.polifono.service.IPlayerGameService;
 import com.polifono.service.IPlayerService;
+import com.polifono.service.impl.SecurityService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/teacher")
-public class TransferCreditController extends BaseController {
+public class TransferCreditController {
 
+    private final SecurityService securityService;
     private final IGameService gameService;
     private final IPlayerService playerService;
     private final IClassService classService;
@@ -45,7 +46,7 @@ public class TransferCreditController extends BaseController {
 
         model.addAttribute("transferCreditGroupForm", new TransferCreditGroupForm());
         model.addAttribute("classes",
-                classService.findByTeacherAndStatus(Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId(), true));
+                classService.findByTeacherAndStatus(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId(), true));
 
         return URL_TEACHER_CREDIT_INDEX;
     }
@@ -88,7 +89,7 @@ public class TransferCreditController extends BaseController {
             }
 
             // Check if the logged player has enough credits to do this transaction.
-            Optional<Player> playerLogged = playerService.findById(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId());
+            Optional<Player> playerLogged = playerService.findById(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId());
 
             // If the player is not found.
             if (playerLogged.isEmpty()) {
@@ -99,7 +100,7 @@ public class TransferCreditController extends BaseController {
             if (playerLogged.get().getCredit() < playerGame.getCredit()) {
                 redirectAttributes.addFlashAttribute("message", "creditsInsufficient");
                 // Update session user.
-                this.updateCurrentAuthenticateUser(playerLogged.get());
+                securityService.updateCurrentAuthenticatedUser(playerLogged.get());
                 return REDIRECT_TEACHER_CREDIT;
             }
 
@@ -127,7 +128,7 @@ public class TransferCreditController extends BaseController {
             playerGameService.save(playerGameExistent);
 
             // Update session user.
-            this.updateCurrentAuthenticateUser(playerLogged.get());
+            securityService.updateCurrentAuthenticatedUser(playerLogged.get());
 
             redirectAttributes.addFlashAttribute("save", "success");
         } catch (Exception e) {
@@ -171,7 +172,7 @@ public class TransferCreditController extends BaseController {
             int totalCredits = transferCreditGroupForm.getCredit() * numberOfStudents;
 
             // Check if the logged player has enough credits to do this transaction.
-            Optional<Player> playerLogged = playerService.findById(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId());
+            Optional<Player> playerLogged = playerService.findById(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId());
 
             // If the player is not found.
             if (playerLogged.isEmpty()) {
@@ -182,7 +183,7 @@ public class TransferCreditController extends BaseController {
             if (playerLogged.get().getCredit() < totalCredits) {
                 redirectAttributes.addFlashAttribute("message", "creditsInsufficient");
                 // Update session user.
-                this.updateCurrentAuthenticateUser(playerLogged.get());
+                securityService.updateCurrentAuthenticatedUser(playerLogged.get());
                 return REDIRECT_TEACHER_CREDIT;
             }
 
@@ -215,7 +216,7 @@ public class TransferCreditController extends BaseController {
             }
 
             // Update session user.
-            this.updateCurrentAuthenticateUser(playerLogged.get());
+            securityService.updateCurrentAuthenticatedUser(playerLogged.get());
 
             redirectAttributes.addFlashAttribute("save", "success");
         } catch (Exception e) {

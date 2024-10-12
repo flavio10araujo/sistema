@@ -15,13 +15,15 @@ import org.springframework.web.util.HtmlUtils;
 
 import com.polifono.domain.Phase;
 import com.polifono.service.IPhaseService;
+import com.polifono.service.impl.SecurityService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-public class SearchController extends BaseController {
+public class SearchController {
 
+    private final SecurityService securityService;
     private final IPhaseService phaseService;
 
     /**
@@ -38,7 +40,7 @@ public class SearchController extends BaseController {
 
         // Looking for the phases that have the q in its content and the user has already studied.
         List<Phase> phases = phaseService.findPhasesBySearchAndUser(HtmlUtils.htmlEscape(q),
-                Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId());
+                Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId());
 
         model.addAttribute("phases", phases);
 

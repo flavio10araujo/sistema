@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.domain.Player;
 import com.polifono.service.impl.RecaptchaService;
+import com.polifono.service.impl.SecurityService;
 import com.polifono.service.impl.SendEmailService;
 import com.polifono.util.EmailUtil;
 
@@ -23,19 +24,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class HomeController extends BaseController {
+public class HomeController {
 
+    private final SecurityService securityService;
     private final RecaptchaService captchaService;
     private final SendEmailService sendEmailService;
 
     @RequestMapping(value = { "/" }, method = RequestMethod.GET)
     public final String index(final Model model) {
-        if (this.currentAuthenticatedUser() == null) {
+        if (securityService.isAuthenticated()) {
+            return REDIRECT_GAMES;
+        } else {
             model.addAttribute("player", new Player());
             model.addAttribute("playerResend", new Player());
             return URL_INDEX;
-        } else {
-            return REDIRECT_GAMES;
         }
     }
 

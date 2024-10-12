@@ -6,10 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.polifono.controller.BaseController;
-
 @Controller
-public class AdminController extends BaseController {
+public class AdminController {
 
     @RequestMapping(value = { "/admin" }, method = RequestMethod.GET)
     public final String listGames() {

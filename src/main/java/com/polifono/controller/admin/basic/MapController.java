@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.polifono.controller.BaseController;
 import com.polifono.domain.Game;
 import com.polifono.domain.Map;
 import com.polifono.service.IGameService;
@@ -28,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/admin/basic")
-public class MapController extends BaseController {
+public class MapController {
 
     private final IGameService gameService;
     private final ILevelService levelService;

@@ -48,6 +48,7 @@ import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.IQuestionService;
 import com.polifono.service.impl.GenerateRandomStringService;
+import com.polifono.service.impl.SecurityService;
 import com.polifono.util.ContentUtil;
 
 import jakarta.servlet.http.HttpSession;
@@ -55,10 +56,11 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-public class GameController extends BaseController {
+public class GameController {
 
     private final ConfigsCreditsProperties configsCreditsProperties;
     private final MessageSource messagesResource;
+    private final SecurityService securityService;
     private final IPlayerService playerService;
     private final IGameService gameService;
     private final ILevelService levelService;
@@ -96,7 +98,7 @@ public class GameController extends BaseController {
 
         // Checking what is the last phase completed by this player in this game.
         PlayerPhase lastPlayerPhaseCompleted = playerPhaseService.findLastPhaseCompleted(
-                Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId(), game.getId());
+                Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId(), game.getId());
 
         // If the player has never played any phase of this game.
         if (lastPlayerPhaseCompleted == null) {
@@ -151,7 +153,8 @@ public class GameController extends BaseController {
             return REDIRECT_HOME;
 
         // Checking what is the last phase completed by this player in this game.
-        PlayerPhase lastPhaseCompleted = playerPhaseService.findLastPhaseCompleted(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId(),
+        PlayerPhase lastPhaseCompleted = playerPhaseService.findLastPhaseCompleted(
+                Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId(),
                 game.getId());
 
         // Looking for the phases of the map.
@@ -161,7 +164,7 @@ public class GameController extends BaseController {
         if (phases == null)
             return REDIRECT_HOME;
 
-        if (!mapService.playerCanAccessThisMap(map, Objects.requireNonNull(this.currentAuthenticatedUser()).getUser()))
+        if (!mapService.playerCanAccessThisMap(map, Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser()))
             return REDIRECT_HOME;
 
         model.addAttribute("game", game);
@@ -205,7 +208,7 @@ public class GameController extends BaseController {
             return REDIRECT_HOME;
 
         // If the player doesn't have permission to access this phase.
-        if (!phaseService.playerCanAccessThisPhase(phase, Objects.requireNonNull(this.currentAuthenticatedUser()).getUser()))
+        if (!phaseService.playerCanAccessThisPhase(phase, Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser()))
             return REDIRECT_HOME;
 
         // Get the first content of this phase.
@@ -217,10 +220,11 @@ public class GameController extends BaseController {
 
         // If the player doesn't have credits anymore.
         // And the player is not trying to access the first phase (the first phase is always free).
-        if (!playerService.playerHasCredits(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser(), phase) && phase.getOrder() > 1) {
+        if (!playerService.playerHasCredits(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser(), phase) && phase.getOrder() > 1) {
 
             // Get the last phase that the player has done in a specific game.
-            Phase lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId(),
+            Phase lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(
+                    Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId(),
                     phase.getMap().getGame().getId());
 
             // If the player is trying to access a phase that he has already finished, it's OK. Otherwise, he can't access this phase.
@@ -268,19 +272,20 @@ public class GameController extends BaseController {
             return REDIRECT_HOME;
 
         // If the player has already passed this test he can't see the test again.
-        if (playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase, Objects.requireNonNull(this.currentAuthenticatedUser()).getUser()))
+        if (playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase, Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser()))
             return REDIRECT_GAMES + "/" + gameName;
 
         // If the player doesn't have permission to access this phase.
-        if (!phaseService.playerCanAccessThisPhase(phase, Objects.requireNonNull(this.currentAuthenticatedUser()).getUser()))
+        if (!phaseService.playerCanAccessThisPhase(phase, Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser()))
             return REDIRECT_HOME;
 
         // If the player doesn't have credits anymore.
         // And the player is not trying to access the first phase (the first phase is always free).
-        if (!playerService.playerHasCredits(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser(), phase) && phase.getOrder() > 1) {
+        if (!playerService.playerHasCredits(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser(), phase) && phase.getOrder() > 1) {
 
             // Get the last phase that the player has done in a specific game.
-            Phase lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId(),
+            Phase lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(
+                    Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId(),
                     phase.getMap().getGame().getId());
 
             // If the player is trying to access a phase that he has already finished, it's OK. Otherwise, he can't access this phase.
@@ -291,7 +296,7 @@ public class GameController extends BaseController {
         }
 
         // Adding a playerPhase at T007.
-        playerPhaseService.setTestAttempt(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser(), phase);
+        playerPhaseService.setTestAttempt(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser(), phase);
 
         // Get the questionary of this phase.
         Content content = contentService.findByPhaseAndOrder(phase.getId(), 0);
@@ -332,7 +337,8 @@ public class GameController extends BaseController {
         model.addAttribute("grade", grade);
 
         if (grade >= 70) {
-            PlayerPhase playerPhase = playerPhaseService.findByPlayerPhaseAndStatus(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId(),
+            PlayerPhase playerPhase = playerPhaseService.findByPlayerPhaseAndStatus(
+                    Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId(),
                     currentPhase.getId(), 2);
 
             playerPhase.setGrade(grade);
@@ -344,7 +350,7 @@ public class GameController extends BaseController {
 
             model.addAttribute("score", playerPhase.getScore());
 
-            Optional<Player> player = playerService.findById(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId());
+            Optional<Player> player = playerService.findById(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId());
 
             // If the player doesn't exist.
             if (player.isEmpty())
@@ -364,7 +370,7 @@ public class GameController extends BaseController {
             playerPhaseService.save(playerPhase);
 
             // Update session user.
-            this.updateCurrentAuthenticateUser(player.get());
+            securityService.updateCurrentAuthenticatedUser(player.get());
 
             // Checking what is the map of the next phase.
             Map map = mapService.findCurrentMap(currentPhase.getMap().getGame(), playerPhase);
@@ -377,8 +383,8 @@ public class GameController extends BaseController {
                 model.addAttribute("diploma", diploma);
 
                 // When the player finishes the last phase of the level, he gains n credits.
-                this.updateCurrentAuthenticateUser(
-                        playerService.addCreditsToPlayer(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId(),
+                securityService.updateCurrentAuthenticatedUser(
+                        playerService.addCreditsToPlayer(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId(),
                                 configsCreditsProperties.getLevelCompleted()));
 
                 return URL_GAMES_END_OF_LEVEL;
@@ -392,8 +398,8 @@ public class GameController extends BaseController {
                 model.addAttribute("diploma", diploma);
 
                 // When the player finishes the last phase of the last level of the game, he gains n credits.
-                this.updateCurrentAuthenticateUser(
-                        playerService.addCreditsToPlayer(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId(),
+                securityService.updateCurrentAuthenticatedUser(
+                        playerService.addCreditsToPlayer(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId(),
                                 configsCreditsProperties.getGameCompleted()));
 
                 return URL_GAMES_END_OF_GAME;

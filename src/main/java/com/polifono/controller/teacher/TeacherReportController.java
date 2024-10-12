@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.polifono.controller.BaseController;
 import com.polifono.domain.ClassPlayer;
 import com.polifono.dto.teacher.ReportGeneralDTO;
 import com.polifono.form.teacher.ReportGeneralForm;
@@ -20,14 +19,16 @@ import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
 import com.polifono.service.IGameService;
 import com.polifono.service.IPlayerPhaseService;
+import com.polifono.service.impl.SecurityService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/teacher")
-public class TeacherReportController extends BaseController {
+public class TeacherReportController {
 
+    private final SecurityService securityService;
     private final IGameService gameService;
     private final IClassService classService;
     private final IClassPlayerService classPlayerService;
@@ -36,7 +37,7 @@ public class TeacherReportController extends BaseController {
     @RequestMapping(value = { "/report" }, method = RequestMethod.GET)
     public String reportGeneral(Model model) {
         model.addAttribute("games", gameService.findAll());
-        model.addAttribute("classes", classService.findByTeacherAndStatus(currentAuthenticatedUser().getUser().getId(), true));
+        model.addAttribute("classes", classService.findByTeacherAndStatus(securityService.getCurrentAuthenticatedUser().getUser().getId(), true));
         // Form
         model.addAttribute("reportGeneralForm", new ReportGeneralForm());
 
@@ -48,7 +49,8 @@ public class TeacherReportController extends BaseController {
         String msg = validateReportGeneral(reportGeneralForm);
 
         model.addAttribute("games", gameService.findAll());
-        model.addAttribute("classes", classService.findByTeacherAndStatus(Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId(), true));
+        model.addAttribute("classes",
+                classService.findByTeacherAndStatus(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId(), true));
         // Form
         model.addAttribute("reportGeneralForm", reportGeneralForm);
 

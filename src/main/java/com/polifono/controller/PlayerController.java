@@ -29,6 +29,7 @@ import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.impl.GenerateRandomStringService;
 import com.polifono.service.impl.LoginServiceImpl;
+import com.polifono.service.impl.SecurityService;
 import com.polifono.service.impl.SendEmailService;
 import com.polifono.util.EmailUtil;
 import com.polifono.util.PasswordUtil;
@@ -43,8 +44,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class PlayerController extends BaseController {
+public class PlayerController {
 
+    private final SecurityService securityService;
     private final IPlayerService playerService;
     private final IClassPlayerService classPlayerService;
     private final LoginServiceImpl loginService;
@@ -333,7 +335,7 @@ public class PlayerController extends BaseController {
     @RequestMapping(value = { "/classinvitation" }, method = RequestMethod.GET)
     public final String classInvitation(final Model model) {
         // Get all the invitation to classes that the student hasn't confirmed his participation yet.
-        List<ClassPlayer> classPlayers = classPlayerService.findByPlayerAndStatus(currentAuthenticatedUser().getUser().getId(), 1);
+        List<ClassPlayer> classPlayers = classPlayerService.findByPlayerAndStatus(securityService.getCurrentAuthenticatedUser().getUser().getId(), 1);
         model.addAttribute("classPlayers", classPlayers);
         return URL_CLASS_INVITATION;
     }
@@ -351,7 +353,7 @@ public class PlayerController extends BaseController {
             ClassPlayer current = currentOpt.get();
 
             // Verifying if the student logged in is not the player of this classPlayer.
-            if (current.getPlayer().getId() != Objects.requireNonNull(currentAuthenticatedUser()).getUser().getId())
+            if (current.getPlayer().getId() != Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId())
                 return REDIRECT_HOME;
 
             // If the player has already confirmed his participation in this class.
@@ -391,7 +393,7 @@ public class PlayerController extends BaseController {
             // If yes, log the player in.
             if (player != null) {
                 request.getSession(true);
-                createCurrentAuthenticateUserFacebook(request, null, player);
+                securityService.createCurrentAuthenticatedUserFacebook(request, null, player);
                 loginService.registerLogin(player);
             } else {
                 // If not, verify if the playerFacebook has an email.
@@ -411,7 +413,7 @@ public class PlayerController extends BaseController {
                         playerService.save(player);
 
                         request.getSession(true);
-                        createCurrentAuthenticateUserFacebook(request, null, player);
+                        securityService.createCurrentAuthenticatedUserFacebook(request, null, player);
                         loginService.registerLogin(player);
                     } else {
                         // If it is here it is because it is necessary to register the player in the system.
@@ -427,7 +429,7 @@ public class PlayerController extends BaseController {
                         playerService.create(player);
 
                         request.getSession(true);
-                        createCurrentAuthenticateUserFacebook(request, null, player);
+                        securityService.createCurrentAuthenticatedUserFacebook(request, null, player);
                         loginService.registerLogin(player);
                     }
                 } else {
@@ -446,7 +448,7 @@ public class PlayerController extends BaseController {
                     playerService.create(player);
 
                     request.getSession(true);
-                    createCurrentAuthenticateUserFacebook(request, null, player);
+                    securityService.createCurrentAuthenticatedUserFacebook(request, null, player);
                     loginService.registerLogin(player);
                 }
             }

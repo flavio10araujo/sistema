@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.polifono.controller.BaseController;
 import com.polifono.domain.Content;
 import com.polifono.domain.Question;
 import com.polifono.form.admin.basic.QuestionFilterForm;
@@ -33,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/admin/basic")
-public class QuestionController extends BaseController {
+public class QuestionController {
 
     private final IGameService gameService;
     private final ILevelService levelService;
