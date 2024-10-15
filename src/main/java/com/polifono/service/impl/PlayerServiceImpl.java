@@ -35,7 +35,7 @@ public class PlayerServiceImpl implements IPlayerService {
     private final IPlayerGameService playerGameService;
     private final GenerateRandomStringService generateRandomStringService;
 
-    public final Player create(Player player) {
+    public Player create(Player player) {
         return repository.save(preparePlayerForCreation(player));
     }
 
@@ -49,7 +49,7 @@ public class PlayerServiceImpl implements IPlayerService {
         return player;
     }
 
-    public final Player save(Player player) {
+    public Player save(Player player) {
         return repository.save(player);
     }
 
@@ -57,7 +57,7 @@ public class PlayerServiceImpl implements IPlayerService {
         return repository.findById(id);
     }
 
-    public final List<Player> findAll() {
+    public List<Player> findAll() {
         return repository.findAll();
     }
 
@@ -102,7 +102,7 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     @Override
-    public final Player addCreditsToPlayer(int playerId, int qtdCredits) {
+    public Player addCreditsToPlayer(int playerId, int qtdCredits) {
         Optional<Player> player = this.findById(playerId);
         return this.save(preparePlayerForAddingCredits(player.get(), qtdCredits));
     }
@@ -113,7 +113,7 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     @Override
-    public final Player removeCreditsFromPlayer(int playerId, int qtdCredits) {
+    public Player removeCreditsFromPlayer(int playerId, int qtdCredits) {
         Optional<Player> player = this.findById(playerId);
         return this.save(prepareForRemovingCredits(player.get(), qtdCredits));
     }

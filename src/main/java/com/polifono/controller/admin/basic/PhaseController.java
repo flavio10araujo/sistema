@@ -9,10 +9,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.domain.Phase;
@@ -35,7 +36,7 @@ public class PhaseController {
     private final IMapService mapService;
     private final IPhaseService phaseService;
 
-    @RequestMapping(value = { "/phase", "/phase/savepage" }, method = RequestMethod.GET)
+    @GetMapping({ "/phase", "/phase/savepage" })
     public String savePage(HttpSession session, Model model) {
         model.addAttribute("phase", new Phase());
 
@@ -78,13 +79,13 @@ public class PhaseController {
         return URL_ADMIN_BASIC_PHASE_INDEX;
     }
 
-    @RequestMapping(value = { "/phase" }, method = RequestMethod.POST)
+    @PostMapping("/phase")
     public String setFilter(HttpSession session, @ModelAttribute("phaseFilterForm") PhaseFilterForm phaseFilterForm) {
         session.setAttribute("phaseFilterForm", phaseFilterForm);
         return REDIRECT_ADMIN_BASIC_PHASE;
     }
 
-    @RequestMapping(value = { "/phase/save" }, method = RequestMethod.POST)
+    @PostMapping("/phase/save")
     public String save(@ModelAttribute("phase") Phase phase, final RedirectAttributes redirectAttributes) {
         if (phaseService.save(phase) != null) {
             redirectAttributes.addFlashAttribute("save", "success");
@@ -95,7 +96,7 @@ public class PhaseController {
         return REDIRECT_ADMIN_BASIC_PHASE_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/phase/{operation}/{id}", method = RequestMethod.GET)
+    @GetMapping("/phase/{operation}/{id}")
     public String editRemove(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes,
             Model model) {
 
@@ -120,7 +121,7 @@ public class PhaseController {
         return REDIRECT_ADMIN_BASIC_PHASE_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/phase/update", method = RequestMethod.POST)
+    @PostMapping("/phase/update")
     public String update(@ModelAttribute("edit") Phase edit, final RedirectAttributes redirectAttributes) {
         try {
             phaseService.save(edit);

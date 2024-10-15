@@ -10,10 +10,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.domain.Answer;
@@ -41,7 +42,7 @@ public class AnswerController {
     private final IQuestionService questionService;
     private final IAnswerService answerService;
 
-    @RequestMapping(value = { "/answer", "/answer/savepage" }, method = RequestMethod.GET)
+    @GetMapping({ "/answer", "/answer/savepage" })
     public String savePage(HttpSession session, Model model) {
         model.addAttribute("answer", new Answer());
 
@@ -69,29 +70,30 @@ public class AnswerController {
 
                         if (answerFilterForm.getQuestion().getId() > 0) {
                             // List
-                            model.addAttribute("answers", answerService.findByQuestion(answerFilterForm.getQuestion().getId()));
+                            model.addAttribute("answers", answerService.findAllByQuestionId(answerFilterForm.getQuestion().getId()));
                         } else {
                             // List
-                            model.addAttribute("answers", answerService.findByPhase(answerFilterForm.getPhase().getId()));
+                            model.addAttribute("answers", answerService.findAllByPhaseId(answerFilterForm.getPhase().getId()));
                         }
                     } else {
                         // Filter
                         model.addAttribute("questions", questionService.findByMap(answerFilterForm.getMap().getId()));
                         // List
-                        model.addAttribute("answers", answerService.findByMap(answerFilterForm.getMap().getId()));
+                        model.addAttribute("answers", answerService.findAllByMapId(answerFilterForm.getMap().getId()));
                     }
                 } else {
                     // Filter.
                     model.addAttribute("questions",
                             questionService.findByGameAndLevel(answerFilterForm.getGame().getId(), answerFilterForm.getLevel().getId()));
                     // List
-                    model.addAttribute("answers", answerService.findByGameAndLevel(answerFilterForm.getGame().getId(), answerFilterForm.getLevel().getId()));
+                    model.addAttribute("answers",
+                            answerService.findAllByGameIdAndLevelId(answerFilterForm.getGame().getId(), answerFilterForm.getLevel().getId()));
                 }
             } else {
                 // Filter.
                 model.addAttribute("questions", questionService.findByGame(answerFilterForm.getGame().getId()));
                 // List
-                model.addAttribute("answers", answerService.findByGame(answerFilterForm.getGame().getId()));
+                model.addAttribute("answers", answerService.findAllByGameId(answerFilterForm.getGame().getId()));
             }
         } else {
             // Form
@@ -105,13 +107,13 @@ public class AnswerController {
         return URL_ADMIN_BASIC_ANSWER_INDEX;
     }
 
-    @RequestMapping(value = { "/answer" }, method = RequestMethod.POST)
+    @GetMapping("/answer")
     public String setFilter(HttpSession session, @ModelAttribute("answerFilterForm") AnswerFilterForm answerFilterForm) {
         session.setAttribute("answerFilterForm", answerFilterForm);
         return REDIRECT_ADMIN_BASIC_ANSWER;
     }
 
-    @RequestMapping(value = { "/answer/save" }, method = RequestMethod.POST)
+    @PostMapping("/answer/save")
     public String save(@ModelAttribute("answer") Answer answer, final RedirectAttributes redirectAttributes) {
 
         if (answerService.save(answer) != null) {
@@ -123,7 +125,7 @@ public class AnswerController {
         return REDIRECT_ADMIN_BASIC_ANSWER_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/answer/{operation}/{id}", method = RequestMethod.GET)
+    @GetMapping("/answer/{operation}/{id}")
     public String editRemove(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes,
             Model model) {
 
@@ -148,9 +150,8 @@ public class AnswerController {
         return REDIRECT_ADMIN_BASIC_ANSWER_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/answer/update", method = RequestMethod.POST)
+    @PostMapping("/answer/update")
     public String update(@ModelAttribute("edit") Answer edit, final RedirectAttributes redirectAttributes) {
-
         try {
             answerService.save(edit);
             redirectAttributes.addFlashAttribute("edit", "success");

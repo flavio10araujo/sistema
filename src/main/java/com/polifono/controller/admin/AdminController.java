@@ -3,14 +3,13 @@ package com.polifono.controller.admin;
 import static com.polifono.common.TemplateConstants.URL_ADMIN_INDEX;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AdminController {
 
-    @RequestMapping(value = { "/admin" }, method = RequestMethod.GET)
-    public final String listGames() {
+    @GetMapping("/admin")
+    public String listGames() {
         return URL_ADMIN_INDEX;
     }
 }

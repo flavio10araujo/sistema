@@ -8,9 +8,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.polifono.domain.Player;
 import com.polifono.form.admin.report.RegisterFilterForm;
@@ -25,7 +26,7 @@ public class AdminReportController {
 
     private final IPlayerService playerService;
 
-    @RequestMapping(value = { "/register" }, method = RequestMethod.GET)
+    @GetMapping("/register")
     public String register(Model model) {
         // Form
         model.addAttribute("registerFilterForm", new RegisterFilterForm());
@@ -33,7 +34,7 @@ public class AdminReportController {
         return URL_ADMIN_REPORT_REGISTER;
     }
 
-    @RequestMapping(value = { "/register" }, method = RequestMethod.POST)
+    @PostMapping("/register")
     public String registerSubmit(@ModelAttribute("registerFilterForm") RegisterFilterForm registerFilterForm, Model model) {
         // Form
         model.addAttribute("registerFilterForm", registerFilterForm);
@@ -55,7 +56,7 @@ public class AdminReportController {
     /**
      * This method is just to verify how many players has a facebook id.
      */
-    public int getTotalFb(List<Player> players) {
+    private int getTotalFb(List<Player> players) {
         int totalFb = 0;
 
         for (Player p : players) {

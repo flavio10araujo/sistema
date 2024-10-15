@@ -12,10 +12,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.domain.Content;
@@ -41,7 +42,7 @@ public class ContentController {
     private final PhaseServiceImpl phaseService;
     private final ContentServiceImpl contentService;
 
-    @RequestMapping(value = { "/content", "/content/savepage" }, method = RequestMethod.GET)
+    @GetMapping({ "/content", "/content/savepage" })
     public String savePage(HttpSession session, Model model) {
         model.addAttribute("content", new Content());
 
@@ -93,7 +94,7 @@ public class ContentController {
         return URL_ADMIN_BASIC_CONTENT_INDEX;
     }
 
-    @RequestMapping(value = { "/contentTest", "/contentTest/savepage" }, method = RequestMethod.GET)
+    @GetMapping({ "/contentTest", "/contentTest/savepage" })
     public String savePageTest(HttpSession session, Model model) {
         model.addAttribute("content", new Content());
 
@@ -147,19 +148,19 @@ public class ContentController {
         return URL_ADMIN_BASIC_CONTENT_TEST_INDEX;
     }
 
-    @RequestMapping(value = { "/content" }, method = RequestMethod.POST)
+    @PostMapping("/content")
     public String setFilter(HttpSession session, @ModelAttribute("contentFilterForm") ContentFilterForm contentFilterForm) {
         session.setAttribute("contentFilterForm", contentFilterForm);
         return REDIRECT_ADMIN_BASIC_CONTENT;
     }
 
-    @RequestMapping(value = { "/contentTest" }, method = RequestMethod.POST)
+    @PostMapping("/contentTest")
     public String setFilterTest(HttpSession session, @ModelAttribute("contentTestFilterForm") ContentFilterForm contentFilterForm) {
         session.setAttribute("contentTestFilterForm", contentFilterForm);
         return REDIRECT_ADMIN_BASIC_CONTENT_TEST;
     }
 
-    @RequestMapping(value = { "/content/save" }, method = RequestMethod.POST)
+    @PostMapping("/content/save")
     public String save(@ModelAttribute("content") Content content, final RedirectAttributes redirectAttributes) {
         try {
             Contenttype contenttype = new Contenttype();
@@ -174,7 +175,7 @@ public class ContentController {
         return REDIRECT_ADMIN_BASIC_CONTENT_SAVE_PAGE;
     }
 
-    @RequestMapping(value = { "/contentTest/save" }, method = RequestMethod.POST)
+    @PostMapping("/contentTest/save")
     public String saveTest(@ModelAttribute("content") Content content, final RedirectAttributes redirectAttributes) {
         try {
             Contenttype contenttype = new Contenttype();
@@ -191,7 +192,7 @@ public class ContentController {
         return REDIRECT_ADMIN_BASIC_CONTENT_TEST_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/content/{operation}/{id}", method = RequestMethod.GET)
+    @GetMapping("/content/{operation}/{id}")
     public String editRemove(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes,
             Model model) {
 
@@ -216,7 +217,7 @@ public class ContentController {
         return REDIRECT_ADMIN_BASIC_CONTENT_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/contentTest/{operation}/{id}", method = RequestMethod.GET)
+    @GetMapping("/contentTest/{operation}/{id}")
     public String editRemoveTest(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes) {
         if (operation.equals("delete")) {
             if (contentService.delete(id.intValue())) {
@@ -229,7 +230,7 @@ public class ContentController {
         return REDIRECT_ADMIN_BASIC_CONTENT_TEST_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/content/update", method = RequestMethod.POST)
+    @PostMapping("/content/update")
     public String update(@ModelAttribute("edit") Content edit, final RedirectAttributes redirectAttributes) {
 
         try {

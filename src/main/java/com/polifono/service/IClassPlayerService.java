@@ -16,17 +16,17 @@ public interface IClassPlayerService {
 
     List<ClassPlayer> findAll();
 
-    List<ClassPlayer> findByTeacher(int playerId);
+    List<ClassPlayer> findAllByClassIdAndStatus(int clazzId, int status);
 
-    List<ClassPlayer> findByTeacherAndClass(int playerId, int clazzId);
+    List<ClassPlayer> findAllByClassIdAndTeacherId(int clazzId, int teacherId);
 
-    List<ClassPlayer> findByClassAndStatus(int clazzId, int status);
+    List<ClassPlayer> findAllByClassIdAndStudentId(int clazzId, int studentId);
 
-    List<ClassPlayer> findByClassAndPlayer(int clazzId, int playerId);
+    List<ClassPlayer> findAllByTeacherId(int teacherId);
 
-    List<ClassPlayer> findByPlayerAndStatus(int playerId, int status);
+    List<ClassPlayer> findAllByTeacherIdAndStudentId(int teacherId, int studentId);
 
-    List<ClassPlayer> findByTeacherAndStudent(int teacherId, int studentId);
+    List<ClassPlayer> findAllByStudentIdAndStatus(int studentId, int status);
 
     ClassPlayer create(ClassPlayer o);
 

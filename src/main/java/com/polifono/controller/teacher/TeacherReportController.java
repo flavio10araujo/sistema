@@ -1,18 +1,21 @@
 package com.polifono.controller.teacher;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
 import static com.polifono.common.TemplateConstants.URL_TEACHER_REPORT_INDEX;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.polifono.domain.ClassPlayer;
+import com.polifono.domain.bean.CurrentUser;
 import com.polifono.dto.teacher.ReportGeneralDTO;
 import com.polifono.form.teacher.ReportGeneralForm;
 import com.polifono.service.IClassPlayerService;
@@ -34,23 +37,35 @@ public class TeacherReportController {
     private final IClassPlayerService classPlayerService;
     private final IPlayerPhaseService playerPhaseService;
 
-    @RequestMapping(value = { "/report" }, method = RequestMethod.GET)
+    @GetMapping("/report")
     public String reportGeneral(Model model) {
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
+
         model.addAttribute("games", gameService.findAll());
-        model.addAttribute("classes", classService.findByTeacherAndStatus(securityService.getCurrentAuthenticatedUser().getUser().getId(), true));
+        model.addAttribute("classes", classService.findByTeacherAndStatus(currentUser.get().getUser().getId(), true));
         // Form
         model.addAttribute("reportGeneralForm", new ReportGeneralForm());
 
         return URL_TEACHER_REPORT_INDEX;
     }
 
-    @RequestMapping(value = { "/report" }, method = RequestMethod.POST)
+    @PostMapping("/report")
     public String reportGeneralSubmit(@ModelAttribute("reportGeneralForm") ReportGeneralForm reportGeneralForm, Model model) {
+
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
+
         String msg = validateReportGeneral(reportGeneralForm);
 
         model.addAttribute("games", gameService.findAll());
-        model.addAttribute("classes",
-                classService.findByTeacherAndStatus(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId(), true));
+        model.addAttribute("classes", classService.findByTeacherAndStatus(currentUser.get().getUser().getId(), true));
         // Form
         model.addAttribute("reportGeneralForm", reportGeneralForm);
 
@@ -61,7 +76,7 @@ public class TeacherReportController {
             return URL_TEACHER_REPORT_INDEX;
         }
 
-        List<ClassPlayer> classPlayers = classPlayerService.findByClassAndStatus(reportGeneralForm.getClazz().getId(), 2);
+        List<ClassPlayer> classPlayers = classPlayerService.findAllByClassIdAndStatus(reportGeneralForm.getClazz().getId(), 2);
         List<ReportGeneralDTO> list = new ArrayList<>();
 
         for (ClassPlayer classPlayer : classPlayers) {
@@ -75,7 +90,7 @@ public class TeacherReportController {
         return URL_TEACHER_REPORT_INDEX;
     }
 
-    public String validateReportGeneral(ReportGeneralForm reportGeneralForm) {
+    private String validateReportGeneral(ReportGeneralForm reportGeneralForm) {
         String msg = "";
 
         if (reportGeneralForm.getGame() == null || reportGeneralForm.getGame().getId() <= 0) {

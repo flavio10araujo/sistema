@@ -9,10 +9,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.domain.Game;
@@ -33,7 +34,7 @@ public class MapController {
     private final ILevelService levelService;
     private final IMapService mapService;
 
-    @RequestMapping(value = { "/map", "/map/savepage" }, method = RequestMethod.GET)
+    @GetMapping({ "/map", "/map/savepage" })
     public String savePage(HttpSession session, Model model) {
         model.addAttribute("games", gameService.findAll());
         model.addAttribute("levels", levelService.findAll());
@@ -53,7 +54,7 @@ public class MapController {
         return URL_ADMIN_BASIC_MAP_INDEX;
     }
 
-    @RequestMapping(value = { "/map" }, method = RequestMethod.POST)
+    @PostMapping("/map")
     public String setFilter(HttpSession session, @ModelAttribute("game") Game game) {
         if (game.getId() > 0) {
             session.setAttribute("mapGameId", game.getId());
@@ -64,7 +65,7 @@ public class MapController {
         return REDIRECT_ADMIN_BASIC_MAP;
     }
 
-    @RequestMapping(value = { "/map/save" }, method = RequestMethod.POST)
+    @PostMapping("/map/save")
     public String save(@ModelAttribute("map") Map map, final RedirectAttributes redirectAttributes) {
         try {
             mapService.save(map);
@@ -76,7 +77,7 @@ public class MapController {
         return REDIRECT_ADMIN_BASIC_MAP_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/map/{operation}/{id}", method = RequestMethod.GET)
+    @GetMapping("/map/{operation}/{id}")
     public String editRemove(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes,
             Model model) {
 
@@ -102,7 +103,7 @@ public class MapController {
         return REDIRECT_ADMIN_BASIC_MAP_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/map/update", method = RequestMethod.POST)
+    @PostMapping("/map/update")
     public String update(@ModelAttribute("edit") Map edit, final RedirectAttributes redirectAttributes) {
         if (mapService.save(edit) != null) {
             redirectAttributes.addFlashAttribute("edit", "success");

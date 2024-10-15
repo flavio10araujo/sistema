@@ -16,7 +16,7 @@ public class DiplomaServiceImpl implements IDiplomaService {
 
     private final IDiplomaRepository repository;
 
-    public final Diploma save(Diploma diploma) {
+    public Diploma save(Diploma diploma) {
         return repository.save(diploma);
     }
 

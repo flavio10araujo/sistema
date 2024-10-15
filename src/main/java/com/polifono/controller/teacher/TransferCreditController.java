@@ -1,22 +1,24 @@
 package com.polifono.controller.teacher;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
 import static com.polifono.common.TemplateConstants.REDIRECT_TEACHER_CREDIT;
 import static com.polifono.common.TemplateConstants.URL_TEACHER_CREDIT_INDEX;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerGame;
+import com.polifono.domain.bean.CurrentUser;
 import com.polifono.form.teacher.TransferCreditGroupForm;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
@@ -39,20 +41,30 @@ public class TransferCreditController {
     private final IPlayerGameService playerGameService;
     private final IClassPlayerService classPlayerService;
 
-    @RequestMapping(value = { "/credit" }, method = RequestMethod.GET)
+    @GetMapping("/credit")
     public String transferCredit(Model model) {
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
+
         model.addAttribute("playerGame", new PlayerGame());
         model.addAttribute("games", gameService.findAll());
-
         model.addAttribute("transferCreditGroupForm", new TransferCreditGroupForm());
-        model.addAttribute("classes",
-                classService.findByTeacherAndStatus(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId(), true));
+        model.addAttribute("classes", classService.findByTeacherAndStatus(currentUser.get().getUser().getId(), true));
 
         return URL_TEACHER_CREDIT_INDEX;
     }
 
-    @RequestMapping(value = { "/credit/individual" }, method = RequestMethod.POST)
+    @PostMapping("/credit/individual")
     public String transferCreditIndividual(@ModelAttribute("playerGame") PlayerGame playerGame, final RedirectAttributes redirectAttributes) {
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
+
         try {
             // If the student's email was not informed.
             if (playerGame.getPlayer() == null || playerGame.getPlayer().getEmail() == null || playerGame.getPlayer().getEmail().isEmpty()) {
@@ -89,7 +101,7 @@ public class TransferCreditController {
             }
 
             // Check if the logged player has enough credits to do this transaction.
-            Optional<Player> playerLogged = playerService.findById(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId());
+            Optional<Player> playerLogged = playerService.findById(currentUser.get().getUser().getId());
 
             // If the player is not found.
             if (playerLogged.isEmpty()) {
@@ -138,9 +150,16 @@ public class TransferCreditController {
         return REDIRECT_TEACHER_CREDIT;
     }
 
-    @RequestMapping(value = { "/credit/group" }, method = RequestMethod.POST)
+    @PostMapping("/credit/group")
     public String transferCreditGroup(@ModelAttribute("transferCreditGroupForm") TransferCreditGroupForm transferCreditGroupForm,
             final RedirectAttributes redirectAttributes) {
+
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
+
         try {
             // If the class was not informed.
             if (transferCreditGroupForm.getClazz() == null || transferCreditGroupForm.getClazz().getId() == 0) {
@@ -159,7 +178,7 @@ public class TransferCreditController {
             }
 
             // Get all the students of the class selected.
-            List<ClassPlayer> classPlayerList = classPlayerService.findByClassAndStatus(transferCreditGroupForm.getClazz().getId(), 2);
+            List<ClassPlayer> classPlayerList = classPlayerService.findAllByClassIdAndStatus(transferCreditGroupForm.getClazz().getId(), 2);
 
             // Get the number of students confirmed (2) in the class.
             int numberOfStudents = classPlayerList.size();
@@ -172,7 +191,7 @@ public class TransferCreditController {
             int totalCredits = transferCreditGroupForm.getCredit() * numberOfStudents;
 
             // Check if the logged player has enough credits to do this transaction.
-            Optional<Player> playerLogged = playerService.findById(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId());
+            Optional<Player> playerLogged = playerService.findById(currentUser.get().getUser().getId());
 
             // If the player is not found.
             if (playerLogged.isEmpty()) {

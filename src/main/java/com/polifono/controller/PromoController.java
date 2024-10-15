@@ -17,13 +17,13 @@ import static com.polifono.common.TemplateConstants.URL_PROMO_OPEN_SEARCH;
 import static com.polifono.common.TemplateConstants.URL_PROMO_SEARCH;
 
 import java.util.Date;
-import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.domain.Content;
@@ -33,6 +33,7 @@ import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPromo;
 import com.polifono.domain.Promo;
+import com.polifono.domain.bean.CurrentUser;
 import com.polifono.service.IContentService;
 import com.polifono.service.IGameService;
 import com.polifono.service.IMapService;
@@ -64,8 +65,8 @@ public class PromoController {
     private final IPromoService promoService;
     private final IPlayerPromoService playerPromoService;
 
-    @RequestMapping(value = { "/promo", "/promos" }, method = RequestMethod.GET)
-    public final String promo(final Model model) {
+    @GetMapping({ "/promo", "/promos" })
+    public String promo(final Model model) {
         // If the user is logged in.
         if (securityService.isAuthenticated()) {
             return URL_PROMO_SEARCH;
@@ -74,13 +75,19 @@ public class PromoController {
         }
     }
 
-    @RequestMapping(value = { "/promo" }, method = RequestMethod.POST)
-    public final String promoSearchSubmit(final Model model, @RequestParam(value = "code", defaultValue = "") String code) {
+    @PostMapping("/promo")
+    public String promoSearchSubmit(final Model model, @RequestParam(value = "code", defaultValue = "") String code) {
         if (code == null || code.isEmpty()) {
             return URL_PROMO_SEARCH;
         }
 
-        Player player = Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser();
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
+
+        Player player = currentUser.get().getUser();
 
         // If the player has not confirmed his e-mail yet.
         if (!playerService.isEmailConfirmed(player)
@@ -123,15 +130,15 @@ public class PromoController {
         return URL_PROMO_SEARCH;
     }
 
-    @RequestMapping(value = { "/promos/register" }, method = RequestMethod.GET)
-    public final String register(final Model model) {
+    @GetMapping("/promos/register")
+    public String register(final Model model) {
         model.addAttribute("player", new Player());
         model.addAttribute("playerResend", new Player());
         return URL_PROMOS_REGISTER;
     }
 
-    @RequestMapping(value = { "/promos/{gameName}" }, method = RequestMethod.GET)
-    public final String promos(
+    @GetMapping("/promos/{gameName}")
+    public String promos(
             final Model model,
             @PathVariable("gameName") String gameName
     ) {
@@ -162,26 +169,26 @@ public class PromoController {
             gameNameParam = "acoustic_guitar";
         }
 
-        Game game = gameService.findByNamelink(gameNameParam);
+        Optional<Game> game = gameService.findByNamelink(gameNameParam);
 
-        // If the game doesn't exist.
-        if (game == null)
+        if (game.isEmpty()) {
             return REDIRECT_HOME;
+        }
 
-        Map map = mapService.findByGameLevelAndOrder(game.getId(), levelOrder, mapOrder);
+        Optional<Map> map = mapService.findByGameLevelAndOrder(game.get().getId(), levelOrder, mapOrder);
 
-        // If the map doesn't exist.
-        if (map == null)
+        if (map.isEmpty()) {
             return REDIRECT_HOME;
+        }
 
-        Phase phase = phaseService.findByMapAndOrder(map.getId(), phaseOrder);
+        Optional<Phase> phase = phaseService.findByMapAndOrder(map.get().getId(), phaseOrder);
 
-        // If the phase doesn't exist.
-        if (phase == null)
+        if (phase.isEmpty()) {
             return REDIRECT_HOME;
+        }
 
         // Get the first content of this phase.
-        Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(phase.getId(), 1));
+        Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(phase.get().getId(), 1));
 
         // If the content doesn't exist.
         if (content == null)
@@ -218,8 +225,8 @@ public class PromoController {
         }
     }
 
-    @RequestMapping(value = { "/promos/recorder" }, method = RequestMethod.GET)
-    public final String promosRecorder(final Model model) {
+    @GetMapping("/promos/recorder")
+    public String promosRecorder(final Model model) {
         //Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_RECORDER, 1));
         //model.addAttribute("content", content);
         model.addAttribute("player", new Player());
@@ -228,8 +235,8 @@ public class PromoController {
         return URL_PROMOS_PHASE_CONTENT_RECORDER_MIN;
     }
 
-    @RequestMapping(value = { "/promos/musical_theory" }, method = RequestMethod.GET)
-    public final String promosMusicalTheory(final Model model) {
+    @GetMapping("/promos/musical_theory")
+    public String promosMusicalTheory(final Model model) {
         //Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_RECORDER, 1));
         //model.addAttribute("content", content);
         model.addAttribute("player", new Player());
@@ -238,8 +245,8 @@ public class PromoController {
         return URL_PROMOS_PHASE_CONTENT_MUSIC_THEORY_MIN;
     }
 
-    @RequestMapping(value = { "/promos/acoustic_guitar" }, method = RequestMethod.GET)
-    public final String promosAcousticGuitar(final Model model) {
+    @GetMapping("/promos/acoustic_guitar")
+    public String promosAcousticGuitar(final Model model) {
         //Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_ACOUSTIC_GUITAR, 1));
         //model.addAttribute("content", content);
         model.addAttribute("player", new Player());
@@ -249,8 +256,8 @@ public class PromoController {
         return URL_PROMOS_PHASE_CONTENT_ACOUSTIC_GUITAR_MIN;
     }
 
-    @RequestMapping(value = { "/promos/saxophone" }, method = RequestMethod.GET)
-    public final String promosSaxophone(final Model model) {
+    @GetMapping("/promos/saxophone")
+    public String promosSaxophone(final Model model) {
         //Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_SAXOPHONE, 1));
         //model.addAttribute("content", content);
         model.addAttribute("player", new Player());
@@ -259,8 +266,8 @@ public class PromoController {
         return URL_PROMOS_PHASE_CONTENT_SAXOPHONE_MIN;
     }
 
-    @RequestMapping(value = { "/promos/trumpet" }, method = RequestMethod.GET)
-    public final String promosTrumpet(final Model model) {
+    @GetMapping("/promos/trumpet")
+    public String promosTrumpet(final Model model) {
         //Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(FIRST_PHASE_SAXOPHONE, 1));
         //model.addAttribute("content", content);
         model.addAttribute("player", new Player());

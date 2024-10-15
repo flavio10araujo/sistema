@@ -21,10 +21,12 @@ public class PhaseServiceImpl implements IPhaseService {
 
     private final IPhaseRepository repository;
 
-    public final Phase save(Phase phase) {
+    @Override
+    public Phase save(Phase phase) {
         return repository.save(phase);
     }
 
+    @Override
     public boolean delete(Integer id) {
         Optional<Phase> temp = repository.findById(id);
 
@@ -41,24 +43,86 @@ public class PhaseServiceImpl implements IPhaseService {
         return false;
     }
 
-    public final Optional<Phase> findById(int phaseId) {
+    @Override
+    public Optional<Phase> findById(int phaseId) {
         return repository.findById(phaseId);
     }
 
-    public final List<Phase> findAll() {
+    @Override
+    public List<Phase> findAll() {
         return repository.findAll();
     }
 
-    public final List<Phase> findByGame(int gameId) {
+    @Override
+    public List<Phase> findByGame(int gameId) {
         return repository.findByGame(gameId);
     }
 
-    public final List<Phase> findByGameAndLevel(int gameId, int levelId) {
+    @Override
+    public List<Phase> findByGameAndLevel(int gameId, int levelId) {
         return repository.findByGameAndLevel(gameId, levelId);
     }
 
-    public final List<Phase> findByMap(int mapId) {
+    @Override
+    public List<Phase> findByMap(int mapId) {
         return repository.findByMap(mapId);
+    }
+
+    @Override
+    public Optional<Phase> findByMapAndOrder(int mapId, int phaseOrder) {
+        return repository.findByMapAndOrder(mapId, phaseOrder);
+    }
+
+    /**
+     * phaseOrder = it's the order of the phase that will be returned.
+     */
+    @Override
+    public Optional<Phase> findNextPhaseInThisMap(int mapId, int phaseOrder) {
+        return repository.findNextPhaseInThisMap(mapId, phaseOrder);
+    }
+
+    @Override
+    public Optional<Phase> findLastPhaseDoneByPlayerAndGame(int playerId, int gameId) {
+        List<Phase> list = repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId);
+
+        if (list.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(list.get(0));
+    }
+
+    @Override
+    public Optional<Phase> findLastPhaseOfTheLevel(int gameId, int levelId) {
+        List<Phase> list = repository.findLastPhaseOfTheLevel(gameId, levelId);
+
+        if (list.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(list.get(0));
+    }
+
+    @Override
+    public List<Phase> findGamesForProfile(int playerId) {
+        List<Phase> list = repository.findGamesForProfile(playerId);
+
+        if (list.isEmpty()) {
+            return null;
+        }
+
+        List<Phase> ret = new ArrayList<>();
+
+        int gameId = 0;
+
+        for (Phase phase : list) {
+            if (gameId != phase.getMap().getGame().getId()) {
+                gameId = phase.getMap().getGame().getId();
+                ret.add(phase);
+            }
+        }
+
+        return ret;
     }
 
     /**
@@ -66,7 +130,8 @@ public class PhaseServiceImpl implements IPhaseService {
      * Check which phases are opened.
      * The phases opened are: all the phase that the player has already done + next phase.
      */
-    public final List<Phase> findPhasesCheckedByMap(Map map, PlayerPhase lastPhaseCompleted) {
+    @Override
+    public List<Phase> findPhasesCheckedByMap(Map map, PlayerPhase lastPhaseCompleted) {
         List<Phase> phases = this.findByMap(map.getId());
 
         // If there are no phases in the map.
@@ -92,79 +157,27 @@ public class PhaseServiceImpl implements IPhaseService {
         return phases;
     }
 
-    public final Phase findByMapAndOrder(int mapId, int phaseOrder) {
-        return repository.findByMapAndOrder(mapId, phaseOrder);
-    }
-
-    /**
-     * phaseOrder = it's the order of the phase that will be returned.
-     */
-    public final Phase findNextPhaseInThisMap(int mapId, int phaseOrder) {
-        return repository.findNextPhaseInThisMap(mapId, phaseOrder);
-    }
-
-    public Phase findLastPhaseDoneByPlayerAndGame(int playerId, int gameId) {
-        List<Phase> list = repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId);
-
-        if (list == null || list.isEmpty()) {
-            return null;
-        }
-
-        return list.get(0);
-    }
-
-    public final Phase findLastPhaseOfTheLevel(int gameId, int levelId) {
-        List<Phase> list = repository.findLastPhaseOfTheLevel(gameId, levelId);
-
-        if (list == null || list.isEmpty()) {
-            return null;
-        }
-
-        return list.get(0);
-    }
-
-    public final List<Phase> findGamesForProfile(int playerId) {
-        List<Phase> list = repository.findGamesForProfile(playerId);
-
-        if (list == null || list.isEmpty()) {
-            return null;
-        }
-
-        List<Phase> ret = new ArrayList<>();
-
-        int gameId = 0;
-
-        for (Phase phase : list) {
-            if (gameId != phase.getMap().getGame().getId()) {
-                gameId = phase.getMap().getGame().getId();
-                ret.add(phase);
-            }
-        }
-
-        return ret;
-    }
-
     /**
      * Verify if the player has permission to access a specific phase.
      * Return true if the player has the permission.
      */
+    @Override
     public boolean playerCanAccessThisPhase(Phase phase, Player player) {
-
-        // The first phase is always permitted.
+        // The first phase is always allowed.
         if (phase.getOrder() == 1) {
             return true;
         }
 
         // Get the last phase that the player has done in a specific game.
-        Phase lastPhaseDone = this.findLastPhaseDoneByPlayerAndGame(player.getId(), phase.getMap().getGame().getId());
+        Optional<Phase> lastPhaseDone = findLastPhaseDoneByPlayerAndGame(player.getId(), phase.getMap().getGame().getId());
 
-        // If the player is trying to access a phase but he never had finished a phase of this game.
-        if (lastPhaseDone == null) {
+        // If the player is trying to access a phase, but he had never finished a phase of this game.
+        if (lastPhaseDone.isEmpty()) {
             return false;
         }
 
         // If the player is trying to access a phase that he had already done OR the next phase in the right sequence.
-        return lastPhaseDone.getOrder() >= (phase.getOrder() - 1);
+        return lastPhaseDone.get().getOrder() >= (phase.getOrder() - 1);
     }
 
     @Override

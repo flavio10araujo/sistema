@@ -10,20 +10,21 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.Player;
+import com.polifono.domain.bean.CurrentUser;
 import com.polifono.domain.bean.PlayerFacebook;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IPlayerService;
@@ -53,8 +54,8 @@ public class PlayerController {
     private final SendEmailService emailSendUtil;
     private final GenerateRandomStringService generateRandomStringService;
 
-    @RequestMapping(value = { "/player/create" }, method = RequestMethod.POST)
-    public final synchronized String createPlayer(HttpServletRequest request, final Model model, @ModelAttribute("player") Player player) {
+    @PostMapping("/player/create")
+    public synchronized String createPlayer(HttpServletRequest request, final Model model, @ModelAttribute("player") Player player) {
 
         model.addAttribute("playerResend", new Player());
 
@@ -116,15 +117,15 @@ public class PlayerController {
         return URL_INDEX;
     }
 
-    @RequestMapping(value = { "/emailconfirmation" }, method = RequestMethod.GET)
-    public final String emailConfirmation(final Model model) {
+    @GetMapping("/emailconfirmation")
+    public String emailConfirmation(final Model model) {
         model.addAttribute("player", new Player());
         model.addAttribute("playerResend", new Player());
         return URL_EMAIL_CONFIRMATION;
     }
 
-    @RequestMapping(value = { "/emailconfirmation" }, method = RequestMethod.POST)
-    public final String emailConfirmationSubmit(final Model model, @ModelAttribute("player") Player player) {
+    @PostMapping("/emailconfirmation")
+    public String emailConfirmationSubmit(final Model model, @ModelAttribute("player") Player player) {
         model.addAttribute("playerResend", new Player());
 
         if (player == null) {
@@ -171,8 +172,8 @@ public class PlayerController {
         return URL_EMAIL_CONFIRMATION;
     }
 
-    @RequestMapping(value = { "/emailconfirmationresend" }, method = RequestMethod.POST)
-    public final String emailConfirmationResend(final Model model, @ModelAttribute("playerResend") Player playerResend) {
+    @PostMapping("/emailconfirmationresend")
+    public String emailConfirmationResend(final Model model, @ModelAttribute("playerResend") Player playerResend) {
 
         model.addAttribute("player", new Player());
 
@@ -213,15 +214,15 @@ public class PlayerController {
         return URL_EMAIL_CONFIRMATION;
     }
 
-    @RequestMapping(value = { "/passwordreset" }, method = RequestMethod.GET)
-    public final String passwordReset(final Model model) {
+    @GetMapping("/passwordreset")
+    public String passwordReset(final Model model) {
         model.addAttribute("player", new Player());
         model.addAttribute("playerResend", new Player());
         return URL_INDEX;
     }
 
-    @RequestMapping(value = { "/passwordresetresend" }, method = RequestMethod.POST)
-    public final String passwordResetResend(final Model model, @ModelAttribute("playerResend") Player playerResend) {
+    @PostMapping("/passwordresetresend")
+    public String passwordResetResend(final Model model, @ModelAttribute("playerResend") Player playerResend) {
 
         model.addAttribute("player", new Player());
 
@@ -270,8 +271,8 @@ public class PlayerController {
         return URL_INDEX;
     }
 
-    @RequestMapping(value = { "/passwordreset" }, method = RequestMethod.POST)
-    public final String passwordResetSubmit(final Model model, @ModelAttribute("player") Player player) {
+    @PostMapping("/passwordreset")
+    public String passwordResetSubmit(final Model model, @ModelAttribute("player") Player player) {
         model.addAttribute("playerResend", new Player());
 
         if (player == null) {
@@ -332,33 +333,44 @@ public class PlayerController {
         return URL_INDEX;
     }
 
-    @RequestMapping(value = { "/classinvitation" }, method = RequestMethod.GET)
-    public final String classInvitation(final Model model) {
+    @GetMapping("/classinvitation")
+    public String classInvitation(final Model model) {
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
+
         // Get all the invitation to classes that the student hasn't confirmed his participation yet.
-        List<ClassPlayer> classPlayers = classPlayerService.findByPlayerAndStatus(securityService.getCurrentAuthenticatedUser().getUser().getId(), 1);
+        List<ClassPlayer> classPlayers = classPlayerService.findAllByStudentIdAndStatus(currentUser.get().getUser().getId(), 1);
         model.addAttribute("classPlayers", classPlayers);
         return URL_CLASS_INVITATION;
     }
 
-    @RequestMapping(value = { "/classinvitation/{id}" }, method = RequestMethod.GET)
-    public final String classInvitationSubmit(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes, final Model model) {
-
+    @GetMapping("/classinvitation/{id}")
+    public String classInvitationSubmit(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes) {
         try {
-            Optional<ClassPlayer> currentOpt = classPlayerService.findById(id.intValue());
+            Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
 
-            if (currentOpt.isEmpty()) {
+            if (currentUser.isEmpty()) {
                 return REDIRECT_HOME;
             }
 
-            ClassPlayer current = currentOpt.get();
+            Optional<ClassPlayer> current = classPlayerService.findById(id.intValue());
+
+            if (current.isEmpty()) {
+                return REDIRECT_HOME;
+            }
 
             // Verifying if the student logged in is not the player of this classPlayer.
-            if (current.getPlayer().getId() != Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId())
+            if (current.get().getPlayer().getId() != currentUser.get().getUser().getId()) {
                 return REDIRECT_HOME;
+            }
 
             // If the player has already confirmed his participation in this class.
-            if (current.getStatus() != 1)
+            if (current.get().getStatus() != 1) {
                 return URL_CLASS_INVITATION;
+            }
 
             if (classPlayerService.changeStatus(id.intValue(), 2)) {
                 redirectAttributes.addFlashAttribute("message", "success");
@@ -376,7 +388,7 @@ public class PlayerController {
      * Method used when the user does the login with his Facebook account.
      */
     @RequestMapping("/loginfb")
-    public final synchronized String loginfb(HttpServletRequest request, final Model model, String code) {
+    public synchronized String loginfb(HttpServletRequest request, final Model model, String code) {
         try {
             JSONObject resp = new JSONObject(
                     UrlReaderUtil.readURL(new URL("https://graph.facebook.com/v2.12/me?fields=email,first_name,last_name&access_token=" + code)));

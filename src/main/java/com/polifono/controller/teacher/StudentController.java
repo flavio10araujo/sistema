@@ -6,18 +6,19 @@ import static com.polifono.common.TemplateConstants.REDIRECT_TEACHER_STUDENT_SAV
 import static com.polifono.common.TemplateConstants.URL_TEACHER_STUDENT_INDEX;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.domain.ClassPlayer;
+import com.polifono.domain.bean.CurrentUser;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
 import com.polifono.service.IPlayerService;
@@ -40,10 +41,15 @@ public class StudentController {
     private final IClassPlayerService classPlayerService;
     private final SendEmailService sendEmailService;
 
-    @RequestMapping(value = { "/student", "/student/savepage" }, method = RequestMethod.GET)
+    @GetMapping({ "/student", "/student/savepage" })
     public String savePage(HttpSession session, Model model) {
-        model.addAttribute("classes",
-                classService.findByTeacherAndStatus(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId(), true));
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
+
+        model.addAttribute("classes", classService.findByTeacherAndStatus(currentUser.get().getUser().getId(), true));
         model.addAttribute("classPlayer", new ClassPlayer());
 
         if (session.getAttribute("clazzId") != null) {
@@ -52,8 +58,7 @@ public class StudentController {
             model.addAttribute("classFilter", filterClass);
 
             model.addAttribute("classPlayers",
-                    classPlayerService.findByTeacherAndClass(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId(),
-                            (int) session.getAttribute("clazzId")));
+                    classPlayerService.findAllByClassIdAndTeacherId((int) session.getAttribute("clazzId"), currentUser.get().getUser().getId()));
         } else {
             model.addAttribute("classFilter", new com.polifono.domain.Class());
         }
@@ -61,7 +66,7 @@ public class StudentController {
         return URL_TEACHER_STUDENT_INDEX;
     }
 
-    @RequestMapping(value = { "/student" }, method = RequestMethod.POST)
+    @PostMapping("/student")
     public String setFilter(HttpSession session, @ModelAttribute("clazz") com.polifono.domain.Class clazz) {
         if (clazz.getId() > 0) {
             session.setAttribute("clazzId", clazz.getId());
@@ -72,8 +77,14 @@ public class StudentController {
         return REDIRECT_TEACHER_STUDENT;
     }
 
-    @RequestMapping(value = { "/student/save" }, method = RequestMethod.POST)
+    @PostMapping("/student/save")
     public String save(@ModelAttribute("classPlayer") ClassPlayer classPlayer, final RedirectAttributes redirectAttributes) {
+
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
 
         try {
             // If the student's email was not informed.
@@ -85,11 +96,13 @@ public class StudentController {
             Optional<com.polifono.domain.Class> currentClass = classService.findById(classPlayer.getClazz().getId());
 
             // If the class doesn't exist.
-            if (currentClass.isEmpty())
+            if (currentClass.isEmpty()) {
                 return REDIRECT_HOME;
+            }
 
-            if (currentClass.get().getPlayer().getId() != Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId())
+            if (currentClass.get().getPlayer().getId() != currentUser.get().getUser().getId()) {
                 return REDIRECT_HOME;
+            }
 
             String emailLogin = classPlayer.getPlayer().getEmail();
 
@@ -111,7 +124,7 @@ public class StudentController {
             }
 
             // Verify if the player is already registered in this class.
-            List<ClassPlayer> classPlayerAux = classPlayerService.findByClassAndPlayer(classPlayer.getClazz().getId(), classPlayer.getPlayer().getId());
+            List<ClassPlayer> classPlayerAux = classPlayerService.findAllByClassIdAndStudentId(classPlayer.getClazz().getId(), classPlayer.getPlayer().getId());
 
             if (classPlayerAux != null && !classPlayerAux.isEmpty()) {
 
@@ -146,8 +159,14 @@ public class StudentController {
         return REDIRECT_TEACHER_STUDENT_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/student/resendemail/{id}", method = RequestMethod.GET)
-    public String resendEmail(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes, Model model) {
+    @GetMapping("/student/resendemail/{id}")
+    public String resendEmail(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes) {
+
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
 
         try {
             // The teacher only can send email to students from his own classes.
@@ -158,7 +177,7 @@ public class StudentController {
                 return REDIRECT_HOME;
 
             // Verifying if the teacher logged in is the owner of this class.
-            if (current.get().getClazz().getPlayer().getId() != Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId())
+            if (current.get().getClazz().getPlayer().getId() != currentUser.get().getUser().getId())
                 return REDIRECT_HOME;
 
             // Verifying if the student is not in the Pending status anymore.
@@ -167,7 +186,7 @@ public class StudentController {
                 return REDIRECT_TEACHER_STUDENT_SAVE_PAGE;
             }
 
-            sendEmailService.sendEmailInvitationToClass(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser(), current.get());
+            sendEmailService.sendEmailInvitationToClass(currentUser.get().getUser(), current.get());
 
             redirectAttributes.addFlashAttribute("message", "emailSent");
         } catch (Exception e) {
@@ -177,21 +196,28 @@ public class StudentController {
         return REDIRECT_TEACHER_STUDENT_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/student/{operation}/{id}", method = RequestMethod.GET)
-    public String editRemove(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes,
-            Model model) {
+    @GetMapping("/student/{operation}/{id}")
+    public String editRemove(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes) {
+
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
 
         try {
             // The teacher only can edit/delete his own classes.
             Optional<ClassPlayer> current = classPlayerService.findById(id.intValue());
 
             // If the classPlayer doesn't exist.
-            if (current.isEmpty())
+            if (current.isEmpty()) {
                 return REDIRECT_HOME;
+            }
 
             // Verifying if the teacher logged in is the owner of this class.
-            if (current.get().getClazz().getPlayer().getId() != Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId())
+            if (current.get().getClazz().getPlayer().getId() != currentUser.get().getUser().getId()) {
                 return REDIRECT_HOME;
+            }
 
             if (operation.equals("delete")) {
                 if (classPlayerService.delete(id.intValue())) {

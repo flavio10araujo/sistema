@@ -1,16 +1,19 @@
 package com.polifono.controller.teacher;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
 import static com.polifono.common.TemplateConstants.URL_TEACHER_PLAYER_INDEX;
 
-import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.polifono.domain.Player;
+import com.polifono.domain.bean.CurrentUser;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.impl.SecurityService;
 
@@ -24,14 +27,20 @@ public class TeacherPlayerController {
     private final SecurityService securityService;
     private final IPlayerService playerService;
 
-    @RequestMapping(value = { "/player", "/player/create" }, method = RequestMethod.GET)
+    @GetMapping({ "/player", "/player/create" })
     public String indexPage(Model model) {
         model.addAttribute("player", new Player());
         return URL_TEACHER_PLAYER_INDEX;
     }
 
-    @RequestMapping(value = { "/player/create" }, method = RequestMethod.POST)
-    public final String createPlayer(final Model model, @ModelAttribute("player") Player player) {
+    @PostMapping("/player/create")
+    public String createPlayer(final Model model, @ModelAttribute("player") Player player) {
+
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
 
         if (player == null) {
             model.addAttribute("player", new Player());
@@ -60,7 +69,7 @@ public class TeacherPlayerController {
                 player.setLastName(lastName);
                 player.setName(name);
 
-                Player teacher = Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser();
+                Player teacher = currentUser.get().getUser();
                 player.setCreator(teacher);
                 model.addAttribute("player", playerService.create(player));
                 model.addAttribute("codRegister", 1);

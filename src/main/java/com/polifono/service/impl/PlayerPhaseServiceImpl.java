@@ -3,6 +3,7 @@ package com.polifono.service.impl;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -27,28 +28,13 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 
     private final IPlayerPhaseRepository repository;
 
-    public final PlayerPhase save(PlayerPhase playerPhase) {
+    @Override
+    public PlayerPhase save(PlayerPhase playerPhase) {
         return repository.save(playerPhase);
     }
 
-    /**
-     * Return the last phase that the player has completed.
-     */
-    public final PlayerPhase findLastPhaseCompleted(int playerId, int gameId) {
-        List<PlayerPhase> playerPhases = repository.findLastPhaseCompleted(playerId, gameId);
-
-        if (!playerPhases.isEmpty()) {
-            return playerPhases.get(0);
-        }
-
-        return null;
-    }
-
-    public final PlayerPhase findByPlayerPhaseAndStatus(int playerId, int phaseId, int phasestatusId) {
-        return repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId);
-    }
-
-    public final List<PlayerPhase> findByPlayer(int playerId) {
+    @Override
+    public List<PlayerPhase> findByPlayer(int playerId) {
         List<PlayerPhase> list = repository.findByPlayer(playerId);
 
         if (list == null || list.isEmpty()) {
@@ -58,25 +44,27 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
         return list;
     }
 
-    /**
-     * Based on a list of playerPhase, get the games only once.
-     */
-    public final List<Game> filterPlayerPhasesListByGame(List<PlayerPhase> list) {
-        List<Game> ret = new ArrayList<>();
-
-        int gameId = 0;
-
-        for (PlayerPhase pf : list) {
-            if (gameId != pf.getPhase().getMap().getGame().getId()) {
-                gameId = pf.getPhase().getMap().getGame().getId();
-                ret.add(pf.getPhase().getMap().getGame());
-            }
-        }
-
-        return ret;
+    @Override
+    public PlayerPhase findByPlayerPhaseAndStatus(int playerId, int phaseId, int phasestatusId) {
+        return repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId);
     }
 
-    public final List<PlayerPhase> findForReportGeneral(ReportGeneralForm reportGeneralForm, int playerId) {
+    /**
+     * Return the last phase that the player has completed.
+     */
+    @Override
+    public Optional<PlayerPhase> findLastPhaseCompleted(int playerId, int gameId) {
+        List<PlayerPhase> playerPhases = repository.findLastPhaseCompleted(playerId, gameId);
+
+        if (!playerPhases.isEmpty()) {
+            return Optional.of(playerPhases.get(0));
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
+    public List<PlayerPhase> findForReportGeneral(ReportGeneralForm reportGeneralForm, int playerId) {
         List<PlayerPhase> list = repository.findForReportGeneral(playerId, reportGeneralForm.getGame().getId(), reportGeneralForm.getPhaseBegin(),
                 reportGeneralForm.getPhaseEnd());
 
@@ -90,6 +78,7 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
     /**
      * Verify if the phase was already done by the player.
      */
+    @Override
     public boolean isPhaseAlreadyCompletedByPlayer(Phase phase, Player player) {
 
         PlayerPhase playerPhase = this.findByPlayerPhaseAndStatus(player.getId(), phase.getId(), 3);
@@ -101,6 +90,7 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
     /**
      * This method is used to register an attempt of doing the test.
      */
+    @Override
     public PlayerPhase setTestAttempt(Player player, Phase phase) {
         PlayerPhase playerPhase = this.findByPlayerPhaseAndStatus(player.getId(), phase.getId(), 2);
 
@@ -122,9 +112,30 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
     }
 
     /**
+     * Based on a list of playerPhase, get the games only once.
+     */
+    @Override
+    public List<Game> filterPlayerPhasesListByGame(List<PlayerPhase> list) {
+        List<Game> ret = new ArrayList<>();
+
+        int gameId = 0;
+
+        for (PlayerPhase pf : list) {
+            if (gameId != pf.getPhase().getMap().getGame().getId()) {
+                gameId = pf.getPhase().getMap().getGame().getId();
+                ret.add(pf.getPhase().getMap().getGame());
+            }
+        }
+
+        return ret;
+    }
+
+    /**
      * This method is used to get the top 10 best students of the month.
      * The students that has achieved the highest scores.
      */
+    // TODO - Add response to a cache.
+    @Override
     public List<RankingDTO> getRankingMonthly() {
         List<RankingDTO> ranking = new ArrayList<>();
 

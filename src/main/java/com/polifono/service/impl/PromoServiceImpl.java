@@ -16,7 +16,7 @@ public class PromoServiceImpl implements IPromoService {
 
     private final IPromoRepository repository;
 
-    public final Promo save(Promo promo) {
+    public Promo save(Promo promo) {
         return repository.save(promo);
     }
 

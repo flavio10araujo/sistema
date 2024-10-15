@@ -10,10 +10,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.domain.Content;
@@ -41,7 +42,7 @@ public class QuestionController {
     private final IContentService contentService;
     private final IQuestionService questionService;
 
-    @RequestMapping(value = { "/question", "/question/savepage" }, method = RequestMethod.GET)
+    @GetMapping({ "/question", "/question/savepage" })
     public String savePage(HttpSession session, Model model) {
         model.addAttribute("question", new Question());
 
@@ -100,13 +101,13 @@ public class QuestionController {
         return URL_ADMIN_BASIC_QUESTION_INDEX;
     }
 
-    @RequestMapping(value = { "/question" }, method = RequestMethod.POST)
+    @PostMapping("/question")
     public String setFilter(HttpSession session, @ModelAttribute("questionFilterForm") QuestionFilterForm questionFilterForm) {
         session.setAttribute("questionFilterForm", questionFilterForm);
         return REDIRECT_ADMIN_BASIC_QUESTION;
     }
 
-    @RequestMapping(value = { "/question/save" }, method = RequestMethod.POST)
+    @PostMapping("/question/save")
     public String save(@ModelAttribute("question") Question question, final RedirectAttributes redirectAttributes) {
         if (questionService.save(question) != null) {
             redirectAttributes.addFlashAttribute("save", "success");
@@ -117,7 +118,7 @@ public class QuestionController {
         return REDIRECT_ADMIN_BASIC_QUESTION_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/question/{operation}/{id}", method = RequestMethod.GET)
+    @GetMapping("/question/{operation}/{id}")
     public String editRemove(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes,
             Model model) {
 
@@ -142,7 +143,7 @@ public class QuestionController {
         return REDIRECT_ADMIN_BASIC_QUESTION_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/question/update", method = RequestMethod.POST)
+    @PostMapping("/question/update")
     public String update(@ModelAttribute("edit") Question edit, final RedirectAttributes redirectAttributes) {
 
         try {

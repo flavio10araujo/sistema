@@ -14,7 +14,7 @@ public class PlayerPromoServiceImpl implements IPlayerPromoService {
 
     private final IPlayerPromoRepository repository;
 
-    public final PlayerPromo save(PlayerPromo playerPromo) {
+    public PlayerPromo save(PlayerPromo playerPromo) {
         return repository.save(playerPromo);
     }
 

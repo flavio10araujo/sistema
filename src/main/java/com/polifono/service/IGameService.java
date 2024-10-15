@@ -1,6 +1,7 @@
 package com.polifono.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.polifono.domain.Game;
 import com.polifono.domain.Phase;
@@ -11,7 +12,7 @@ public interface IGameService {
 
     List<Game> findByActive(boolean active);
 
-    Game findByNamelink(String namelink);
+    Optional<Game> findByNamelink(String namelink);
 
     int calculateScore(int numAttempts, int grade);
 

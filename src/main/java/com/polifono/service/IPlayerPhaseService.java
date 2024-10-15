@@ -1,6 +1,7 @@
 package com.polifono.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.polifono.domain.Game;
 import com.polifono.domain.Phase;
@@ -17,7 +18,7 @@ public interface IPlayerPhaseService {
 
     PlayerPhase findByPlayerPhaseAndStatus(int playerId, int phaseId, int phasestatusId);
 
-    PlayerPhase findLastPhaseCompleted(int playerId, int gameId);
+    Optional<PlayerPhase> findLastPhaseCompleted(int playerId, int gameId);
 
     List<PlayerPhase> findForReportGeneral(ReportGeneralForm reportGeneralForm, int playerId);
 

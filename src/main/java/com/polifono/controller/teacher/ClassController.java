@@ -6,23 +6,23 @@ import static com.polifono.common.TemplateConstants.URL_TEACHER_CLASS_EDIT_PAGE;
 import static com.polifono.common.TemplateConstants.URL_TEACHER_CLASS_INDEX;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.domain.ClassPlayer;
+import com.polifono.domain.bean.CurrentUser;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
 import com.polifono.service.impl.SecurityService;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -34,17 +34,29 @@ public class ClassController {
     private final IClassService classService;
     private final IClassPlayerService classPlayerService;
 
-    @RequestMapping(value = { "/class", "/class/savepage" }, method = RequestMethod.GET)
-    public String savePage(HttpSession session, Model model) {
+    @GetMapping({ "/class", "/class/savepage" })
+    public String savePage(Model model) {
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
+
         model.addAttribute("class", new com.polifono.domain.Class());
-        model.addAttribute("classes", classService.findByTeacherAndStatus(securityService.getCurrentAuthenticatedUser().getUser().getId(), true));
+        model.addAttribute("classes", classService.findByTeacherAndStatus(currentUser.get().getUser().getId(), true));
         return URL_TEACHER_CLASS_INDEX;
     }
 
-    @RequestMapping(value = { "/class/save" }, method = RequestMethod.POST)
+    @PostMapping("/class/save")
     public String save(@ModelAttribute("class") com.polifono.domain.Class clazz, final RedirectAttributes redirectAttributes) {
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
+
         try {
-            clazz.setPlayer(Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser());
+            clazz.setPlayer(currentUser.get().getUser());
             classService.save(classService.prepareClassForCreation(clazz));
             redirectAttributes.addFlashAttribute("save", "success");
         } catch (Exception e) {
@@ -54,15 +66,22 @@ public class ClassController {
         return REDIRECT_TEACHER_CLASS_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/class/{operation}/{id}", method = RequestMethod.GET)
+    @GetMapping("/class/{operation}/{id}")
     public String editRemove(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes,
             Model model) {
+
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
 
         // The teacher only can edit/delete/duplicate his own classes.
         com.polifono.domain.Class current = classService.findById(id.intValue()).get();
 
-        if (current.getPlayer().getId() != Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId())
+        if (current.getPlayer().getId() != currentUser.get().getUser().getId()) {
             return REDIRECT_HOME;
+        }
 
         switch (operation) {
         case "delete" -> {
@@ -87,7 +106,7 @@ public class ClassController {
             newClass.setName(newClass.getName() + " CLONE");
             newClass = classService.save(classService.prepareClassForCreation(newClass));
 
-            List<ClassPlayer> students = classPlayerService.findByClassAndStatus(current.getId(), 2);
+            List<ClassPlayer> students = classPlayerService.findAllByClassIdAndStatus(current.getId(), 2);
 
             for (ClassPlayer student : students) {
                 ClassPlayer studentClone = new ClassPlayer();
@@ -104,18 +123,28 @@ public class ClassController {
         return REDIRECT_TEACHER_CLASS_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/class/update", method = RequestMethod.POST)
+    @PostMapping("/class/update")
     public String update(@ModelAttribute("edit") com.polifono.domain.Class edit, final RedirectAttributes redirectAttributes) {
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
 
-        com.polifono.domain.Class current = classService.findById(edit.getId()).get();
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
+
+        Optional<com.polifono.domain.Class> current = classService.findById(edit.getId());
+
+        if (current.isEmpty()) {
+            return REDIRECT_HOME;
+        }
 
         // The teacher only can edit his own classes.
-        if (current.getPlayer().getId() != Objects.requireNonNull(securityService.getCurrentAuthenticatedUser()).getUser().getId())
+        if (current.get().getPlayer().getId() != currentUser.get().getUser().getId()) {
             return REDIRECT_HOME;
+        }
 
-        edit.setPlayer(current.getPlayer());
-        edit.setDtInc(current.getDtInc());
-        edit.setActive(current.isActive());
+        edit.setPlayer(current.get().getPlayer());
+        edit.setDtInc(current.get().getDtInc());
+        edit.setActive(current.get().isActive());
 
         if (classService.save(edit) != null) {
             redirectAttributes.addFlashAttribute("edit", "success");

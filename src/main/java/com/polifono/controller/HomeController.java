@@ -7,8 +7,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.domain.Player;
@@ -30,8 +30,8 @@ public class HomeController {
     private final RecaptchaService captchaService;
     private final SendEmailService sendEmailService;
 
-    @RequestMapping(value = { "/" }, method = RequestMethod.GET)
-    public final String index(final Model model) {
+    @GetMapping("/")
+    public String index(final Model model) {
         if (securityService.isAuthenticated()) {
             return REDIRECT_GAMES;
         } else {
@@ -41,8 +41,8 @@ public class HomeController {
         }
     }
 
-    @RequestMapping(value = { "/login" }, method = RequestMethod.GET)
-    public final String index(final Model model, @RequestParam Optional<String> error) {
+    @GetMapping("/login")
+    public String index(final Model model, @RequestParam Optional<String> error) {
         log.debug("Getting login page, error={}", error);
         model.addAttribute("player", new Player());
         model.addAttribute("playerResend", new Player());
@@ -50,8 +50,8 @@ public class HomeController {
         return URL_INDEX;
     }
 
-    @RequestMapping(value = { "/contact" }, method = RequestMethod.POST)
-    public final String contactSubmit(final Model model, @RequestParam(value = "email", defaultValue = "") String email,
+    @PostMapping("/contact")
+    public String contactSubmit(final Model model, @RequestParam(value = "email", defaultValue = "") String email,
             @RequestParam("message") String message,
             @RequestParam(name = "g-recaptcha-response") String recaptchaResponse, HttpServletRequest request) {
 
@@ -88,7 +88,7 @@ public class HomeController {
         return URL_INDEX;
     }
 
-    public String validateContact(String email, String message) {
+    private String validateContact(String email, String message) {
         String msg = "";
 
         if (email == null || email.isEmpty()) {

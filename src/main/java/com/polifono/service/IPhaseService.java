@@ -24,13 +24,13 @@ public interface IPhaseService {
 
     List<Phase> findByMap(int mapId);
 
-    Phase findByMapAndOrder(int mapId, int phaseOrder);
+    Optional<Phase> findByMapAndOrder(int mapId, int phaseOrder);
 
-    Phase findNextPhaseInThisMap(int mapId, int phaseOrder);
+    Optional<Phase> findNextPhaseInThisMap(int mapId, int phaseOrder);
 
-    Phase findLastPhaseDoneByPlayerAndGame(int playerId, int gameId);
+    Optional<Phase> findLastPhaseDoneByPlayerAndGame(int playerId, int gameId);
 
-    Phase findLastPhaseOfTheLevel(int gameId, int levelId);
+    Optional<Phase> findLastPhaseOfTheLevel(int gameId, int levelId);
 
     List<Phase> findGamesForProfile(int playerId);
 

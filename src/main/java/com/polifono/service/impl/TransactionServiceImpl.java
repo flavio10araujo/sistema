@@ -18,19 +18,19 @@ public class TransactionServiceImpl implements ITransactionService {
 
     private final ITransactionRepository repository;
 
-    public final Transaction save(Transaction transaction) {
+    public Transaction save(Transaction transaction) {
         return repository.save(transaction);
     }
 
-    public final Optional<Transaction> findById(int transactionId) {
+    public Optional<Transaction> findById(int transactionId) {
         return repository.findById(transactionId);
     }
 
-    public final List<Transaction> findByCode(String code) {
+    public List<Transaction> findByCode(String code) {
         return repository.findByCode(code);
     }
 
-    public final List<Transaction> findByPlayerAndStatus(Player player, int status) {
+    public List<Transaction> findByPlayerAndStatus(Player player, int status) {
         return repository.findByPlayerAndStatus(player, status);
     }
 }

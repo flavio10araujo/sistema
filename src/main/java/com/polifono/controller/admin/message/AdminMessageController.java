@@ -8,8 +8,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.polifono.domain.Communication;
 import com.polifono.domain.Groupcommunication;
@@ -32,12 +33,12 @@ public class AdminMessageController {
     private final IPlayerCommunicationService playerCommunicationService;
     private final SendEmailService sendEmailService;
 
-    @RequestMapping(value = { "/group04" }, method = RequestMethod.GET)
+    @GetMapping("/group04")
     public String group04() {
         return URL_ADMIN_MESSAGE_GROUP_04;
     }
 
-    @RequestMapping(value = { "/group04" }, method = RequestMethod.POST)
+    @PostMapping("/group04")
     public String group04Submit(Model model) {
         Groupcommunication groupcommunication = new Groupcommunication();
         groupcommunication.setId(4);
@@ -52,12 +53,12 @@ public class AdminMessageController {
         return URL_ADMIN_MESSAGE_GROUP_04;
     }
 
-    @RequestMapping(value = { "/group05" }, method = RequestMethod.GET)
+    @GetMapping("/group05")
     public String group05() {
         return URL_ADMIN_MESSAGE_GROUP_05;
     }
 
-    @RequestMapping(value = { "/group05" }, method = RequestMethod.POST)
+    @PostMapping("/group05")
     public String group05Submit(Model model) {
 
         Groupcommunication groupcommunication = new Groupcommunication();

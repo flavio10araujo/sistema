@@ -1,6 +1,6 @@
 package com.polifono.service.impl;
 
-import javax.annotation.Nullable;
+import java.util.Optional;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -34,18 +34,15 @@ public class SecurityService {
 
     /**
      * Get the current authenticated user.
-     *
-     * @return the current authenticated user or null if the user is not authenticated.
      */
-    @Nullable
-    public CurrentUser getCurrentAuthenticatedUser() {
+    public Optional<CurrentUser> getCurrentAuthenticatedUser() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof CurrentUser) {
-            return (CurrentUser) authentication.getPrincipal();
+            return Optional.of((CurrentUser) authentication.getPrincipal());
         }
 
-        return null;
+        return Optional.empty();
     }
 
     /**

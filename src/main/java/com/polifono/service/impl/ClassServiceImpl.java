@@ -17,7 +17,7 @@ public class ClassServiceImpl implements IClassService {
 
     private final IClassRepository repository;
 
-    public final com.polifono.domain.Class save(com.polifono.domain.Class clazz) {
+    public com.polifono.domain.Class save(com.polifono.domain.Class clazz) {
         return repository.save(clazz);
     }
 
@@ -41,26 +41,26 @@ public class ClassServiceImpl implements IClassService {
         return repository.findById(id);
     }
 
-    public final List<com.polifono.domain.Class> findAll() {
-        return (List<com.polifono.domain.Class>) repository.findAll();
+    public List<com.polifono.domain.Class> findAll() {
+        return repository.findAll();
     }
 
-    public final com.polifono.domain.Class prepareClassForCreation(com.polifono.domain.Class clazz) {
+    public com.polifono.domain.Class prepareClassForCreation(com.polifono.domain.Class clazz) {
         clazz.setDtInc(new Date());
         clazz.setActive(true);
         return clazz;
     }
 
-    public final com.polifono.domain.Class prepareClassForChangingStatus(com.polifono.domain.Class clazz, boolean status) {
+    public com.polifono.domain.Class prepareClassForChangingStatus(com.polifono.domain.Class clazz, boolean status) {
         clazz.setActive(status);
         return clazz;
     }
 
-    public final List<com.polifono.domain.Class> findByTeacherAndStatus(int playerId, boolean status) {
+    public List<com.polifono.domain.Class> findByTeacherAndStatus(int playerId, boolean status) {
         return repository.findByTeacherAndStatus(playerId, status);
     }
 
-    public final com.polifono.domain.Class clone(com.polifono.domain.Class clazz) {
+    public com.polifono.domain.Class clone(com.polifono.domain.Class clazz) {
         com.polifono.domain.Class newItem = new com.polifono.domain.Class();
 
         newItem.setActive(clazz.isActive());

@@ -67,22 +67,6 @@ public class PlayervideoController {
         }
     }
 
-    public boolean verifyRestriction(String restriction, int id) {
-        if (restriction == null || restriction.isEmpty() || "0".equals(restriction)) {
-            return true;
-        }
-
-        String[] restrictionArr = restriction.split(",");
-
-        for (String s : restrictionArr) {
-            if (s.equals(id + "")) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     @GetMapping(value = "/playervideos/content/{contentId}", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public List<PlayervideoDTO> playerVideosByContent(@PathVariable("contentId") Integer contentId, @RequestParam(value = "page") String pageStr,
@@ -143,6 +127,22 @@ public class PlayervideoController {
         } catch (Exception e) {
             return new ArrayList<>();
         }
+    }
+
+    private boolean verifyRestriction(String restriction, int id) {
+        if (restriction == null || restriction.isEmpty() || "0".equals(restriction)) {
+            return true;
+        }
+
+        String[] restrictionArr = restriction.split(",");
+
+        for (String s : restrictionArr) {
+            if (s.equals(id + "")) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private List<PlayervideoDTO> convertToDto(List<Playervideo> playervideoList) {
