@@ -142,8 +142,8 @@ public class PlayerPhaseServiceImplTest {
 
     @Test
     public void findLastPhaseCompleted_WhenPlayerHasntCompletedAnyPhaseOfTheGame_ReturnNull() {
-        PlayerPhase entity = service.findLastPhaseCompleted(PLAYER_ID_EXISTENT, GAME_ID_INEXISTENT);
-        Assertions.assertNull(entity, "failure - expected null");
+        Optional<PlayerPhase> entity = service.findLastPhaseCompleted(PLAYER_ID_EXISTENT, GAME_ID_INEXISTENT);
+        Assertions.assertFalse(entity.isPresent(), "failure - expected null");
     }
     /* findLastPhaseCompleted - end */
 

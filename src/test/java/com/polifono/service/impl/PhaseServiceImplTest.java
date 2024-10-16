@@ -317,10 +317,10 @@ public class PhaseServiceImplTest {
     public void findByMapAndOrder_WhenSearchByMapAndOrderExistents_ReturnList() {
         int mapId = MAP_ID_EXISTENT, phaseOrder = ORDER_EXISTENT;
         Phase entityReturned = new Phase();
-        when(repository.findByMapAndOrder(mapId, phaseOrder)).thenReturn(entityReturned);
+        when(repository.findByMapAndOrder(mapId, phaseOrder)).thenReturn(Optional.of(entityReturned));
 
-        Phase entity = service.findByMapAndOrder(MAP_ID_EXISTENT, ORDER_EXISTENT);
-        Assertions.assertNotNull(entity, "failure - expected not null");
+        Optional<Phase> entity = service.findByMapAndOrder(MAP_ID_EXISTENT, ORDER_EXISTENT);
+        Assertions.assertTrue(entity.isPresent(), "failure - expected not null");
     }
 
     @Test
@@ -328,8 +328,8 @@ public class PhaseServiceImplTest {
         int mapId = MAP_ID_INEXISTENT, phaseOrder = ORDER_INEXISTENT;
         when(repository.findByMapAndOrder(mapId, phaseOrder)).thenReturn(null);
 
-        Phase entity = service.findByMapAndOrder(MAP_ID_INEXISTENT, ORDER_INEXISTENT);
-        Assertions.assertNull(entity, "failure - expected null");
+        Optional<Phase> entity = service.findByMapAndOrder(MAP_ID_INEXISTENT, ORDER_INEXISTENT);
+        Assertions.assertTrue(entity.isPresent(), "failure - expected null");
     }
     /* findByMapAndOrder - end */
 
@@ -353,12 +353,12 @@ public class PhaseServiceImplTest {
         Phase entityReturned = new Phase();
         entityReturned.setOrder(phaseOrder);
 
-        when(repository.findNextPhaseInThisMap(firstPhase.getMap().getId(), firstPhase.getOrder() + 1)).thenReturn(entityReturned);
+        when(repository.findNextPhaseInThisMap(firstPhase.getMap().getId(), firstPhase.getOrder() + 1)).thenReturn(Optional.of(entityReturned));
 
-        Phase entity = service.findNextPhaseInThisMap(firstPhase.getMap().getId(), firstPhase.getOrder() + 1);
+        Optional<Phase> entity = service.findNextPhaseInThisMap(firstPhase.getMap().getId(), firstPhase.getOrder() + 1);
 
-        Assertions.assertNotNull(entity, "failure - expected not null");
-        Assertions.assertEquals(firstPhase.getOrder() + 1, entity.getOrder());
+        Assertions.assertTrue(entity.isPresent(), "failure - expected not null");
+        Assertions.assertEquals(firstPhase.getOrder() + 1, entity.get().getOrder());
     }
 
     @Test
@@ -378,9 +378,9 @@ public class PhaseServiceImplTest {
 
         when(repository.findNextPhaseInThisMap(firstPhase.getMap().getId(), firstPhase.getOrder() + 1)).thenReturn(null);
 
-        Phase entity = service.findNextPhaseInThisMap(firstPhase.getMap().getId(), firstPhase.getOrder() + 1);
+        Optional<Phase> entity = service.findNextPhaseInThisMap(firstPhase.getMap().getId(), firstPhase.getOrder() + 1);
 
-        Assertions.assertNull(entity, "failure - expected null");
+        Assertions.assertFalse(entity.isPresent(), "failure - expected null");
     }
     /* findNextPhaseInThisMap - end */
 
@@ -395,9 +395,9 @@ public class PhaseServiceImplTest {
         listReturned.add(phase);
         when(repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId)).thenReturn(listReturned);
 
-        Phase entity = service.findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, GAME_ID_EXISTENT);
-        Assertions.assertNotNull(entity, "failure - expected not null");
-        Assertions.assertNotEquals(0, entity.getId(), "failure - expected id attribute bigger than 0");
+        Optional<Phase> entity = service.findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, GAME_ID_EXISTENT);
+        Assertions.assertTrue(entity.isPresent(), "failure - expected not null");
+        Assertions.assertNotEquals(0, entity.get().getId(), "failure - expected id attribute bigger than 0");
     }
     /* findLastPhaseDoneByPlayerAndGame - end */
 
@@ -415,16 +415,16 @@ public class PhaseServiceImplTest {
         listReturned.add(itemReturned);
         when(repository.findLastPhaseOfTheLevel(gameId, levelId)).thenReturn(listReturned);
 
-        Phase entity = service.findLastPhaseOfTheLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
-        Assertions.assertNotNull(entity, "failure - expected not null");
-        Assertions.assertNotEquals(0, entity.getId(), "failure - expected id attribute bigger than 0");
+        Optional<Phase> entity = service.findLastPhaseOfTheLevel(GAME_ID_EXISTENT, LEVEL_ID_EXISTENT);
+        Assertions.assertTrue(entity.isPresent(), "failure - expected not null");
+        Assertions.assertNotEquals(0, entity.get().getId(), "failure - expected id attribute bigger than 0");
 
         // The only way to be sure that entity is the last phase of the level is if when we use findNextPhaseInThisMap the return is null.
-        int mapId = entity.getMap().getId(), phaseOrder = (entity.getOrder() + 1);
+        int mapId = entity.get().getMap().getId(), phaseOrder = (entity.get().getOrder() + 1);
         when(repository.findNextPhaseInThisMap(mapId, phaseOrder)).thenReturn(null);
 
-        Phase entityNull = service.findNextPhaseInThisMap(entity.getMap().getId(), entity.getOrder() + 1);
-        Assertions.assertNull(entityNull, "failure - expected null");
+        Optional<Phase> entityNull = service.findNextPhaseInThisMap(entity.get().getMap().getId(), entity.get().getOrder() + 1);
+        Assertions.assertFalse(entityNull.isPresent(), "failure - expected null");
     }
     /* findLastPhaseOfTheLevel - end */
 

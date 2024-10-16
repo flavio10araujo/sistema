@@ -12,7 +12,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.polifono.controller.BaseController;
 
 /**
  * This class extends the functionality of AbstractTest.
@@ -45,10 +44,10 @@ public abstract class AbstractControllerTest extends AbstractTest {
      *
      * @param controller A controller object to be tested.
      */
-    protected void setUp(BaseController controller) {
+    /*protected void setUp(BaseController controller) {
         mvc = MockMvcBuilders.standaloneSetup(controller)
                 .build(); // standaloneSetup method is used when we want to configure the tested controller and the required MVC components manually.
-    }
+    }*/
 
     /**
      * Maps an Object into a JSON String. Uses a Jackson ObjectMapper.
