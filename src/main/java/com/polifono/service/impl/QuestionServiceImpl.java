@@ -17,7 +17,7 @@ public class QuestionServiceImpl implements IQuestionService {
 
     private final IQuestionRepository repository;
 
-    public final Question save(Question question) {
+    public Question save(Question question) {
         return repository.save(question);
     }
 
@@ -37,31 +37,31 @@ public class QuestionServiceImpl implements IQuestionService {
         return false;
     }
 
-    public final Optional<Question> findById(int questionId) {
+    public Optional<Question> findById(int questionId) {
         return repository.findById(questionId);
     }
 
-    public final List<Question> findAll() {
+    public List<Question> findAll() {
         return repository.findAll();
     }
 
-    public final List<Question> findByGame(int gameId) {
+    public List<Question> findByGame(int gameId) {
         return repository.findByGame(gameId);
     }
 
-    public final List<Question> findByGameAndLevel(int gameId, int levelId) {
+    public List<Question> findByGameAndLevel(int gameId, int levelId) {
         return repository.findByGameAndLevel(gameId, levelId);
     }
 
-    public final List<Question> findByMap(int mapId) {
+    public List<Question> findByMap(int mapId) {
         return repository.findByMap(mapId);
     }
 
-    public final List<Question> findByPhase(int phaseId) {
+    public List<Question> findByPhase(int phaseId) {
         return repository.findByPhase(phaseId);
     }
 
-    public final List<Question> findByContent(int contentId) {
+    public List<Question> findByContent(int contentId) {
         return repository.findByContent(contentId);
     }
 }

@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
-import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 
 public interface IPhaseService {
@@ -24,19 +23,19 @@ public interface IPhaseService {
 
     List<Phase> findByMap(int mapId);
 
-    Phase findByMapAndOrder(int mapId, int phaseOrder);
+    Optional<Phase> findByMapAndOrder(int mapId, int phaseOrder);
 
-    Phase findNextPhaseInThisMap(int mapId, int phaseOrder);
+    Optional<Phase> findNextPhaseInThisMap(int mapId, int phaseOrder);
 
-    Phase findLastPhaseDoneByPlayerAndGame(int playerId, int gameId);
+    Optional<Phase> findLastPhaseDoneByPlayerAndGame(int playerId, int gameId);
 
-    Phase findLastPhaseOfTheLevel(int gameId, int levelId);
+    Optional<Phase> findLastPhaseOfTheLevel(int gameId, int levelId);
 
     List<Phase> findGamesForProfile(int playerId);
 
     List<Phase> findPhasesCheckedByMap(Map map, PlayerPhase lastPhaseCompleted);
 
-    boolean playerCanAccessThisPhase(Phase phase, Player user);
+    boolean canPlayerAccessPhase(Phase phase, int playerId);
 
     List<Phase> findPhasesBySearchAndUser(String q, int playerId);
 }

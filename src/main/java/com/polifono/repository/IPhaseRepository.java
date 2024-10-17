@@ -1,6 +1,7 @@
 package com.polifono.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,10 +21,10 @@ public interface IPhaseRepository extends JpaRepository<Phase, Integer> {
     List<Phase> findByGameAndLevel(@Param("gameId") int gameId, @Param("levelId") int levelId);
 
     @Query("SELECT phase FROM Phase phase WHERE phase.map.id = :mapId AND phase.order = :phaseOrder")
-    Phase findByMapAndOrder(@Param("mapId") int mapId, @Param("phaseOrder") int phaseOrder);
+    Optional<Phase> findByMapAndOrder(@Param("mapId") int mapId, @Param("phaseOrder") int phaseOrder);
 
     @Query("SELECT phase FROM Phase phase WHERE phase.map.id = :mapId AND phase.order = :phaseOrder")
-    Phase findNextPhaseInThisMap(@Param("mapId") int mapId, @Param("phaseOrder") int phaseOrder);
+    Optional<Phase> findNextPhaseInThisMap(@Param("mapId") int mapId, @Param("phaseOrder") int phaseOrder);
 
     @Query("SELECT phase FROM PlayerPhase playerPhase, Phase phase, Map map WHERE playerPhase.phase.id = phase.id AND phase.map.id = map.id AND playerPhase.player.id = :playerId AND map.game.id = :gameId ORDER BY phase.order DESC")
     List<Phase> findLastPhaseDoneByPlayerAndGame(@Param("playerId") int playerId, @Param("gameId") int gameId);

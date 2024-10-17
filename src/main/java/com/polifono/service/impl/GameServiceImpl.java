@@ -1,6 +1,7 @@
 package com.polifono.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,8 @@ public class GameServiceImpl implements IGameService {
     private final IGameRepository repository;
     private final IQuestionService questionService;
 
-    public final List<Game> findAll() {
+    @Override
+    public List<Game> findAll() {
         return repository.findAll();
     }
 
@@ -30,13 +32,15 @@ public class GameServiceImpl implements IGameService {
         return repository.findByActive(active);
     }
 
-    public final Game findByNamelink(String namelink) {
-        return repository.findByNamelink(namelink);
+    @Override
+    public Optional<Game> findByNamelink(String namelink) {
+        return Optional.ofNullable(repository.findByNamelink(namelink));
     }
 
     /**
      * This method is used to calculate the correct score to the player.
      */
+    @Override
     public int calculateScore(int numAttempts, int grade) {
 		/*
 		 1
@@ -101,6 +105,7 @@ public class GameServiceImpl implements IGameService {
      * playerAnswers are the answers of the player.
      * This method returns the percentage of right answers given by the player.
      */
+    @Override
     public int calculateGrade(List<Integer> questionsId, java.util.Map<String, String> playerAnswers) {
         Question questionAux;
         int countQuestionsRight = 0, phaseOrder = 0;
@@ -134,7 +139,8 @@ public class GameServiceImpl implements IGameService {
     /**
      * Get the phase of a test based on the ID of the last question of the test.
      */
-    public final Phase getPhaseOfTheTest(List<Integer> questionsId) {
+    @Override
+    public Phase getPhaseOfTheTest(List<Integer> questionsId) {
         Integer questionId = questionsId.get(questionsId.size() - 1);
         Question questionAux = questionService.findById(questionId).get();
         return questionAux.getContent().getPhase();

@@ -20,7 +20,7 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
     private final IClassPlayerRepository repository;
 
     @Override
-    public final ClassPlayer save(ClassPlayer classPlayer) {
+    public ClassPlayer save(ClassPlayer classPlayer) {
         return repository.save(classPlayer);
     }
 
@@ -47,17 +47,13 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
     }
 
     @Override
-    public final List<ClassPlayer> findAll() {
-        return (List<ClassPlayer>) repository.findAll();
+    public List<ClassPlayer> findAll() {
+        return repository.findAll();
     }
 
-    /**
-     * Get all the students of this teacher (playerId).
-     * Get only student in the status 1 (pending) and 2 (confirmed).
-     */
     @Override
-    public final List<ClassPlayer> findByTeacher(int playerId) {
-        return repository.findByTeacher(playerId);
+    public List<ClassPlayer> findAllByClassIdAndStatus(int clazzId, int status) {
+        return repository.findAllByClassIdAndStatus(clazzId, status);
     }
 
     /**
@@ -65,23 +61,22 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
      * Get only student in the status 1 (pending) and 2 (confirmed).
      */
     @Override
-    public final List<ClassPlayer> findByTeacherAndClass(int playerId, int clazzId) {
-        return repository.findByTeacherAndClass(playerId, clazzId);
+    public List<ClassPlayer> findAllByClassIdAndTeacherId(int clazzId, int teacherId) {
+        return repository.findAllByClassIdAndTeacherId(clazzId, teacherId);
     }
 
     @Override
-    public final List<ClassPlayer> findByClassAndStatus(int clazzId, int status) {
-        return repository.findByClassAndStatus(clazzId, status);
+    public List<ClassPlayer> findAllByClassIdAndStudentId(int clazzId, int studentId) {
+        return repository.findAllByClassIdAndStudentId(clazzId, studentId);
     }
 
+    /**
+     * Get all the students of this teacher (playerId).
+     * Get only student in the status 1 (pending) and 2 (confirmed).
+     */
     @Override
-    public final List<ClassPlayer> findByClassAndPlayer(int clazzId, int playerId) {
-        return repository.findByClassAndPlayer(clazzId, playerId);
-    }
-
-    @Override
-    public final List<ClassPlayer> findByPlayerAndStatus(int playerId, int status) {
-        return repository.findByPlayerAndStatus(playerId, status);
+    public List<ClassPlayer> findAllByTeacherId(int teacherId) {
+        return repository.findAllByTeacherId(teacherId);
     }
 
     /**
@@ -89,13 +84,18 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
      * The studentId must be in status 2 (confirmed).
      */
     @Override
-    public final List<ClassPlayer> findByTeacherAndStudent(int teacherId, int studentId) {
-        return repository.findByTeacherAndStudent(teacherId, studentId);
+    public List<ClassPlayer> findAllByTeacherIdAndStudentId(int teacherId, int studentId) {
+        return repository.findAllByTeacherIdAndStudentId(teacherId, studentId);
     }
 
     @Override
-    public final ClassPlayer create(ClassPlayer classPlayer) {
-        return repository.save(this.prepareClassPlayerForCreation(classPlayer));
+    public List<ClassPlayer> findAllByStudentIdAndStatus(int studentId, int status) {
+        return repository.findAllByStudentIdAndStatus(studentId, status);
+    }
+
+    @Override
+    public ClassPlayer create(ClassPlayer classPlayer) {
+        return repository.save(prepareClassPlayerForCreation(classPlayer));
     }
 
     /**
@@ -104,19 +104,12 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
      */
     @Override
     public boolean isMyStudent(Player teacher, Player student) {
-        List<ClassPlayer> classPlayers = this.findByTeacherAndStudent(teacher.getId(), student.getId());
+        List<ClassPlayer> classPlayers = findAllByTeacherIdAndStudentId(teacher.getId(), student.getId());
         return classPlayers != null && !classPlayers.isEmpty();
     }
 
-    public final ClassPlayer prepareClassPlayerForCreation(ClassPlayer classPlayer) {
-        classPlayer.setDtInc(new Date());
-        classPlayer.setActive(true);
-        classPlayer.setStatus(2);
-        return classPlayer;
-    }
-
     @Override
-    public final boolean changeStatus(int id, int status) {
+    public boolean changeStatus(int id, int status) {
         Optional<ClassPlayer> temp = repository.findById(id);
 
         if (temp.isPresent()) {
@@ -132,7 +125,14 @@ public class ClassPlayerServiceImpl implements IClassPlayerService {
         return false;
     }
 
-    public final ClassPlayer prepareClassPlayerToChangeStatus(ClassPlayer classPlayer, int status) {
+    private ClassPlayer prepareClassPlayerForCreation(ClassPlayer classPlayer) {
+        classPlayer.setDtInc(new Date());
+        classPlayer.setActive(true);
+        classPlayer.setStatus(2);
+        return classPlayer;
+    }
+
+    private ClassPlayer prepareClassPlayerToChangeStatus(ClassPlayer classPlayer, int status) {
         classPlayer.setStatus(status);
         return classPlayer;
     }

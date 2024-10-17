@@ -1,16 +1,31 @@
 package com.polifono.controller;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_GAMES;
+import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.TemplateConstants.URL_BUY_CREDITS;
+import static com.polifono.common.TemplateConstants.URL_GAMES_END_OF_GAME;
+import static com.polifono.common.TemplateConstants.URL_GAMES_END_OF_LEVEL;
+import static com.polifono.common.TemplateConstants.URL_GAMES_INDEX;
+import static com.polifono.common.TemplateConstants.URL_GAMES_LEVEL;
+import static com.polifono.common.TemplateConstants.URL_GAMES_MAP;
+import static com.polifono.common.TemplateConstants.URL_GAMES_PHASE_CONTENT;
+import static com.polifono.common.TemplateConstants.URL_GAMES_PHASE_TEST;
+import static com.polifono.common.TemplateConstants.URL_GAMES_RESULT_TEST;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
+import java.util.Locale;
 import java.util.Optional;
 
+import javax.validation.constraints.NotBlank;
+
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.common.properties.ConfigsCreditsProperties;
@@ -24,6 +39,7 @@ import com.polifono.domain.Phasestatus;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.domain.Question;
+import com.polifono.domain.bean.CurrentUser;
 import com.polifono.service.IContentService;
 import com.polifono.service.IDiplomaService;
 import com.polifono.service.IGameService;
@@ -34,6 +50,7 @@ import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.IQuestionService;
 import com.polifono.service.impl.GenerateRandomStringService;
+import com.polifono.service.impl.SecurityService;
 import com.polifono.util.ContentUtil;
 
 import jakarta.servlet.http.HttpSession;
@@ -41,9 +58,11 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-public class GameController extends BaseController {
+public class GameController {
 
     private final ConfigsCreditsProperties configsCreditsProperties;
+    private final MessageSource messagesResource;
+    private final SecurityService securityService;
     private final IPlayerService playerService;
     private final IGameService gameService;
     private final ILevelService levelService;
@@ -55,115 +74,73 @@ public class GameController extends BaseController {
     private final IDiplomaService diplomaService;
     private final GenerateRandomStringService generateRandomStringService;
 
-    public static final String URL_GAMES_INDEX = "games/index";
-    public static final String URL_GAMES_LEVEL = "games/level";
-    public static final String URL_GAMES_MAP = "games/map";
-    public static final String URL_GAMES_PHASE_CONTENT = "games/phaseContent";
-    public static final String URL_GAMES_PHASE_TEST = "games/phaseTest";
-    public static final String URL_GAMES_RESULT_TEST = "games/resultTest";
-    public static final String URL_GAMES_END_OF_LEVEL = "games/endoflevel";
-    public static final String URL_GAMES_END_OF_GAME = "games/endofgame";
-    public static final String URL_BUY_CREDITS = "buycredits";
-
-    public static final String REDIRECT_HOME = "redirect:/";
-    public static final String REDIRECT_GAMES = "redirect:/games";
-
-    /**
-     * Show the index page of the games.
-     * List all the games.
-     */
-    @RequestMapping(value = { "/games" }, method = RequestMethod.GET)
-    public final String listGames(final Model model) {
-        //model.addAttribute("games", gameService.findAll());
+    @GetMapping("/games")
+    public String listGames(final Model model) {
         model.addAttribute("ranking_monthly", playerPhaseService.getRankingMonthly());
         return URL_GAMES_INDEX;
     }
 
-    /**
-     * List all the levels of a game and flag which ones are opened or closed for the player logged in.
-     */
-    @RequestMapping(value = { "/games/{gameName}" }, method = RequestMethod.GET)
-    public final String listLevelsOfTheGame(final Model model, @PathVariable("gameName") String gameName) {
-        Game game = gameService.findByNamelink(gameName);
+    @GetMapping("/games/{gameName}")
+    public String listLevelsOfTheGame(final Model model, @PathVariable("gameName") @NotBlank String gameName) {
+        Optional<Game> game = gameService.findByNamelink(gameName);
 
-        // If the game doesn't exist.
-        if (game == null)
+        if (game.isEmpty()) {
             return REDIRECT_HOME;
-
-        int levelPermitted;
-
-        // Checking what is the last phase completed by this player in this game.
-        PlayerPhase lastPlayerPhaseCompleted = playerPhaseService.findLastPhaseCompleted(
-                Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId(), game.getId());
-
-        // If the player has never played any phase of this game.
-        if (lastPlayerPhaseCompleted == null) {
-            levelPermitted = 1;
-        } else {
-            // Checking in which level is the lastPhaseCompleted.
-            Level lastLevel = lastPlayerPhaseCompleted.getPhase().getMap().getLevel();
-
-            // Checking if the lastPhaseCompleted is the last phase of this level.
-            Phase lastPhaseOfTheLevel = phaseService.findLastPhaseOfTheLevel(game.getId(), lastLevel.getId());
-
-            // If no, only this level and the level before this one can the accessed.
-            if (lastPlayerPhaseCompleted.getPhase().getId() != lastPhaseOfTheLevel.getId()) {
-                levelPermitted = lastLevel.getOrder();
-            }
-            // If yes, the player receive the permission to see the next level.
-            else {
-                levelPermitted = lastLevel.getOrder() + 1;
-            }
         }
 
-        List<Level> levels = levelService.flagLevelsToOpenedOrNot(game.getId(), levelPermitted);
+        int levelPermitted = playerPhaseService.determinePermittedLevel(securityService.getUserId(), game.get().getId());
 
-        model.addAttribute("game", game);
-        model.addAttribute("levels", levels);
+        model.addAttribute("game", game.get());
+        model.addAttribute("levels", levelService.flagLevelsToOpenedOrNot(game.get().getId(), levelPermitted));
 
         return URL_GAMES_LEVEL;
     }
 
-    @RequestMapping(value = { "/games/{gameName}/{levelOrder}/{mapOrder}" }, method = RequestMethod.GET)
-    public final String listPhasesOfTheMap(
+    @GetMapping("/games/{gameName}/{levelOrder}/{mapOrder}")
+    public String listPhasesOfTheMap(
             final Model model,
             @PathVariable("gameName") String gameName,
             @PathVariable("levelOrder") Integer levelOrder,
-            @PathVariable("mapOrder") Integer mapOrder
+            @PathVariable("mapOrder") @NotBlank Integer mapOrder
     ) {
 
-        Game game = gameService.findByNamelink(gameName);
+        Optional<Game> game = gameService.findByNamelink(gameName);
 
-        // If the game doesn't exist.
-        if (game == null)
+        if (game.isEmpty()) {
             return REDIRECT_HOME;
+        }
 
-        // If the level doesn't exist.
-        if (levelOrder <= 0 || levelOrder > 5)
+        if (!isValidLevelOrder(levelOrder)) {
             return REDIRECT_HOME;
+        }
 
-        Map map = mapService.findByGameLevelAndOrder(game.getId(), levelOrder, mapOrder);
+        Optional<Map> map = mapService.findByGameLevelAndOrder(game.get().getId(), levelOrder, mapOrder);
 
-        // If the map doesn't exist.
-        if (map == null)
+        if (map.isEmpty()) {
             return REDIRECT_HOME;
+        }
 
         // Checking what is the last phase completed by this player in this game.
-        PlayerPhase lastPhaseCompleted = playerPhaseService.findLastPhaseCompleted(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId(),
-                game.getId());
+        Optional<PlayerPhase> lastPhaseCompleted = playerPhaseService.findLastPhaseCompleted(securityService.getUserId(), game.get().getId());
+
+        if (lastPhaseCompleted.isEmpty()) {
+            return REDIRECT_HOME;
+        }
 
         // Looking for the phases of the map.
-        List<Phase> phases = phaseService.findPhasesCheckedByMap(map, lastPhaseCompleted);
+        List<Phase> phases = phaseService.findPhasesCheckedByMap(map.get(), lastPhaseCompleted.get());
 
-        // If there are not phases in the map.
-        if (phases == null)
+        // If there are no phases in the map.
+        if (phases == null) {
             return REDIRECT_HOME;
+        }
 
-        if (!mapService.playerCanAccessThisMap(map, Objects.requireNonNull(this.currentAuthenticatedUser()).getUser()))
+        if (!mapService.canPlayerAccessMap(map.get(), securityService.getUserId())) {
             return REDIRECT_HOME;
+        }
 
-        model.addAttribute("game", game);
-        model.addAttribute("map", map);
+        model.addAttribute("game", game.get());
+        model.addAttribute("map", map.get());
         model.addAttribute("phases", phases);
 
         return URL_GAMES_MAP;
@@ -171,131 +148,149 @@ public class GameController extends BaseController {
 
     /**
      * List all the phases of the current map of the player logged in.
-     * If the player didn't play any phase of this game, the first phase of the first map of the game will be showed.
-     * If the player has already played a phase of this game, it will be showed the right map with the next phase unlocked.
+     * If the player didn't play any phase of this game, the first phase of the first map of the game will be shown.
+     * If the player has already played a phase of this game, it will be shown the right map with the next phase unlocked.
      */
-    @RequestMapping(value = { "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}" }, method = RequestMethod.GET)
-    public final String initPhase(
+    @GetMapping("/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}")
+    public String initPhase(
             final Model model,
             @PathVariable("gameName") String gameName,
             @PathVariable("levelOrder") Integer levelOrder,
             @PathVariable("mapOrder") Integer mapOrder,
-            @PathVariable("phaseOrder") Integer phaseOrder
+            @PathVariable("phaseOrder") @NotBlank Integer phaseOrder,
+            Locale locale
     ) {
 
-        Game game = gameService.findByNamelink(gameName);
+        Optional<Game> game = gameService.findByNamelink(gameName);
 
-        // If the game doesn't exist.
-        if (game == null)
+        if (game.isEmpty()) {
             return REDIRECT_HOME;
+        }
 
-        Map map = mapService.findByGameLevelAndOrder(game.getId(), levelOrder, mapOrder);
+        Optional<Map> map = mapService.findByGameLevelAndOrder(game.get().getId(), levelOrder, mapOrder);
 
-        // If the map doesn't exist.
-        if (map == null)
+        if (map.isEmpty()) {
             return REDIRECT_HOME;
+        }
 
-        Phase phase = phaseService.findByMapAndOrder(map.getId(), phaseOrder);
+        Optional<Phase> phase = phaseService.findByMapAndOrder(map.get().getId(), phaseOrder);
 
-        // If the phase doesn't exist.
-        if (phase == null)
+        if (phase.isEmpty()) {
             return REDIRECT_HOME;
+        }
 
         // If the player doesn't have permission to access this phase.
-        if (!phaseService.playerCanAccessThisPhase(phase, Objects.requireNonNull(this.currentAuthenticatedUser()).getUser()))
+        if (!phaseService.canPlayerAccessPhase(phase.get(), securityService.getUserId())) {
             return REDIRECT_HOME;
+        }
 
         // Get the first content of this phase.
-        Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(phase.getId(), 1));
+        Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(phase.get().getId(), 1));
 
         // If the content doesn't exist.
-        if (content == null)
+        if (content == null) {
             return REDIRECT_HOME;
+        }
 
         // If the player doesn't have credits anymore.
         // And the player is not trying to access the first phase (the first phase is always free).
-        if (!playerService.playerHasCredits(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser(), phase) && phase.getOrder() > 1) {
+        if (!playerService.playerHasCredits(securityService.getUserId(), phase.get()) && phase.get().getOrder() > 1) {
 
             // Get the last phase that the player has done in a specific game.
-            Phase lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId(),
-                    phase.getMap().getGame().getId());
+            Optional<Phase> lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(securityService.getUserId(), phase.get().getMap().getGame().getId());
+
+            if (lastPhaseDone.isEmpty()) {
+                return REDIRECT_HOME;
+            }
 
             // If the player is trying to access a phase that he has already finished, it's OK. Otherwise, he can't access this phase.
-            if (lastPhaseDone.getOrder() < phase.getOrder()) {
-                model.addAttribute("msg", messagesResourceBundle.getString("msg.credits.insufficient"));
+            if (lastPhaseDone.get().getOrder() < phase.get().getOrder()) {
+                model.addAttribute("msg", messagesResource.getMessage("msg.credits.insufficient", null, locale));
                 return URL_BUY_CREDITS;
             }
         }
 
-        model.addAttribute("game", game);
-        model.addAttribute("map", map);
-        model.addAttribute("phase", phase);
+        model.addAttribute("game", game.get());
+        model.addAttribute("map", map.get());
+        model.addAttribute("phase", phase.get());
         model.addAttribute("content", content);
 
         return URL_GAMES_PHASE_CONTENT;
     }
 
-    @RequestMapping(value = { "/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}/test" }, method = RequestMethod.GET)
-    public final String initTest(
+    @GetMapping("/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}/test")
+    public String initTest(
             HttpSession session,
             final Model model,
             @PathVariable("gameName") String gameName,
             @PathVariable("levelOrder") Integer levelOrder,
             @PathVariable("mapOrder") Integer mapOrder,
-            @PathVariable("phaseOrder") Integer phaseOrder
+            @PathVariable("phaseOrder") Integer phaseOrder,
+            Locale locale
     ) {
 
-        Game game = gameService.findByNamelink(gameName);
+        Optional<Game> game = gameService.findByNamelink(gameName);
 
-        // If the game doesn't exist.
-        if (game == null)
+        if (game.isEmpty()) {
             return REDIRECT_HOME;
+        }
 
-        Map map = mapService.findByGameLevelAndOrder(game.getId(), levelOrder, mapOrder);
+        Optional<Map> map = mapService.findByGameLevelAndOrder(game.get().getId(), levelOrder, mapOrder);
 
-        // If the map doesn't exist.
-        if (map == null)
+        if (map.isEmpty()) {
             return REDIRECT_HOME;
+        }
 
-        Phase phase = phaseService.findByMapAndOrder(map.getId(), phaseOrder);
+        Optional<Phase> phase = phaseService.findByMapAndOrder(map.get().getId(), phaseOrder);
 
-        // If the phase doesn't exist.
-        if (phase == null)
+        if (phase.isEmpty()) {
             return REDIRECT_HOME;
+        }
+
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
 
         // If the player has already passed this test he can't see the test again.
-        if (playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase, Objects.requireNonNull(this.currentAuthenticatedUser()).getUser()))
+        if (playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase.get(), securityService.getUserId())) {
             return REDIRECT_GAMES + "/" + gameName;
+        }
 
         // If the player doesn't have permission to access this phase.
-        if (!phaseService.playerCanAccessThisPhase(phase, Objects.requireNonNull(this.currentAuthenticatedUser()).getUser()))
+        if (!phaseService.canPlayerAccessPhase(phase.get(), securityService.getUserId())) {
             return REDIRECT_HOME;
+        }
 
         // If the player doesn't have credits anymore.
         // And the player is not trying to access the first phase (the first phase is always free).
-        if (!playerService.playerHasCredits(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser(), phase) && phase.getOrder() > 1) {
+        if (!playerService.playerHasCredits(securityService.getUserId(), phase.get()) && phase.get().getOrder() > 1) {
 
             // Get the last phase that the player has done in a specific game.
-            Phase lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId(),
-                    phase.getMap().getGame().getId());
+            Optional<Phase> lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(securityService.getUserId(), phase.get().getMap().getGame().getId());
+
+            if (lastPhaseDone.isEmpty()) {
+                return REDIRECT_HOME;
+            }
 
             // If the player is trying to access a phase that he has already finished, it's OK. Otherwise, he can't access this phase.
-            if (lastPhaseDone.getOrder() < phase.getOrder()) {
-                model.addAttribute("msg", messagesResourceBundle.getString("msg.credits.insufficient"));
+            if (lastPhaseDone.get().getOrder() < phase.get().getOrder()) {
+                model.addAttribute("msg", messagesResource.getMessage("msg.credits.insufficient", null, locale));
                 return URL_BUY_CREDITS;
             }
         }
 
         // Adding a playerPhase at T007.
-        playerPhaseService.setTestAttempt(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser(), phase);
+        playerPhaseService.setTestAttempt(currentUser.get().getUser(), phase.get());
 
         // Get the questionary of this phase.
-        Content content = contentService.findByPhaseAndOrder(phase.getId(), 0);
+        Content content = contentService.findByPhaseAndOrder(phase.get().getId(), 0);
         List<Question> questions = questionService.findByContent(content.getId());
 
-        model.addAttribute("game", game);
-        model.addAttribute("map", map);
-        model.addAttribute("phase", phase);
+        model.addAttribute("game", game.get());
+        model.addAttribute("map", map.get());
+        model.addAttribute("phase", phase.get());
         model.addAttribute("questions", questions);
 
         List<Integer> questionsId = new ArrayList<>();
@@ -308,8 +303,8 @@ public class GameController extends BaseController {
         return URL_GAMES_PHASE_TEST;
     }
 
-    @RequestMapping(value = { "/games/result" }, method = RequestMethod.POST)
-    public final String showResultTest(
+    @PostMapping("/games/result")
+    public String showResultTest(
             HttpSession session,
             final Model model,
             @RequestParam java.util.Map<String, String> playerAnswers // playerAnswers is all the parameters passed, not only the player's answers.
@@ -327,9 +322,14 @@ public class GameController extends BaseController {
 
         model.addAttribute("grade", grade);
 
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
+
         if (grade >= 70) {
-            PlayerPhase playerPhase = playerPhaseService.findByPlayerPhaseAndStatus(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId(),
-                    currentPhase.getId(), 2);
+            PlayerPhase playerPhase = playerPhaseService.findByPlayerPhaseAndStatus(currentUser.get().getUser().getId(), currentPhase.getId(), 2);
 
             playerPhase.setGrade(grade);
             Phasestatus phasestatus = new Phasestatus();
@@ -340,7 +340,7 @@ public class GameController extends BaseController {
 
             model.addAttribute("score", playerPhase.getScore());
 
-            Optional<Player> player = playerService.findById(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId());
+            Optional<Player> player = playerService.findById(currentUser.get().getUser().getId());
 
             // If the player doesn't exist.
             if (player.isEmpty())
@@ -360,43 +360,45 @@ public class GameController extends BaseController {
             playerPhaseService.save(playerPhase);
 
             // Update session user.
-            this.updateCurrentAuthenticateUser(player.get());
+            securityService.updateCurrentAuthenticatedUser(player.get());
 
             // Checking what is the map of the next phase.
-            Map map = mapService.findCurrentMap(currentPhase.getMap().getGame(), playerPhase);
+            Optional<Map> map = mapService.findCurrentMap(currentPhase.getMap().getGame(), playerPhase);
+
+            if (map.isEmpty()) {
+                return REDIRECT_HOME;
+            }
 
             // The attribute levelCompleted will be true if the player has just finished the last phase of the last map of the level.
-            if (map.isLevelCompleted()) {
+            if (map.get().isLevelCompleted()) {
                 // When the player finishes the last phase of the level, he gets a diploma.
                 Diploma diploma = setDiploma(player.get(), currentPhase.getMap().getGame(), currentPhase.getMap().getLevel());
                 diplomaService.save(diploma);
                 model.addAttribute("diploma", diploma);
 
                 // When the player finishes the last phase of the level, he gains n credits.
-                this.updateCurrentAuthenticateUser(
-                        playerService.addCreditsToPlayer(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId(),
-                                configsCreditsProperties.getLevelCompleted()));
+                securityService.updateCurrentAuthenticatedUser(
+                        playerService.addCreditsToPlayer(currentUser.get().getUser().getId(), configsCreditsProperties.getLevelCompleted()));
 
                 return URL_GAMES_END_OF_LEVEL;
             }
 
             // The attribute gameCompleted will be true if the player has just finished the last phase of the last map of the last level of the game.
-            if (map.isGameCompleted()) {
+            if (map.get().isGameCompleted()) {
                 // When the player finishes the last phase of the last level of the game, he gets a diploma.
                 Diploma diploma = setDiploma(player.get(), currentPhase.getMap().getGame(), currentPhase.getMap().getLevel());
                 diplomaService.save(diploma);
                 model.addAttribute("diploma", diploma);
 
                 // When the player finishes the last phase of the last level of the game, he gains n credits.
-                this.updateCurrentAuthenticateUser(
-                        playerService.addCreditsToPlayer(Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId(),
-                                configsCreditsProperties.getGameCompleted()));
+                securityService.updateCurrentAuthenticatedUser(
+                        playerService.addCreditsToPlayer(currentUser.get().getUser().getId(), configsCreditsProperties.getGameCompleted()));
 
                 return URL_GAMES_END_OF_GAME;
             }
 
             // Looking for the phases of the map.
-            List<Phase> phases = phaseService.findPhasesCheckedByMap(map, playerPhase);
+            List<Phase> phases = phaseService.findPhasesCheckedByMap(map.get(), playerPhase);
 
             Phase nextPhase = setNextPhase(phases);
 
@@ -408,11 +410,11 @@ public class GameController extends BaseController {
         return URL_GAMES_RESULT_TEST;
     }
 
-    public final int calculatePlayerScoreAfterPassTheTest(int playerScore, int testScore) {
+    private int calculatePlayerScoreAfterPassTheTest(int playerScore, int testScore) {
         return playerScore + testScore;
     }
 
-    public final int calculatePlayerCoinAfterPassTheTest(int playerCoin, int testScore) {
+    private int calculatePlayerCoinAfterPassTheTest(int playerCoin, int testScore) {
         return playerCoin + testScore;
     }
 
@@ -421,7 +423,7 @@ public class GameController extends BaseController {
      * phases is a list of phases of a map with the flag opened equals true if the phase was already done by the player.
      * Besides from the phases already done, the next phase is also with the opened flag with the value true.
      */
-    public final Phase setNextPhase(List<Phase> phases) {
+    private Phase setNextPhase(List<Phase> phases) {
         Phase nextPhase = null;
 
         label:
@@ -441,7 +443,7 @@ public class GameController extends BaseController {
     /**
      * Return a diploma to be saved.
      */
-    public final Diploma setDiploma(Player player, Game game, Level level) {
+    private Diploma setDiploma(Player player, Game game, Level level) {
         Diploma diploma = new Diploma();
 
         diploma.setPlayer(player);
@@ -452,5 +454,9 @@ public class GameController extends BaseController {
         diploma.setCode(player.getId() + "-" + game.getId() + "-" + level.getId() + "-" + generateRandomStringService.generate(10));
 
         return diploma;
+    }
+
+    private boolean isValidLevelOrder(Integer levelOrder) {
+        return levelOrder >= 1 && levelOrder <= 5;
     }
 }

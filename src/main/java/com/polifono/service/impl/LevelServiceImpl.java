@@ -17,12 +17,9 @@ public class LevelServiceImpl implements ILevelService {
 
     private final ILevelRepository repository;
 
-    public final List<Level> findAll() {
+    @Override
+    public List<Level> findAll() {
         return repository.findAll();
-    }
-
-    public List<Level> findByGame(int gameId) {
-        return repository.findByGame(gameId);
     }
 
     @Override
@@ -30,10 +27,16 @@ public class LevelServiceImpl implements ILevelService {
         return repository.findByActive(active);
     }
 
+    @Override
+    public List<Level> findByGame(int gameId) {
+        return repository.findByGame(gameId);
+    }
+
     /**
      * Verify which levels are opened.
      * Catch all the levels of a game and, based on the last level permitted to the player (levelPermitted), check or not the flag opened in each level.
      */
+    @Override
     public List<Level> flagLevelsToOpenedOrNot(int gameId, int levelPermitted) {
         List<Level> levelsAux = this.findByGame(gameId);
         List<Level> levels = new ArrayList<>();

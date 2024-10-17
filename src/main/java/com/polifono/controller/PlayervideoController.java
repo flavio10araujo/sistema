@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-public class PlayervideoController extends BaseController {
+public class PlayervideoController {
 
     private final IPlayervideoService playervideoService;
     private final IContentService contentService;
@@ -65,22 +65,6 @@ public class PlayervideoController extends BaseController {
         } catch (Exception e) {
             return new ArrayList<>();
         }
-    }
-
-    public boolean verifyRestriction(String restriction, int id) {
-        if (restriction == null || restriction.isEmpty() || "0".equals(restriction)) {
-            return true;
-        }
-
-        String[] restrictionArr = restriction.split(",");
-
-        for (String s : restrictionArr) {
-            if (s.equals(id + "")) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     @GetMapping(value = "/playervideos/content/{contentId}", produces = "application/json; charset=UTF-8")
@@ -143,6 +127,22 @@ public class PlayervideoController extends BaseController {
         } catch (Exception e) {
             return new ArrayList<>();
         }
+    }
+
+    private boolean verifyRestriction(String restriction, int id) {
+        if (restriction == null || restriction.isEmpty() || "0".equals(restriction)) {
+            return true;
+        }
+
+        String[] restrictionArr = restriction.split(",");
+
+        for (String s : restrictionArr) {
+            if (s.equals(id + "")) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private List<PlayervideoDTO> convertToDto(List<Playervideo> playervideoList) {

@@ -1,24 +1,30 @@
 package com.polifono.controller;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.TemplateConstants.URL_BUY_CREDITS;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
+import java.util.Locale;
 import java.util.Optional;
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.polifono.common.properties.ConfigsCreditsProperties;
 import com.polifono.domain.Player;
 import com.polifono.domain.Transaction;
+import com.polifono.domain.bean.CurrentUser;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.ITransactionService;
+import com.polifono.service.impl.SecurityService;
 import com.polifono.service.impl.SendEmailService;
 
 import br.com.uol.pagseguro.domain.checkout.Checkout;
@@ -34,25 +40,30 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class PaymentController extends BaseController {
-
-    public static final String URL_BUY_CREDITS = "buycredits";
-    public static final String REDIRECT_HOME = "redirect:/";
+public class PaymentController {
 
     private final ConfigsCreditsProperties configsCreditsProperties;
+    private final MessageSource messagesResource;
+    private final SecurityService securityService;
     private final ITransactionService transactionService;
     private final IPlayerService playerService;
     private final SendEmailService emailSendUtil;
 
-    @RequestMapping(value = { "/buycredits" }, method = RequestMethod.GET)
-    public final String buyCredits(final Model model) {
+    @GetMapping("/buycredits")
+    public String buyCredits() {
         return URL_BUY_CREDITS;
     }
 
-    @RequestMapping(value = { "/buycredits" }, method = RequestMethod.POST)
-    public final String buyCreditsSubmit(final Model model, @RequestParam("quantity") Integer quantity) {
+    @PostMapping("/buycredits")
+    public String buyCreditsSubmit(final Model model, @RequestParam("quantity") Integer quantity, Locale locale) {
 
-        Player player = Objects.requireNonNull(currentAuthenticatedUser()).getUser();
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
+
+        Player player = currentUser.get().getUser();
 
         // If the player has not confirmed his e-mail yet.
         // And the player has not informed his/her facebook.
@@ -78,7 +89,7 @@ public class PaymentController extends BaseController {
         }
 
         // Register an item in T012_TRANSACTION.
-        // This item is not a transaction yet, but it already contain the player, the quantity of credits and the date.
+        // This item is not a transaction yet, but it already contains the player, the quantity of credits and the date.
         // The T012.C002_ID will be passed in the attribute "reference".
         Transaction t = new Transaction();
         t.setPlayer(player);
@@ -93,51 +104,13 @@ public class PaymentController extends BaseController {
             log.debug("Error buying credits", e);
 
             model.addAttribute("codRegister", "2");
-            model.addAttribute("msg", messagesResourceBundle.getString("msg.credits.error.access"));
+            model.addAttribute("msg", messagesResource.getMessage("msg.credits.error.access", null, locale));
             return URL_BUY_CREDITS;
         }
     }
 
-    /**
-     * This method connects to the payment system and create a code.
-     * This code is the checkout.
-     * The payment system return and URL. Ex.: https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code=EAE29CA5383892D224E9AF9FEFF0FC43
-     * This code is not the transaction code yet.
-     */
-    public String openPagSeguro(Transaction t, Player player, int quantity) throws PagSeguroServiceException {
-        Checkout checkout = new Checkout();
-
-        checkout.addItem(
-                "0001", // Item's number.
-                PagSeguroSystem.getPagSeguroPaymentServiceNfDescription(), // Item's name.
-                quantity, // Item's quantity.
-                this.getPriceForEachUnity(quantity), // Price for each unity.
-                0L, // Weight.
-                null // ShippingCost
-        );
-
-        checkout.setShippingCost(new BigDecimal("0.00"));
-
-        checkout.setSender(
-                player.getFullName(), // Client's name.
-                player.getEmail()
-        );
-
-        checkout.setCurrency(Currency.BRL);
-
-        // Sets a reference code for this payment request. The T012.C002_ID is used in this attribute.
-        checkout.setReference("" + t.getId());
-
-        Boolean onlyCheckoutCode = false;
-        String checkoutURL = checkout.register(PagSeguroConfig.getAccountCredentials(), onlyCheckoutCode);
-
-        log.debug(checkoutURL);
-
-        return checkoutURL;
-    }
-
-    @RequestMapping(value = { "/pagseguroreturn" }, method = RequestMethod.GET)
-    public final String returnPagSeguro(final Model model, @RequestParam("tid") String transactionCode) {
+    @GetMapping("/pagseguroreturn")
+    public String returnPagSeguro(final Model model, @RequestParam("tid") String transactionCode, Locale locale) {
 
         log.debug("/pagseguroreturn tid=", transactionCode);
         System.out.println("/pagseguroreturn tid=" + transactionCode);
@@ -148,7 +121,7 @@ public class PaymentController extends BaseController {
         List<Transaction> transactions = transactionService.findByCode(transactionCode);
 
         model.addAttribute("codRegister", "1");
-        model.addAttribute("msg", messagesResourceBundle.getString("msg.credits.thanks"));
+        model.addAttribute("msg", messagesResource.getMessage("msg.credits.thanks", null, locale));
 
         // If the transaction is already registered.
         if (transactions != null && !transactions.isEmpty())
@@ -214,8 +187,8 @@ public class PaymentController extends BaseController {
         return URL_BUY_CREDITS;
     }
 
-    @RequestMapping(value = "/pagseguronotification", method = RequestMethod.POST)
-    public @ResponseBody String pagseguronotification(final Model model, @RequestParam("notificationCode") String notificationCode) {
+    @PostMapping("/pagseguronotification")
+    public @ResponseBody String pagseguronotification(@RequestParam("notificationCode") String notificationCode) {
 
         log.debug("/pagseguronotification notificationCode = {}", notificationCode);
 
@@ -293,6 +266,44 @@ public class PaymentController extends BaseController {
         }
 
         return URL_BUY_CREDITS;
+    }
+
+    /**
+     * This method connects to the payment system and create a code.
+     * This code is the checkout.
+     * The payment system return and URL. Ex.: https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code=EAE29CA5383892D224E9AF9FEFF0FC43
+     * This code is not the transaction code yet.
+     */
+    private String openPagSeguro(Transaction t, Player player, int quantity) throws PagSeguroServiceException {
+        Checkout checkout = new Checkout();
+
+        checkout.addItem(
+                "0001", // Item's number.
+                PagSeguroSystem.getPagSeguroPaymentServiceNfDescription(), // Item's name.
+                quantity, // Item's quantity.
+                this.getPriceForEachUnity(quantity), // Price for each unity.
+                0L, // Weight.
+                null // ShippingCost
+        );
+
+        checkout.setShippingCost(new BigDecimal("0.00"));
+
+        checkout.setSender(
+                player.getFullName(), // Client's name.
+                player.getEmail()
+        );
+
+        checkout.setCurrency(Currency.BRL);
+
+        // Sets a reference code for this payment request. The T012.C002_ID is used in this attribute.
+        checkout.setReference("" + t.getId());
+
+        Boolean onlyCheckoutCode = false;
+        String checkoutURL = checkout.register(PagSeguroConfig.getAccountCredentials(), onlyCheckoutCode);
+
+        log.debug(checkoutURL);
+
+        return checkoutURL;
     }
 
     private BigDecimal getPriceForEachUnity(int quantity) {

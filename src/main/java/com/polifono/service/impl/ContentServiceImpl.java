@@ -17,7 +17,7 @@ public class ContentServiceImpl implements IContentService {
 
     private final IContentRepository repository;
 
-    public final Content save(Content content) {
+    public Content save(Content content) {
         return repository.save(content);
     }
 
@@ -37,85 +37,85 @@ public class ContentServiceImpl implements IContentService {
         return false;
     }
 
-    public final Optional<Content> findById(int contentId) {
+    public Optional<Content> findById(int contentId) {
         return repository.findById(contentId);
     }
 
-    public final List<Content> findAll() {
+    public List<Content> findAll() {
         return repository.findAll();
     }
 
     /**
      * Only content with C008_ID = 2 (Text).
      */
-    public final List<Content> findAllText() {
+    public List<Content> findAllText() {
         return repository.findAllText();
     }
 
     /**
      * Only content with C008_ID = 2 (Text).
      */
-    public final List<Content> findContentsTextByGame(int gameId) {
+    public List<Content> findContentsTextByGame(int gameId) {
         return repository.findContentsTextByGame(gameId);
     }
 
     /**
      * Only content with C008_ID = 2 (Text).
      */
-    public final List<Content> findContentsTextByGameAndLevel(int gameId, int levelId) {
+    public List<Content> findContentsTextByGameAndLevel(int gameId, int levelId) {
         return repository.findContentsTextByGameAndLevel(gameId, levelId);
     }
 
     /**
      * Only content with C008_ID = 2 (Text).
      */
-    public final List<Content> findContentsTextByMap(int mapId) {
+    public List<Content> findContentsTextByMap(int mapId) {
         return repository.findContentsTextByMap(mapId);
     }
 
     /**
      * Only content with C008_ID = 2 (Text).
      */
-    public final List<Content> findContentsTextByPhase(int phaseId) {
+    public List<Content> findContentsTextByPhase(int phaseId) {
         return repository.findContentsTextByPhase(phaseId);
     }
 
     /**
      * Only content with C008_ID = 1 (Test).
      */
-    public final List<Content> findAllTest() {
+    public List<Content> findAllTest() {
         return repository.findAllTest();
     }
 
     /**
      * Only content with C008_ID = 1 (Test).
      */
-    public final List<Content> findContentsTestByGame(int gameId) {
+    public List<Content> findContentsTestByGame(int gameId) {
         return repository.findContentsTestByGame(gameId);
     }
 
     /**
      * Only content with C008_ID = 1 (Test).
      */
-    public final List<Content> findContentsTestByGameAndLevel(int gameId, int levelId) {
+    public List<Content> findContentsTestByGameAndLevel(int gameId, int levelId) {
         return repository.findContentsTestByGameAndLevel(gameId, levelId);
     }
 
     /**
      * Only content with C008_ID = 1 (Test).
      */
-    public final List<Content> findContentsTestByMap(int mapId) {
+    public List<Content> findContentsTestByMap(int mapId) {
         return repository.findContentsTestByMap(mapId);
     }
 
     /**
      * Only content with C008_ID = 1 (Test).
      */
-    public final List<Content> findContentsTestByPhase(int phaseId) {
+    public List<Content> findContentsTestByPhase(int phaseId) {
         return repository.findContentsTestByPhase(phaseId);
     }
 
-    public final Content findByPhaseAndOrder(int phaseId, int contentOrder) {
+    public Content findByPhaseAndOrder(int phaseId, int contentOrder) {
         return repository.findByPhaseAndOrder(phaseId, contentOrder);
     }
 }

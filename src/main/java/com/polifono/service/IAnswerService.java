@@ -15,13 +15,13 @@ public interface IAnswerService {
 
     List<Answer> findAll();
 
-    List<Answer> findByGame(int gameId);
+    List<Answer> findAllByGameId(int gameId);
 
-    List<Answer> findByGameAndLevel(int gameId, int levelId);
+    List<Answer> findAllByGameIdAndLevelId(int gameId, int levelId);
 
-    List<Answer> findByMap(int mapId);
+    List<Answer> findAllByMapId(int mapId);
 
-    List<Answer> findByPhase(int phaseId);
+    List<Answer> findAllByPhaseId(int phaseId);
 
-    List<Answer> findByQuestion(int questionId);
+    List<Answer> findAllByQuestionId(int questionId);
 }

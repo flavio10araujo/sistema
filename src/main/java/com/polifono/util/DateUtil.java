@@ -3,6 +3,7 @@ package com.polifono.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DateUtil {
 
@@ -52,5 +53,15 @@ public class DateUtil {
     public static java.util.Date getCurrentDateWithHourAndSeconds() {
         Calendar calendar = Calendar.getInstance();
         return calendar.getTime();
+    }
+
+    public static int getDateField(Date date, int field) {
+        if (date == null) {
+            return -1;
+        }
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(field);
     }
 }

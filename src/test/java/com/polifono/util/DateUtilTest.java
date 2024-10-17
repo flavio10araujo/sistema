@@ -68,4 +68,33 @@ public class DateUtilTest {
 
         assertEquals(expectedDate, DateUtil.subtractMonth(date, -2));
     }
+
+    @Test
+    public void givenNullDate_WhenGetDateField_ThenReturnMinusOne() {
+        assertEquals(-1, DateUtil.getDateField(null, Calendar.DAY_OF_MONTH));
+    }
+
+    @Test
+    public void givenValidDate_WhenGetDayOfMonth_ThenReturnCorrectDay() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2024, Calendar.JANUARY, 31);
+        Date date = calendar.getTime();
+        assertEquals(31, DateUtil.getDateField(date, Calendar.DAY_OF_MONTH));
+    }
+
+    @Test
+    public void givenValidDate_WhenGetMonth_ThenReturnCorrectMonth() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2024, Calendar.JANUARY, 31);
+        Date date = calendar.getTime();
+        assertEquals(Calendar.JANUARY, DateUtil.getDateField(date, Calendar.MONTH));
+    }
+
+    @Test
+    public void givenValidDate_WhenGetYear_ThenReturnCorrectYear() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2024, Calendar.JANUARY, 31);
+        Date date = calendar.getTime();
+        assertEquals(2024, DateUtil.getDateField(date, Calendar.YEAR));
+    }
 }

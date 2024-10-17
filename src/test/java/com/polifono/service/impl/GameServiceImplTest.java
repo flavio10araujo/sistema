@@ -56,8 +56,8 @@ public class GameServiceImplTest {
 
         when(repository.findByNamelink(NAME_LINK)).thenReturn(entity.get());
 
-        Game entityReturned = service.findByNamelink(NAME_LINK);
-        Assertions.assertNotNull(entityReturned, "failure - expected not null for '" + NAME_LINK + "'");
+        Optional<Game> entityReturned = service.findByNamelink(NAME_LINK);
+        Assertions.assertTrue(entityReturned.isPresent(), "failure - expected not null for '" + NAME_LINK + "'");
 
         verify(repository, times(1)).findByNamelink(NAME_LINK);
         verifyNoMoreInteractions(repository);

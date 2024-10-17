@@ -142,8 +142,8 @@ public class PlayerPhaseServiceImplTest {
 
     @Test
     public void findLastPhaseCompleted_WhenPlayerHasntCompletedAnyPhaseOfTheGame_ReturnNull() {
-        PlayerPhase entity = service.findLastPhaseCompleted(PLAYER_ID_EXISTENT, GAME_ID_INEXISTENT);
-        Assertions.assertNull(entity, "failure - expected null");
+        Optional<PlayerPhase> entity = service.findLastPhaseCompleted(PLAYER_ID_EXISTENT, GAME_ID_INEXISTENT);
+        Assertions.assertFalse(entity.isPresent(), "failure - expected null");
     }
     /* findLastPhaseCompleted - end */
 
@@ -216,7 +216,7 @@ public class PlayerPhaseServiceImplTest {
 
         when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(new PlayerPhase());
 
-        Assertions.assertTrue(service.isPhaseAlreadyCompletedByPlayer(phase, player));
+        Assertions.assertTrue(service.isPhaseAlreadyCompletedByPlayer(phase, player.getId()));
     }
 
     @Test
@@ -231,7 +231,7 @@ public class PlayerPhaseServiceImplTest {
 
         when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(null);
 
-        Assertions.assertFalse(service.isPhaseAlreadyCompletedByPlayer(phase, player));
+        Assertions.assertFalse(service.isPhaseAlreadyCompletedByPlayer(phase, player.getId()));
     }
     /* isPhaseAlreadyCompletedByPlayer - end */
 

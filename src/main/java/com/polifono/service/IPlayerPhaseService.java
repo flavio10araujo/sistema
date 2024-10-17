@@ -1,6 +1,7 @@
 package com.polifono.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.polifono.domain.Game;
 import com.polifono.domain.Phase;
@@ -17,15 +18,17 @@ public interface IPlayerPhaseService {
 
     PlayerPhase findByPlayerPhaseAndStatus(int playerId, int phaseId, int phasestatusId);
 
-    PlayerPhase findLastPhaseCompleted(int playerId, int gameId);
+    Optional<PlayerPhase> findLastPhaseCompleted(int playerId, int gameId);
 
     List<PlayerPhase> findForReportGeneral(ReportGeneralForm reportGeneralForm, int playerId);
 
-    boolean isPhaseAlreadyCompletedByPlayer(Phase phase, Player user);
+    boolean isPhaseAlreadyCompletedByPlayer(Phase phase, int playerId);
 
     PlayerPhase setTestAttempt(Player user, Phase phase);
 
     List<Game> filterPlayerPhasesListByGame(List<PlayerPhase> list);
 
     List<RankingDTO> getRankingMonthly();
+
+    int determinePermittedLevel(int playerId, int gameId);
 }

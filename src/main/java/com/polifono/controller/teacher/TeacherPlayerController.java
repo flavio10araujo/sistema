@@ -1,41 +1,50 @@
 package com.polifono.controller.teacher;
 
-import java.util.Objects;
+import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.TemplateConstants.URL_TEACHER_PLAYER_INDEX;
+
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.polifono.controller.BaseController;
 import com.polifono.domain.Player;
+import com.polifono.domain.bean.CurrentUser;
 import com.polifono.service.IPlayerService;
+import com.polifono.service.impl.SecurityService;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/teacher")
-public class TeacherPlayerController extends BaseController {
+public class TeacherPlayerController {
 
-    public static final String URL_ADMIN_BASIC_INDEX = "teacher/player/index";
-
+    private final SecurityService securityService;
     private final IPlayerService playerService;
 
-    @RequestMapping(value = { "/player", "/player/create" }, method = RequestMethod.GET)
-    public String indexPage(HttpSession session, Model model) {
+    @GetMapping({ "/player", "/player/create" })
+    public String indexPage(Model model) {
         model.addAttribute("player", new Player());
-        return URL_ADMIN_BASIC_INDEX;
+        return URL_TEACHER_PLAYER_INDEX;
     }
 
-    @RequestMapping(value = { "/player/create" }, method = RequestMethod.POST)
-    public final String createPlayer(final Model model, @ModelAttribute("player") Player player) {
+    @PostMapping("/player/create")
+    public String createPlayer(final Model model, @ModelAttribute("player") Player player) {
+
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
 
         if (player == null) {
             model.addAttribute("player", new Player());
-            return URL_ADMIN_BASIC_INDEX;
+            return URL_TEACHER_PLAYER_INDEX;
         }
 
         // Verify if the login is already in use.
@@ -49,7 +58,7 @@ public class TeacherPlayerController extends BaseController {
         } else {
             String msg = playerService.validateCreatePlayerByTeacher(player);
 
-            // If there are not errors.
+            // If there are no errors.
             if (msg.isEmpty()) {
                 String name = player.getName().trim();
                 name = name.substring(0, name.indexOf(" "));
@@ -60,7 +69,7 @@ public class TeacherPlayerController extends BaseController {
                 player.setLastName(lastName);
                 player.setName(name);
 
-                Player teacher = Objects.requireNonNull(this.currentAuthenticatedUser()).getUser();
+                Player teacher = currentUser.get().getUser();
                 player.setCreator(teacher);
                 model.addAttribute("player", playerService.create(player));
                 model.addAttribute("codRegister", 1);
@@ -73,6 +82,6 @@ public class TeacherPlayerController extends BaseController {
             }
         }
 
-        return URL_ADMIN_BASIC_INDEX;
+        return URL_TEACHER_PLAYER_INDEX;
     }
 }

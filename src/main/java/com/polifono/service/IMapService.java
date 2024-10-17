@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.polifono.domain.Game;
 import com.polifono.domain.Map;
-import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 
 public interface IMapService {
@@ -22,13 +21,13 @@ public interface IMapService {
 
     List<Map> findMapsByGameAndLevel(int gameId, int levelId);
 
-    Map findByGameAndLevel(int gameId, int levelId);
+    Optional<Map> findByGameAndLevel(int gameId, int levelId);
 
-    Map findByGameLevelAndOrder(int gameId, int levelId, int mapOrder);
+    Optional<Map> findByGameLevelAndOrder(int gameId, int levelId, int mapOrder);
 
-    Map findNextMapSameLevel(Map mapCurrent);
+    Optional<Map> findNextMapSameLevel(Map mapCurrent);
 
-    boolean playerCanAccessThisMap(Map map, Player user);
+    boolean canPlayerAccessMap(Map map, int playerId);
 
-    Map findCurrentMap(Game game, PlayerPhase playerPhase);
+    Optional<Map> findCurrentMap(Game game, PlayerPhase playerPhase);
 }

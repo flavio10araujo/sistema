@@ -16,15 +16,15 @@ public class PlayerGameServiceImpl implements IPlayerGameService {
 
     private final IPlayerGameRepository repository;
 
-    public final PlayerGame save(PlayerGame playerGame) {
+    public PlayerGame save(PlayerGame playerGame) {
         return repository.save(playerGame);
     }
 
-    public final Optional<PlayerGame> findById(int playerGameId) {
+    public Optional<PlayerGame> findById(int playerGameId) {
         return repository.findById(playerGameId);
     }
 
-    public final PlayerGame removeCreditsFromPlayer(PlayerGame playerGame, int qtdCredits) {
+    public PlayerGame removeCreditsFromPlayer(PlayerGame playerGame, int qtdCredits) {
         return repository.save(preparePlayerGameForRemovingCredits(playerGame, qtdCredits));
     }
 
@@ -33,7 +33,7 @@ public class PlayerGameServiceImpl implements IPlayerGameService {
         return playerGame;
     }
 
-    public final PlayerGame findByPlayerAndGame(int playerId, int gameId) {
+    public PlayerGame findByPlayerAndGame(int playerId, int gameId) {
         return repository.findByPlayerAndGame(playerId, gameId);
     }
 }

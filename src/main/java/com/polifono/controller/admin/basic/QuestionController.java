@@ -1,17 +1,22 @@
 package com.polifono.controller.admin.basic;
 
+import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_QUESTION;
+import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_QUESTION_SAVE_PAGE;
+import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_QUESTION_EDIT_PAGE;
+import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_QUESTION_INDEX;
+
 import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.polifono.controller.BaseController;
 import com.polifono.domain.Content;
 import com.polifono.domain.Question;
 import com.polifono.form.admin.basic.QuestionFilterForm;
@@ -28,12 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/admin/basic")
-public class QuestionController extends BaseController {
-
-    public static final String URL_ADMIN_BASIC = "admin/basic/question";
-    public static final String URL_ADMIN_BASIC_INDEX = "admin/basic/question/index";
-    public static final String URL_ADMIN_BASIC_EDIT = "admin/basic/question/editPage";
-    public static final String URL_ADMIN_BASIC_SAVE_PAGE = "admin/basic/question/savepage";
+public class QuestionController {
 
     private final IGameService gameService;
     private final ILevelService levelService;
@@ -42,7 +42,7 @@ public class QuestionController extends BaseController {
     private final IContentService contentService;
     private final IQuestionService questionService;
 
-    @RequestMapping(value = { "/question", "/question/savepage" }, method = RequestMethod.GET)
+    @GetMapping({ "/question", "/question/savepage" })
     public String savePage(HttpSession session, Model model) {
         model.addAttribute("question", new Question());
 
@@ -98,16 +98,16 @@ public class QuestionController extends BaseController {
             model.addAttribute("questions", new ArrayList<Question>());
         }
 
-        return URL_ADMIN_BASIC_INDEX;
+        return URL_ADMIN_BASIC_QUESTION_INDEX;
     }
 
-    @RequestMapping(value = { "/question" }, method = RequestMethod.POST)
+    @PostMapping("/question")
     public String setFilter(HttpSession session, @ModelAttribute("questionFilterForm") QuestionFilterForm questionFilterForm) {
         session.setAttribute("questionFilterForm", questionFilterForm);
-        return "redirect:/" + URL_ADMIN_BASIC;
+        return REDIRECT_ADMIN_BASIC_QUESTION;
     }
 
-    @RequestMapping(value = { "/question/save" }, method = RequestMethod.POST)
+    @PostMapping("/question/save")
     public String save(@ModelAttribute("question") Question question, final RedirectAttributes redirectAttributes) {
         if (questionService.save(question) != null) {
             redirectAttributes.addFlashAttribute("save", "success");
@@ -115,10 +115,10 @@ public class QuestionController extends BaseController {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_ADMIN_BASIC_QUESTION_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/question/{operation}/{id}", method = RequestMethod.GET)
+    @GetMapping("/question/{operation}/{id}")
     public String editRemove(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes,
             Model model) {
 
@@ -134,16 +134,16 @@ public class QuestionController extends BaseController {
             if (edit.isPresent()) {
                 model.addAttribute("question", edit.get());
                 model.addAttribute("contents", (ArrayList<Content>) contentService.findAllTest());
-                return URL_ADMIN_BASIC_EDIT;
+                return URL_ADMIN_BASIC_QUESTION_EDIT_PAGE;
             } else {
                 redirectAttributes.addFlashAttribute("status", "notfound");
             }
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_ADMIN_BASIC_QUESTION_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/question/update", method = RequestMethod.POST)
+    @PostMapping("/question/update")
     public String update(@ModelAttribute("edit") Question edit, final RedirectAttributes redirectAttributes) {
 
         try {
@@ -153,6 +153,6 @@ public class QuestionController extends BaseController {
             redirectAttributes.addFlashAttribute("edit", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_ADMIN_BASIC_QUESTION_SAVE_PAGE;
     }
 }

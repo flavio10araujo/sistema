@@ -37,7 +37,7 @@ public interface IPlayerService {
 
     Player removeOneCreditFromPlayer(Player player, Game game);
 
-    boolean playerHasCredits(Player user, Phase phase);
+    boolean playerHasCredits(int playerId, Phase phase);
 
     boolean isEmailConfirmed(Player user);
 
