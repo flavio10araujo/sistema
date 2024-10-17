@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
-import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 
 public interface IPhaseService {
@@ -36,7 +35,7 @@ public interface IPhaseService {
 
     List<Phase> findPhasesCheckedByMap(Map map, PlayerPhase lastPhaseCompleted);
 
-    boolean playerCanAccessThisPhase(Phase phase, Player user);
+    boolean canPlayerAccessPhase(Phase phase, int playerId);
 
     List<Phase> findPhasesBySearchAndUser(String q, int playerId);
 }

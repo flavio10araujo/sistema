@@ -13,13 +13,13 @@ public class CustomErrorControllerTest {
     private CustomErrorController customErrorController;
 
     @Test
-    public void givenError404_whenError404_thenReturnError404Page() {
+    public void whenError404_thenReturnError404Page() {
         String result = customErrorController.error404();
         Assertions.assertEquals("error/404", result);
     }
 
     @Test
-    public void givenError500_whenError500_thenReturnError500Page() {
+    public void whenError500_thenReturnError500Page() {
         String result = customErrorController.error500();
         Assertions.assertEquals("error/500", result);
     }

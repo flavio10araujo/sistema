@@ -455,7 +455,7 @@ public class PhaseServiceImplTest {
 
         Player user = new Player();
 
-        Assertions.assertTrue(service.playerCanAccessThisPhase(phase, user));
+        Assertions.assertTrue(service.canPlayerAccessPhase(phase, user.getId()));
     }
 
     @Test
@@ -475,7 +475,7 @@ public class PhaseServiceImplTest {
 
         when(repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId)).thenReturn(null);
 
-        Assertions.assertFalse(service.playerCanAccessThisPhase(phase, user));
+        Assertions.assertFalse(service.canPlayerAccessPhase(phase, user.getId()));
     }
 
     @Test
@@ -500,7 +500,7 @@ public class PhaseServiceImplTest {
 
         when(repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId)).thenReturn(listReturned);
 
-        Assertions.assertTrue(service.playerCanAccessThisPhase(phase, user));
+        Assertions.assertTrue(service.canPlayerAccessPhase(phase, user.getId()));
     }
 
     @Test
@@ -525,7 +525,7 @@ public class PhaseServiceImplTest {
 
         when(repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId)).thenReturn(listReturned);
 
-        Assertions.assertTrue(service.playerCanAccessThisPhase(phase, user));
+        Assertions.assertTrue(service.canPlayerAccessPhase(phase, user.getId()));
     }
 
     @Test
@@ -550,7 +550,7 @@ public class PhaseServiceImplTest {
 
         when(repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId)).thenReturn(listReturned);
 
-        Assertions.assertFalse(service.playerCanAccessThisPhase(phase, user));
+        Assertions.assertFalse(service.canPlayerAccessPhase(phase, user.getId()));
     }
     /* playerCanAccessThisPhase - end */
 }

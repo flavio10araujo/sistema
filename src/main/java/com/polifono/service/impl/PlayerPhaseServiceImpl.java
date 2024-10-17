@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Game;
+import com.polifono.domain.Level;
 import com.polifono.domain.Phase;
 import com.polifono.domain.Phasestatus;
 import com.polifono.domain.Player;
@@ -15,6 +16,7 @@ import com.polifono.domain.PlayerPhase;
 import com.polifono.dto.RankingDTO;
 import com.polifono.form.teacher.ReportGeneralForm;
 import com.polifono.repository.IPlayerPhaseRepository;
+import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.util.DateUtil;
 
@@ -27,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 
     private final IPlayerPhaseRepository repository;
+    private final IPhaseService phaseService;
 
     @Override
     public PlayerPhase save(PlayerPhase playerPhase) {
@@ -50,7 +53,7 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
     }
 
     /**
-     * Return the last phase that the player has completed.
+     * Return the last phase that the player has completed in a specific game.
      */
     @Override
     public Optional<PlayerPhase> findLastPhaseCompleted(int playerId, int gameId) {
@@ -79,9 +82,9 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
      * Verify if the phase was already done by the player.
      */
     @Override
-    public boolean isPhaseAlreadyCompletedByPlayer(Phase phase, Player player) {
+    public boolean isPhaseAlreadyCompletedByPlayer(Phase phase, int playerId) {
 
-        PlayerPhase playerPhase = this.findByPlayerPhaseAndStatus(player.getId(), phase.getId(), 3);
+        PlayerPhase playerPhase = this.findByPlayerPhaseAndStatus(playerId, phase.getId(), 3);
 
         // The phase is already completed by this player.
         return playerPhase != null;
@@ -158,5 +161,27 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
         }
 
         return ranking;
+    }
+
+    @Override
+    public int determinePermittedLevel(int playerId, int gameId) {
+        Optional<PlayerPhase> lastPlayerPhaseCompleted = findLastPhaseCompleted(playerId, gameId);
+
+        if (lastPlayerPhaseCompleted.isEmpty()) {
+            return 1;
+        }
+
+        Level lastLevel = lastPlayerPhaseCompleted.get().getPhase().getMap().getLevel();
+        Optional<Phase> lastPhaseOfTheLevel = phaseService.findLastPhaseOfTheLevel(gameId, lastLevel.getId());
+
+        if (lastPhaseOfTheLevel.isEmpty()) {
+            return 1;
+        }
+
+        if (lastPlayerPhaseCompleted.get().getPhase().getId() != lastPhaseOfTheLevel.get().getId()) {
+            return lastLevel.getOrder();
+        } else {
+            return lastLevel.getOrder() + 1;
+        }
     }
 }

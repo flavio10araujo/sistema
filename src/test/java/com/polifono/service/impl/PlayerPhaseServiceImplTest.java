@@ -216,7 +216,7 @@ public class PlayerPhaseServiceImplTest {
 
         when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(new PlayerPhase());
 
-        Assertions.assertTrue(service.isPhaseAlreadyCompletedByPlayer(phase, player));
+        Assertions.assertTrue(service.isPhaseAlreadyCompletedByPlayer(phase, player.getId()));
     }
 
     @Test
@@ -231,7 +231,7 @@ public class PlayerPhaseServiceImplTest {
 
         when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(null);
 
-        Assertions.assertFalse(service.isPhaseAlreadyCompletedByPlayer(phase, player));
+        Assertions.assertFalse(service.isPhaseAlreadyCompletedByPlayer(phase, player.getId()));
     }
     /* isPhaseAlreadyCompletedByPlayer - end */
 

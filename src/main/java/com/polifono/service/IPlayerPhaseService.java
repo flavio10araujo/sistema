@@ -22,11 +22,13 @@ public interface IPlayerPhaseService {
 
     List<PlayerPhase> findForReportGeneral(ReportGeneralForm reportGeneralForm, int playerId);
 
-    boolean isPhaseAlreadyCompletedByPlayer(Phase phase, Player user);
+    boolean isPhaseAlreadyCompletedByPlayer(Phase phase, int playerId);
 
     PlayerPhase setTestAttempt(Player user, Phase phase);
 
     List<Game> filterPlayerPhasesListByGame(List<PlayerPhase> list);
 
     List<RankingDTO> getRankingMonthly();
+
+    int determinePermittedLevel(int playerId, int gameId);
 }

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
-import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.repository.IPhaseRepository;
 import com.polifono.service.IPhaseService;
@@ -162,14 +161,14 @@ public class PhaseServiceImpl implements IPhaseService {
      * Return true if the player has the permission.
      */
     @Override
-    public boolean playerCanAccessThisPhase(Phase phase, Player player) {
+    public boolean canPlayerAccessPhase(Phase phase, int playerId) {
         // The first phase is always allowed.
         if (phase.getOrder() == 1) {
             return true;
         }
 
         // Get the last phase that the player has done in a specific game.
-        Optional<Phase> lastPhaseDone = findLastPhaseDoneByPlayerAndGame(player.getId(), phase.getMap().getGame().getId());
+        Optional<Phase> lastPhaseDone = findLastPhaseDoneByPlayerAndGame(playerId, phase.getMap().getGame().getId());
 
         // If the player is trying to access a phase, but he had never finished a phase of this game.
         if (lastPhaseDone.isEmpty()) {

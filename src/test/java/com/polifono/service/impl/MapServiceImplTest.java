@@ -314,7 +314,7 @@ public class MapServiceImplTest {
 
         Player player = new Player();
 
-        Assertions.assertTrue(service.playerCanAccessThisMap(map, player));
+        Assertions.assertTrue(service.canPlayerAccessMap(map, player.getId()));
     }
 
     @Test
@@ -335,7 +335,7 @@ public class MapServiceImplTest {
 
         when(phaseService.findLastPhaseDoneByPlayerAndGame(player.getId(), map.getGame().getId())).thenReturn(null);
 
-        Assertions.assertFalse(service.playerCanAccessThisMap(map, player));
+        Assertions.assertFalse(service.canPlayerAccessMap(map, player.getId()));
     }
 
     @Test
@@ -365,7 +365,7 @@ public class MapServiceImplTest {
 
         when(phaseService.findLastPhaseDoneByPlayerAndGame(player.getId(), map.getGame().getId())).thenReturn(Optional.of(lastPhaseDone));
 
-        Assertions.assertTrue(service.playerCanAccessThisMap(map, player));
+        Assertions.assertTrue(service.canPlayerAccessMap(map, player.getId()));
     }
 
     @Test
@@ -396,7 +396,7 @@ public class MapServiceImplTest {
 
         when(phaseService.findLastPhaseDoneByPlayerAndGame(player.getId(), map.getGame().getId())).thenReturn(Optional.of(lastPhaseDone));
 
-        Assertions.assertTrue(service.playerCanAccessThisMap(map, player));
+        Assertions.assertTrue(service.canPlayerAccessMap(map, player.getId()));
     }
 
     @Test
@@ -439,7 +439,7 @@ public class MapServiceImplTest {
         when(phaseService.findLastPhaseOfTheLevel(lastPhaseDone.getMap().getGame().getId(), lastPhaseDone.getMap().getLevel().getId())).thenReturn(
                 Optional.of(lastPhaseOfTheLevel));
 
-        Assertions.assertFalse(service.playerCanAccessThisMap(map, player));
+        Assertions.assertFalse(service.canPlayerAccessMap(map, player.getId()));
     }
 
     @Test
@@ -482,7 +482,7 @@ public class MapServiceImplTest {
         when(phaseService.findLastPhaseOfTheLevel(lastPhaseDone.getMap().getGame().getId(), lastPhaseDone.getMap().getLevel().getId())).thenReturn(
                 Optional.of(lastPhaseOfTheLevel));
 
-        Assertions.assertTrue(service.playerCanAccessThisMap(map, player));
+        Assertions.assertTrue(service.canPlayerAccessMap(map, player.getId()));
     }
 
     @Test
@@ -525,7 +525,7 @@ public class MapServiceImplTest {
         when(phaseService.findLastPhaseOfTheLevel(lastPhaseDone.getMap().getGame().getId(), lastPhaseDone.getMap().getLevel().getId())).thenReturn(
                 Optional.of(lastPhaseOfTheLevel));
 
-        Assertions.assertFalse(service.playerCanAccessThisMap(map, player));
+        Assertions.assertFalse(service.canPlayerAccessMap(map, player.getId()));
     }
 
     @Test
@@ -568,7 +568,7 @@ public class MapServiceImplTest {
         when(phaseService.findLastPhaseOfTheLevel(lastPhaseDone.getMap().getGame().getId(), lastPhaseDone.getMap().getLevel().getId())).thenReturn(
                 Optional.of(lastPhaseOfTheLevel));
 
-        Assertions.assertTrue(service.playerCanAccessThisMap(map, player));
+        Assertions.assertTrue(service.canPlayerAccessMap(map, player.getId()));
     }
 
     @Test
@@ -611,7 +611,7 @@ public class MapServiceImplTest {
         when(phaseService.findLastPhaseOfTheLevel(lastPhaseDone.getMap().getGame().getId(), lastPhaseDone.getMap().getLevel().getId())).thenReturn(
                 Optional.of(lastPhaseOfTheLevel));
 
-        Assertions.assertFalse(service.playerCanAccessThisMap(map, player));
+        Assertions.assertFalse(service.canPlayerAccessMap(map, player.getId()));
     }
 
     @Test
@@ -654,7 +654,7 @@ public class MapServiceImplTest {
         when(phaseService.findLastPhaseOfTheLevel(lastPhaseDone.getMap().getGame().getId(), lastPhaseDone.getMap().getLevel().getId())).thenReturn(
                 Optional.of(lastPhaseOfTheLevel));
 
-        Assertions.assertFalse(service.playerCanAccessThisMap(map, player));
+        Assertions.assertFalse(service.canPlayerAccessMap(map, player.getId()));
     }
     /* playerCanAccessThisMap - end */
 

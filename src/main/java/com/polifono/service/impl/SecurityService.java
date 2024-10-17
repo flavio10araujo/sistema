@@ -66,4 +66,12 @@ public class SecurityService {
         SecurityContextHolder.setContext(context);
         securityContextRepository.saveContext(context, request, response);
     }
+
+    /**
+     * Get the user's ID.
+     */
+    public int getUserId() {
+        Optional<CurrentUser> currentUser = getCurrentAuthenticatedUser();
+        return currentUser.map(user -> user.getUser().getId()).orElseThrow(() -> new IllegalStateException("User not authenticated"));
+    }
 }

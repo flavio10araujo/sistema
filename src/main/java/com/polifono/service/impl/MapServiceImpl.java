@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.polifono.domain.Game;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
-import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.repository.IMapRepository;
 import com.polifono.service.IMapService;
@@ -97,7 +96,7 @@ public class MapServiceImpl implements IMapService {
      * Return true if the player has the permission.
      */
     @Override
-    public boolean playerCanAccessThisMap(Map map, Player player) {
+    public boolean canPlayerAccessMap(Map map, int playerId) {
 
         // The first map of the first level is always permitted.
         if (map.getLevel().getOrder() == 1 && map.getOrder() == 1) {
@@ -105,9 +104,9 @@ public class MapServiceImpl implements IMapService {
         }
 
         // Get the last phase that the player has done in a specific game.
-        Optional<Phase> lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(player.getId(), map.getGame().getId());
+        Optional<Phase> lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(playerId, map.getGame().getId());
 
-        // If the player is trying to access a map different of the first map of the first level and he never had finished a phase of this game.
+        // If the player is trying to access a map different of the first map of the first level, and he never had finished a phase of this game.
         if (lastPhaseDone.isEmpty()) {
             return false;
         }

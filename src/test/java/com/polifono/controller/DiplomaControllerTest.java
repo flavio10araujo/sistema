@@ -1,5 +1,7 @@
 package com.polifono.controller;
 
+import static com.polifono.common.TemplateConstants.URL_DIPLOMA_OPEN_SEARCH;
+import static com.polifono.common.TemplateConstants.URL_DIPLOMA_SEARCH;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,9 +29,9 @@ import net.sf.jasperreports.engine.JRException;
 @ExtendWith(MockitoExtension.class)
 public class DiplomaControllerTest {
 
-    public static final String CODE_EXISTENT = "code_existent";
-    public static final String CODE_INEXISTENT = "code_inexistent";
-    public static final String MSG_THE_INFORMED_CERTIFICATE_DOES_NOT_EXIST = "The Informed Certificate Does Not Exist";
+    private static final String CODE_EXISTENT = "code_existent";
+    private static final String CODE_INEXISTENT = "code_inexistent";
+    private static final String MSG_THE_INFORMED_CERTIFICATE_DOES_NOT_EXIST = "The Informed Certificate Does Not Exist";
 
     @InjectMocks
     private DiplomaController diplomaController;
@@ -45,26 +47,26 @@ public class DiplomaControllerTest {
 
     /* diplomaSearch - BEGIN */
     @Test
-    public void givenDiplomaSearch_whenUserIsAuthenticated_thenReturnDiplomaSearchPage() {
+    public void givenUserIsAuthenticated_whenDiplomaSearch_thenReturnDiplomaSearchPage() {
         when(securityService.isAuthenticated()).thenReturn(true);
 
         String result = diplomaController.diplomaSearch(null);
-        Assertions.assertEquals("diplomaSearch", result);
+        Assertions.assertEquals(URL_DIPLOMA_SEARCH, result);
     }
 
     @Test
-    public void givenDiplomaSearch_whenUserIsNotAuthenticated_thenReturnDiplomaSearchOpenPage() {
+    public void givenUserIsNotAuthenticated_whenDiplomaSearch_thenReturnDiplomaSearchOpenPage() {
         when(securityService.isAuthenticated()).thenReturn(false);
         Model model = mock(Model.class);
 
         String result = diplomaController.diplomaSearch(model);
-        Assertions.assertEquals("diplomaSearchOpen", result);
+        Assertions.assertEquals(URL_DIPLOMA_OPEN_SEARCH, result);
     }
     /* diplomaSearch - END */
 
     /* diplomaSearchSubmit - BEGIN */
     @Test
-    public void givenDiplomaSearchSubmit_whenUserIsAuthenticatedAndDiplomaIsNotFound_thenReturnDiplomaSearchPageWithErrorMessage() {
+    public void givenUserIsAuthenticatedAndDiplomaIsNotFound_whenDiplomaSearchSubmit_thenReturnDiplomaSearchPageWithErrorMessage() {
         Model model = mock(Model.class);
         Locale locale = getDefaultLocale();
 
@@ -76,11 +78,11 @@ public class DiplomaControllerTest {
 
         verify(model).addAttribute("message", "error");
         verify(model).addAttribute("messageContent", MSG_THE_INFORMED_CERTIFICATE_DOES_NOT_EXIST);
-        Assertions.assertEquals("diplomaSearch", result);
+        Assertions.assertEquals(URL_DIPLOMA_SEARCH, result);
     }
 
     @Test
-    public void givenDiplomaSearchSubmit_whenUserIsNotAuthenticatedAndDiplomaIsNotFound_thenReturnDiplomaSearchOpenPageWithErrorMessage() {
+    public void givenUserIsNotAuthenticatedAndDiplomaIsNotFound_whenDiplomaSearchSubmit_thenReturnDiplomaSearchOpenPageWithErrorMessage() {
         Model model = mock(Model.class);
         Locale locale = getDefaultLocale();
 
@@ -92,11 +94,11 @@ public class DiplomaControllerTest {
 
         verify(model).addAttribute("message", "error");
         verify(model).addAttribute("messageContent", MSG_THE_INFORMED_CERTIFICATE_DOES_NOT_EXIST);
-        Assertions.assertEquals("diplomaSearchOpen", result);
+        Assertions.assertEquals(URL_DIPLOMA_OPEN_SEARCH, result);
     }
 
     @Test
-    public void givenDiplomaSearchSubmit_whenUserIsAuthenticatedAndDiplomaIsFound_thenReturnDiplomaSearchPageWithSuccessMessage() {
+    public void givenUserIsAuthenticatedAndDiplomaIsFound_whenDiplomaSearchSubmit_thenReturnDiplomaSearchPageWithSuccessMessage() {
         Model model = mock(Model.class);
         Locale locale = getDefaultLocale();
 
@@ -110,11 +112,11 @@ public class DiplomaControllerTest {
         verify(model).addAttribute("message", "success");
         verify(model).addAttribute("diploma", diploma.get());
 
-        Assertions.assertEquals("diplomaSearch", result);
+        Assertions.assertEquals(URL_DIPLOMA_SEARCH, result);
     }
 
     @Test
-    public void givenDiplomaSearchSubmit_whenUserIsNotAuthenticatedAndDiplomaIsFound_thenReturnDiplomaSearchOpenPageWithSuccessMessage() {
+    public void givenUserIsNotAuthenticatedAndDiplomaIsFound_whenDiplomaSearchSubmit_thenReturnDiplomaSearchOpenPageWithSuccessMessage() {
         Model model = mock(Model.class);
         Locale locale = getDefaultLocale();
 
@@ -128,13 +130,13 @@ public class DiplomaControllerTest {
         verify(model).addAttribute("message", "success");
         verify(model).addAttribute("diploma", diploma.get());
 
-        Assertions.assertEquals("diplomaSearchOpen", result);
+        Assertions.assertEquals(URL_DIPLOMA_OPEN_SEARCH, result);
     }
     /* diplomaSearchSubmit - END */
 
     /* diplomaGet - BEGIN */
     @Test
-    public void givenDiplomaGet_whenUserIsAuthenticatedAndDiplomaIsNotFound_thenReturnDiplomaSearchPageWithErrorMessage() throws JRException, IOException {
+    public void givenUserIsAuthenticatedAndDiplomaIsNotFound_whenDiplomaGet_thenReturnDiplomaSearchPageWithErrorMessage() throws JRException, IOException {
         Model model = mock(Model.class);
         Locale locale = getDefaultLocale();
 
@@ -146,11 +148,11 @@ public class DiplomaControllerTest {
 
         verify(model).addAttribute("message", "error");
         verify(model).addAttribute("messageContent", MSG_THE_INFORMED_CERTIFICATE_DOES_NOT_EXIST);
-        Assertions.assertEquals("diplomaSearch", result);
+        Assertions.assertEquals(URL_DIPLOMA_SEARCH, result);
     }
 
     @Test
-    public void givenDiplomaGet_whenUserIsNotAuthenticatedAndDiplomaIsNotFound_thenReturnDiplomaSearchOpenPageWithErrorMessage()
+    public void givenUserIsNotAuthenticatedAndDiplomaIsNotFound_whenDiplomaGet_thenReturnDiplomaSearchOpenPageWithErrorMessage()
             throws JRException, IOException {
         Model model = mock(Model.class);
         Locale locale = getDefaultLocale();
@@ -163,11 +165,11 @@ public class DiplomaControllerTest {
 
         verify(model).addAttribute("message", "error");
         verify(model).addAttribute("messageContent", MSG_THE_INFORMED_CERTIFICATE_DOES_NOT_EXIST);
-        Assertions.assertEquals("diplomaSearchOpen", result);
+        Assertions.assertEquals(URL_DIPLOMA_OPEN_SEARCH, result);
     }
 
     @Test
-    public void givenDiplomaGet_whenDiplomaIsFound_thenGenerateDiplomaPdf() throws JRException, IOException {
+    public void givenDiplomaIsFound_whenDiplomaGet_thenGenerateDiplomaPdf() throws JRException, IOException {
         Locale locale = getDefaultLocale();
         HttpServletResponse response = mock(HttpServletResponse.class);
         Optional<Diploma> diploma = getDiploma();

@@ -401,7 +401,7 @@ public class PlayerServiceImplTest {
 
         when(repository.findById(id)).thenReturn(Optional.of(player));
 
-        Assertions.assertTrue(service.playerHasCredits(player, phase));
+        Assertions.assertTrue(service.playerHasCredits(player.getId(), phase));
     }
 
     @Test
@@ -411,7 +411,7 @@ public class PlayerServiceImplTest {
 
         when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(entity));
 
-        Assertions.assertTrue(service.playerHasCredits(entity, getPhaseStubData()));
+        Assertions.assertTrue(service.playerHasCredits(entity.getId(), getPhaseStubData()));
 
         verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
@@ -424,7 +424,7 @@ public class PlayerServiceImplTest {
 
         when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(entity));
 
-        Assertions.assertTrue(service.playerHasCredits(entity, getPhaseStubData()));
+        Assertions.assertTrue(service.playerHasCredits(entity.getId(), getPhaseStubData()));
 
         verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);
@@ -437,7 +437,7 @@ public class PlayerServiceImplTest {
 
         when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(entity);
 
-        Assertions.assertFalse(service.playerHasCredits(entity.get(), getPhaseStubData()));
+        Assertions.assertFalse(service.playerHasCredits(entity.get().getId(), getPhaseStubData()));
 
         verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(repository);

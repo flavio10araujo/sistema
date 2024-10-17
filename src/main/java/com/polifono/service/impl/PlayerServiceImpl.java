@@ -162,8 +162,8 @@ public class PlayerServiceImpl implements IPlayerService {
      * Return true, if the player has credits.
      * This method verify the generic credits and the specific credits for the game passed.
      */
-    public boolean playerHasCredits(Player player, Phase phase) {
-        player = this.findById(player.getId()).get();
+    public boolean playerHasCredits(int playerId, Phase phase) {
+        Player player = this.findById(playerId).get();
         boolean hasCredits = false;
 
         // If the player has generic credits.
