@@ -1,7 +1,8 @@
 package com.polifono.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
@@ -11,15 +12,15 @@ public class ContentUtilTest {
 
     @Test
     public void givenNullInput_WhenFormatContent_ThenReturnEmptyString() {
-        assertNull(ContentUtil.formatContent(null));
+        assertEquals(ContentUtil.formatContent(null), Optional.empty());
     }
 
     @Test
     public void givenContent_WhenFormatContent_ThenReturnFormattedContent() {
         Content content = Content.builder().content(getContentOriginal()).build();
         Content expected = Content.builder().content(getContentFormatted()).build();
-        Content actual = ContentUtil.formatContent(content);
-        assertEquals(expected.getContent(), actual.getContent());
+        Optional<Content> actual = ContentUtil.formatContent(content);
+        assertEquals(expected.getContent(), actual.get().getContent());
     }
 
     private String getContentOriginal() {

@@ -14,13 +14,11 @@ public class CustomErrorController {
 
     @GetMapping("/error404")
     public String error404() {
-        log.debug("Inside /error404");
         return URL_ERROR_404;
     }
 
     @GetMapping("/error500")
     public String error500() {
-        log.debug("Inside /error500");
         return URL_ERROR_500;
     }
 }

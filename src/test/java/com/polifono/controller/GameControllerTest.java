@@ -120,7 +120,7 @@ public class GameControllerTest {
 
         when(gameService.findByNamelink(GAME_NAME_LINK_EXISTENT)).thenReturn(Optional.of(game));
         when(securityService.getUserId()).thenReturn(1);
-        when(playerPhaseService.determinePermittedLevel(user.getId(), game.getId())).thenReturn(1);
+        when(playerPhaseService.getPermittedLevelForPlayer(user.getId(), game.getId())).thenReturn(1);
         when(levelService.flagLevelsToOpenedOrNot(game.getId(), 1)).thenReturn(levels);
 
         String result = gameController.listLevelsOfTheGame(model, GAME_NAME_LINK_EXISTENT);

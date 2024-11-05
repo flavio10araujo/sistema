@@ -56,7 +56,7 @@ public class EmailSender {
 
         hm.setHostName(emailProperties.getHostName());
         hm.setSmtpPort(Integer.parseInt(emailProperties.getSmtpPort()));
-        hm.setAuthentication(emailProperties.getAuthenticationLogin(), emailProperties.getAuthenticationPassword());
+        hm.setAuthentication(emailProperties.getAuthentication().getLogin(), emailProperties.getAuthentication().getPassword());
         hm.setCharset(emailProperties.getCharset());
         hm.setSubject(subject);
         hm.setFrom(senderAddress);

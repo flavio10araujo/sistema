@@ -1,5 +1,7 @@
 package com.polifono.util;
 
+import java.util.Optional;
+
 import com.polifono.domain.Content;
 
 /**
@@ -7,9 +9,9 @@ import com.polifono.domain.Content;
  */
 public class ContentUtil {
 
-    public static Content formatContent(Content content) {
+    public static Optional<Content> formatContent(Content content) {
         if (content == null) {
-            return null;
+            return Optional.empty();
         }
 
         String formatted = content.getContent();
@@ -24,7 +26,7 @@ public class ContentUtil {
 
         content.setContent(formatted);
 
-        return content;
+        return Optional.of(content);
     }
 
     private static String[] getImages(String content) {

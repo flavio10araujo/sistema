@@ -188,16 +188,17 @@ public class PromoController {
         }
 
         // Get the first content of this phase.
-        Content content = ContentUtil.formatContent(contentService.findByPhaseAndOrder(phase.get().getId(), 1));
+        Optional<Content> contentOpt = ContentUtil.formatContent(contentService.findByPhaseAndOrder(phase.get().getId(), 1));
 
         // If the content doesn't exist.
-        if (content == null)
+        if (contentOpt.isEmpty()) {
             return REDIRECT_HOME;
+        }
 
         model.addAttribute("game", game);
         model.addAttribute("map", map);
         model.addAttribute("phase", phase);
-        model.addAttribute("content", content);
+        model.addAttribute("content", contentOpt.get());
 
         // trumpet
         if ("trumpet".equals(gameName)) {

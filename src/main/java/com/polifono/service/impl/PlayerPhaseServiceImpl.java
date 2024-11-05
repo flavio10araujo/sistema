@@ -20,6 +20,7 @@ import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.util.DateUtil;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,6 +57,7 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
      * Return the last phase that the player has completed in a specific game.
      */
     @Override
+    @NonNull
     public Optional<PlayerPhase> findLastPhaseCompleted(int playerId, int gameId) {
         List<PlayerPhase> playerPhases = repository.findLastPhaseCompleted(playerId, gameId);
 
@@ -164,7 +166,7 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
     }
 
     @Override
-    public int determinePermittedLevel(int playerId, int gameId) {
+    public int getPermittedLevelForPlayer(int playerId, int gameId) {
         Optional<PlayerPhase> lastPlayerPhaseCompleted = findLastPhaseCompleted(playerId, gameId);
 
         if (lastPlayerPhaseCompleted.isEmpty()) {
