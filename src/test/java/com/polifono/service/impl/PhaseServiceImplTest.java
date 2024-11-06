@@ -326,10 +326,10 @@ public class PhaseServiceImplTest {
     @Test
     public void findByMapAndOrder_WhenSearchByMapAndOrderInexistents_ReturnEmptyList() {
         int mapId = MAP_ID_INEXISTENT, phaseOrder = ORDER_INEXISTENT;
-        when(repository.findByMapAndOrder(mapId, phaseOrder)).thenReturn(null);
+        when(repository.findByMapAndOrder(mapId, phaseOrder)).thenReturn(Optional.empty());
 
         Optional<Phase> entity = service.findByMapAndOrder(MAP_ID_INEXISTENT, ORDER_INEXISTENT);
-        Assertions.assertTrue(entity.isPresent(), "failure - expected null");
+        Assertions.assertFalse(entity.isPresent(), "failure - expected empty");
     }
     /* findByMapAndOrder - end */
 
@@ -376,7 +376,7 @@ public class PhaseServiceImplTest {
         List<Phase> list = service.findByMap(MAP_ID_EXISTENT);
         Phase firstPhase = list.get(list.size() - 1);
 
-        when(repository.findNextPhaseInThisMap(firstPhase.getMap().getId(), firstPhase.getOrder() + 1)).thenReturn(null);
+        when(repository.findNextPhaseInThisMap(firstPhase.getMap().getId(), firstPhase.getOrder() + 1)).thenReturn(Optional.empty());
 
         Optional<Phase> entity = service.findNextPhaseInThisMap(firstPhase.getMap().getId(), firstPhase.getOrder() + 1);
 
@@ -421,7 +421,7 @@ public class PhaseServiceImplTest {
 
         // The only way to be sure that entity is the last phase of the level is if when we use findNextPhaseInThisMap the return is null.
         int mapId = entity.get().getMap().getId(), phaseOrder = (entity.get().getOrder() + 1);
-        when(repository.findNextPhaseInThisMap(mapId, phaseOrder)).thenReturn(null);
+        when(repository.findNextPhaseInThisMap(mapId, phaseOrder)).thenReturn(Optional.empty());
 
         Optional<Phase> entityNull = service.findNextPhaseInThisMap(entity.get().getMap().getId(), entity.get().getOrder() + 1);
         Assertions.assertFalse(entityNull.isPresent(), "failure - expected null");
@@ -473,7 +473,7 @@ public class PhaseServiceImplTest {
         Player user = new Player();
         user.setId(playerId);
 
-        when(repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId)).thenReturn(null);
+        when(repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId)).thenReturn(new ArrayList<>());
 
         Assertions.assertFalse(service.canPlayerAccessPhase(phase, user.getId()));
     }

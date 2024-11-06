@@ -230,14 +230,14 @@ public class MapServiceImplTest {
     }
 
     @Test
-    public void findByGameAndLevel_WhenSearchByGameAndLevelInexistents_ReturnNull() {
+    public void findByGameAndLevel_WhenSearchByGameAndLevelInexistents_ReturnOptionalEmpty() {
         int gameId = 1, levelId = 1;
         List<Map> listReturned = new ArrayList<>();
 
         when(repository.findMapsByGameAndLevel(gameId, levelId)).thenReturn(listReturned);
 
         Optional<Map> entity = service.findByGameAndLevel(gameId, levelId);
-        Assertions.assertTrue(entity.isPresent(), "failure - expected null");
+        Assertions.assertFalse(entity.isPresent(), "failure - expected Optional to be empty");
     }
     /* findByGameAndLevel - end */
 
@@ -255,7 +255,7 @@ public class MapServiceImplTest {
     }
 
     @Test
-    public void findByGameLevelAndOrder_WhenSearchByGameLevelAndOrderInexistents_ReturnNull() {
+    public void findByGameLevelAndOrder_WhenSearchByGameLevelAndOrderInexistents_ReturnOptionalEmpty() {
         int gameId = 999, levelId = 999, mapOrder = 999;
 
         List<Map> listReturned = new ArrayList<>();
@@ -263,7 +263,7 @@ public class MapServiceImplTest {
         when(repository.findMapsByGameLevelAndOrder(gameId, levelId, mapOrder)).thenReturn(listReturned);
 
         Optional<Map> entity = service.findByGameLevelAndOrder(gameId, levelId, mapOrder);
-        Assertions.assertTrue(entity.isPresent(), "failure - expected null");
+        Assertions.assertFalse(entity.isPresent(), "failure - expected Optional to be empty");
     }
     /* findByGameLevelAndOrder - end */
 
@@ -333,7 +333,7 @@ public class MapServiceImplTest {
         Player player = new Player();
         player.setId(1);
 
-        when(phaseService.findLastPhaseDoneByPlayerAndGame(player.getId(), map.getGame().getId())).thenReturn(null);
+        when(phaseService.findLastPhaseDoneByPlayerAndGame(player.getId(), map.getGame().getId())).thenReturn(Optional.empty());
 
         Assertions.assertFalse(service.canPlayerAccessMap(map, player.getId()));
     }
@@ -737,7 +737,7 @@ public class MapServiceImplTest {
         Map mapCurrent = lastPhaseCompleted.getPhase().getMap();
 
         when(phaseService.findNextPhaseInThisMap(lastPhaseCompleted.getPhase().getMap().getId(), lastPhaseCompleted.getPhase().getOrder() + 1)).thenReturn(
-                null);
+                Optional.empty());
         when(repository.findNextMapSameLevel(mapCurrent.getGame().getId(), mapCurrent.getLevel().getId(), mapCurrent.getOrder())).thenReturn(
                 Optional.of(nextMapSameLevel));
 
@@ -770,8 +770,8 @@ public class MapServiceImplTest {
         Map mapCurrent = lastPhaseCompleted.getPhase().getMap();
 
         when(phaseService.findNextPhaseInThisMap(lastPhaseCompleted.getPhase().getMap().getId(), lastPhaseCompleted.getPhase().getOrder() + 1)).thenReturn(
-                null);
-        when(repository.findNextMapSameLevel(mapCurrent.getGame().getId(), mapCurrent.getLevel().getId(), mapCurrent.getOrder())).thenReturn(null);
+                Optional.empty());
+        when(repository.findNextMapSameLevel(mapCurrent.getGame().getId(), mapCurrent.getLevel().getId(), mapCurrent.getOrder())).thenReturn(Optional.empty());
 
         List<Map> listReturned = new ArrayList<>();
         Map mapReturned = new Map();
@@ -815,8 +815,8 @@ public class MapServiceImplTest {
         Map mapCurrent = lastPhaseCompleted.getPhase().getMap();
 
         when(phaseService.findNextPhaseInThisMap(lastPhaseCompleted.getPhase().getMap().getId(), lastPhaseCompleted.getPhase().getOrder() + 1)).thenReturn(
-                null);
-        when(repository.findNextMapSameLevel(mapCurrent.getGame().getId(), mapCurrent.getLevel().getId(), mapCurrent.getOrder())).thenReturn(null);
+                Optional.empty());
+        when(repository.findNextMapSameLevel(mapCurrent.getGame().getId(), mapCurrent.getLevel().getId(), mapCurrent.getOrder())).thenReturn(Optional.empty());
 
         List<Map> listReturned = new ArrayList<>();
 
