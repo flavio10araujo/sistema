@@ -115,7 +115,7 @@ public class ContentServiceImpl implements IContentService {
         return repository.findContentsTestByPhase(phaseId);
     }
 
-    public Content findByPhaseAndOrder(int phaseId, int contentOrder) {
+    public Optional<Content> findByPhaseAndOrder(int phaseId, int contentOrder) {
         return repository.findByPhaseAndOrder(phaseId, contentOrder);
     }
 }

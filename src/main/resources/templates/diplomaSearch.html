@@ -27,7 +27,7 @@
 
                 <hr />
 
-                <form th:action="@{/diploma}" method="post">
+                <form th:action="@{/diplomas}" method="post">
                     <div class="form-group">
                         <label for="code">Informe o código do certificado buscado:</label>
                         <input type="text" th:name="code" th:id="code" class="form-control" required="true" />
@@ -54,7 +54,7 @@
                     ministrado pela <span th:text="#{diploma.company}"></span>.<br />
                     Carga horária: <span th:text="${diploma.qtdHours}"></span> horas<br />
                     Data de conclusão: <span th:text="${diploma.dtStr}"></span><br /><br />
-                    Clique no link para baixar o certificado: <br /><a th:href="@{'/diploma/'+${diploma.code}}"><i class="fa fa-download"
+                    Clique no link para baixar o certificado: <br /><a th:href="@{'/diplomas/'+${diploma.code}}"><i class="fa fa-download"
                                                                                                                    aria-hidden="true"></i> Baixar</a></p>
             </div>
         </div>

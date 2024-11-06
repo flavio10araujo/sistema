@@ -150,47 +150,33 @@ public class GameController {
     ) {
 
         Optional<Game> gameOpt = getGameByNamelink(gameName);
-
         if (gameOpt.isEmpty()) {
             return REDIRECT_HOME;
         }
 
         Optional<Map> mapOpt = getMapByGameLevelAndOrder(gameOpt.get(), levelOrder, mapOrder);
-
         if (mapOpt.isEmpty()) {
             return REDIRECT_HOME;
         }
 
         Optional<Phase> phaseOpt = getPhaseByMapAndOrder(mapOpt.get(), phaseOrder);
-
-        if (phaseOpt.isEmpty()) {
-            return REDIRECT_HOME;
-        }
-
-        // If the player doesn't have permission to access this phase.
-        if (!isPlayerAllowedToAccessThePhase(phaseOpt.get(), getUserId())) {
+        if (phaseOpt.isEmpty() || !isPlayerAllowedToAccessThePhase(phaseOpt.get(), getUserId())) {
             return REDIRECT_HOME;
         }
 
         Optional<Content> contentOpt = getContent(phaseOpt.get());
-
         if (contentOpt.isEmpty()) {
             return REDIRECT_HOME;
         }
 
         // If the player doesn't have credits anymore.
         // And the player is not trying to access the first phase (the first phase is always free).
-        if (!playerService.playerHasCredits(getUserId(), phaseOpt.get()) && phaseOpt.get().getOrder() > 1) {
-
+        if (isTryingToAccessNotFreePhaseWithoutCredits(getUserId(), phaseOpt.get())) {
             // Get the last phase that the player has done in a specific game.
-            Optional<Phase> lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(getUserId(), phaseOpt.get().getMap().getGame().getId());
-
-            if (lastPhaseDone.isEmpty()) {
-                return REDIRECT_HOME;
-            }
+            Optional<Phase> lastPhaseDoneOpt = getLastPhaseDoneByPlayerAndGame(getUserId(), gameOpt.get());
 
             // If the player is trying to access a phase that he has already finished, it's OK. Otherwise, he can't access this phase.
-            if (lastPhaseDone.get().getOrder() < phaseOpt.get().getOrder()) {
+            if (lastPhaseDoneOpt.isEmpty() || isTryingToAccessPhaseNeverPlayed(lastPhaseDoneOpt.get(), phaseOpt.get())) {
                 model.addAttribute("msg", messagesResource.getMessage("msg.credits.insufficient", null, locale));
                 return URL_BUY_CREDITS;
             }
@@ -204,91 +190,73 @@ public class GameController {
         return URL_GAMES_PHASE_CONTENT;
     }
 
-    private Optional<Content> getContent(Phase phase) {
-        return ContentUtil.formatContent(contentService.findByPhaseAndOrder(phase.getId(), 1));
-    }
-
-    private boolean isPlayerAllowedToAccessThePhase(Phase phase, int playerId) {
-        return phaseService.canPlayerAccessPhase(phase, playerId);
-    }
-
-    private Optional<Phase> getPhaseByMapAndOrder(Map map, int phaseOrder) {
-        return phaseService.findByMapAndOrder(map.getId(), phaseOrder);
-    }
-
     @GetMapping("/games/{gameName}/{levelOrder}/{mapOrder}/{phaseOrder}/test")
     public String initTest(
             HttpSession session,
             final Model model,
             @PathVariable("gameName") String gameName,
-            @PathVariable("levelOrder") Integer levelOrder,
-            @PathVariable("mapOrder") Integer mapOrder,
-            @PathVariable("phaseOrder") Integer phaseOrder,
+            @PathVariable("levelOrder") int levelOrder,
+            @PathVariable("mapOrder") int mapOrder,
+            @PathVariable("phaseOrder") int phaseOrder,
             Locale locale
     ) {
 
-        Optional<Game> game = getGameByNamelink(gameName);
-
-        if (game.isEmpty()) {
+        Optional<Game> gameOpt = getGameByNamelink(gameName);
+        if (gameOpt.isEmpty()) {
             return REDIRECT_HOME;
         }
 
-        Optional<Map> map = getMapByGameLevelAndOrder(game.get(), levelOrder, mapOrder);
-
-        if (map.isEmpty()) {
+        Optional<Map> mapOpt = getMapByGameLevelAndOrder(gameOpt.get(), levelOrder, mapOrder);
+        if (mapOpt.isEmpty()) {
             return REDIRECT_HOME;
         }
 
-        Optional<Phase> phase = getPhaseByMapAndOrder(map.get(), phaseOrder);
-
-        if (phase.isEmpty()) {
+        Optional<Phase> phaseOpt = getPhaseByMapAndOrder(mapOpt.get(), phaseOrder);
+        if (phaseOpt.isEmpty()) {
             return REDIRECT_HOME;
         }
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
-
         if (currentUser.isEmpty()) {
             return REDIRECT_HOME;
         }
 
         // If the player has already passed this test he can't see the test again.
-        if (playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase.get(), getUserId())) {
+        if (playerPhaseService.isPhaseAlreadyCompletedByPlayer(phaseOpt.get(), getUserId())) {
             return REDIRECT_GAMES + "/" + gameName;
         }
 
         // If the player doesn't have permission to access this phase.
-        if (!isPlayerAllowedToAccessThePhase(phase.get(), getUserId())) {
+        if (!isPlayerAllowedToAccessThePhase(phaseOpt.get(), getUserId())) {
             return REDIRECT_HOME;
         }
 
         // If the player doesn't have credits anymore.
         // And the player is not trying to access the first phase (the first phase is always free).
-        if (!playerService.playerHasCredits(getUserId(), phase.get()) && phase.get().getOrder() > 1) {
-
+        if (isTryingToAccessNotFreePhaseWithoutCredits(getUserId(), phaseOpt.get())) {
             // Get the last phase that the player has done in a specific game.
-            Optional<Phase> lastPhaseDone = phaseService.findLastPhaseDoneByPlayerAndGame(getUserId(), phase.get().getMap().getGame().getId());
-
-            if (lastPhaseDone.isEmpty()) {
-                return REDIRECT_HOME;
-            }
+            Optional<Phase> lastPhaseDoneOpt = getLastPhaseDoneByPlayerAndGame(getUserId(), gameOpt.get());
 
             // If the player is trying to access a phase that he has already finished, it's OK. Otherwise, he can't access this phase.
-            if (lastPhaseDone.get().getOrder() < phase.get().getOrder()) {
+            if (lastPhaseDoneOpt.isEmpty() || isTryingToAccessPhaseNeverPlayed(lastPhaseDoneOpt.get(), phaseOpt.get())) {
                 model.addAttribute("msg", messagesResource.getMessage("msg.credits.insufficient", null, locale));
                 return URL_BUY_CREDITS;
             }
         }
 
-        // Adding a playerPhase at T007.
-        playerPhaseService.setTestAttempt(currentUser.get().getUser(), phase.get());
+        registerTestAttempt(currentUser.get(), phaseOpt.get());
 
         // Get the questionary of this phase.
-        Content content = contentService.findByPhaseAndOrder(phase.get().getId(), 0);
-        List<Question> questions = questionService.findByContent(content.getId());
+        Optional<Content> contentOpt = getFirstContentByPhase(phaseOpt.get());
+        if (contentOpt.isEmpty()) {
+            return REDIRECT_HOME;
+        }
 
-        model.addAttribute("game", game.get());
-        model.addAttribute("map", map.get());
-        model.addAttribute("phase", phase.get());
+        List<Question> questions = getQuestionsByContent(contentOpt.get());
+
+        model.addAttribute("game", gameOpt.get());
+        model.addAttribute("map", mapOpt.get());
+        model.addAttribute("phase", phaseOpt.get());
         model.addAttribute("questions", questions);
 
         List<Integer> questionsId = new ArrayList<>();
@@ -480,7 +448,6 @@ public class GameController {
 
     private List<Phase> getPhasesCompletedByMap(Map map, int playerId) {
         Optional<PlayerPhase> lastPhaseCompletedOpt = getLastPhaseCompleted(playerId, map.getGame());
-
         return phaseService.findPhasesCheckedByMap(map, lastPhaseCompletedOpt.orElse(null));
     }
 
@@ -490,5 +457,41 @@ public class GameController {
 
     private Optional<Map> getMapByGameLevelAndOrder(Game game, int levelOrder, int mapOrder) {
         return mapService.findByGameLevelAndOrder(game.getId(), levelOrder, mapOrder);
+    }
+
+    private static boolean isTryingToAccessPhaseNeverPlayed(Phase lastPhaseDone, Phase phase) {
+        return lastPhaseDone.getOrder() < phase.getOrder();
+    }
+
+    private Optional<Phase> getLastPhaseDoneByPlayerAndGame(int playerId, Game game) {
+        return phaseService.findLastPhaseDoneByPlayerAndGame(playerId, game.getId());
+    }
+
+    private boolean isTryingToAccessNotFreePhaseWithoutCredits(int playerId, Phase phase) {
+        return !playerService.playerHasCredits(playerId, phase) && phase.getOrder() > 1;
+    }
+
+    private Optional<Content> getContent(Phase phase) {
+        return ContentUtil.formatContent(contentService.findByPhaseAndOrder(phase.getId(), 1).orElse(null));
+    }
+
+    private boolean isPlayerAllowedToAccessThePhase(Phase phase, int playerId) {
+        return phaseService.canPlayerAccessPhase(phase, playerId);
+    }
+
+    private Optional<Phase> getPhaseByMapAndOrder(Map map, int phaseOrder) {
+        return phaseService.findByMapAndOrder(map.getId(), phaseOrder);
+    }
+
+    private List<Question> getQuestionsByContent(Content content) {
+        return questionService.findByContent(content.getId());
+    }
+
+    private Optional<Content> getFirstContentByPhase(Phase phase) {
+        return contentService.findByPhaseAndOrder(phase.getId(), 0);
+    }
+
+    private void registerTestAttempt(CurrentUser currentUser, Phase phase) {
+        playerPhaseService.setTestAttempt(currentUser.getUser(), phase);
     }
 }

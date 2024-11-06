@@ -1,6 +1,7 @@
 package com.polifono.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -41,5 +42,5 @@ public interface IContentRepository extends JpaRepository<Content, Integer> {
     List<Content> findContentsTestByPhase(@Param("phaseId") int phaseId);
 
     @Query("SELECT content FROM Content content WHERE content.phase.id = :phaseId AND content.order = :contentOrder")
-    Content findByPhaseAndOrder(@Param("phaseId") int phaseId, @Param("contentOrder") int contentOrder);
+    Optional<Content> findByPhaseAndOrder(@Param("phaseId") int phaseId, @Param("contentOrder") int contentOrder);
 }

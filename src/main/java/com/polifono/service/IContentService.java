@@ -35,5 +35,5 @@ public interface IContentService {
 
     List<Content> findContentsTestByPhase(int phaseId);
 
-    Content findByPhaseAndOrder(int phaseId, int contentOrder);
+    Optional<Content> findByPhaseAndOrder(int phaseId, int contentOrder);
 }

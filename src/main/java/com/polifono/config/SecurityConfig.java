@@ -25,7 +25,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(requests -> requests
                 .requestMatchers("/static/**", "/vendors/**", "/", "/player/create", "/emailconfirmation", "/emailconfirmationresend", "/passwordreset",
-                        "/passwordresetresend", "/pagseguronotification", "/contact", "/diploma", "/diploma/**", "/promo/**", "/promos/**", "/loginfb",
+                        "/passwordresetresend", "/pagseguronotification", "/contact", "/diplomas", "/diplomas/**", "/promo/**", "/promos/**", "/loginfb",
                         "/ads.txt", "/privacy").permitAll());
 
         http.authorizeHttpRequests(requests -> requests

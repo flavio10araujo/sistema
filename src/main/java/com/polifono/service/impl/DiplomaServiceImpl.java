@@ -73,7 +73,7 @@ public class DiplomaServiceImpl implements IDiplomaService {
     private Map<String, Object> createParams(Locale locale) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("company", messagesResource.getMessage("diploma.company", null, locale));
-        params.put("url", messagesResource.getMessage("url", null, locale) + "/diploma");
+        params.put("url", messagesResource.getMessage("url", null, locale) + "/diplomas");
         params.put("img_selo", new ClassPathResource("img/diploma/selo.png").getURL());
         params.put("img_logo", new ClassPathResource("img/diploma/logo.png").getURL());
         params.put("img_assinatura", new ClassPathResource("img/diploma/assinatura.png").getURL());

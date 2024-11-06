@@ -29,13 +29,13 @@ public class DiplomaController {
     private final IDiplomaService diplomaService;
     private final DiplomaHelperService diplomaHelperService;
 
-    @GetMapping("/diploma")
+    @GetMapping("/diplomas")
     public String diplomaSearch(final Model model) {
         return diplomaHelperService.handleDiplomaSearch(model);
     }
 
     @Validated
-    @PostMapping("/diploma")
+    @PostMapping("/diplomas")
     public String diplomaSearchSubmit(final Model model, @RequestParam @NotBlank String code, Locale locale) {
         Optional<Diploma> diplomaOpt = findDiplomaByCode(code);
 
@@ -50,7 +50,7 @@ public class DiplomaController {
     }
 
     @Validated
-    @GetMapping("/diploma/{code}")
+    @GetMapping("/diplomas/{code}")
     public String diplomaGet(HttpServletResponse response, final Model model, @PathVariable("code") @NotBlank String code, Locale locale)
             throws JRException, IOException {
 

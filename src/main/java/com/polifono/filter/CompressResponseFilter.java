@@ -57,7 +57,7 @@ public class CompressResponseFilter implements Filter {
      */
     private boolean shouldCompress(String uri) {
         Set<String> excludedExtensions = Set.of(".js", ".css", ".ico", ".png", ".jpg", ".gif", ".bmp", ".pdf");
-        Set<String> excludedPaths = Set.of("/static/", "/vendors/", "/diploma/");
+        Set<String> excludedPaths = Set.of("/static/", "/vendors/", "/diplomas/");
 
         for (String ext : excludedExtensions) {
             if (uri.contains(ext)) {
