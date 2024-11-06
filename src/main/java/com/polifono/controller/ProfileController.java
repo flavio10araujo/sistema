@@ -480,7 +480,7 @@ public class ProfileController {
                 securityService.updateCurrentAuthenticatedUser(player);
             }
 
-            playervideo.setContent(contentService.findByPhaseAndOrder(playervideo.getContent().getPhase().getId(), 1));
+            playervideo.setContent(contentService.findByPhaseAndOrder(playervideo.getContent().getPhase().getId(), 1).orElse(null));
             playervideoService.save(playervideo);
 
             redirectAttributes.addFlashAttribute("save", "success");

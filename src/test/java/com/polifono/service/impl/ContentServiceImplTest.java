@@ -361,9 +361,9 @@ public class ContentServiceImplTest {
     public void findByPhaseAndOrder_WhenSearchByPhaseAndOrderExistents_ReturnList() {
         Optional<Content> entity = getEntityStubData();
 
-        when(repository.findByPhaseAndOrder(PHASE_ID_EXISTENT, 1)).thenReturn(entity.get());
+        when(repository.findByPhaseAndOrder(PHASE_ID_EXISTENT, 1)).thenReturn(entity);
 
-        Content entityReturned = service.findByPhaseAndOrder(PHASE_ID_EXISTENT, 1);
+        Content entityReturned = service.findByPhaseAndOrder(PHASE_ID_EXISTENT, 1).orElse(null);
         Assertions.assertNotNull(entityReturned, "failure - expected not null");
         Assertions.assertEquals(PHASE_ID_EXISTENT.intValue(), entityReturned.getPhase().getId(), "expected phase type attribute match");
         Assertions.assertEquals(1, entityReturned.getOrder(), "expected order attribute match");

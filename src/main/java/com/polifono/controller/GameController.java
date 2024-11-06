@@ -79,23 +79,18 @@ public class GameController {
 
     @GetMapping("/games")
     public String listGames(final Model model) {
-        model.addAttribute("ranking_monthly", getRankingMonthly());
+        addRankingToModel(model);
         return URL_GAMES_INDEX;
     }
 
     @GetMapping("/games/{gameName}")
     public String listLevelsOfTheGame(final Model model, @PathVariable("gameName") @NotBlank String gameName) {
         Optional<Game> gameOpt = getGameByNamelink(gameName);
-
         if (gameOpt.isEmpty()) {
             return REDIRECT_HOME;
         }
 
-        int levelPermitted = getPermittedLevelForPlayer(getUserId(), gameOpt.get());
-
-        model.addAttribute("game", gameOpt.get());
-        model.addAttribute("levels", flagLevelsToOpenedOrNot(gameOpt.get(), levelPermitted));
-
+        addGameAndLevelsToModel(model, gameOpt.get(), getPermittedLevelForPlayer(getUserId(), gameOpt.get()));
         return URL_GAMES_LEVEL;
     }
 
@@ -108,29 +103,16 @@ public class GameController {
     ) {
 
         Optional<Game> gameOpt = getGameByNamelink(gameName);
-
         if (gameOpt.isEmpty() || !gameHelperService.isValidLevelOrder(levelOrder)) {
             return REDIRECT_HOME;
         }
 
         Optional<Map> mapOpt = getMapByGameLevelAndOrder(gameOpt.get(), levelOrder, mapOrder);
-
-        if (mapOpt.isEmpty()) {
+        if (mapOpt.isEmpty() || !isPlayerAllowedToAccessTheMap(mapOpt.get(), getUserId())) {
             return REDIRECT_HOME;
         }
 
-        // Looking for the phases of the map that were already completed by the player.
-        List<Phase> phases = getPhasesCompletedByMap(mapOpt.get(), getUserId());
-
-        // If there are no phases in the map.
-        if (phases == null || !isPlayerAllowedToAccessTheMap(mapOpt.get(), getUserId())) {
-            return REDIRECT_HOME;
-        }
-
-        model.addAttribute("game", gameOpt.get());
-        model.addAttribute("map", mapOpt.get());
-        model.addAttribute("phases", phases);
-
+        addGameMapAndPhasesToModel(model, gameOpt.get(), mapOpt.get());
         return URL_GAMES_MAP;
     }
 
@@ -160,7 +142,7 @@ public class GameController {
         }
 
         Optional<Phase> phaseOpt = getPhaseByMapAndOrder(mapOpt.get(), phaseOrder);
-        if (phaseOpt.isEmpty() || !isPlayerAllowedToAccessThePhase(phaseOpt.get(), getUserId())) {
+        if (phaseOpt.isEmpty() || isPlayerNotAllowedToAccessThePhase(getUserId(), phaseOpt.get())) {
             return REDIRECT_HOME;
         }
 
@@ -169,24 +151,12 @@ public class GameController {
             return REDIRECT_HOME;
         }
 
-        // If the player doesn't have credits anymore.
-        // And the player is not trying to access the first phase (the first phase is always free).
-        if (isTryingToAccessNotFreePhaseWithoutCredits(getUserId(), phaseOpt.get())) {
-            // Get the last phase that the player has done in a specific game.
-            Optional<Phase> lastPhaseDoneOpt = getLastPhaseDoneByPlayerAndGame(getUserId(), gameOpt.get());
-
-            // If the player is trying to access a phase that he has already finished, it's OK. Otherwise, he can't access this phase.
-            if (lastPhaseDoneOpt.isEmpty() || isTryingToAccessPhaseNeverPlayed(lastPhaseDoneOpt.get(), phaseOpt.get())) {
-                model.addAttribute("msg", messagesResource.getMessage("msg.credits.insufficient", null, locale));
-                return URL_BUY_CREDITS;
-            }
+        if (shouldDisplayBuyCreditsPage(getUserId(), gameOpt.get(), phaseOpt.get())) {
+            addMsgCreditsInsufficientToModel(model, locale);
+            return URL_BUY_CREDITS;
         }
 
-        model.addAttribute("game", gameOpt.get());
-        model.addAttribute("map", mapOpt.get());
-        model.addAttribute("phase", phaseOpt.get());
-        model.addAttribute("content", contentOpt.get());
-
+        addGameMapPhaseAndContentToModel(model, gameOpt.get(), mapOpt.get(), phaseOpt.get(), contentOpt.get());
         return URL_GAMES_PHASE_CONTENT;
     }
 
@@ -216,32 +186,22 @@ public class GameController {
             return REDIRECT_HOME;
         }
 
-        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+        Optional<CurrentUser> currentUser = getCurrentAuthenticatedUser();
         if (currentUser.isEmpty()) {
             return REDIRECT_HOME;
         }
 
-        // If the player has already passed this test he can't see the test again.
-        if (playerPhaseService.isPhaseAlreadyCompletedByPlayer(phaseOpt.get(), getUserId())) {
+        if (isPhaseAlreadyCompletedByPlayer(getUserId(), phaseOpt.get())) {
             return REDIRECT_GAMES + "/" + gameName;
         }
 
-        // If the player doesn't have permission to access this phase.
-        if (!isPlayerAllowedToAccessThePhase(phaseOpt.get(), getUserId())) {
+        if (isPlayerNotAllowedToAccessThePhase(getUserId(), phaseOpt.get())) {
             return REDIRECT_HOME;
         }
 
-        // If the player doesn't have credits anymore.
-        // And the player is not trying to access the first phase (the first phase is always free).
-        if (isTryingToAccessNotFreePhaseWithoutCredits(getUserId(), phaseOpt.get())) {
-            // Get the last phase that the player has done in a specific game.
-            Optional<Phase> lastPhaseDoneOpt = getLastPhaseDoneByPlayerAndGame(getUserId(), gameOpt.get());
-
-            // If the player is trying to access a phase that he has already finished, it's OK. Otherwise, he can't access this phase.
-            if (lastPhaseDoneOpt.isEmpty() || isTryingToAccessPhaseNeverPlayed(lastPhaseDoneOpt.get(), phaseOpt.get())) {
-                model.addAttribute("msg", messagesResource.getMessage("msg.credits.insufficient", null, locale));
-                return URL_BUY_CREDITS;
-            }
+        if (shouldDisplayBuyCreditsPage(getUserId(), gameOpt.get(), phaseOpt.get())) {
+            addMsgCreditsInsufficientToModel(model, locale);
+            return URL_BUY_CREDITS;
         }
 
         registerTestAttempt(currentUser.get(), phaseOpt.get());
@@ -253,19 +213,12 @@ public class GameController {
         }
 
         List<Question> questions = getQuestionsByContent(contentOpt.get());
-
-        model.addAttribute("game", gameOpt.get());
-        model.addAttribute("map", mapOpt.get());
-        model.addAttribute("phase", phaseOpt.get());
-        model.addAttribute("questions", questions);
-
-        List<Integer> questionsId = new ArrayList<>();
-        for (Question q : questions) {
-            questionsId.add(q.getId());
+        if (questions.isEmpty()) {
+            return REDIRECT_HOME;
         }
 
-        session.setAttribute("questionsId", questionsId);
-
+        addQuestionsIdToSession(session, questions);
+        addGameMapPhaseAndQuestionsToModel(model, gameOpt.get(), mapOpt.get(), phaseOpt.get(), questions);
         return URL_GAMES_PHASE_TEST;
     }
 
@@ -279,8 +232,9 @@ public class GameController {
         @SuppressWarnings("unchecked")
         List<Integer> questionsId = (List<Integer>) session.getAttribute("questionsId");
 
-        if (questionsId == null || questionsId.isEmpty())
+        if (questionsId == null || questionsId.isEmpty()) {
             return REDIRECT_HOME;
+        }
 
         int grade = gameService.calculateGrade(questionsId, playerAnswers);
 
@@ -288,7 +242,7 @@ public class GameController {
 
         model.addAttribute("grade", grade);
 
-        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+        Optional<CurrentUser> currentUser = getCurrentAuthenticatedUser();
 
         if (currentUser.isEmpty()) {
             return REDIRECT_HOME;
@@ -434,6 +388,10 @@ public class GameController {
         return playerPhaseService.getPermittedLevelForPlayer(playerId, game.getId());
     }
 
+    private Optional<CurrentUser> getCurrentAuthenticatedUser() {
+        return securityService.getCurrentAuthenticatedUser();
+    }
+
     private int getUserId() {
         return securityService.getUserId();
     }
@@ -446,7 +404,11 @@ public class GameController {
         return mapService.canPlayerAccessMap(map, playerId);
     }
 
-    private List<Phase> getPhasesCompletedByMap(Map map, int playerId) {
+    /**
+     * This method returns all the phases of a Map.
+     * The phases are flagged as opened=true (player can open the phase) or opened=false (player can't open the phase).
+     */
+    private List<Phase> getPhasesCheckedByMap(Map map, int playerId) {
         Optional<PlayerPhase> lastPhaseCompletedOpt = getLastPhaseCompleted(playerId, map.getGame());
         return phaseService.findPhasesCheckedByMap(map, lastPhaseCompletedOpt.orElse(null));
     }
@@ -475,8 +437,8 @@ public class GameController {
         return ContentUtil.formatContent(contentService.findByPhaseAndOrder(phase.getId(), 1).orElse(null));
     }
 
-    private boolean isPlayerAllowedToAccessThePhase(Phase phase, int playerId) {
-        return phaseService.canPlayerAccessPhase(phase, playerId);
+    private boolean isPlayerNotAllowedToAccessThePhase(int playerId, Phase phase) {
+        return !phaseService.canPlayerAccessPhase(phase, playerId);
     }
 
     private Optional<Phase> getPhaseByMapAndOrder(Map map, int phaseOrder) {
@@ -493,5 +455,69 @@ public class GameController {
 
     private void registerTestAttempt(CurrentUser currentUser, Phase phase) {
         playerPhaseService.setTestAttempt(currentUser.getUser(), phase);
+    }
+
+    private void addQuestionsIdToSession(HttpSession session, List<Question> questions) {
+        session.setAttribute("questionsId", getTestQuestionsId(questions));
+    }
+
+    private void addRankingToModel(Model model) {
+        model.addAttribute("ranking_monthly", getRankingMonthly());
+    }
+
+    private void addMsgCreditsInsufficientToModel(Model model, Locale locale) {
+        model.addAttribute("msg", messagesResource.getMessage("msg.credits.insufficient", null, locale));
+    }
+
+    private void addGameAndLevelsToModel(Model model, Game game, int levelPermitted) {
+        model.addAttribute("game", game);
+        model.addAttribute("levels", flagLevelsToOpenedOrNot(game, levelPermitted));
+    }
+
+    private void addGameMapAndPhasesToModel(Model model, Game game, Map map) {
+        model.addAttribute("game", game);
+        model.addAttribute("map", map);
+        model.addAttribute("phases", getPhasesCheckedByMap(map, getUserId()));
+    }
+
+    private void addGameMapPhaseAndContentToModel(Model model, Game game, Map map, Phase phase, Content content) {
+        model.addAttribute("game", game);
+        model.addAttribute("map", map);
+        model.addAttribute("phase", phase);
+        model.addAttribute("content", content);
+    }
+
+    private void addGameMapPhaseAndQuestionsToModel(Model model, Game game, Map map, Phase phase, List<Question> questions) {
+        model.addAttribute("game", game);
+        model.addAttribute("map", map);
+        model.addAttribute("phase", phase);
+        model.addAttribute("questions", questions);
+    }
+
+    private boolean shouldDisplayBuyCreditsPage(int playerId, Game game, Phase phase) {
+        // If the player doesn't have credits anymore.
+        // And the player is not trying to access the first phase (the first phase is always free).
+        if (isTryingToAccessNotFreePhaseWithoutCredits(playerId, phase)) {
+            // Get the last phase that the player has finished in a specific game.
+            Optional<Phase> lastPhaseDoneOpt = getLastPhaseDoneByPlayerAndGame(playerId, game);
+
+            return lastPhaseDoneOpt.isEmpty() || isTryingToAccessPhaseNeverPlayed(lastPhaseDoneOpt.get(), phase);
+        }
+
+        return false;
+    }
+
+    private boolean isPhaseAlreadyCompletedByPlayer(int playerId, Phase phase) {
+        return playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase, playerId);
+    }
+
+    private List<Integer> getTestQuestionsId(List<Question> questions) {
+        List<Integer> questionsId = new ArrayList<>();
+
+        for (Question q : questions) {
+            questionsId.add(q.getId());
+        }
+
+        return questionsId;
     }
 }

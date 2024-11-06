@@ -188,7 +188,7 @@ public class PromoController {
         }
 
         // Get the first content of this phase.
-        Optional<Content> contentOpt = ContentUtil.formatContent(contentService.findByPhaseAndOrder(phase.get().getId(), 1));
+        Optional<Content> contentOpt = ContentUtil.formatContent(contentService.findByPhaseAndOrder(phase.get().getId(), 1).orElse(null));
 
         // If the content doesn't exist.
         if (contentOpt.isEmpty()) {
