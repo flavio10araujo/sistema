@@ -16,7 +16,7 @@ public interface IPlayerPhaseService {
 
     List<PlayerPhase> findByPlayer(int playerId);
 
-    PlayerPhase findByPlayerPhaseAndStatus(int playerId, int phaseId, int phasestatusId);
+    Optional<PlayerPhase> findByPlayerPhaseAndStatus(int playerId, int phaseId, int phasestatusId);
 
     Optional<PlayerPhase> findLastPhaseCompleted(int playerId, int gameId);
 

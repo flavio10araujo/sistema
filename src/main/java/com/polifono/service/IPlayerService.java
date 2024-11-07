@@ -17,13 +17,13 @@ public interface IPlayerService {
 
     List<Player> findAll();
 
-    Player findByEmail(String email);
+    Optional<Player> findByEmail(String email);
 
-    Player findByEmailAndStatus(String email, boolean status);
+    Optional<Player> findByEmailAndStatus(String email, boolean status);
 
-    Player findByLogin(String login);
+    Optional<Player> findByLogin(String login);
 
-    Player findByIdFacebook(Long id);
+    Optional<Player> findByIdFacebook(Long id);
 
     List<Player> findByDateIncRange(Date dateBegin, Date dateEnd);
 

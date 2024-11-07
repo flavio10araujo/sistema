@@ -66,14 +66,14 @@ public class PlayerController {
         }
 
         // Verify if the email is already in use.
-        Player playerOld = null;
+        Optional<Player> playerOld = null;
 
         if (player.getEmail() != null && !player.getEmail().trim().isEmpty()) {
             player.setEmail(EmailUtil.avoidWrongDomain(player.getEmail()));
             playerOld = playerService.findByEmail(player.getEmail());
         }
 
-        if (playerOld != null) {
+        if (playerOld.isPresent()) {
             model.addAttribute("player", player);
             model.addAttribute("codRegister", 2);
             // TODO - buscar msg do messages.
@@ -134,37 +134,37 @@ public class PlayerController {
         }
 
         // Verify if there is a player with this email.
-        Player playerOld = playerService.findByEmail(player.getEmail());
+        Optional<Player> playerOldOpt = playerService.findByEmail(player.getEmail());
 
         // If there is not exist a player with this email.
-        if (playerOld == null) {
+        if (playerOldOpt.isEmpty()) {
             model.addAttribute("codRegister", 2);
             model.addAttribute("player", player);
             // TODO - pegar msg do messages.
             model.addAttribute("msgRegister", "<br />O email " + player.getEmail() + " não está cadastrado no sistema.");
         } else {
             // If the player was already confirmed.
-            if (playerOld.isIndEmailConfirmed()) {
+            if (playerOldOpt.get().isIndEmailConfirmed()) {
                 model.addAttribute("codRegister", 2);
                 model.addAttribute("player", player);
                 // TODO - pegar msg do messages.
                 model.addAttribute("msgRegister", "<br />Este cadastro já se encontra ativo.");
             } else {
                 // If the code informed is not correct.
-                if (!player.getEmailConfirmed().equals(playerOld.getEmailConfirmed())) {
+                if (!player.getEmailConfirmed().equals(playerOldOpt.get().getEmailConfirmed())) {
                     model.addAttribute("codRegister", 2);
                     model.addAttribute("player", player);
                     // TODO - pegar msg do messages.
                     model.addAttribute("msgRegister",
                             "<br />O código de ativação informado está incorreto. Obs.: caso tenha recebido mais de um e-mail, o código válido é o do último e-mail recebido.");
                 } else {
-                    playerOld.setIndEmailConfirmed(true);
-                    playerService.save(playerOld);
+                    playerOldOpt.get().setIndEmailConfirmed(true);
+                    playerService.save(playerOldOpt.get());
 
                     model.addAttribute("codRegister", 1);
                     model.addAttribute("player", new Player());
                     // TODO - pegar msg do messages.
-                    model.addAttribute("msgRegister", "<br />O e-mail " + playerOld.getEmail() + " foi confirmado com sucesso!");
+                    model.addAttribute("msgRegister", "<br />O e-mail " + playerOldOpt.get().getEmail() + " foi confirmado com sucesso!");
                 }
             }
         }
@@ -183,31 +183,32 @@ public class PlayerController {
         }
 
         // Verify if there is a player with this email.
-        Player playerOld = playerService.findByEmail(playerResend.getEmail());
+        Optional<Player> playerOld = playerService.findByEmail(playerResend.getEmail());
 
         // If there is not exist a player with this email.
-        if (playerOld == null) {
+        if (playerOld.isEmpty()) {
             model.addAttribute("codRegister", 2);
             model.addAttribute("playerResend", playerResend);
             // TODO - pegar msg do messages.
             model.addAttribute("msgRegister", "<br />O email " + playerResend.getEmail() + " não está cadastrado no sistema.");
         } else {
             // If the player was already confirmed.
-            if (playerOld.isIndEmailConfirmed()) {
+            if (playerOld.get().isIndEmailConfirmed()) {
                 model.addAttribute("codRegister", 2);
                 model.addAttribute("playerResend", playerResend);
                 // TODO - pegar msg do messages.
                 model.addAttribute("msgRegister", "<br />Este cadastro já se encontra ativo.");
             } else {
-                playerOld.setEmailConfirmed(generateRandomStringService.generate(10));
-                playerService.save(playerOld);
-                emailSendUtil.sendEmailConfirmRegister(playerOld);
+                playerOld.get().setEmailConfirmed(generateRandomStringService.generate(10));
+                playerService.save(playerOld.get());
+                emailSendUtil.sendEmailConfirmRegister(playerOld.get());
 
                 model.addAttribute("codRegister", 1);
                 model.addAttribute("playerResend", new Player());
                 // TODO - pegar msg do messages.
                 model.addAttribute("msgRegister",
-                        "<br />O e-mail com o código de ativação foi reenviado para " + playerOld.getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
+                        "<br />O e-mail com o código de ativação foi reenviado para " + playerOld.get()
+                                .getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
             }
         }
 
@@ -232,11 +233,11 @@ public class PlayerController {
         }
 
         // Verify if there is a player with this email.
-        Player playerOld = playerService.findByEmail(playerResend.getEmail());
+        Optional<Player> playerOld = playerService.findByEmail(playerResend.getEmail());
         boolean byLogin = false;
 
         // If there is not exist a player with this email.
-        if (playerOld == null) {
+        if (playerOld.isEmpty()) {
             playerOld = playerService.findByLogin(playerResend.getEmail());
             byLogin = true;
         }
@@ -248,17 +249,18 @@ public class PlayerController {
             // TODO - pegar msg do messages.
             model.addAttribute("msgRegister", "<br />O login " + playerResend.getEmail() + " não está cadastrado no sistema.");
         } else {
-            playerOld.setPasswordReset(generateRandomStringService.generate(10));
-            playerService.save(playerOld);
+            playerOld.get().setPasswordReset(generateRandomStringService.generate(10));
+            playerService.save(playerOld.get());
 
             if (!byLogin) {
                 model.addAttribute("msgRegister",
-                        "<br />O código para alterar a senha foi enviado para " + playerOld.getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
-                emailSendUtil.sendEmailPasswordReset(playerOld);
+                        "<br />O código para alterar a senha foi enviado para " + playerOld.get()
+                                .getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
+                emailSendUtil.sendEmailPasswordReset(playerOld.get());
             } else {
-                Player teacher = playerOld.getCreator();
-                teacher.setName(playerOld.getName());
-                teacher.setPasswordReset(playerOld.getPasswordReset());
+                Player teacher = playerOld.get().getCreator();
+                teacher.setName(playerOld.get().getName());
+                teacher.setPasswordReset(playerOld.get().getPasswordReset());
                 emailSendUtil.sendEmailPasswordReset(teacher);
                 model.addAttribute("msgRegister",
                         "<br />O código para alterar a senha foi enviado para " + teacher.getEmail() + ". <br />Obs.: o e-mail leva alguns minutos para chegar. Verifique se o e-mail não está na caixa de spam.");
@@ -281,46 +283,46 @@ public class PlayerController {
         }
 
         // Verify if there is a player with this email.
-        Player playerOld = playerService.findByEmail(player.getEmail());
+        Optional<Player> playerOld = playerService.findByEmail(player.getEmail());
         boolean byLogin = false;
 
         // If there is not exist a player with this email.
-        if (playerOld == null) {
+        if (playerOld.isEmpty()) {
             playerOld = playerService.findByLogin(player.getEmail());
             byLogin = true;
         }
 
         // If there is not exist a player with this email/login.
-        if (playerOld == null) {
+        if (playerOld.isEmpty()) {
             model.addAttribute("codRegister", 2);
             model.addAttribute("player", player);
             // TODO - pegar msg do messages.
             model.addAttribute("msgRegister", "<br />O login " + player.getEmail() + " não está cadastrado no sistema.");
         } else {
             // If the code informed is not correct.
-            if (!player.getPasswordReset().equals(playerOld.getPasswordReset())) {
+            if (!player.getPasswordReset().equals(playerOld.get().getPasswordReset())) {
                 model.addAttribute("codRegister", 2);
                 model.addAttribute("player", player);
                 // TODO - pegar msg do messages.
                 model.addAttribute("msgRegister",
                         "<br />O código de confirmação da alteração da senha informado está incorreto. Obs.: caso tenha recebido mais de um e-mail, o código válido é o do último e-mail recebido.");
             } else {
-                playerOld.setPassword(player.getPassword());
-                String msg = playerService.validateChangePasswordPlayer(playerOld);
+                playerOld.get().setPassword(player.getPassword());
+                String msg = playerService.validateChangePasswordPlayer(playerOld.get());
 
                 // If there is no errors.
                 if (msg.isEmpty()) {
-                    playerOld.setPassword(PasswordUtil.encryptPassword(playerOld.getPassword()));
-                    playerOld.setPasswordReset(""); // If the user has changed the password successfully, the reset code is cleaned.
-                    playerService.save(playerOld);
+                    playerOld.get().setPassword(PasswordUtil.encryptPassword(playerOld.get().getPassword()));
+                    playerOld.get().setPasswordReset(""); // If the user has changed the password successfully, the reset code is cleaned.
+                    playerService.save(playerOld.get());
 
                     model.addAttribute("codRegister", 1);
                     model.addAttribute("player", new Player());
                     // TODO - pegar msg do messages.
                     if (!byLogin) {
-                        model.addAttribute("msgRegister", "<br />A senha de acesso para o login " + playerOld.getEmail() + " foi alterada com sucesso!");
+                        model.addAttribute("msgRegister", "<br />A senha de acesso para o login " + playerOld.get().getEmail() + " foi alterada com sucesso!");
                     } else {
-                        model.addAttribute("msgRegister", "<br />A senha de acesso para o login " + playerOld.getLogin() + " foi alterada com sucesso!");
+                        model.addAttribute("msgRegister", "<br />A senha de acesso para o login " + playerOld.get().getLogin() + " foi alterada com sucesso!");
                     }
                 } else {
                     model.addAttribute("codRegister", 2);
@@ -400,36 +402,36 @@ public class PlayerController {
             }
 
             // Get the ID of the playerFacebook and verify if he is already related to any player.
-            Player player = playerService.findByIdFacebook(playerFacebook.getId());
+            Optional<Player> playerOpt = playerService.findByIdFacebook(playerFacebook.getId());
 
             // If yes, log the player in.
-            if (player != null) {
+            if (playerOpt.isPresent()) {
                 request.getSession(true);
-                securityService.createCurrentAuthenticatedUserFacebook(request, null, player);
-                loginService.registerLogin(player);
+                securityService.createCurrentAuthenticatedUserFacebook(request, null, playerOpt.get());
+                loginService.registerLogin(playerOpt.get());
             } else {
                 // If not, verify if the playerFacebook has an email.
                 if (playerFacebook.getEmail() != null && !playerFacebook.getEmail().equals("")) {
 
                     // If it is here it is because playerFacebook doesn't exist in the system AND has an email.
 
-                    player = playerService.findByEmail(playerFacebook.getEmail());
+                    playerOpt = playerService.findByEmail(playerFacebook.getEmail());
 
                     // If the playerFacebook's email is already registered in the system.
-                    if (player != null) {
+                    if (playerOpt.isPresent()) {
                         // If it is here it is because the playerFacebook's email is already registered in the system, but it is not linked to any Facebook account.
                         // Let's create the link and register in the database.
-                        player.setIdFacebook(playerFacebook.getId());
-                        player.setIndEmailConfirmed(true);
+                        playerOpt.get().setIdFacebook(playerFacebook.getId());
+                        playerOpt.get().setIndEmailConfirmed(true);
 
-                        playerService.save(player);
+                        playerService.save(playerOpt.get());
 
                         request.getSession(true);
-                        securityService.createCurrentAuthenticatedUserFacebook(request, null, player);
-                        loginService.registerLogin(player);
+                        securityService.createCurrentAuthenticatedUserFacebook(request, null, playerOpt.get());
+                        loginService.registerLogin(playerOpt.get());
                     } else {
                         // If it is here it is because it is necessary to register the player in the system.
-                        player = new Player();
+                        Player player = new Player();
 
                         player.setIdFacebook(playerFacebook.getId());
                         player.setName(playerFacebook.getFirstName());
@@ -448,7 +450,7 @@ public class PlayerController {
                     // If it is here it is because the playerFacebook doesn't exist in the system AND E doesn't have an email.
                     // In this case, the user will not have neither an email nor login. He will always log in with his Facebook account.
 
-                    player = new Player();
+                    Player player = new Player();
 
                     player.setIdFacebook(playerFacebook.getId());
                     player.setName(playerFacebook.getFirstName());

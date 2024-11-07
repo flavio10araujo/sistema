@@ -80,12 +80,12 @@ public class TransferCreditController {
 
             // Get the player by his email.
             // Get the player only if he is active.
-            playerGame.setPlayer(playerService.findByEmailAndStatus(emailLogin, true));
+            playerGame.setPlayer(playerService.findByEmailAndStatus(emailLogin, true).orElse(null));
 
             // If the email is not registered at the system.
             if (playerGame.getPlayer() == null) {
                 // Try to get the player by his login.
-                playerGame.setPlayer(playerService.findByLogin(emailLogin));
+                playerGame.setPlayer(playerService.findByLogin(emailLogin).orElse(null));
 
                 // If the login is not registered at the system as well.
                 if (playerGame.getPlayer() == null) {

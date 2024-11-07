@@ -108,13 +108,13 @@ public class StudentController {
 
             // Get the player by his email.
             // Get the player only if he is active.
-            classPlayer.setPlayer(playerService.findByEmailAndStatus(emailLogin, true));
+            classPlayer.setPlayer(playerService.findByEmailAndStatus(emailLogin, true).orElse(null));
 
             // If the email is not registered at the system.
             if (classPlayer.getPlayer() == null) {
 
                 // Try to get the player by his login.
-                classPlayer.setPlayer(playerService.findByLogin(emailLogin));
+                classPlayer.setPlayer(playerService.findByLogin(emailLogin).orElse(null));
 
                 // If the login is not registered at the system as well.
                 if (classPlayer.getPlayer() == null) {

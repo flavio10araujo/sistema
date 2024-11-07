@@ -153,16 +153,18 @@ public class PlayerPhaseServiceImplTest {
         int playerId = PLAYER_ID_EXISTENT, phaseId = PHASE_ID_EXISTENT, phasestatusId = PHASE_STATUS_CONCLUDED;
         PlayerPhase playerPhase = new PlayerPhase();
         playerPhase.setId(1);
-        when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(playerPhase);
+        when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(Optional.of(playerPhase));
 
-        PlayerPhase entity = service.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASE_STATUS_CONCLUDED);
+        Optional<PlayerPhase> entityOpt = service.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASE_STATUS_CONCLUDED);
+        PlayerPhase entity = entityOpt.orElse(null);
         Assertions.assertNotNull(entity, "failure - expected not null");
         Assertions.assertNotEquals(0, entity.getId(), "failure - expected id attribute bigger than 0");
     }
 
     @Test
     public void findByPlayerPhaseAndStatus_WhenSearchByPlayerAndPhaseInexistentAndStatusConcluded_ReturnNull() {
-        PlayerPhase entity = service.findByPlayerPhaseAndStatus(PLAYER_ID_INEXISTENT, PHASE_ID_INEXISTENT, PHASE_STATUS_CONCLUDED);
+        Optional<PlayerPhase> entityOpt = service.findByPlayerPhaseAndStatus(PLAYER_ID_INEXISTENT, PHASE_ID_INEXISTENT, PHASE_STATUS_CONCLUDED);
+        PlayerPhase entity = entityOpt.orElse(null);
         Assertions.assertNull(entity, "failure - expected not null");
     }
     /* findByPlayerPhaseAndStatus - end */
@@ -214,7 +216,7 @@ public class PlayerPhaseServiceImplTest {
         Player player = new Player();
         player.setId(phaseId);
 
-        when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(new PlayerPhase());
+        when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(Optional.of(new PlayerPhase()));
 
         Assertions.assertTrue(service.isPhaseAlreadyCompletedByPlayer(phase, player.getId()));
     }
@@ -229,7 +231,7 @@ public class PlayerPhaseServiceImplTest {
         Player player = new Player();
         player.setId(phaseId);
 
-        when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(null);
+        when(repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId)).thenReturn(Optional.empty());
 
         Assertions.assertFalse(service.isPhaseAlreadyCompletedByPlayer(phase, player.getId()));
     }
@@ -241,7 +243,7 @@ public class PlayerPhaseServiceImplTest {
         PlayerPhase entity = getEntityStubData().get();
         entity.setNumAttempts(2);
 
-        when(repository.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASE_STATUS_ONGOING)).thenReturn(entity);
+        when(repository.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASE_STATUS_ONGOING)).thenReturn(Optional.of(entity));
         when(repository.save(entity)).thenReturn(entity);
 
         Player player = new Player();
@@ -266,7 +268,7 @@ public class PlayerPhaseServiceImplTest {
         PlayerPhase entity = getEntityStubData().get();
         entity.setNumAttempts(1);
 
-        when(repository.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASE_STATUS_ONGOING)).thenReturn(null);
+        when(repository.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASE_STATUS_ONGOING)).thenReturn(Optional.empty());
         when(repository.save(ArgumentMatchers.any(PlayerPhase.class))).thenReturn(entity);
 
         Player player = new Player();

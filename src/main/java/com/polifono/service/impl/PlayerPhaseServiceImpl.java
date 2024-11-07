@@ -49,7 +49,7 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
     }
 
     @Override
-    public PlayerPhase findByPlayerPhaseAndStatus(int playerId, int phaseId, int phasestatusId) {
+    public Optional<PlayerPhase> findByPlayerPhaseAndStatus(int playerId, int phaseId, int phasestatusId) {
         return repository.findByPlayerPhaseAndStatus(playerId, phaseId, phasestatusId);
     }
 
@@ -85,11 +85,8 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
      */
     @Override
     public boolean isPhaseAlreadyCompletedByPlayer(Phase phase, int playerId) {
-
-        PlayerPhase playerPhase = this.findByPlayerPhaseAndStatus(playerId, phase.getId(), 3);
-
-        // The phase is already completed by this player.
-        return playerPhase != null;
+        Optional<PlayerPhase> playerPhaseOpt = this.findByPlayerPhaseAndStatus(playerId, phase.getId(), 3);
+        return playerPhaseOpt.isPresent();
     }
 
     /**
@@ -97,7 +94,7 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
      */
     @Override
     public PlayerPhase setTestAttempt(Player player, Phase phase) {
-        PlayerPhase playerPhase = this.findByPlayerPhaseAndStatus(player.getId(), phase.getId(), 2);
+        PlayerPhase playerPhase = this.findByPlayerPhaseAndStatus(player.getId(), phase.getId(), 2).orElse(null);
 
         // If this is not the first attempt.
         if (playerPhase != null) {

@@ -161,9 +161,11 @@ public class PlayerServiceImplTest {
     public void findByEmail_WhenSearchByPlayerExistent_ReturnPlayer() {
         Optional<Player> entity = getEntityStubData();
 
-        when(repository.findByEmail(PLAYER_EMAIL_EXISTENT)).thenReturn(entity.get());
+        when(repository.findByEmail(PLAYER_EMAIL_EXISTENT)).thenReturn(entity);
 
-        Player entityReturned = service.findByEmail(PLAYER_EMAIL_EXISTENT);
+        Optional<Player> entityReturnedOpt = service.findByEmail(PLAYER_EMAIL_EXISTENT);
+
+        Player entityReturned = entityReturnedOpt.orElse(new Player());
 
         Assertions.assertNotNull(entityReturned, "failure - expected not null");
         Assertions.assertEquals(PLAYER_EMAIL_EXISTENT, entityReturned.getEmail(), "failure - expected email attribute match");
@@ -183,9 +185,10 @@ public class PlayerServiceImplTest {
 
     @Test
     public void findByEmail_WhenSearchByPlayerInexistent_ReturnNull() {
-        when(repository.findByEmail(PLAYER_EMAIL_INEXISTENT)).thenReturn(null);
+        when(repository.findByEmail(PLAYER_EMAIL_INEXISTENT)).thenReturn(Optional.empty());
 
-        Player entityReturned = service.findByEmail(PLAYER_EMAIL_INEXISTENT);
+        Optional<Player> entityReturnedOpt = service.findByEmail(PLAYER_EMAIL_INEXISTENT);
+        Player entityReturned = entityReturnedOpt.orElse(null);
         Assertions.assertNull(entityReturned, "failure - expected null");
 
         verify(repository, times(1)).findByEmail(PLAYER_EMAIL_INEXISTENT);
@@ -198,9 +201,10 @@ public class PlayerServiceImplTest {
     public void findByEmailAndStatus_WhenSearchByPlayerExistentAndByRightStatus_ReturnPlayer() {
         Optional<Player> entity = getEntityStubData();
 
-        when(repository.findByEmailAndActive(PLAYER_EMAIL_EXISTENT, true)).thenReturn(entity.get());
+        when(repository.findByEmailAndActive(PLAYER_EMAIL_EXISTENT, true)).thenReturn(entity);
 
-        Player entityReturned = service.findByEmailAndStatus(PLAYER_EMAIL_EXISTENT, true);
+        Optional<Player> entityReturnedOpt = service.findByEmailAndStatus(PLAYER_EMAIL_EXISTENT, true);
+        Player entityReturned = entityReturnedOpt.orElse(new Player());
 
         Assertions.assertNotNull(entityReturned, "failure - expected not null");
         Assertions.assertEquals(PLAYER_EMAIL_EXISTENT, entityReturned.getEmail(), "failure - expected email attribute match");
@@ -220,9 +224,10 @@ public class PlayerServiceImplTest {
 
     @Test
     public void findByEmailAndStatus_WhenSearchByPlayerExistentButByWrongStatus_ReturnNull() {
-        when(repository.findByEmailAndActive(PLAYER_EMAIL_EXISTENT, false)).thenReturn(null);
+        when(repository.findByEmailAndActive(PLAYER_EMAIL_EXISTENT, false)).thenReturn(Optional.empty());
 
-        Player entityReturned = service.findByEmailAndStatus(PLAYER_EMAIL_EXISTENT, false);
+        Optional<Player> entityReturnedOpt = service.findByEmailAndStatus(PLAYER_EMAIL_EXISTENT, false);
+        Player entityReturned = entityReturnedOpt.orElse(null);
         Assertions.assertNull(entityReturned, "failure - expected null");
 
         verify(repository, times(1)).findByEmailAndActive(PLAYER_EMAIL_EXISTENT, false);
@@ -231,9 +236,10 @@ public class PlayerServiceImplTest {
 
     @Test
     public void findByEmailAndStatus_WhenSearchPlayerInexistent_ReturnNull() {
-        when(repository.findByEmailAndActive(PLAYER_EMAIL_INEXISTENT, true)).thenReturn(null);
+        when(repository.findByEmailAndActive(PLAYER_EMAIL_INEXISTENT, true)).thenReturn(Optional.empty());
 
-        Player entityReturned = service.findByEmailAndStatus(PLAYER_EMAIL_INEXISTENT, true);
+        Optional<Player> entityReturnedOpt = service.findByEmailAndStatus(PLAYER_EMAIL_INEXISTENT, true);
+        Player entityReturned = entityReturnedOpt.orElse(null);
         Assertions.assertNull(entityReturned, "failure - expected null");
 
         verify(repository, times(1)).findByEmailAndActive(PLAYER_EMAIL_INEXISTENT, true);

@@ -61,19 +61,19 @@ public class PlayerServiceImpl implements IPlayerService {
         return repository.findAll();
     }
 
-    public Player findByEmail(String email) {
+    public Optional<Player> findByEmail(String email) {
         return repository.findByEmail(email);
     }
 
-    public Player findByEmailAndStatus(String email, boolean status) {
+    public Optional<Player> findByEmailAndStatus(String email, boolean status) {
         return repository.findByEmailAndActive(email, status);
     }
 
-    public Player findByLogin(String login) {
+    public Optional<Player> findByLogin(String login) {
         return repository.findByLogin(login);
     }
 
-    public Player findByIdFacebook(Long id) {
+    public Optional<Player> findByIdFacebook(Long id) {
         return repository.findByIdFacebook(id);
     }
 
@@ -103,8 +103,8 @@ public class PlayerServiceImpl implements IPlayerService {
 
     @Override
     public Player addCreditsToPlayer(int playerId, int qtdCredits) {
-        Optional<Player> player = this.findById(playerId);
-        return this.save(preparePlayerForAddingCredits(player.get(), qtdCredits));
+        Optional<Player> player = findById(playerId);
+        return player.map(value -> save(preparePlayerForAddingCredits(value, qtdCredits))).orElse(null);
     }
 
     public Player preparePlayerForAddingCredits(Player player, int qtdCredits) {
@@ -114,8 +114,8 @@ public class PlayerServiceImpl implements IPlayerService {
 
     @Override
     public Player removeCreditsFromPlayer(int playerId, int qtdCredits) {
-        Optional<Player> player = this.findById(playerId);
-        return this.save(prepareForRemovingCredits(player.get(), qtdCredits));
+        Optional<Player> player = findById(playerId);
+        return player.map(value -> save(prepareForRemovingCredits(value, qtdCredits))).orElse(null);
     }
 
     public Player prepareForRemovingCredits(Player player, int qtdCredits) {
@@ -151,9 +151,9 @@ public class PlayerServiceImpl implements IPlayerService {
 
         if (hasSpecificCredits) {
             playerGameService.removeCreditsFromPlayer(playerGame, 1);
-            return this.findById(player.getId()).get();
+            return findById(player.getId()).orElse(null);
         } else {
-            return this.removeCreditsFromPlayer(player.getId(), 1);
+            return removeCreditsFromPlayer(player.getId(), 1);
         }
     }
 
@@ -163,7 +163,7 @@ public class PlayerServiceImpl implements IPlayerService {
      * This method verify the generic credits and the specific credits for the game passed.
      */
     public boolean playerHasCredits(int playerId, Phase phase) {
-        Player player = this.findById(playerId).get();
+        Player player = findById(playerId).get();
         boolean hasCredits = false;
 
         // If the player has generic credits.
@@ -191,7 +191,7 @@ public class PlayerServiceImpl implements IPlayerService {
      * Return true if the player has already confirmed it. Return false otherwise.
      */
     public boolean isEmailConfirmed(Player player) {
-        player = this.findById(player.getId()).get();
+        player = findById(player.getId()).get();
 
         return player.isIndEmailConfirmed();
     }

@@ -206,7 +206,6 @@ public class GameController {
 
         registerTestAttempt(currentUser.get(), phaseOpt.get());
 
-        // Get the questionary of this phase.
         Optional<Content> contentOpt = getFirstContentByPhase(phaseOpt.get());
         if (contentOpt.isEmpty()) {
             return REDIRECT_HOME;
@@ -236,98 +235,141 @@ public class GameController {
             return REDIRECT_HOME;
         }
 
-        int grade = gameService.calculateGrade(questionsId, playerAnswers);
+        int grade = getGrade(playerAnswers, questionsId);
+        Phase currentPhase = getPhaseOfTheTest(questionsId);
 
-        Phase currentPhase = gameService.getPhaseOfTheTest(questionsId);
-
-        model.addAttribute("grade", grade);
-
-        Optional<CurrentUser> currentUser = getCurrentAuthenticatedUser();
-
-        if (currentUser.isEmpty()) {
-            return REDIRECT_HOME;
-        }
-
-        if (grade >= 70) {
-            PlayerPhase playerPhase = playerPhaseService.findByPlayerPhaseAndStatus(currentUser.get().getUser().getId(), currentPhase.getId(), 2);
-
-            playerPhase.setGrade(grade);
-            Phasestatus phasestatus = new Phasestatus();
-            phasestatus.setId(3);
-            playerPhase.setPhasestatus(phasestatus);
-            playerPhase.setDtTest(new Date());
-            playerPhase.setScore(gameService.calculateScore(playerPhase.getNumAttempts(), grade));
+        if (hasPlayerPassedPhase(grade)) {
+            PlayerPhase playerPhase = setupPlayerPhaseInProgress(getUserId(), currentPhase, grade);
 
             model.addAttribute("score", playerPhase.getScore());
 
-            Optional<Player> player = playerService.findById(currentUser.get().getUser().getId());
-
-            // If the player doesn't exist.
-            if (player.isEmpty())
+            Optional<Player> playerOpt = findPlayerById(getUserId());
+            if (playerOpt.isEmpty()) {
                 return REDIRECT_HOME;
+            }
 
-            player.get().setScore(this.calculatePlayerScoreAfterPassTheTest(player.get().getScore(), playerPhase.getScore()));
-            player.get().setCoin(this.calculatePlayerCoinAfterPassTheTest(player.get().getCoin(), playerPhase.getScore()));
+            Player player = updatePlayerAfterPassingPhase(playerOpt.get(), playerPhase, currentPhase);
 
-            player = Optional.ofNullable(playerService.removeOneCreditFromPlayer(player.get(), currentPhase.getMap().getGame()));
+            updatePlayerPhaseAfterPlayerPassedPhase(playerPhase);
 
-            // If the player doesn't exist.
-            if (player.isEmpty())
-                return REDIRECT_HOME;
+            updateAuthenticatedUser(player);
 
-            // Changing the status of this phase.
-            // Now the phase is completed and the player can play the next phase.
-            playerPhaseService.save(playerPhase);
-
-            // Update session user.
-            securityService.updateCurrentAuthenticatedUser(player.get());
-
-            // Checking what is the map of the next phase.
-            Optional<Map> map = mapService.findCurrentMap(currentPhase.getMap().getGame(), playerPhase);
-
+            Optional<Map> map = getCurrentMap(currentPhase, playerPhase);
             if (map.isEmpty()) {
                 return REDIRECT_HOME;
             }
 
-            // The attribute levelCompleted will be true if the player has just finished the last phase of the last map of the level.
-            if (map.get().isLevelCompleted()) {
-                // When the player finishes the last phase of the level, he gets a diploma.
-                Diploma diploma = setDiploma(player.get(), currentPhase.getMap().getGame(), currentPhase.getMap().getLevel());
-                diplomaService.save(diploma);
-                model.addAttribute("diploma", diploma);
+            if (isLevelCompleted(map.get()) || isGameCompleted(map.get())) {
+                model.addAttribute("diploma", setupDiploma(player, currentPhase));
 
-                // When the player finishes the last phase of the level, he gains n credits.
-                securityService.updateCurrentAuthenticatedUser(
-                        playerService.addCreditsToPlayer(currentUser.get().getUser().getId(), configsCreditsProperties.getLevelCompleted()));
-
-                return URL_GAMES_END_OF_LEVEL;
-            }
-
-            // The attribute gameCompleted will be true if the player has just finished the last phase of the last map of the last level of the game.
-            if (map.get().isGameCompleted()) {
-                // When the player finishes the last phase of the last level of the game, he gets a diploma.
-                Diploma diploma = setDiploma(player.get(), currentPhase.getMap().getGame(), currentPhase.getMap().getLevel());
-                diplomaService.save(diploma);
-                model.addAttribute("diploma", diploma);
-
-                // When the player finishes the last phase of the last level of the game, he gains n credits.
-                securityService.updateCurrentAuthenticatedUser(
-                        playerService.addCreditsToPlayer(currentUser.get().getUser().getId(), configsCreditsProperties.getGameCompleted()));
-
-                return URL_GAMES_END_OF_GAME;
+                if (isLevelCompleted(map.get())) {
+                    updateAuthenticatedUser(playerService.addCreditsToPlayer(getUserId(), configsCreditsProperties.getLevelCompleted()));
+                    return URL_GAMES_END_OF_LEVEL;
+                } else {
+                    updateAuthenticatedUser(playerService.addCreditsToPlayer(getUserId(), configsCreditsProperties.getGameCompleted()));
+                    return URL_GAMES_END_OF_GAME;
+                }
             }
 
             // Looking for the phases of the map.
             List<Phase> phases = phaseService.findPhasesCheckedByMap(map.get(), playerPhase);
 
-            Phase nextPhase = setNextPhase(phases);
-
-            model.addAttribute("phase", nextPhase);
+            model.addAttribute("phase", setNextPhase(phases));
         } else {
             model.addAttribute("phase", currentPhase);
         }
 
+        model.addAttribute("grade", grade);
+
         return URL_GAMES_RESULT_TEST;
+    }
+
+    private Diploma setupDiploma(Player player, Phase currentPhase) {
+        Diploma diploma = setDiploma(player, currentPhase.getMap().getGame(), currentPhase.getMap().getLevel());
+        saveDiploma(diploma);
+        return diploma;
+    }
+
+    private void saveDiploma(Diploma diploma) {
+        diplomaService.save(diploma);
+    }
+
+    private boolean isGameCompleted(Map map) {
+        return map.isGameCompleted();
+    }
+
+    private boolean isLevelCompleted(Map map) {
+        return map.isLevelCompleted();
+    }
+
+    private Optional<Map> getCurrentMap(Phase currentPhase, PlayerPhase playerPhase) {
+        return mapService.findCurrentMap(currentPhase.getMap().getGame(), playerPhase);
+    }
+
+    private void updateAuthenticatedUser(Player player) {
+        securityService.updateCurrentAuthenticatedUser(player);
+    }
+
+    /**
+     * Changing the status of this phase.
+     * Now the phase is completed and the player can play the next phase.
+     */
+    private void updatePlayerPhaseAfterPlayerPassedPhase(PlayerPhase playerPhase) {
+        playerPhaseService.save(playerPhase);
+    }
+
+    private Player updatePlayerAfterPassingPhase(Player player, PlayerPhase playerPhase, Phase currentPhase) {
+        player.setScore(calculatePlayerScoreAfterPassTheTest(player.getScore(), playerPhase.getScore()));
+        player.setCoin(calculatePlayerCoinAfterPassTheTest(player.getCoin(), playerPhase.getScore()));
+        player = removeOneCreditFromPlayer(player, currentPhase);
+        return player;
+    }
+
+    private Player removeOneCreditFromPlayer(Player player, Phase currentPhase) {
+        return playerService.removeOneCreditFromPlayer(player, currentPhase.getMap().getGame());
+    }
+
+    private PlayerPhase setupPlayerPhaseInProgress(int playerId, Phase currentPhase, int grade) {
+        PlayerPhase playerPhase = getPlayerPhaseInProgress(playerId, currentPhase);
+
+        playerPhase.setGrade(grade);
+        Phasestatus phasestatus = new Phasestatus();
+        phasestatus.setId(3);
+        playerPhase.setPhasestatus(phasestatus);
+        playerPhase.setDtTest(new Date());
+        playerPhase.setScore(gameService.calculateScore(playerPhase.getNumAttempts(), grade));
+
+        return playerPhase;
+    }
+
+    private PlayerPhase getPlayerPhaseInProgress(int playerId, Phase currentPhase) {
+        return playerPhaseService.findByPlayerPhaseAndStatus(playerId, currentPhase.getId(), 2)
+                .orElseGet(() -> createNewPlayerPhase(currentPhase));
+    }
+
+    private PlayerPhase createNewPlayerPhase(Phase currentPhase) {
+        PlayerPhase playerPhase = new PlayerPhase();
+        Optional<Player> player = findPlayerById(getUserId());
+        playerPhase.setPlayer(player.orElse(null));
+        playerPhase.setNumAttempts(1);
+        playerPhase.setPhase(currentPhase);
+        return playerPhase;
+    }
+
+    private static boolean hasPlayerPassedPhase(int grade) {
+        return (grade >= 70);
+    }
+
+    private Phase getPhaseOfTheTest(List<Integer> questionsId) {
+        return gameService.getPhaseOfTheTest(questionsId);
+    }
+
+    private Optional<Player> findPlayerById(int playerId) {
+        return playerService.findById(playerId);
+    }
+
+    private int getGrade(java.util.Map<String, String> playerAnswers, List<Integer> questionsId) {
+        return gameService.calculateGrade(questionsId, playerAnswers);
     }
 
     private int calculatePlayerScoreAfterPassTheTest(int playerScore, int testScore) {

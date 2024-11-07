@@ -37,7 +37,6 @@ public class TeacherPlayerController {
     public String createPlayer(final Model model, @ModelAttribute("player") Player player) {
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
-
         if (currentUser.isEmpty()) {
             return REDIRECT_HOME;
         }
@@ -48,7 +47,12 @@ public class TeacherPlayerController {
         }
 
         // Verify if the login is already in use.
-        Player playerOld = playerService.findByLogin(player.getLogin());
+        Optional<Player> playerOldOpt = playerService.findByLogin(player.getLogin());
+        if (playerOldOpt.isEmpty()) {
+            return REDIRECT_HOME;
+        }
+
+        Player playerOld = playerOldOpt.get();
 
         if (playerOld != null) {
             model.addAttribute("player", player);
