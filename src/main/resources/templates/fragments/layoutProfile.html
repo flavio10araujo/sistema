@@ -15,7 +15,7 @@
                 <div class="media">
 
                     <div align="center">
-                        <a th:href="@{'/profile/players/'+${player.id}}"><img class="thumbnail img-responsive"
+                        <a th:href="@{|/profile/players/${player.id}|}"><img class="thumbnail img-responsive"
                                                                              th:src="@{'https://www.gravatar.com/avatar/'+${player.emailMD5}+'.jpg?s=200'}"
                                                                              width="300px" height="300px" /></a>
                     </div>

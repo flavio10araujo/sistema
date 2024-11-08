@@ -123,7 +123,7 @@ public class GameController {
         Game game = gameHelperService.getGameByNamelinkOrRedirectHome(gameNameLink);
         Map map = gameHelperService.getMapByGameLevelAndOrderOrRedirectHome(game, levelOrder, mapOrder);
         Phase phase = gameHelperService.getPhaseByMapAndOrderOrRedirectHome(map, phaseOrder);
-        Content content = gameHelperService.getContentByPhaseOrRedirectHome(phase);
+        Content content = gameHelperService.getQuestionaryContentByPhaseOrRedirectHome(phase);
 
         gameHelperService.isPlayerAllowedToAccessPhaseOrRedirectHome(phase);
 

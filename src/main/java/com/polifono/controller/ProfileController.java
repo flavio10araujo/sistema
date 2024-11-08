@@ -76,14 +76,12 @@ public class ProfileController {
     @GetMapping("/players/{playerId}")
     public String profilePlayer(final Model model, @PathVariable("playerId") Integer playerId) {
 
-        Optional<Player> player = playerService.findById(playerId);
-
-        if (player.isEmpty()) {
+        Optional<Player> playerOpt = playerService.findById(playerId);
+        if (playerOpt.isEmpty()) {
             return URL_PROFILE_PROFILE_NOT_FOUND;
         }
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
-
         if (currentUser.isEmpty()) {
             return REDIRECT_HOME;
         }
@@ -102,25 +100,22 @@ public class ProfileController {
             model.addAttribute("deleteAvailable", false);
         }
 
-        List<Phase> phases = phaseService.findGamesForProfile(player.get().getId());
-
+        List<Phase> phases = phaseService.findGamesForProfile(playerOpt.get().getId());
         if (phases == null) {
             phases = new ArrayList<>();
         }
 
-        List<PlayerPhase> playerPhases = playerPhaseService.findByPlayer(player.get().getId());
-
+        List<PlayerPhase> playerPhases = playerPhaseService.findByPlayer(playerOpt.get().getId());
         if (playerPhases == null) {
             playerPhases = new ArrayList<>();
         }
 
-        List<Diploma> diplomas = diplomaService.findByPlayer(player.get().getId());
-
+        List<Diploma> diplomas = diplomaService.findByPlayer(playerOpt.get().getId());
         if (diplomas == null) {
             diplomas = new ArrayList<>();
         }
 
-        model.addAttribute("player", player);
+        model.addAttribute("player", playerOpt.get());
         model.addAttribute("phases", phases);
         model.addAttribute("playerPhases", playerPhases);
         model.addAttribute("diplomas", diplomas);
@@ -132,7 +127,6 @@ public class ProfileController {
     public String score(final Model model, @PathVariable("playerId") Integer playerId) {
 
         Optional<Player> player = playerService.findById(playerId);
-
         if (player.isEmpty()) {
             return URL_PROFILE_PROFILE_NOT_FOUND;
         }
@@ -165,7 +159,7 @@ public class ProfileController {
             playerPhasesGames = playerPhaseService.filterPlayerPhasesListByGame(playerPhases);
         }
 
-        model.addAttribute("player", player);
+        model.addAttribute("player", player.get());
         model.addAttribute("playerPhases", playerPhases);
         model.addAttribute("playerPhasesGames", playerPhasesGames);
         model.addAttribute("levels", levelService.findAll());
@@ -183,13 +177,11 @@ public class ProfileController {
     public String attendance(final Model model, @PathVariable("playerId") Integer playerId) {
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
-
         if (currentUser.isEmpty()) {
             return REDIRECT_HOME;
         }
 
         Optional<Player> player = playerService.findById(playerId);
-
         if (player.isEmpty()) {
             return URL_PROFILE_PROFILE_NOT_FOUND;
         }
@@ -213,7 +205,7 @@ public class ProfileController {
             logins = new ArrayList<>();
         }
 
-        model.addAttribute("player", player);
+        model.addAttribute("player", player.get());
         model.addAttribute("logins", logins);
 
         // Students can see his own attendances, but in a different page.
@@ -229,13 +221,11 @@ public class ProfileController {
     public String credits(final Model model, @PathVariable("playerId") Integer playerId) {
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
-
         if (currentUser.isEmpty()) {
             return REDIRECT_HOME;
         }
 
         Optional<Player> player = playerService.findById(playerId);
-
         if (player.isEmpty()) {
             return URL_PROFILE_PROFILE_NOT_FOUND;
         }
@@ -256,7 +246,7 @@ public class ProfileController {
             transactions.addAll(transactions4);
         }
 
-        model.addAttribute("player", player);
+        model.addAttribute("player", player.get());
         model.addAttribute("transactions", transactions);
         model.addAttribute("editAvailable", true);
 
@@ -267,13 +257,11 @@ public class ProfileController {
     public String videos(final Model model, @PathVariable("playerId") Integer playerId) {
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
-
         if (currentUser.isEmpty()) {
             return REDIRECT_HOME;
         }
 
         Optional<Player> playerOpt = playerService.findById(playerId);
-
         if (playerOpt.isEmpty()) {
             return URL_PROFILE_PROFILE_NOT_FOUND;
         }
@@ -296,7 +284,6 @@ public class ProfileController {
     public String profilePlayerEdit(final Model model, @PathVariable("playerId") Integer playerId) {
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
-
         if (currentUser.isEmpty()) {
             return REDIRECT_HOME;
         }
@@ -322,7 +309,6 @@ public class ProfileController {
     public String profilePlayerAddVideo(final Model model, @PathVariable("playerId") Integer playerId) {
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
-
         if (currentUser.isEmpty()) {
             return REDIRECT_HOME;
         }
@@ -358,7 +344,6 @@ public class ProfileController {
     public String update(@ModelAttribute("edit") Player edit, final RedirectAttributes redirectAttributes) {
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
-
         if (currentUser.isEmpty()) {
             return REDIRECT_HOME;
         }
@@ -425,7 +410,6 @@ public class ProfileController {
     public String addVideo(final Model model, @ModelAttribute("playervideo") Playervideo playervideo, final RedirectAttributes redirectAttributes) {
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
-
         if (currentUser.isEmpty()) {
             return REDIRECT_HOME;
         }

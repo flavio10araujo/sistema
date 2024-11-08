@@ -82,6 +82,10 @@ public class GameHelperService {
         return getOrRedirectHome(ContentUtil.formatContent(contentService.findByPhaseAndOrder(phase.getId(), 1).orElse(null)));
     }
 
+    public Content getQuestionaryContentByPhaseOrRedirectHome(Phase phase) {
+        return getOrRedirectHome(contentService.findByPhaseAndOrder(phase.getId(), 0));
+    }
+
     public List<Question> getQuestionsByContentOrRedirectHome(Content content) {
         return getListOrRedirectHome(questionService.findByContent(content.getId()));
     }

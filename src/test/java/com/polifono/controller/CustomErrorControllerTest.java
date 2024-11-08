@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class CustomErrorControllerTest {
 
     @InjectMocks
-    private CustomErrorController customErrorController;
+    private ErrorController customErrorController;
 
     @Test
     public void whenError404_thenReturnError404Page() {

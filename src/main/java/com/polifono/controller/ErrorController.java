@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-public class CustomErrorController {
+public class ErrorController {
 
     @GetMapping("/error404")
     public String error404() {
