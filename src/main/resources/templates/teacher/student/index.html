@@ -168,16 +168,16 @@
                             </tr>
                             <tr th:each="item : ${classPlayers}">
                                 <td th:text="${item.clazz.year} + '/0' + ${item.clazz.semester} + ' - ' + ${item.clazz.school} + ' - '+ ${item.clazz.grade} + ' ' + ${item.clazz.name}"></td>
-                                <td><a th:href="@{|/profile/player/${item.player.id}|}" th:text="${item.player.fullName}" style="text-decoration:none"></a></td>
+                                <td><a th:href="@{|/profile/players/${item.player.id}|}" th:text="${item.player.fullName}" style="text-decoration:none"></a></td>
                                 <td align="left">
                                     <a data-toggle="tooltip" title="Reenviar e-mail para o aluno" th:if="${item.status==1}"
                                        th:href="@{/teacher/student/resendemail/{id}(id=${item.id})}" style="margin-right:10%"><span
                                             class="glyphicon glyphicon-repeat"></span></a>
                                     <a data-toggle="tooltip" title="Notas" th:if="${item.status==2}"
-                                       th:href="@{/profile/player/{id}/score(id=${item.player.id})}" style="margin-right:10%"><span
+                                       th:href="@{/profile/players/{id}/score(id=${item.player.id})}" style="margin-right:10%"><span
                                             class="glyphicon glyphicon-stats"></span></a>
                                     <a data-toggle="tooltip" title="Frequência" th:if="${item.status==2}"
-                                       th:href="@{/profile/player/{id}/attendance(id=${item.player.id})}" style="margin-right:10%"><span
+                                       th:href="@{/profile/players/{id}/attendance(id=${item.player.id})}" style="margin-right:10%"><span
                                             class="glyphicon glyphicon-list-alt"></span></a>
                                     <a data-toggle="tooltip" th:title="#{app.delete}"
                                        th:href="'javascript:deleteItem(\'/teacher/student/delete/' + ${item.id} + '\')'"><span

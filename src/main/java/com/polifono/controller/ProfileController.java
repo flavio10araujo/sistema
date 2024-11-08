@@ -43,10 +43,11 @@ import com.polifono.service.ILevelService;
 import com.polifono.service.ILoginService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
-import com.polifono.service.IPlayerService;
 import com.polifono.service.IPlayervideoService;
 import com.polifono.service.ITransactionService;
 import com.polifono.service.impl.SecurityService;
+import com.polifono.service.impl.player.PlayerManagementService;
+import com.polifono.service.impl.player.PlayerService;
 import com.polifono.util.PlayerUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -59,7 +60,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ProfileController {
 
     private final SecurityService securityService;
-    private final IPlayerService playerService;
+    private final PlayerService playerService;
+    private final PlayerManagementService playerManagementService;
     private final IPhaseService phaseService;
     private final IPlayerPhaseService playerPhaseService;
     private final IClassPlayerService classPlayerService;
@@ -71,7 +73,7 @@ public class ProfileController {
     private final IPlayervideoService playervideoService;
     private final IContentService contentService;
 
-    @GetMapping("/player/{playerId}")
+    @GetMapping("/players/{playerId}")
     public String profilePlayer(final Model model, @PathVariable("playerId") Integer playerId) {
 
         Optional<Player> player = playerService.findById(playerId);
@@ -126,7 +128,7 @@ public class ProfileController {
         return URL_PROFILE_PROFILE_PLAYER;
     }
 
-    @GetMapping("/player/{playerId}/score")
+    @GetMapping("/players/{playerId}/score")
     public String score(final Model model, @PathVariable("playerId") Integer playerId) {
 
         Optional<Player> player = playerService.findById(playerId);
@@ -177,7 +179,7 @@ public class ProfileController {
         }
     }
 
-    @GetMapping("/player/{playerId}/attendance")
+    @GetMapping("/players/{playerId}/attendance")
     public String attendance(final Model model, @PathVariable("playerId") Integer playerId) {
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
@@ -223,7 +225,7 @@ public class ProfileController {
         }
     }
 
-    @GetMapping("/player/{playerId}/credits")
+    @GetMapping("/players/{playerId}/credits")
     public String credits(final Model model, @PathVariable("playerId") Integer playerId) {
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
@@ -261,7 +263,7 @@ public class ProfileController {
         return URL_PROFILE_PROFILE_CREDITS;
     }
 
-    @GetMapping("/player/{playerId}/videos")
+    @GetMapping("/players/{playerId}/videos")
     public String videos(final Model model, @PathVariable("playerId") Integer playerId) {
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
@@ -290,7 +292,7 @@ public class ProfileController {
         return URL_PROFILE_PROFILE_VIDEOS;
     }
 
-    @GetMapping("/player/edit/{playerId}")
+    @GetMapping("/players/{playerId}/edit")
     public String profilePlayerEdit(final Model model, @PathVariable("playerId") Integer playerId) {
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
@@ -316,7 +318,43 @@ public class ProfileController {
         return URL_PROFILE_PROFILE_PLAYER_EDIT;
     }
 
-    @PostMapping("/player/update")
+    @GetMapping("/players/{playerId}/addVideo")
+    public String profilePlayerAddVideo(final Model model, @PathVariable("playerId") Integer playerId) {
+
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return REDIRECT_HOME;
+        }
+
+        // Verify if the playerId belongs to the player logged OR the user logged is an admin.
+        if (currentUser.get().getUser().getId() == playerId || currentUser.get().getUser().getRole().toString().equals("ADMIN")) {
+            Optional<Player> playerOpt = playerService.findById(playerId);
+
+            if (playerOpt.isEmpty()) {
+                return URL_PROFILE_PROFILE_NOT_FOUND;
+            }
+
+            Player player = playerOpt.get();
+
+            model.addAttribute("player", player);
+
+            // Filter.
+            model.addAttribute("games", gameService.findByActive(true));
+            model.addAttribute("levels", levelService.findByActive(true));
+            // Form
+            Playervideo playervideo = new Playervideo();
+            playervideo.setPlayer(player);
+            model.addAttribute("playervideo", playervideo);
+        } else {
+            log.debug("Someone tried to add a video to another player with a different id.");
+            return REDIRECT_HOME;
+        }
+
+        return URL_PROFILE_PROFILE_PLAYER_ADD_VIDEO;
+    }
+
+    @PostMapping("/players/update")
     public String update(@ModelAttribute("edit") Player edit, final RedirectAttributes redirectAttributes) {
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
@@ -331,12 +369,12 @@ public class ProfileController {
             return REDIRECT_HOME;
         }
 
-        String msg = playerService.validateUpdateProfile(edit);
+        String msg = playerManagementService.validateUpdateProfile(edit);
 
         if (!"".equals(msg)) {
             redirectAttributes.addFlashAttribute("message", "error");
             redirectAttributes.addFlashAttribute("messageContent", msg);
-            return "redirect:/profile/player/edit/" + edit.getId();
+            return "redirect:/profile/players/" + edit.getId() + "/edit";
         }
 
         Optional<Player> player = playerService.findById(edit.getId());
@@ -380,46 +418,10 @@ public class ProfileController {
             redirectAttributes.addFlashAttribute("edit", "unsuccess");
         }
 
-        return "redirect:/profile/player/" + edit.getId();
+        return "redirect:/profile/players/" + edit.getId();
     }
 
-    @GetMapping("/player/addVideo/{playerId}")
-    public String profilePlayerAddVideo(final Model model, @PathVariable("playerId") Integer playerId) {
-
-        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
-
-        if (currentUser.isEmpty()) {
-            return REDIRECT_HOME;
-        }
-
-        // Verify if the playerId belongs to the player logged OR the user logged is an admin.
-        if (currentUser.get().getUser().getId() == playerId || currentUser.get().getUser().getRole().toString().equals("ADMIN")) {
-            Optional<Player> playerOpt = playerService.findById(playerId);
-
-            if (playerOpt.isEmpty()) {
-                return URL_PROFILE_PROFILE_NOT_FOUND;
-            }
-
-            Player player = playerOpt.get();
-
-            model.addAttribute("player", player);
-
-            // Filter.
-            model.addAttribute("games", gameService.findByActive(true));
-            model.addAttribute("levels", levelService.findByActive(true));
-            // Form
-            Playervideo playervideo = new Playervideo();
-            playervideo.setPlayer(player);
-            model.addAttribute("playervideo", playervideo);
-        } else {
-            log.debug("Someone tried to add a video to another player with a different id.");
-            return REDIRECT_HOME;
-        }
-
-        return URL_PROFILE_PROFILE_PLAYER_ADD_VIDEO;
-    }
-
-    @PostMapping("/player/addVideo")
+    @PostMapping("/players/addVideo")
     public String addVideo(final Model model, @ModelAttribute("playervideo") Playervideo playervideo, final RedirectAttributes redirectAttributes) {
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
@@ -444,7 +446,7 @@ public class ProfileController {
 
         playervideo.setPlayer(player);
 
-        String msg = playerService.validateAddVideo(playervideo);
+        String msg = playerManagementService.validateAddVideo(playervideo);
 
         // If no problems have been detected until now.
         if ("".equals(msg)) {
@@ -488,6 +490,6 @@ public class ProfileController {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/profile/player/" + playervideo.getPlayer().getId() + "/videos";
+        return "redirect:/profile/players/" + playervideo.getPlayer().getId() + "/videos";
     }
 }

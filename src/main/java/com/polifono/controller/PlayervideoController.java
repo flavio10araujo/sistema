@@ -19,8 +19,8 @@ import com.polifono.domain.Player;
 import com.polifono.domain.Playervideo;
 import com.polifono.dto.PlayervideoDTO;
 import com.polifono.service.IContentService;
-import com.polifono.service.IPlayerService;
 import com.polifono.service.IPlayervideoService;
+import com.polifono.service.impl.player.PlayerService;
 import com.polifono.util.YouTubeUrlFormatter;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class PlayervideoController {
 
     private final IPlayervideoService playervideoService;
     private final IContentService contentService;
-    private final IPlayerService playerService;
+    private final PlayerService playerService;
 
     @GetMapping(value = "/playervideos", produces = "application/json; charset=UTF-8")
     @ResponseBody

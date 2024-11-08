@@ -34,7 +34,7 @@
                     </div>
                 </div>
 
-                <form id="f_editProfile" th:object="${player}" th:action="@{/profile/player/update}" method="post" class="form-horizontal">
+                <form id="f_editProfile" th:object="${player}" th:action="@{/profile/players/update}" method="post" class="form-horizontal">
 
                     <input type="hidden" th:field="*{id}" />
 
@@ -246,7 +246,7 @@
 
                             <input type="hidden" th:field="*{dtBirthStr}" th:id="dtBirthStr" class="form-control" placeholder="DD/MM/AAAA" maxlength="10" />
 
-                            <a th:href="'javascript:cancelEdit(\'/profile/player/' + ${player.id} + '\')'" class="btn btn-default"><i class="fa fa-fw fa-times"
+                            <a th:href="'javascript:cancelEdit(\'/profile/players/' + ${player.id} + '\')'" class="btn btn-default"><i class="fa fa-fw fa-times"
                                                                                                                                       aria-hidden="true"></i>
                                 Cancelar</a>
 

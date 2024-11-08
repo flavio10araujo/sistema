@@ -31,4 +31,8 @@ public interface IPlayerPhaseService {
     List<RankingDTO> getRankingMonthly();
 
     int getPermittedLevelForPlayer(int playerId, int gameId);
+
+    PlayerPhase setupPlayerPhaseInProgress(Phase currentPhase, int grade);
+
+    void registerTestAttempt(Phase phase);
 }

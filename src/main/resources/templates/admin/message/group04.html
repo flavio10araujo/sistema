@@ -47,7 +47,7 @@
                             <td colspan="5" align="center">No Item Registered Yet!</td>
                         </tr>
                         <tr th:each="item : ${players}">
-                            <td><a th:href="@{'/profile/player/'+${item.id}}" style="text-decoration:none" target="_blank"><span
+                            <td><a th:href="@{'/profile/players/'+${item.id}}" style="text-decoration:none" target="_blank"><span
                                     th:text="${item.id}"></span></a></td>
                             <td th:text="${item.name} + ' ' + ${item.lastName}"></td>
                             <td th:text="${item.email}"></td>

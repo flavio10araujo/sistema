@@ -35,6 +35,7 @@ import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.IPlayerService;
 import com.polifono.service.IQuestionService;
+import com.polifono.service.helper.GameHelperService;
 import com.polifono.service.impl.GenerateRandomStringService;
 import com.polifono.service.impl.SecurityService;
 
@@ -85,6 +86,9 @@ public class GameControllerTest {
 
     @Mock
     private GenerateRandomStringService generateRandomStringService;
+
+    @Mock
+    private GameHelperService gameHelperService;
 
     /* listGames - BEGIN */
     @Test

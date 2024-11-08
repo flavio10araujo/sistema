@@ -24,6 +24,7 @@ import com.polifono.domain.PlayerGame;
 import com.polifono.domain.enums.Role;
 import com.polifono.repository.IPlayerRepository;
 import com.polifono.service.IPlayerGameService;
+import com.polifono.service.impl.player.PlayerManagementService;
 import com.polifono.util.PasswordUtil;
 
 /**
@@ -33,7 +34,7 @@ import com.polifono.util.PasswordUtil;
 public class PlayerServiceImplTest {
 
     @InjectMocks
-    private PlayerServiceImpl service;
+    private PlayerManagementService service;
 
     @Mock
     private IPlayerRepository repository;

@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.polifono.domain.Player;
 import com.polifono.domain.bean.CurrentUser;
-import com.polifono.service.IPlayerService;
 import com.polifono.service.impl.SecurityService;
+import com.polifono.service.impl.player.PlayerManagementService;
+import com.polifono.service.impl.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +26,8 @@ import lombok.RequiredArgsConstructor;
 public class TeacherPlayerController {
 
     private final SecurityService securityService;
-    private final IPlayerService playerService;
+    private final PlayerService playerService;
+    private final PlayerManagementService playerManagementService;
 
     @GetMapping({ "/player", "/player/create" })
     public String indexPage(Model model) {
@@ -60,7 +62,7 @@ public class TeacherPlayerController {
             // TODO - buscar msg do messages.
             model.addAttribute("msgRegister", "<br />O login " + player.getLogin() + " já está cadastrado para outra pessoa.");
         } else {
-            String msg = playerService.validateCreatePlayerByTeacher(player);
+            String msg = playerManagementService.validateCreatePlayerByTeacher(player);
 
             // If there are no errors.
             if (msg.isEmpty()) {

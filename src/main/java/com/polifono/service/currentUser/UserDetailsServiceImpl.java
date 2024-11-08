@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.domain.Player;
 import com.polifono.domain.bean.CurrentUser;
-import com.polifono.service.IPlayerService;
+import com.polifono.service.impl.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final IPlayerService userService;
+    private final PlayerService userService;
 
     @Override
     public CurrentUser loadUserByUsername(String email) throws UsernameNotFoundException {

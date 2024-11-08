@@ -55,7 +55,7 @@
         <div class="row">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <a th:href="@{'/profile/player/addVideo/'+${#authentication.principal.user.id}}" class="btn btn-success dropdown-toggle">Adicionar um
+                    <a th:href="@{'/profile/players/'+${#authentication.principal.user.id}+'/addVideo'}" class="btn btn-success dropdown-toggle">Adicionar um
                         ensaio</a>
                     <input type="hidden" id="contentId" th:field="${content.id}" />
                 </div>
@@ -83,7 +83,7 @@
                                     <div class="embed-responsive embed-responsive-16by9">
                                         <iframe class="embed-responsive-item" :src="video.url" allowfullscreen="true"></iframe>
                                     </div>
-                                    <h4>Aluno(a): <a :href="'/profile/player/'+video.playerId">{{video.playerFirstName}} {{video.playerLastName}}</a></h4>
+                                    <h4>Aluno(a): <a :href="'/profile/players/'+video.playerId">{{video.playerFirstName}} {{video.playerLastName}}</a></h4>
                                     <h4>{{video.gameName}} : {{video.levelName}} : Aula {{video.phaseOrder}}</h4><br /><br />
                                 </div>
                             </div>

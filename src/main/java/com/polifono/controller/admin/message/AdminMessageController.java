@@ -18,8 +18,8 @@ import com.polifono.domain.Player;
 import com.polifono.domain.PlayerCommunication;
 import com.polifono.service.ICommunicationService;
 import com.polifono.service.IPlayerCommunicationService;
-import com.polifono.service.IPlayerService;
 import com.polifono.service.impl.SendEmailService;
+import com.polifono.service.impl.player.PlayerCommunicationService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin/message")
 public class AdminMessageController {
 
-    private final IPlayerService playerService;
+    private final PlayerCommunicationService playerService;
     private final ICommunicationService communicationService;
     private final IPlayerCommunicationService playerCommunicationService;
     private final SendEmailService sendEmailService;

@@ -36,40 +36,31 @@ public class DiplomaController {
 
     @Validated
     @PostMapping("/diplomas")
-    public String diplomaSearchSubmit(final Model model, @RequestParam @NotBlank String code, Locale locale) {
-        Optional<Diploma> diplomaOpt = findDiplomaByCode(code);
+    public String diplomaSearchSubmit(final Model model,
+            @RequestParam @NotBlank String code,
+            Locale locale) {
 
+        Optional<Diploma> diplomaOpt = diplomaService.findByCode(code);
         if (diplomaOpt.isEmpty()) {
             return diplomaHelperService.handleDiplomaNotFound(model, locale);
         }
 
-        model.addAttribute("message", "success");
-        model.addAttribute("diploma", diplomaOpt.get());
-
+        diplomaHelperService.addMessageAndDiplomaToModel(model, diplomaOpt.get());
         return diplomaHelperService.handleDiplomaSearch(model);
     }
 
     @Validated
     @GetMapping("/diplomas/{code}")
-    public String diplomaGet(HttpServletResponse response, final Model model, @PathVariable("code") @NotBlank String code, Locale locale)
-            throws JRException, IOException {
+    public String diplomaGet(HttpServletResponse response, final Model model,
+            @PathVariable("code") @NotBlank String code,
+            Locale locale) throws JRException, IOException {
 
-        Optional<Diploma> diplomaOpt = findDiplomaByCode(code);
-
+        Optional<Diploma> diplomaOpt = diplomaService.findByCode(code);
         if (diplomaOpt.isEmpty()) {
             return diplomaHelperService.handleDiplomaNotFound(model, locale);
         }
 
-        generateDiplomaPdf(response, diplomaOpt.get(), locale);
-
+        diplomaService.generateDiplomaPdf(response, diplomaOpt.get(), locale);
         return null;
-    }
-
-    private Optional<Diploma> findDiplomaByCode(String code) {
-        return diplomaService.findByCode(code);
-    }
-
-    private void generateDiplomaPdf(HttpServletResponse response, Diploma diploma, Locale locale) throws JRException, IOException {
-        diplomaService.generateDiplomaPdf(response, diploma, locale);
     }
 }

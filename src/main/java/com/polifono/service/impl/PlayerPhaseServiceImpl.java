@@ -2,6 +2,7 @@ package com.polifono.service.impl;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,9 +14,11 @@ import com.polifono.domain.Phase;
 import com.polifono.domain.Phasestatus;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerPhase;
+import com.polifono.domain.bean.CurrentUser;
 import com.polifono.dto.RankingDTO;
 import com.polifono.form.teacher.ReportGeneralForm;
 import com.polifono.repository.IPlayerPhaseRepository;
+import com.polifono.service.IGameService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.util.DateUtil;
@@ -30,7 +33,9 @@ import lombok.extern.slf4j.Slf4j;
 public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 
     private final IPlayerPhaseRepository repository;
+    private final IGameService gameService;
     private final IPhaseService phaseService;
+    private final SecurityService securityService;
 
     @Override
     public PlayerPhase save(PlayerPhase playerPhase) {
@@ -182,5 +187,43 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
         } else {
             return lastLevel.getOrder() + 1;
         }
+    }
+
+    @Override
+    public PlayerPhase setupPlayerPhaseInProgress(Phase currentPhase, int grade) {
+        PlayerPhase playerPhase = getPlayerPhaseInProgress(currentPhase);
+
+        playerPhase.setGrade(grade);
+        Phasestatus phasestatus = new Phasestatus();
+        phasestatus.setId(3);
+        playerPhase.setPhasestatus(phasestatus);
+        playerPhase.setDtTest(new Date());
+        playerPhase.setScore(gameService.calculateScore(playerPhase.getNumAttempts(), grade));
+
+        return playerPhase;
+    }
+
+    private PlayerPhase getPlayerPhaseInProgress(Phase currentPhase) {
+        return findByPlayerPhaseAndStatus(securityService.getUserId(), currentPhase.getId(), 2).orElseGet(() -> createNewPlayerPhase(currentPhase));
+    }
+
+    private PlayerPhase createNewPlayerPhase(Phase currentPhase) {
+        PlayerPhase playerPhase = new PlayerPhase();
+        Player player = securityService.getUser();
+        playerPhase.setPlayer(player);
+        playerPhase.setNumAttempts(1);
+        playerPhase.setPhase(currentPhase);
+        return playerPhase;
+    }
+
+    @Override
+    public void registerTestAttempt(Phase phase) {
+        Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
+
+        if (currentUser.isEmpty()) {
+            return;
+        }
+
+        setTestAttempt(currentUser.get().getUser(), phase);
     }
 }

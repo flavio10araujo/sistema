@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.polifono.domain.Player;
 import com.polifono.form.admin.report.RegisterFilterForm;
-import com.polifono.service.IPlayerService;
+import com.polifono.service.impl.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin/report")
 public class AdminReportController {
 
-    private final IPlayerService playerService;
+    private final PlayerService playerService;
 
     @GetMapping("/register")
     public String register(Model model) {

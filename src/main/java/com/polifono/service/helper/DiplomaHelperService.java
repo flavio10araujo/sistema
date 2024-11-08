@@ -9,6 +9,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.polifono.domain.Diploma;
 import com.polifono.domain.Player;
 import com.polifono.service.impl.SecurityService;
 
@@ -34,6 +35,11 @@ public class DiplomaHelperService {
         model.addAttribute("message", "error");
         model.addAttribute("messageContent", messagesResource.getMessage("msg.TheInformedCertificateDoesNotExist", null, locale));
         return handleDiplomaSearch(model);
+    }
+
+    public void addMessageAndDiplomaToModel(Model model, Diploma diploma) {
+        model.addAttribute("message", "success");
+        model.addAttribute("diploma", diploma);
     }
 
     private void prepareModelForUnauthenticatedUser(Model model) {

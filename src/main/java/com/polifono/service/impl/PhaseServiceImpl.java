@@ -6,11 +6,13 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.polifono.domain.Game;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
 import com.polifono.domain.PlayerPhase;
 import com.polifono.repository.IPhaseRepository;
 import com.polifono.service.IPhaseService;
+import com.polifono.service.impl.player.PlayerCreditService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 public class PhaseServiceImpl implements IPhaseService {
 
     private final IPhaseRepository repository;
+    private final SecurityService securityService;
+    private final PlayerCreditService playerCreditService;
 
     @Override
     public Phase save(Phase phase) {
@@ -182,5 +186,28 @@ public class PhaseServiceImpl implements IPhaseService {
     @Override
     public List<Phase> findPhasesBySearchAndUser(String q, int playerId) {
         return repository.findPhasesBySearchAndUser("%" + q + "%", playerId, 3);
+    }
+
+    @Override
+    public boolean hasPlayerPassedPhase(int grade) {
+        return (grade >= 70);
+    }
+
+    @Override
+    public boolean shouldDisplayBuyCreditsPage(Game game, Phase phase) {
+        // If the player doesn't have credits anymore.
+        // And the player is not trying to access the first phase (the first phase is always free).
+        if (isTryingToAccessNotFreePhaseWithoutCredits(phase)) {
+            // Get the last phase that the player has finished in a specific game.
+            Optional<Phase> lastPhaseDoneOpt = findLastPhaseDoneByPlayerAndGame(securityService.getUserId(), game.getId());
+
+            return lastPhaseDoneOpt.isEmpty() || lastPhaseDoneOpt.get().getOrder() < phase.getOrder();
+        }
+
+        return false;
+    }
+
+    private boolean isTryingToAccessNotFreePhaseWithoutCredits(Phase phase) {
+        return !playerCreditService.playerHasCredits(securityService.getUserId(), phase) && phase.getOrder() > 1;
     }
 }

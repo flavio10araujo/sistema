@@ -24,8 +24,9 @@ import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
 import com.polifono.service.IGameService;
 import com.polifono.service.IPlayerGameService;
-import com.polifono.service.IPlayerService;
 import com.polifono.service.impl.SecurityService;
+import com.polifono.service.impl.player.PlayerCreditService;
+import com.polifono.service.impl.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,7 +37,8 @@ public class TransferCreditController {
 
     private final SecurityService securityService;
     private final IGameService gameService;
-    private final IPlayerService playerService;
+    private final PlayerService playerService;
+    private final PlayerCreditService playerCreditService;
     private final IClassService classService;
     private final IPlayerGameService playerGameService;
     private final IClassPlayerService classPlayerService;
@@ -128,7 +130,7 @@ public class TransferCreditController {
             playerGameExistent.setCredit(playerGameExistent.getCredit() + playerGame.getCredit());
 
             // Remove generic credits from the teacher.
-            playerLogged = Optional.ofNullable(playerService.removeCreditsFromPlayer(playerLogged.get().getId(), playerGame.getCredit()));
+            playerLogged = Optional.ofNullable(playerCreditService.removeCreditsFromPlayer(playerLogged.get().getId(), playerGame.getCredit()));
 
             // If the player is not found.
             if (playerLogged.isEmpty()) {
@@ -207,7 +209,7 @@ public class TransferCreditController {
             }
 
             // Remove generic credits from the teacher.
-            playerLogged = Optional.ofNullable(playerService.removeCreditsFromPlayer(playerLogged.get().getId(), totalCredits));
+            playerLogged = Optional.ofNullable(playerCreditService.removeCreditsFromPlayer(playerLogged.get().getId(), totalCredits));
 
             // If the player is not found.
             if (playerLogged.isEmpty()) {

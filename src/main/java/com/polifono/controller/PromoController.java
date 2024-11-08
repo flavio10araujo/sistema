@@ -39,9 +39,10 @@ import com.polifono.service.IGameService;
 import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPromoService;
-import com.polifono.service.IPlayerService;
 import com.polifono.service.IPromoService;
 import com.polifono.service.impl.SecurityService;
+import com.polifono.service.impl.player.PlayerCreditService;
+import com.polifono.service.impl.player.PlayerService;
 import com.polifono.util.ContentUtil;
 import com.polifono.util.DateUtil;
 
@@ -57,7 +58,8 @@ public class PromoController {
     public static final int FIRST_PHASE_TRUMPET = 212;
 
     private final SecurityService securityService;
-    private final IPlayerService playerService;
+    private final PlayerService playerService;
+    private final PlayerCreditService playerCreditService;
     private final IGameService gameService;
     private final IMapService mapService;
     private final IPhaseService phaseService;
@@ -111,7 +113,7 @@ public class PromoController {
                 return URL_PROMO_SEARCH;
             }
 
-            securityService.updateCurrentAuthenticatedUser(playerService.addCreditsToPlayer(player.getId(), promo.getPrize()));
+            securityService.updateCurrentAuthenticatedUser(playerCreditService.addCreditsToPlayer(player.getId(), promo.getPrize()));
 
             playerPromo = new PlayerPromo();
             playerPromo.setPlayer(player);

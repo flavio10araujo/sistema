@@ -3,6 +3,7 @@ package com.polifono.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.polifono.domain.Game;
 import com.polifono.domain.Map;
 import com.polifono.domain.Phase;
 import com.polifono.domain.PlayerPhase;
@@ -38,4 +39,8 @@ public interface IPhaseService {
     boolean canPlayerAccessPhase(Phase phase, int playerId);
 
     List<Phase> findPhasesBySearchAndUser(String q, int playerId);
+
+    boolean hasPlayerPassedPhase(int grade);
+
+    boolean shouldDisplayBuyCreditsPage(Game game, Phase phase);
 }

@@ -21,9 +21,9 @@ import com.polifono.domain.ClassPlayer;
 import com.polifono.domain.bean.CurrentUser;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
-import com.polifono.service.IPlayerService;
 import com.polifono.service.impl.SecurityService;
 import com.polifono.service.impl.SendEmailService;
+import com.polifono.service.impl.player.PlayerService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class StudentController {
 
     private final SecurityService securityService;
     private final IClassService classService;
-    private final IPlayerService playerService;
+    private final PlayerService playerService;
     private final IClassPlayerService classPlayerService;
     private final SendEmailService sendEmailService;
 

@@ -7,7 +7,7 @@
 
     <div class="panel panel-default" th:if="${editAvailable == true}">
         <div class="panel-body">
-            <a th:href="@{'/profile/player/addVideo/'+${player.id}}" class="btn btn-success dropdown-toggle">Adicionar um vídeo</a>
+            <a th:href="@{'/profile/players/'+${player.id}+'/addVideo'}" class="btn btn-success dropdown-toggle">Adicionar um vídeo</a>
         </div>
     </div>
 

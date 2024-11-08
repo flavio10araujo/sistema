@@ -15,8 +15,8 @@ import com.polifono.domain.Player;
 import com.polifono.domain.PlayerCommunication;
 import com.polifono.service.ICommunicationService;
 import com.polifono.service.IPlayerCommunicationService;
-import com.polifono.service.IPlayerService;
 import com.polifono.service.impl.SendEmailService;
+import com.polifono.service.impl.player.PlayerCommunicationService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ScheduledTasks {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-    private final IPlayerService playerService;
+    private final PlayerCommunicationService playerService;
     private final ICommunicationService communicationService;
     private final IPlayerCommunicationService playerCommunicationService;
     private final SendEmailService sendEmailService;

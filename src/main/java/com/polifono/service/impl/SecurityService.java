@@ -74,4 +74,9 @@ public class SecurityService {
         Optional<CurrentUser> currentUser = getCurrentAuthenticatedUser();
         return currentUser.map(user -> user.getUser().getId()).orElseThrow(() -> new IllegalStateException("User not authenticated"));
     }
+
+    public Player getUser() {
+        Optional<CurrentUser> currentUser = getCurrentAuthenticatedUser();
+        return currentUser.map(CurrentUser::getUser).orElseThrow(() -> new IllegalStateException("User not authenticated"));
+    }
 }
