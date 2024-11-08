@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.polifono.domain.Player;
 import com.polifono.domain.bean.CurrentUser;
 import com.polifono.domain.enums.Role;
-import com.polifono.service.IPlayerService;
+import com.polifono.service.impl.player.PlayerService;
 
 /**
  * Unit test methods for the UserDetailsServiceImpl.
@@ -27,7 +27,7 @@ public class UserDetailsServiceTest {
     private UserDetailsServiceImpl service;
 
     @Mock
-    private IPlayerService userService;
+    private PlayerService userService;
 
     private final String PLAYER_EMAIL_EXISTENT = "flavio10araujo@yahoo.com.br";
     private final String PLAYER_EMAIL_INEXISTENT = "email_inexistent";

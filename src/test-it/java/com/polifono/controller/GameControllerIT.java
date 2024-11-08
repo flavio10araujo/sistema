@@ -25,8 +25,8 @@ import com.polifono.service.ILevelService;
 import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
-import com.polifono.service.IPlayerService;
 import com.polifono.service.IQuestionService;
+import com.polifono.service.impl.player.PlayerService;
 
 /**
  * Unit tests for the GameController using Spring MVC Mocks.
@@ -56,7 +56,7 @@ public class GameControllerIT /*extends AbstractControllerTest*/ {
     private IContentService contentService;
 
     @Mock
-    private IPlayerService playerService;
+    private PlayerService playerService;
 
     @Mock
     private IQuestionService questionService;

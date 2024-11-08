@@ -29,7 +29,6 @@ public class DiplomaControllerTest {
 
     private static final String CODE_EXISTENT = "code_existent";
     private static final String CODE_INEXISTENT = "code_inexistent";
-    private static final String MSG_THE_INFORMED_CERTIFICATE_DOES_NOT_EXIST = "The Informed Certificate Does Not Exist";
 
     @InjectMocks
     private DiplomaController diplomaController;
@@ -71,15 +70,15 @@ public class DiplomaControllerTest {
         Model model = mock(Model.class);
         Locale locale = getDefaultLocale();
 
-        Optional<Diploma> diploma = getDiploma();
+        Optional<Diploma> diplomaOpt = getDiploma();
 
-        when(diplomaService.findByCode(CODE_EXISTENT)).thenReturn(diploma);
+        when(diplomaService.findByCode(CODE_EXISTENT)).thenReturn(diplomaOpt);
+        doNothing().when(diplomaHelperService).addMessageAndDiplomaToModel(model, diplomaOpt.orElse(null));
         when(diplomaHelperService.handleDiplomaSearch(model)).thenReturn(URL_DIPLOMA_SEARCH);
 
         diplomaController.diplomaSearchSubmit(model, CODE_EXISTENT, locale);
 
-        verify(model).addAttribute("message", "success");
-        verify(model).addAttribute("diploma", diploma.orElse(null));
+        verify(diplomaHelperService).addMessageAndDiplomaToModel(model, diplomaOpt.orElse(null));
         verify(diplomaHelperService).handleDiplomaSearch(model);
     }
     /* diplomaSearchSubmit - END */

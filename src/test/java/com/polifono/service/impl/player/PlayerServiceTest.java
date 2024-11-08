@@ -1,4 +1,4 @@
-package com.polifono.service.impl;
+package com.polifono.service.impl.player;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -16,39 +16,29 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.domain.Game;
-import com.polifono.domain.Map;
-import com.polifono.domain.Phase;
 import com.polifono.domain.Player;
 import com.polifono.domain.PlayerGame;
 import com.polifono.domain.enums.Role;
 import com.polifono.repository.IPlayerRepository;
-import com.polifono.service.IPlayerGameService;
-import com.polifono.service.impl.player.PlayerManagementService;
 import com.polifono.util.PasswordUtil;
 
 /**
  * Unit test methods for the PlayerService.
  */
 @ExtendWith(MockitoExtension.class)
-public class PlayerServiceImplTest {
+public class PlayerServiceTest {
 
     @InjectMocks
-    private PlayerManagementService service;
+    private PlayerService service;
 
     @Mock
     private IPlayerRepository repository;
-
-    @Mock
-    private IPlayerGameService playerGameService;
 
     private final Integer PLAYER_ID_EXISTENT = 1;
     private final Integer PLAYER_ID_INEXISTENT = Integer.MAX_VALUE;
 
     private final String PLAYER_EMAIL_EXISTENT = "flavio10araujo@yahoo.com.br";
     private final String PLAYER_EMAIL_INEXISTENT = "email_inexistent";
-
-    private final Integer GAME_ID_EXISTENT = 2;
 
     /* create - begin */
     /*@Test
@@ -80,9 +70,6 @@ public class PlayerServiceImplTest {
         verifyNoMoreInteractions(repository);
     }*/
     /* create - end */
-
-    /* preparePlayerForCreation - begin */
-    /* preparePlayerForCreation - end */
 
     /* save - begin */
     @Test
@@ -306,151 +293,6 @@ public class PlayerServiceImplTest {
     }
     /* encryptPassword - end */
 
-    /* addCreditsToPlayer - begin */
-    @Test
-    public void addCreditsToPlayer_WhenEverythingIsOK_ReturnPlayerWithMoreCredits() {
-        Optional<Player> entity = getEntityStubData();
-
-        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(entity);
-        when(repository.save(entity.get())).thenReturn(entity.get());
-
-        Player entityReturned = service.addCreditsToPlayer(PLAYER_ID_EXISTENT, 10);
-
-        Assertions.assertNotNull(entityReturned, "failure - expected null");
-        Assertions.assertEquals(PLAYER_ID_EXISTENT.intValue(), entityReturned.getId(), "failure - expected id attribute match");
-
-        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
-        verify(repository, times(1)).save(entity.get());
-        verifyNoMoreInteractions(repository);
-    }
-    /* addCreditsToPlayer - end */
-
-    /* preparePlayerForAddingCredits - begin */
-    /* preparePlayerForAddingCredits - end */
-
-    /* removeCreditsFromPlayer - begin */
-    @Test
-    public void removeCreditsFromPlayer_WhenEverythingIsOK_ReturnPlayerWithLessCredits() {
-        Optional<Player> entity = getEntityStubData();
-
-        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(entity);
-        when(repository.save(entity.get())).thenReturn(entity.get());
-
-        Player entityReturned = service.removeCreditsFromPlayer(PLAYER_ID_EXISTENT, 5);
-
-        Assertions.assertNotNull(entityReturned, "failure - expected null");
-        Assertions.assertEquals(PLAYER_ID_EXISTENT.intValue(), entityReturned.getId(), "failure - expected id attribute match");
-
-        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
-        verify(repository, times(1)).save(entity.get());
-        verifyNoMoreInteractions(repository);
-    }
-    /* removeCreditsFromPlayer - end */
-
-    /* prepareForRemovingCredits - begin */
-    /* prepareForRemovingCredits - end */
-
-    /* removeOneCreditFromPlayer - begin */
-    @Test
-    public void removeOneCreditFromPlayer_WhenThePlayerHasSpecificCreditsOfTheGame_ReturnPlayerWithOneSpecificCreditLess() {
-        Player entity = getPlayerWithSpecificCreditsStubData();
-
-        Game game = new Game();
-        game.setId(GAME_ID_EXISTENT);
-
-        PlayerGame playerGame = entity.getPlayerGameList().get(0);
-
-        when(playerGameService.removeCreditsFromPlayer(playerGame, 1)).thenReturn(playerGame);
-        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(entity));
-
-        Player entityReturned = service.removeOneCreditFromPlayer(entity, game);
-
-        Assertions.assertNotNull(entityReturned, "failure - expected not null");
-        Assertions.assertEquals(PLAYER_ID_EXISTENT.intValue(), entityReturned.getId(), "failure - expected id attribute match");
-
-        verify(playerGameService, times(1)).removeCreditsFromPlayer(playerGame, 1);
-        verifyNoMoreInteractions(playerGameService);
-        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
-        verifyNoMoreInteractions(repository);
-    }
-
-    @Test
-    public void removeOneCreditFromPlayer_WhenThePlayerDoesntHaveSpecificCreditsOfTheGame_ReturnPlayerWithOneGenericCreditLess() {
-        Optional<Player> entity = getEntityStubData();
-
-        Game game = new Game();
-        game.setId(GAME_ID_EXISTENT);
-
-        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(entity);
-        when(repository.save(entity.get())).thenReturn(entity.get());
-
-        Player entityReturned = service.removeOneCreditFromPlayer(entity.get(), game);
-
-        Assertions.assertNotNull(entityReturned, "failure - expected not null");
-        Assertions.assertEquals(PLAYER_ID_EXISTENT.intValue(), entityReturned.getId(), "failure - expected id attribute match");
-
-        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
-        verify(repository, times(1)).save(entity.get());
-        verifyNoMoreInteractions(repository);
-    }
-    /* removeOneCreditFromPlayer - end */
-
-    /* playerHasCredits - begin */
-    @Test
-    public void playerHasCredits_WhenPlayerHasGenericCredits_ReturnTrue() {
-        int id = PLAYER_ID_EXISTENT;
-
-        Player player = new Player();
-        player.setId(id);
-        player.setCredit(30);
-
-        Phase phase = new Phase();
-
-        when(repository.findById(id)).thenReturn(Optional.of(player));
-
-        Assertions.assertTrue(service.playerHasCredits(player.getId(), phase));
-    }
-
-    @Test
-    public void playerHasCredits_WhenPlayerHasSpecificCredits_ReturnTrue() {
-        Player entity = getPlayerWithSpecificCreditsStubData();
-        entity.setCredit(0); // Assuring that the player has no generic credits.
-
-        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(entity));
-
-        Assertions.assertTrue(service.playerHasCredits(entity.getId(), getPhaseStubData()));
-
-        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
-        verifyNoMoreInteractions(repository);
-    }
-
-    @Test
-    public void playerHasCredits_WhenPlayerHasGenericAndSpecificCredits_ReturnTrue() {
-        Player entity = getPlayerWithSpecificCreditsStubData();
-        entity.setCredit(30); // Assuring that the player has generic credits.
-
-        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(entity));
-
-        Assertions.assertTrue(service.playerHasCredits(entity.getId(), getPhaseStubData()));
-
-        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
-        verifyNoMoreInteractions(repository);
-    }
-
-    @Test
-    public void playerHasCredits_WhenPlayerHasNotCredits_ReturnFalse() {
-        Optional<Player> entity = getEntityStubData();
-        entity.get().setCredit(0); // Assuring that the player has no generic credits.
-
-        when(repository.findById(PLAYER_ID_EXISTENT)).thenReturn(entity);
-
-        Assertions.assertFalse(service.playerHasCredits(entity.get().getId(), getPhaseStubData()));
-
-        verify(repository, times(1)).findById(PLAYER_ID_EXISTENT);
-        verifyNoMoreInteractions(repository);
-    }
-    /* playerHasCredits - end */
-
     /* isEmailConfirmed - begin */
     @Test
     public void isEmailConfirmed_WhenEmailIsConfirmed_ReturnTrue() {
@@ -479,125 +321,6 @@ public class PlayerServiceImplTest {
     }
     /* isEmailConfirmed - end */
 
-    /* validateCreatePlayer - begin */
-    @Test
-    public void validateCreatePlayer_WhenNoDataIsMissing_ReturnMsgEmpty() {
-        Player player = new Player();
-        player.setName("Name Completed");
-        player.setEmail("email@test.com");
-        player.setPassword("password123");
-
-        Assertions.assertEquals("", service.validateCreatePlayer(player), "failure - expected msg returned equals");
-    }
-
-    @Test
-    public void validateCreatePlayer_WhenFieldNameIsMissing_ReturnMsgNameMissing() {
-        Player player = new Player();
-        player.setName(null);
-        player.setEmail("email@test.com");
-        player.setPassword("password123");
-
-        Assertions.assertEquals("<br />O nome precisa ser informado.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
-
-        player.setName("");
-        player.setEmail("email@test.com");
-        player.setPassword("password123");
-
-        Assertions.assertEquals("<br />O nome precisa ser informado.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
-    }
-
-    @Test
-    public void validateCreatePlayer_WhenFieldEmailIsMissing_ReturnMsgEmailMissing() {
-        Player player = new Player();
-        player.setName("Name Completed");
-        player.setEmail(null);
-        player.setPassword("password123");
-
-        Assertions.assertEquals("<br />O e-mail precisa ser informado.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
-
-        player.setName("Name Completed");
-        player.setEmail("");
-        player.setPassword("password123");
-
-        Assertions.assertEquals("<br />O e-mail precisa ser informado.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
-    }
-
-    @Test
-    public void validateCreatePlayer_WhenFieldEmailIsInvalid_ReturnMsgEmailInvalid() {
-        Player player = new Player();
-        player.setName("Name Completed");
-        player.setEmail("invalid_email");
-        player.setPassword("password123");
-
-        Assertions.assertEquals("<br />O e-mail informado não é válido.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
-    }
-
-    @Test
-    public void validateCreatePlayer_WhenFieldPasswordIsMissing_ReturnMsgPasswordMissing() {
-        Player player = new Player();
-        player.setName("Name Completed");
-        player.setEmail("email@test.com");
-        player.setPassword(null);
-
-        Assertions.assertEquals("<br />A senha precisa ser informada.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
-
-        player.setName("Name Completed");
-        player.setEmail("email@test.com");
-        player.setPassword("");
-
-        Assertions.assertEquals("<br />A senha precisa ser informada.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
-    }
-
-    @Test
-    public void validateCreatePlayer_WhenFieldPasswordIsInvalid_ReturnMsgPasswordInvalid() {
-        Player player = new Player();
-        player.setName("Name Completed");
-        player.setEmail("email@test.com");
-        player.setPassword("12345");
-
-        Assertions.assertEquals("<br />A senha precisa possuir entre 6 e 20 caracteres.",
-                service.validateCreatePlayer(player), "failure - expected msg returned equals");
-
-        player.setName("Name Completed");
-        player.setEmail("email@test.com");
-        player.setPassword("123456");
-
-        Assertions.assertEquals("<br />A senha precisa possuir ao menos 1 número e ao menos 1 letra.",
-                service.validateCreatePlayer(player), "failure - expected msg returned equals");
-    }
-
-    @Test
-    public void validateCreatePlayer_WhenMoreThanOneFielsIsMissing_ReturnMsgFieldsMissing() {
-        Player player = new Player();
-        player.setName("");
-        player.setEmail("");
-        player.setPassword("");
-
-        String msg = "<br />O nome precisa ser informado.<br />O e-mail precisa ser informado.<br />A senha precisa ser informada.";
-
-        Assertions.assertEquals(msg, service.validateCreatePlayer(player), "failure - expected msg returned equals");
-    }
-    /* validateCreatePlayer - end */
-
-    /* validateUpdateProfile - begin */
-    /*@Test
-    public void validateUpdateProfile_WhenNoDataIsMissing_ReturnMsgEmpty() {
-        Player player = new Player();
-        player.setName("Name Completed");
-        Assertions.assertEquals("failure - expected msg returned equals", "", service.validateUpdateProfile(player));
-    }*/
-
-    /*@Test
-    public void validateUpdateProfile_WhenFieldNameIsMissing_ReturnMsgNameMissing() {
-        Player player = new Player();
-        player.setName(null);
-        Assertions.assertEquals("failure - expected msg returned equals", "O nome precisa ser informado.<br />", service.validateUpdateProfile(player));
-
-        player.setName("");
-        Assertions.assertEquals("failure - expected msg returned equals", "O nome precisa ser informado.<br />", service.validateUpdateProfile(player));
-    }*/
-    /* validateUpdateProfile - end */
-
     /* stubs - begin */
     private Optional<Player> getEntityStubData() {
         List<PlayerGame> playerGameList = new ArrayList<>();
@@ -624,37 +347,6 @@ public class PlayerServiceImplTest {
         list.add(entity2);
 
         return list;
-    }
-
-    private Player getPlayerWithSpecificCreditsStubData() {
-        Game game = new Game();
-        game.setId(GAME_ID_EXISTENT);
-
-        List<PlayerGame> playerGameList = new ArrayList<>();
-
-        PlayerGame playerGame = new PlayerGame();
-        playerGame.setCredit(20);
-        playerGame.setGame(game);
-
-        playerGameList.add(playerGame);
-
-        Player player = new Player();
-        player.setId(PLAYER_ID_EXISTENT);
-        player.setCredit(0); // With no generic credits.
-        player.setPlayerGameList(playerGameList); // With specific credits.
-
-        return player;
-    }
-
-    private Phase getPhaseStubData() {
-        Phase phase = new Phase();
-        Map map = new Map();
-        Game game = new Game();
-        game.setId(GAME_ID_EXISTENT);
-        map.setGame(game);
-        phase.setMap(map);
-
-        return phase;
     }
     /* stubs - end */
 }
