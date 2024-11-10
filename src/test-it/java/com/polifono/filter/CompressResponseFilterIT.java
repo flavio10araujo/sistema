@@ -83,7 +83,7 @@ public class CompressResponseFilterIT {
             "test.css",
             "/static/test.html",
             "/vendors/test.html",
-            "/diploma/code" })
+            "/diplomas/code" })
     public void givenRequestToContentThatShouldNotBeCompressed_WhenDoFilter_ThenDoNotCompressResponse(String uri) throws IOException, ServletException {
         when(request.getRequestURI()).thenReturn(uri);
         filter.doFilter(request, response, filterChain);

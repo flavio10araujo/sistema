@@ -25,9 +25,7 @@ import com.polifono.util.UrlReaderUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class LoginController {
@@ -39,7 +37,6 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login(final Model model, @RequestParam Optional<String> error) {
-        log.debug("Getting login page, error={}", error);
         prepareModel(model, error);
         return URL_INDEX;
     }
@@ -55,7 +52,6 @@ public class LoginController {
             PlayerFacebook playerFacebook = new PlayerFacebook(resp);
 
             if (playerFacebook.getId() == null) {
-                log.warn("loginFb - playerFacebook is null");
                 return URL_INDEX;
             }
 
