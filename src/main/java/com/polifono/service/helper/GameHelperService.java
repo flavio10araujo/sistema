@@ -1,9 +1,9 @@
 package com.polifono.service.helper;
 
-import static com.polifono.common.TemplateConstants.URL_BUY_CREDITS;
-import static com.polifono.common.TemplateConstants.URL_GAMES_END_OF_GAME;
-import static com.polifono.common.TemplateConstants.URL_GAMES_END_OF_LEVEL;
-import static com.polifono.common.TemplateConstants.URL_GAMES_RESULT_TEST;
+import static com.polifono.common.constant.TemplateConstants.URL_BUY_CREDITS;
+import static com.polifono.common.constant.TemplateConstants.URL_GAMES_END_OF_GAME;
+import static com.polifono.common.constant.TemplateConstants.URL_GAMES_END_OF_LEVEL;
+import static com.polifono.common.constant.TemplateConstants.URL_GAMES_RESULT_TEST;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +16,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.polifono.domain.Content;
-import com.polifono.domain.Diploma;
-import com.polifono.domain.Game;
-import com.polifono.domain.Level;
-import com.polifono.domain.Map;
-import com.polifono.domain.Phase;
-import com.polifono.domain.Player;
-import com.polifono.domain.PlayerPhase;
-import com.polifono.domain.Question;
+import com.polifono.common.util.ContentUtil;
+import com.polifono.model.entity.Content;
+import com.polifono.model.entity.Diploma;
+import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Level;
+import com.polifono.model.entity.Map;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.PlayerPhase;
+import com.polifono.model.entity.Question;
 import com.polifono.service.IContentService;
 import com.polifono.service.IDiplomaService;
 import com.polifono.service.IGameService;
@@ -36,7 +37,6 @@ import com.polifono.service.IQuestionService;
 import com.polifono.service.impl.SecurityService;
 import com.polifono.service.impl.player.PlayerCreditService;
 import com.polifono.service.impl.player.PlayerService;
-import com.polifono.util.ContentUtil;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

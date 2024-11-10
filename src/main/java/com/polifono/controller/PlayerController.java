@@ -1,7 +1,7 @@
 package com.polifono.controller;
 
-import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
-import static com.polifono.common.TemplateConstants.URL_INDEX;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.constant.TemplateConstants.URL_INDEX;
 
 import java.util.Optional;
 
@@ -10,12 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.polifono.domain.Player;
+import com.polifono.common.util.EmailUtil;
+import com.polifono.common.util.PlayerUtil;
+import com.polifono.model.entity.Player;
 import com.polifono.service.impl.SendEmailService;
 import com.polifono.service.impl.player.PlayerManagementService;
 import com.polifono.service.impl.player.PlayerService;
-import com.polifono.util.EmailUtil;
-import com.polifono.util.PlayerUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

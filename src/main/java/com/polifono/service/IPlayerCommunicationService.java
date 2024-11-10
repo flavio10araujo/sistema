@@ -1,6 +1,6 @@
 package com.polifono.service;
 
-import com.polifono.domain.PlayerCommunication;
+import com.polifono.model.entity.PlayerCommunication;
 
 public interface IPlayerCommunicationService {
 

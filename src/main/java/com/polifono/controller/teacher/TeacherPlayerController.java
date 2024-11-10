@@ -1,7 +1,7 @@
 package com.polifono.controller.teacher;
 
-import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
-import static com.polifono.common.TemplateConstants.URL_TEACHER_PLAYER_INDEX;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.constant.TemplateConstants.URL_TEACHER_PLAYER_INDEX;
 
 import java.util.Optional;
 
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.polifono.domain.Player;
-import com.polifono.domain.bean.CurrentUser;
+import com.polifono.model.CurrentUser;
+import com.polifono.model.entity.Player;
 import com.polifono.service.impl.SecurityService;
 import com.polifono.service.impl.player.PlayerManagementService;
 import com.polifono.service.impl.player.PlayerService;

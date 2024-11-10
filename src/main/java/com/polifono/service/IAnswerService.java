@@ -3,7 +3,7 @@ package com.polifono.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.polifono.domain.Answer;
+import com.polifono.model.entity.Answer;
 
 public interface IAnswerService {
 

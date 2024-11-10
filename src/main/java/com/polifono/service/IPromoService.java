@@ -2,7 +2,7 @@ package com.polifono.service;
 
 import java.util.Date;
 
-import com.polifono.domain.Promo;
+import com.polifono.model.entity.Promo;
 
 public interface IPromoService {
 

@@ -4,7 +4,7 @@ import org.apache.commons.mail.MultiPartEmail;
 import org.springframework.stereotype.Component;
 
 import com.polifono.common.properties.EmailProperties;
-import com.polifono.util.HTMLEntitiesUtil;
+import com.polifono.common.util.HTMLEntitiesUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

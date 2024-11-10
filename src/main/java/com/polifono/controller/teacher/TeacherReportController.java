@@ -1,7 +1,7 @@
 package com.polifono.controller.teacher;
 
-import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
-import static com.polifono.common.TemplateConstants.URL_TEACHER_REPORT_INDEX;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.constant.TemplateConstants.URL_TEACHER_REPORT_INDEX;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.polifono.domain.ClassPlayer;
-import com.polifono.domain.bean.CurrentUser;
-import com.polifono.dto.teacher.ReportGeneralDTO;
-import com.polifono.form.teacher.ReportGeneralForm;
+import com.polifono.model.CurrentUser;
+import com.polifono.model.dto.teacher.ReportGeneralDTO;
+import com.polifono.model.entity.ClassPlayer;
+import com.polifono.model.form.teacher.ReportGeneralForm;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
 import com.polifono.service.IGameService;

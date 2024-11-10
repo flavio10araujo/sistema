@@ -5,12 +5,12 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.polifono.common.properties.ConfigsCreditsProperties;
-import com.polifono.domain.Game;
-import com.polifono.domain.Map;
-import com.polifono.domain.Phase;
-import com.polifono.domain.Player;
-import com.polifono.domain.PlayerGame;
-import com.polifono.domain.PlayerPhase;
+import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Map;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.PlayerGame;
+import com.polifono.model.entity.PlayerPhase;
 import com.polifono.service.IPlayerGameService;
 import com.polifono.service.impl.SecurityService;
 

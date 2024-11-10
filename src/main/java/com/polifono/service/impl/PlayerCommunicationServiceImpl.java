@@ -2,7 +2,7 @@ package com.polifono.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.PlayerCommunication;
+import com.polifono.model.entity.PlayerCommunication;
 import com.polifono.repository.IPlayerCommunicationRepository;
 import com.polifono.service.IPlayerCommunicationService;
 

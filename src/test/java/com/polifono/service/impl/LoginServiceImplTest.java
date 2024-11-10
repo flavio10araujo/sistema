@@ -21,8 +21,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.domain.Login;
-import com.polifono.domain.Player;
+import com.polifono.model.entity.Login;
+import com.polifono.model.entity.Player;
 import com.polifono.repository.ILoginRepository;
 
 /**

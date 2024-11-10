@@ -2,7 +2,7 @@ package com.polifono.service;
 
 import java.util.Optional;
 
-import com.polifono.domain.PlayerGame;
+import com.polifono.model.entity.PlayerGame;
 
 public interface IPlayerGameService {
 

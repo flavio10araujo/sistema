@@ -5,10 +5,10 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Answer;
-import com.polifono.domain.Game;
-import com.polifono.domain.Phase;
-import com.polifono.domain.Question;
+import com.polifono.model.entity.Answer;
+import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.entity.Question;
 import com.polifono.repository.IGameRepository;
 import com.polifono.service.IGameService;
 import com.polifono.service.IQuestionService;

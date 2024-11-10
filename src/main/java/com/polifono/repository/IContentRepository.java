@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.polifono.domain.Content;
+import com.polifono.model.entity.Content;
 
 public interface IContentRepository extends JpaRepository<Content, Integer> {
 

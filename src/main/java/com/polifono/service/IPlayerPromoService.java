@@ -1,6 +1,6 @@
 package com.polifono.service;
 
-import com.polifono.domain.PlayerPromo;
+import com.polifono.model.entity.PlayerPromo;
 
 public interface IPlayerPromoService {
 

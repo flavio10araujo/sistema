@@ -1,8 +1,8 @@
 package com.polifono.controller.teacher;
 
-import static com.polifono.common.TemplateConstants.REDIRECT_CLASS_INVITATION;
-import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
-import static com.polifono.common.TemplateConstants.URL_CLASS_INVITATION;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_CLASS_INVITATION;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.constant.TemplateConstants.URL_CLASS_INVITATION;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.polifono.domain.ClassPlayer;
-import com.polifono.domain.bean.CurrentUser;
+import com.polifono.model.CurrentUser;
+import com.polifono.model.entity.ClassPlayer;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.impl.SecurityService;
 

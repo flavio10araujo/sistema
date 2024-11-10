@@ -16,7 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.domain.Player;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.Class;
 import com.polifono.repository.IClassRepository;
 
 /**
@@ -40,11 +41,11 @@ public class ClassServiceImplTest {
     /* save - begin */
     @Test
     public void save_WhenSaveClass_ReturnClassSaved() {
-        Optional<com.polifono.domain.Class> entity = getEntityStubData();
+        Optional<Class> entity = getEntityStubData();
 
         when(repository.save(entity.get())).thenReturn(entity.get());
 
-        com.polifono.domain.Class entityReturned = service.save(entity.get());
+        Class entityReturned = service.save(entity.get());
 
         Assertions.assertNotNull(entityReturned, "failure - expected not null");
         Assertions.assertEquals(entity.get().getId(), entityReturned.getId(), "failure - expected id attribute match");
@@ -61,7 +62,7 @@ public class ClassServiceImplTest {
     /* delete - begin */
     @Test
     public void delete_WhenClassIsExistent_ReturnTrue() {
-        Optional<com.polifono.domain.Class> entity = getEntityStubData();
+        Optional<Class> entity = getEntityStubData();
 
         when(repository.findById(CLASS_ID_EXISTENT)).thenReturn(entity);
 
@@ -86,11 +87,11 @@ public class ClassServiceImplTest {
     /* findOne - begin */
     @Test
     public void findOne_WhenClassIsExistent_ReturnClass() {
-        Optional<com.polifono.domain.Class> entity = getEntityStubData();
+        Optional<Class> entity = getEntityStubData();
 
         when(repository.findById(CLASS_ID_EXISTENT)).thenReturn(entity);
 
-        Optional<com.polifono.domain.Class> entityReturned = service.findById(CLASS_ID_EXISTENT);
+        Optional<Class> entityReturned = service.findById(CLASS_ID_EXISTENT);
         Assertions.assertNotNull(entityReturned, "failure - expected not null");
         Assertions.assertEquals(CLASS_ID_EXISTENT.intValue(), entityReturned.get().getId(), "failure - expected id attribute match");
 
@@ -102,7 +103,7 @@ public class ClassServiceImplTest {
     public void findOne_WhenClassIsInexistent_ReturnNull() {
         when(repository.findById(CLASS_ID_INEXISTENT)).thenReturn(null);
 
-        Optional<com.polifono.domain.Class> entity = service.findById(CLASS_ID_INEXISTENT);
+        Optional<Class> entity = service.findById(CLASS_ID_INEXISTENT);
         Assertions.assertNull(entity, "failure - expected null");
 
         verify(repository, times(1)).findById(CLASS_ID_INEXISTENT);
@@ -113,11 +114,11 @@ public class ClassServiceImplTest {
     /* findAll - begin */
     @Test
     public void findAll_WhenListAllClasses_ReturnList() {
-        List<com.polifono.domain.Class> list = getEntityListStubData();
+        List<Class> list = getEntityListStubData();
 
         when(repository.findAll()).thenReturn(list);
 
-        List<com.polifono.domain.Class> listReturned = service.findAll();
+        List<Class> listReturned = service.findAll();
         Assertions.assertNotNull(listReturned, "failure - expected not null");
         Assertions.assertNotEquals(0, listReturned.size(), "failure - not expected list size 0");
 
@@ -132,8 +133,8 @@ public class ClassServiceImplTest {
         // Default values for creation are:
         // dtInc = new Date();
         // active = true;
-        Optional<com.polifono.domain.Class> entity = getEntityStubData();
-        com.polifono.domain.Class entityReturned = service.prepareClassForCreation(entity.get());
+        Optional<Class> entity = getEntityStubData();
+        Class entityReturned = service.prepareClassForCreation(entity.get());
 
         Assertions.assertNotNull(entityReturned, "failure - expected not null");
         Assertions.assertEquals(entity.get().getId(), entityReturned.getId(), "failure - expected id attribute match");
@@ -148,9 +149,9 @@ public class ClassServiceImplTest {
     /* prepareClassForChangingStatus - begin */
     @Test
     public void prepareClassForChangingStatus_WhenEverythingIsOK_ReturnEntityWithStatusChanged() {
-        Optional<com.polifono.domain.Class> entity = getEntityStubData();
+        Optional<Class> entity = getEntityStubData();
 
-        com.polifono.domain.Class entityChanged = service.prepareClassForChangingStatus(entity.get(), true);
+        Class entityChanged = service.prepareClassForChangingStatus(entity.get(), true);
         Assertions.assertEquals(true, entityChanged.isActive(), "failure - expected attribute status match");
 
         entityChanged = service.prepareClassForChangingStatus(entity.get(), false);
@@ -161,11 +162,11 @@ public class ClassServiceImplTest {
     /* findByTeacherAndStatus - begin */
     @Test
     public void findByTeacherAndStatus_WhenSearchByTeacherAndStatusExistents_ReturnList() {
-        List<com.polifono.domain.Class> list = getEntityListStubData();
+        List<Class> list = getEntityListStubData();
 
         when(repository.findByTeacherAndStatus(TEACHER_ID_EXISTENT, true)).thenReturn(list);
 
-        List<com.polifono.domain.Class> listReturned = service.findByTeacherAndStatus(TEACHER_ID_EXISTENT, true);
+        List<Class> listReturned = service.findByTeacherAndStatus(TEACHER_ID_EXISTENT, true);
         Assertions.assertNotNull(listReturned, "failure - not expected null");
         Assertions.assertNotEquals(0, listReturned.size(), "failure - list size not expected 0");
 
@@ -177,7 +178,7 @@ public class ClassServiceImplTest {
     public void findByTeacherAndStatus_WhenSearchByTeacherAndStatusInexistents_ReturnEmptyList() {
         when(repository.findByTeacherAndStatus(TEACHER_ID_INEXISTENT, false)).thenReturn(new ArrayList<>());
 
-        List<com.polifono.domain.Class> listReturned = service.findByTeacherAndStatus(TEACHER_ID_INEXISTENT, false);
+        List<Class> listReturned = service.findByTeacherAndStatus(TEACHER_ID_INEXISTENT, false);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByTeacherAndStatus(TEACHER_ID_INEXISTENT, false);
@@ -188,7 +189,7 @@ public class ClassServiceImplTest {
     public void findByTeacherAndStatus_WhenSearchByTeacherExistentButStatusInexistent_ReturnEmptyList() {
         when(repository.findByTeacherAndStatus(TEACHER_ID_EXISTENT, false)).thenReturn(new ArrayList<>());
 
-        List<com.polifono.domain.Class> listReturned = service.findByTeacherAndStatus(TEACHER_ID_EXISTENT, false);
+        List<Class> listReturned = service.findByTeacherAndStatus(TEACHER_ID_EXISTENT, false);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByTeacherAndStatus(TEACHER_ID_EXISTENT, false);
@@ -199,7 +200,7 @@ public class ClassServiceImplTest {
     public void findByTeacherAndStatus_WhenSearchStatusExistentButTeacherInexistent_ReturnEmptyList() {
         when(repository.findByTeacherAndStatus(TEACHER_ID_INEXISTENT, true)).thenReturn(new ArrayList<>());
 
-        List<com.polifono.domain.Class> listReturned = service.findByTeacherAndStatus(TEACHER_ID_INEXISTENT, true);
+        List<Class> listReturned = service.findByTeacherAndStatus(TEACHER_ID_INEXISTENT, true);
         Assertions.assertEquals(0, listReturned.size(), "failure - expected empty list");
 
         verify(repository, times(1)).findByTeacherAndStatus(TEACHER_ID_INEXISTENT, true);
@@ -208,11 +209,11 @@ public class ClassServiceImplTest {
     /* findByTeacherAndStatus - end */
 
     /* stubs - begin */
-    private Optional<com.polifono.domain.Class> getEntityStubData() {
+    private Optional<Class> getEntityStubData() {
         Player player = new Player();
         player.setId(123);
 
-        com.polifono.domain.Class clazz = new com.polifono.domain.Class();
+        Class clazz = new Class();
         clazz.setId(CLASS_ID_EXISTENT);
         clazz.setName("Class Name");
         clazz.setDescription("Class Description");
@@ -221,11 +222,11 @@ public class ClassServiceImplTest {
         return Optional.of(clazz);
     }
 
-    private List<com.polifono.domain.Class> getEntityListStubData() {
-        List<com.polifono.domain.Class> list = new ArrayList<>();
+    private List<Class> getEntityListStubData() {
+        List<Class> list = new ArrayList<>();
 
-        com.polifono.domain.Class entity1 = getEntityStubData().get();
-        com.polifono.domain.Class entity2 = getEntityStubData().get();
+        Class entity1 = getEntityStubData().get();
+        Class entity2 = getEntityStubData().get();
 
         list.add(entity1);
         list.add(entity2);

@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.polifono.domain.Map;
-import com.polifono.domain.Phase;
-import com.polifono.domain.Question;
-import com.polifono.domain.bean.Combo;
+import com.polifono.model.Combo;
+import com.polifono.model.entity.Map;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.entity.Question;
 import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IQuestionService;

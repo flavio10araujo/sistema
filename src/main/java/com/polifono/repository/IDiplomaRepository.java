@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.polifono.domain.Diploma;
+import com.polifono.model.entity.Diploma;
 
 public interface IDiplomaRepository extends JpaRepository<Diploma, Integer> {
 

@@ -3,8 +3,8 @@ package com.polifono.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.polifono.domain.ClassPlayer;
-import com.polifono.domain.Player;
+import com.polifono.model.entity.ClassPlayer;
+import com.polifono.model.entity.Player;
 
 public interface IClassPlayerService {
 

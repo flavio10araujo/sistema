@@ -15,11 +15,11 @@ import org.springframework.context.MessageSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Diploma;
-import com.polifono.domain.Game;
-import com.polifono.domain.Level;
-import com.polifono.domain.Phase;
-import com.polifono.domain.Player;
+import com.polifono.model.entity.Diploma;
+import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Level;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.entity.Player;
 import com.polifono.repository.IDiplomaRepository;
 import com.polifono.service.IDiplomaService;
 

@@ -7,11 +7,11 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.polifono.common.properties.ConfigsCreditsProperties;
-import com.polifono.domain.Player;
-import com.polifono.domain.enums.Role;
+import com.polifono.common.util.PasswordUtil;
+import com.polifono.model.entity.Player;
+import com.polifono.model.enums.Role;
 import com.polifono.repository.IPlayerRepository;
 import com.polifono.service.impl.GenerateRandomStringService;
-import com.polifono.util.PasswordUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

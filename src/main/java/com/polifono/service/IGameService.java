@@ -3,8 +3,8 @@ package com.polifono.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.polifono.domain.Game;
-import com.polifono.domain.Phase;
+import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Phase;
 
 public interface IGameService {
 

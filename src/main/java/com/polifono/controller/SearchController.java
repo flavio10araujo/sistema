@@ -1,8 +1,8 @@
 package com.polifono.controller;
 
-import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
-import static com.polifono.common.TemplateConstants.URL_GAMES_INDEX;
-import static com.polifono.common.TemplateConstants.URL_GAMES_RESULT_SEARCH;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.constant.TemplateConstants.URL_GAMES_INDEX;
+import static com.polifono.common.constant.TemplateConstants.URL_GAMES_RESULT_SEARCH;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.HtmlUtils;
 
-import com.polifono.domain.Phase;
-import com.polifono.domain.bean.CurrentUser;
+import com.polifono.model.CurrentUser;
+import com.polifono.model.entity.Phase;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.impl.SecurityService;
 

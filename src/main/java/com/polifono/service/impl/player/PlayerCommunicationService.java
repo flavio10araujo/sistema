@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Player;
+import com.polifono.common.util.DateUtil;
+import com.polifono.model.entity.Player;
 import com.polifono.repository.IPlayerRepository;
-import com.polifono.util.DateUtil;
 
 import lombok.RequiredArgsConstructor;
 

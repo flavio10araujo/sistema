@@ -1,7 +1,7 @@
 package com.polifono.controller;
 
-import static com.polifono.common.TemplateConstants.URL_ERROR_404;
-import static com.polifono.common.TemplateConstants.URL_ERROR_500;
+import static com.polifono.common.constant.TemplateConstants.URL_ERROR_404;
+import static com.polifono.common.constant.TemplateConstants.URL_ERROR_500;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

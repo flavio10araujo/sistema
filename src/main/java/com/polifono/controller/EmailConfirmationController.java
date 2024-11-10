@@ -1,6 +1,6 @@
 package com.polifono.controller;
 
-import static com.polifono.common.TemplateConstants.URL_EMAIL_CONFIRMATION;
+import static com.polifono.common.constant.TemplateConstants.URL_EMAIL_CONFIRMATION;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.polifono.domain.Player;
+import com.polifono.model.entity.Player;
 import com.polifono.service.impl.GenerateRandomStringService;
 import com.polifono.service.impl.SendEmailService;
 import com.polifono.service.impl.player.PlayerService;

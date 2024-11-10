@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.polifono.domain.ClassPlayer;
-import com.polifono.domain.Player;
+import com.polifono.model.entity.ClassPlayer;
+import com.polifono.model.entity.Player;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

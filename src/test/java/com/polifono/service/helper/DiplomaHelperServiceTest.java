@@ -1,7 +1,7 @@
 package com.polifono.service.helper;
 
-import static com.polifono.common.TemplateConstants.URL_DIPLOMA_OPEN_SEARCH;
-import static com.polifono.common.TemplateConstants.URL_DIPLOMA_SEARCH;
+import static com.polifono.common.constant.TemplateConstants.URL_DIPLOMA_OPEN_SEARCH;
+import static com.polifono.common.constant.TemplateConstants.URL_DIPLOMA_SEARCH;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -19,7 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.MessageSource;
 import org.springframework.ui.Model;
 
-import com.polifono.domain.Player;
+import com.polifono.model.entity.Player;
 import com.polifono.service.impl.SecurityService;
 
 @ExtendWith(MockitoExtension.class)

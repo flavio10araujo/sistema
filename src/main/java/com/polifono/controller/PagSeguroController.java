@@ -1,7 +1,7 @@
 package com.polifono.controller;
 
-import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
-import static com.polifono.common.TemplateConstants.URL_BUY_CREDITS;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.constant.TemplateConstants.URL_BUY_CREDITS;
 
 import java.util.List;
 import java.util.Locale;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.polifono.domain.Transaction;
+import com.polifono.model.entity.Transaction;
 import com.polifono.service.ITransactionService;
 import com.polifono.service.impl.SendEmailService;
 import com.polifono.service.impl.player.PlayerCreditService;

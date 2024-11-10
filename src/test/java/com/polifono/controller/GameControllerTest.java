@@ -1,7 +1,7 @@
 package com.polifono.controller;
 
-import static com.polifono.common.TemplateConstants.URL_GAMES_INDEX;
-import static com.polifono.common.TemplateConstants.URL_GAMES_LEVEL;
+import static com.polifono.common.constant.TemplateConstants.URL_GAMES_INDEX;
+import static com.polifono.common.constant.TemplateConstants.URL_GAMES_LEVEL;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -20,10 +20,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.polifono.domain.Game;
-import com.polifono.domain.Level;
-import com.polifono.domain.Player;
-import com.polifono.domain.enums.Role;
+import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Level;
+import com.polifono.model.entity.Player;
+import com.polifono.model.enums.Role;
 import com.polifono.service.helper.GameHelperService;
 
 @ExtendWith(MockitoExtension.class)

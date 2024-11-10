@@ -6,8 +6,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.ClassPlayer;
-import com.polifono.domain.Player;
+import com.polifono.model.entity.ClassPlayer;
+import com.polifono.model.entity.Player;
 import com.polifono.repository.IClassPlayerRepository;
 import com.polifono.service.IClassPlayerService;
 

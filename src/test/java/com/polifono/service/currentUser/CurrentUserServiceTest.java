@@ -6,9 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.domain.Player;
-import com.polifono.domain.bean.CurrentUser;
-import com.polifono.domain.enums.Role;
+import com.polifono.model.CurrentUser;
+import com.polifono.model.entity.Player;
+import com.polifono.model.enums.Role;
 
 /**
  * Unit test methods for the CurrentUserServiceImpl.

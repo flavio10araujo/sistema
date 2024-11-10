@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Player;
-import com.polifono.domain.Transaction;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.Transaction;
 import com.polifono.repository.ITransactionRepository;
 import com.polifono.service.ITransactionService;
 

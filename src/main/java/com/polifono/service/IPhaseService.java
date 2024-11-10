@@ -3,10 +3,10 @@ package com.polifono.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.polifono.domain.Game;
-import com.polifono.domain.Map;
-import com.polifono.domain.Phase;
-import com.polifono.domain.PlayerPhase;
+import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Map;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.entity.PlayerPhase;
 
 public interface IPhaseService {
 

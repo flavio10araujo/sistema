@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Content;
-import com.polifono.domain.Phase;
-import com.polifono.domain.Player;
-import com.polifono.domain.Playervideo;
+import com.polifono.model.entity.Content;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.Playervideo;
 import com.polifono.repository.IPlayervideoRepository;
 import com.polifono.service.IPlayervideoService;
 

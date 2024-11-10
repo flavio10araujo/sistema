@@ -17,8 +17,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.domain.Player;
-import com.polifono.domain.Transaction;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.Transaction;
 import com.polifono.repository.ITransactionRepository;
 
 /**

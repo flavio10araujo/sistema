@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Promo;
+import com.polifono.model.entity.Promo;
 import com.polifono.repository.IPromoRepository;
 import com.polifono.service.IPromoService;
 

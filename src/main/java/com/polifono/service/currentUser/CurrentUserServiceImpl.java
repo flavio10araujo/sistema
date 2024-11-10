@@ -2,8 +2,8 @@ package com.polifono.service.currentUser;
 
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.bean.CurrentUser;
-import com.polifono.domain.enums.Role;
+import com.polifono.model.CurrentUser;
+import com.polifono.model.enums.Role;
 
 import lombok.extern.slf4j.Slf4j;
 

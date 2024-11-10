@@ -17,12 +17,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.domain.Content;
-import com.polifono.domain.Contenttype;
-import com.polifono.domain.Game;
-import com.polifono.domain.Level;
-import com.polifono.domain.Map;
-import com.polifono.domain.Phase;
+import com.polifono.model.entity.Content;
+import com.polifono.model.entity.Contenttype;
+import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Level;
+import com.polifono.model.entity.Map;
+import com.polifono.model.entity.Phase;
 import com.polifono.repository.IContentRepository;
 
 /**

@@ -1,9 +1,9 @@
 package com.polifono.controller.admin.basic;
 
-import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_QUESTION;
-import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_QUESTION_SAVE_PAGE;
-import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_QUESTION_EDIT_PAGE;
-import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_QUESTION_INDEX;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_ADMIN_BASIC_QUESTION;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_ADMIN_BASIC_QUESTION_SAVE_PAGE;
+import static com.polifono.common.constant.TemplateConstants.URL_ADMIN_BASIC_QUESTION_EDIT_PAGE;
+import static com.polifono.common.constant.TemplateConstants.URL_ADMIN_BASIC_QUESTION_INDEX;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.polifono.domain.Content;
-import com.polifono.domain.Question;
-import com.polifono.form.admin.basic.QuestionFilterForm;
+import com.polifono.model.entity.Content;
+import com.polifono.model.entity.Question;
+import com.polifono.model.form.admin.basic.QuestionFilterForm;
 import com.polifono.service.IContentService;
 import com.polifono.service.IGameService;
 import com.polifono.service.ILevelService;

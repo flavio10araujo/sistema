@@ -1,6 +1,6 @@
 package com.polifono.controller;
 
-import static com.polifono.common.TemplateConstants.URL_INDEX;
+import static com.polifono.common.constant.TemplateConstants.URL_INDEX;
 
 import java.util.Optional;
 
@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.polifono.domain.Player;
+import com.polifono.common.util.PasswordUtil;
+import com.polifono.model.entity.Player;
 import com.polifono.service.impl.GenerateRandomStringService;
 import com.polifono.service.impl.SendEmailService;
 import com.polifono.service.impl.player.PlayerManagementService;
 import com.polifono.service.impl.player.PlayerService;
-import com.polifono.util.PasswordUtil;
 
 import lombok.RequiredArgsConstructor;
 

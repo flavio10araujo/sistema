@@ -16,8 +16,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.domain.ClassPlayer;
-import com.polifono.domain.Player;
+import com.polifono.model.entity.ClassPlayer;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.Class;
 import com.polifono.repository.IClassPlayerRepository;
 
 /**
@@ -503,7 +504,7 @@ public class ClassPlayerServiceImplTest {
 
     /* stubs - begin */
     private Optional<ClassPlayer> getEntityStubData() {
-        com.polifono.domain.Class clazz = new com.polifono.domain.Class();
+        Class clazz = new Class();
         clazz.setId(CLASS_ID_EXISTENT);
 
         Player player = new Player();

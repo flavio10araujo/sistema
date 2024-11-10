@@ -13,9 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.domain.Class;
-import com.polifono.domain.ClassPlayer;
-import com.polifono.domain.Player;
+import com.polifono.model.entity.Class;
+import com.polifono.model.entity.ClassPlayer;
+import com.polifono.model.entity.Player;
 
 @ExtendWith(MockitoExtension.class)
 public class SendEmailServiceTest {

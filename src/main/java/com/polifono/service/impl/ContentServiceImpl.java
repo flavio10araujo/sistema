@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Content;
+import com.polifono.model.entity.Content;
 import com.polifono.repository.IContentRepository;
 import com.polifono.service.IContentService;
 

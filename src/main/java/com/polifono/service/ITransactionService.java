@@ -3,8 +3,8 @@ package com.polifono.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.polifono.domain.Player;
-import com.polifono.domain.Transaction;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.Transaction;
 
 public interface ITransactionService {
 

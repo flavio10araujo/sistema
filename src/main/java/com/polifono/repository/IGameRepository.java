@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.polifono.domain.Game;
+import com.polifono.model.entity.Game;
 
 public interface IGameRepository extends JpaRepository<Game, UUID> {
 

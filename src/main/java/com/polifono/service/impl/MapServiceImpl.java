@@ -5,10 +5,10 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Game;
-import com.polifono.domain.Map;
-import com.polifono.domain.Phase;
-import com.polifono.domain.PlayerPhase;
+import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Map;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.entity.PlayerPhase;
 import com.polifono.repository.IMapRepository;
 import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;

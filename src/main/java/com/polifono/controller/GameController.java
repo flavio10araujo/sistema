@@ -1,11 +1,11 @@
 package com.polifono.controller;
 
-import static com.polifono.common.TemplateConstants.REDIRECT_GAMES;
-import static com.polifono.common.TemplateConstants.URL_GAMES_INDEX;
-import static com.polifono.common.TemplateConstants.URL_GAMES_LEVEL;
-import static com.polifono.common.TemplateConstants.URL_GAMES_MAP;
-import static com.polifono.common.TemplateConstants.URL_GAMES_PHASE_CONTENT;
-import static com.polifono.common.TemplateConstants.URL_GAMES_PHASE_TEST;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_GAMES;
+import static com.polifono.common.constant.TemplateConstants.URL_GAMES_INDEX;
+import static com.polifono.common.constant.TemplateConstants.URL_GAMES_LEVEL;
+import static com.polifono.common.constant.TemplateConstants.URL_GAMES_MAP;
+import static com.polifono.common.constant.TemplateConstants.URL_GAMES_PHASE_CONTENT;
+import static com.polifono.common.constant.TemplateConstants.URL_GAMES_PHASE_TEST;
 
 import java.util.List;
 import java.util.Locale;
@@ -18,20 +18,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.polifono.domain.Content;
-import com.polifono.domain.Game;
-import com.polifono.domain.Map;
-import com.polifono.domain.Phase;
-import com.polifono.domain.Question;
+import com.polifono.common.validation.ValidGameNameLink;
+import com.polifono.common.validation.ValidLevelOrder;
+import com.polifono.common.validation.ValidMapOrder;
+import com.polifono.common.validation.ValidPhaseOrder;
+import com.polifono.model.entity.Content;
+import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Map;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.entity.Question;
 import com.polifono.service.IGameService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.helper.GameHelperService;
 import com.polifono.service.impl.SecurityService;
-import com.polifono.validation.ValidGameNameLink;
-import com.polifono.validation.ValidLevelOrder;
-import com.polifono.validation.ValidMapOrder;
-import com.polifono.validation.ValidPhaseOrder;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

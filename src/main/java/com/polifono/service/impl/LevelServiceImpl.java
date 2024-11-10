@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Level;
+import com.polifono.model.entity.Level;
 import com.polifono.repository.ILevelRepository;
 import com.polifono.service.ILevelService;
 

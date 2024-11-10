@@ -18,8 +18,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.domain.Answer;
-import com.polifono.domain.Question;
+import com.polifono.model.entity.Answer;
+import com.polifono.model.entity.Question;
 import com.polifono.repository.IAnswerRepository;
 
 @ExtendWith(MockitoExtension.class)

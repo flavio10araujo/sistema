@@ -1,8 +1,8 @@
 package com.polifono.controller.teacher;
 
-import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
-import static com.polifono.common.TemplateConstants.REDIRECT_TEACHER_CREDIT;
-import static com.polifono.common.TemplateConstants.URL_TEACHER_CREDIT_INDEX;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_TEACHER_CREDIT;
+import static com.polifono.common.constant.TemplateConstants.URL_TEACHER_CREDIT_INDEX;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.polifono.domain.ClassPlayer;
-import com.polifono.domain.Player;
-import com.polifono.domain.PlayerGame;
-import com.polifono.domain.bean.CurrentUser;
-import com.polifono.form.teacher.TransferCreditGroupForm;
+import com.polifono.model.CurrentUser;
+import com.polifono.model.entity.ClassPlayer;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.PlayerGame;
+import com.polifono.model.form.teacher.TransferCreditGroupForm;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
 import com.polifono.service.IGameService;

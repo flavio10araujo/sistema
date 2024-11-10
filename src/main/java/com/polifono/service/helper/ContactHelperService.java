@@ -1,6 +1,6 @@
 package com.polifono.service.helper;
 
-import static com.polifono.common.TemplateConstants.URL_INDEX;
+import static com.polifono.common.constant.TemplateConstants.URL_INDEX;
 
 import java.util.Locale;
 
@@ -8,7 +8,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.polifono.domain.Player;
+import com.polifono.model.entity.Player;
 
 import lombok.RequiredArgsConstructor;
 

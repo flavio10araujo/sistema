@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.domain.Player;
+import com.polifono.model.entity.Player;
 
 @ExtendWith(MockitoExtension.class)
 public class PlayerManagementServiceTest {

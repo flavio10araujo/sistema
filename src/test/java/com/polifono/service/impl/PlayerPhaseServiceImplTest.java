@@ -18,12 +18,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.domain.Game;
-import com.polifono.domain.Phase;
-import com.polifono.domain.Phasestatus;
-import com.polifono.domain.Player;
-import com.polifono.domain.PlayerPhase;
-import com.polifono.form.teacher.ReportGeneralForm;
+import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.entity.Phasestatus;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.PlayerPhase;
+import com.polifono.model.form.teacher.ReportGeneralForm;
 import com.polifono.repository.IPlayerPhaseRepository;
 
 /**

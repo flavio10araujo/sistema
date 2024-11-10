@@ -1,9 +1,9 @@
 package com.polifono.controller.admin.basic;
 
-import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_PHASE;
-import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_PHASE_SAVE_PAGE;
-import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_PHASE_EDIT_PAGE;
-import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_PHASE_INDEX;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_ADMIN_BASIC_PHASE;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_ADMIN_BASIC_PHASE_SAVE_PAGE;
+import static com.polifono.common.constant.TemplateConstants.URL_ADMIN_BASIC_PHASE_EDIT_PAGE;
+import static com.polifono.common.constant.TemplateConstants.URL_ADMIN_BASIC_PHASE_INDEX;
 
 import java.util.Optional;
 
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.polifono.domain.Phase;
-import com.polifono.form.admin.basic.PhaseFilterForm;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.form.admin.basic.PhaseFilterForm;
 import com.polifono.service.IGameService;
 import com.polifono.service.ILevelService;
 import com.polifono.service.IMapService;

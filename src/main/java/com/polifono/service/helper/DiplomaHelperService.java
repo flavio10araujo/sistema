@@ -1,7 +1,7 @@
 package com.polifono.service.helper;
 
-import static com.polifono.common.TemplateConstants.URL_DIPLOMA_OPEN_SEARCH;
-import static com.polifono.common.TemplateConstants.URL_DIPLOMA_SEARCH;
+import static com.polifono.common.constant.TemplateConstants.URL_DIPLOMA_OPEN_SEARCH;
+import static com.polifono.common.constant.TemplateConstants.URL_DIPLOMA_SEARCH;
 
 import java.util.Locale;
 
@@ -9,8 +9,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.polifono.domain.Diploma;
-import com.polifono.domain.Player;
+import com.polifono.model.entity.Diploma;
+import com.polifono.model.entity.Player;
 import com.polifono.service.impl.SecurityService;
 
 import lombok.RequiredArgsConstructor;

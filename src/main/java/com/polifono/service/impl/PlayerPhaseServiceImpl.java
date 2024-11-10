@@ -8,20 +8,20 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Game;
-import com.polifono.domain.Level;
-import com.polifono.domain.Phase;
-import com.polifono.domain.Phasestatus;
-import com.polifono.domain.Player;
-import com.polifono.domain.PlayerPhase;
-import com.polifono.domain.bean.CurrentUser;
-import com.polifono.dto.RankingDTO;
-import com.polifono.form.teacher.ReportGeneralForm;
+import com.polifono.common.util.DateUtil;
+import com.polifono.model.CurrentUser;
+import com.polifono.model.dto.RankingDTO;
+import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Level;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.entity.Phasestatus;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.PlayerPhase;
+import com.polifono.model.form.teacher.ReportGeneralForm;
 import com.polifono.repository.IPlayerPhaseRepository;
 import com.polifono.service.IGameService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
-import com.polifono.util.DateUtil;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

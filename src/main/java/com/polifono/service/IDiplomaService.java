@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-import com.polifono.domain.Diploma;
-import com.polifono.domain.Phase;
-import com.polifono.domain.Player;
+import com.polifono.model.entity.Diploma;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.entity.Player;
 
 import jakarta.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;

@@ -16,11 +16,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.domain.Player;
-import com.polifono.domain.PlayerGame;
-import com.polifono.domain.enums.Role;
+import com.polifono.common.util.PasswordUtil;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.PlayerGame;
+import com.polifono.model.enums.Role;
 import com.polifono.repository.IPlayerRepository;
-import com.polifono.util.PasswordUtil;
 
 /**
  * Unit test methods for the PlayerService.

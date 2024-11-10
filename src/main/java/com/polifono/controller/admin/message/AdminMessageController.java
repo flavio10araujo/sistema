@@ -1,7 +1,7 @@
 package com.polifono.controller.admin.message;
 
-import static com.polifono.common.TemplateConstants.URL_ADMIN_MESSAGE_GROUP_04;
-import static com.polifono.common.TemplateConstants.URL_ADMIN_MESSAGE_GROUP_05;
+import static com.polifono.common.constant.TemplateConstants.URL_ADMIN_MESSAGE_GROUP_04;
+import static com.polifono.common.constant.TemplateConstants.URL_ADMIN_MESSAGE_GROUP_05;
 
 import java.util.Date;
 import java.util.List;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.polifono.domain.Communication;
-import com.polifono.domain.Groupcommunication;
-import com.polifono.domain.Player;
-import com.polifono.domain.PlayerCommunication;
+import com.polifono.model.entity.Communication;
+import com.polifono.model.entity.Groupcommunication;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.PlayerCommunication;
 import com.polifono.service.ICommunicationService;
 import com.polifono.service.IPlayerCommunicationService;
 import com.polifono.service.impl.SendEmailService;

@@ -2,11 +2,11 @@ package com.polifono.service.impl.player;
 
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Player;
-import com.polifono.domain.Playervideo;
-import com.polifono.domain.enums.Rank;
-import com.polifono.util.EmailUtil;
-import com.polifono.util.YouTubeUrlFormatter;
+import com.polifono.common.util.EmailUtil;
+import com.polifono.common.util.YouTubeUrlFormatter;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.Playervideo;
+import com.polifono.model.enums.Rank;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Service
 public class PlayerManagementService {
-    
+
     /**
      * Verify if the player has all the attributes mandatories when we are creating a new player.
      * If everything is OK, return an empty string.

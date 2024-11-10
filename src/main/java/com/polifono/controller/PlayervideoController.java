@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.polifono.domain.Content;
-import com.polifono.domain.Player;
-import com.polifono.domain.Playervideo;
-import com.polifono.dto.PlayervideoDTO;
+import com.polifono.common.util.YouTubeUrlFormatter;
+import com.polifono.model.dto.PlayervideoDTO;
+import com.polifono.model.entity.Content;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.Playervideo;
 import com.polifono.service.IContentService;
 import com.polifono.service.IPlayervideoService;
 import com.polifono.service.impl.player.PlayerService;
-import com.polifono.util.YouTubeUrlFormatter;
 
 import lombok.RequiredArgsConstructor;
 

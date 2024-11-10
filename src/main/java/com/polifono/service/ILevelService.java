@@ -2,7 +2,7 @@ package com.polifono.service;
 
 import java.util.List;
 
-import com.polifono.domain.Level;
+import com.polifono.model.entity.Level;
 
 public interface ILevelService {
 

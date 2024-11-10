@@ -14,7 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.domain.PlayerGame;
+import com.polifono.model.entity.PlayerGame;
 import com.polifono.repository.IPlayerGameRepository;
 
 /**

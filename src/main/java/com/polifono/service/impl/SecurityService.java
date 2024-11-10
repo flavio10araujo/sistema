@@ -11,8 +11,8 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Player;
-import com.polifono.domain.bean.CurrentUser;
+import com.polifono.model.CurrentUser;
+import com.polifono.model.entity.Player;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

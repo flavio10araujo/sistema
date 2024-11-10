@@ -1,6 +1,6 @@
 package com.polifono.service;
 
-import com.polifono.domain.Communication;
+import com.polifono.model.entity.Communication;
 
 public interface ICommunicationService {
 

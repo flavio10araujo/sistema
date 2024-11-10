@@ -1,6 +1,6 @@
 package com.polifono.controller;
 
-import static com.polifono.common.TemplateConstants.URL_DIPLOMA_SEARCH;
+import static com.polifono.common.constant.TemplateConstants.URL_DIPLOMA_SEARCH;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
 
-import com.polifono.domain.Diploma;
+import com.polifono.model.entity.Diploma;
 import com.polifono.service.IDiplomaService;
 import com.polifono.service.helper.DiplomaHelperService;
 

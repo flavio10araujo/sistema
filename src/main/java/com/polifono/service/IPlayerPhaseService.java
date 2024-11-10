@@ -3,12 +3,12 @@ package com.polifono.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.polifono.domain.Game;
-import com.polifono.domain.Phase;
-import com.polifono.domain.Player;
-import com.polifono.domain.PlayerPhase;
-import com.polifono.dto.RankingDTO;
-import com.polifono.form.teacher.ReportGeneralForm;
+import com.polifono.model.dto.RankingDTO;
+import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.PlayerPhase;
+import com.polifono.model.form.teacher.ReportGeneralForm;
 
 public interface IPlayerPhaseService {
 

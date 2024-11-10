@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 
-import com.polifono.domain.bean.CurrentUser;
+import com.polifono.model.CurrentUser;
 import com.polifono.service.impl.LoginServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;

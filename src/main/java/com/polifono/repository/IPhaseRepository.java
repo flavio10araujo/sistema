@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.polifono.domain.Phase;
+import com.polifono.model.entity.Phase;
 
 public interface IPhaseRepository extends JpaRepository<Phase, Integer> {
 

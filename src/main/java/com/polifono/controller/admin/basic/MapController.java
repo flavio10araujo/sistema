@@ -1,9 +1,9 @@
 package com.polifono.controller.admin.basic;
 
-import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_MAP;
-import static com.polifono.common.TemplateConstants.REDIRECT_ADMIN_BASIC_MAP_SAVE_PAGE;
-import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_MAP_EDIT_PAGE;
-import static com.polifono.common.TemplateConstants.URL_ADMIN_BASIC_MAP_INDEX;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_ADMIN_BASIC_MAP;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_ADMIN_BASIC_MAP_SAVE_PAGE;
+import static com.polifono.common.constant.TemplateConstants.URL_ADMIN_BASIC_MAP_EDIT_PAGE;
+import static com.polifono.common.constant.TemplateConstants.URL_ADMIN_BASIC_MAP_INDEX;
 
 import java.util.Optional;
 
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.polifono.domain.Game;
-import com.polifono.domain.Map;
+import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Map;
 import com.polifono.service.IGameService;
 import com.polifono.service.ILevelService;
 import com.polifono.service.IMapService;

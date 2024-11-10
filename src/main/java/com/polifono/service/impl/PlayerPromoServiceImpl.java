@@ -2,7 +2,7 @@ package com.polifono.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.PlayerPromo;
+import com.polifono.model.entity.PlayerPromo;
 import com.polifono.repository.IPlayerPromoRepository;
 import com.polifono.service.IPlayerPromoService;
 

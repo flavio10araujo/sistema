@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.polifono.domain.Map;
+import com.polifono.model.entity.Map;
 
 public interface IMapRepository extends JpaRepository<Map, Integer> {
 

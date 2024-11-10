@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Login;
-import com.polifono.domain.Player;
+import com.polifono.model.entity.Login;
+import com.polifono.model.entity.Player;
 import com.polifono.repository.ILoginRepository;
 import com.polifono.service.ILoginService;
 

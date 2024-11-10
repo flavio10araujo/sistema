@@ -1,7 +1,7 @@
 package com.polifono.controller;
 
-import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
-import static com.polifono.common.TemplateConstants.URL_INDEX;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.constant.TemplateConstants.URL_INDEX;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.polifono.domain.Player;
-import com.polifono.domain.bean.PlayerFacebook;
+import com.polifono.common.util.UrlReaderUtil;
+import com.polifono.model.PlayerFacebook;
+import com.polifono.model.entity.Player;
 import com.polifono.service.impl.GenerateRandomStringService;
 import com.polifono.service.impl.LoginServiceImpl;
 import com.polifono.service.impl.SecurityService;
 import com.polifono.service.impl.player.PlayerService;
-import com.polifono.util.UrlReaderUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

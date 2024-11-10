@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.PlayerGame;
+import com.polifono.model.entity.PlayerGame;
 import com.polifono.repository.IPlayerGameRepository;
 import com.polifono.service.IPlayerGameService;
 

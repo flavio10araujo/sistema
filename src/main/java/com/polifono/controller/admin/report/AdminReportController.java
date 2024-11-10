@@ -1,6 +1,6 @@
 package com.polifono.controller.admin.report;
 
-import static com.polifono.common.TemplateConstants.URL_ADMIN_REPORT_REGISTER;
+import static com.polifono.common.constant.TemplateConstants.URL_ADMIN_REPORT_REGISTER;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.polifono.domain.Player;
-import com.polifono.form.admin.report.RegisterFilterForm;
+import com.polifono.model.entity.Player;
+import com.polifono.model.form.admin.report.RegisterFilterForm;
 import com.polifono.service.impl.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;

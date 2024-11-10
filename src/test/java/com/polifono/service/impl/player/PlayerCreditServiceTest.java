@@ -16,12 +16,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.domain.Game;
-import com.polifono.domain.Map;
-import com.polifono.domain.Phase;
-import com.polifono.domain.Player;
-import com.polifono.domain.PlayerGame;
-import com.polifono.domain.enums.Role;
+import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Map;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.PlayerGame;
+import com.polifono.model.enums.Role;
 import com.polifono.service.IPlayerGameService;
 
 @ExtendWith(MockitoExtension.class)

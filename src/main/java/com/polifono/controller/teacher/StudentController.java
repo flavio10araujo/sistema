@@ -1,9 +1,9 @@
 package com.polifono.controller.teacher;
 
-import static com.polifono.common.TemplateConstants.REDIRECT_HOME;
-import static com.polifono.common.TemplateConstants.REDIRECT_TEACHER_STUDENT;
-import static com.polifono.common.TemplateConstants.REDIRECT_TEACHER_STUDENT_SAVE_PAGE;
-import static com.polifono.common.TemplateConstants.URL_TEACHER_STUDENT_INDEX;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_TEACHER_STUDENT;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_TEACHER_STUDENT_SAVE_PAGE;
+import static com.polifono.common.constant.TemplateConstants.URL_TEACHER_STUDENT_INDEX;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.polifono.domain.ClassPlayer;
-import com.polifono.domain.bean.CurrentUser;
+import com.polifono.model.CurrentUser;
+import com.polifono.model.entity.Class;
+import com.polifono.model.entity.ClassPlayer;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
 import com.polifono.service.impl.SecurityService;
@@ -53,21 +54,21 @@ public class StudentController {
         model.addAttribute("classPlayer", new ClassPlayer());
 
         if (session.getAttribute("clazzId") != null) {
-            com.polifono.domain.Class filterClass = new com.polifono.domain.Class();
+            Class filterClass = new Class();
             filterClass.setId((int) session.getAttribute("clazzId"));
             model.addAttribute("classFilter", filterClass);
 
             model.addAttribute("classPlayers",
                     classPlayerService.findAllByClassIdAndTeacherId((int) session.getAttribute("clazzId"), currentUser.get().getUser().getId()));
         } else {
-            model.addAttribute("classFilter", new com.polifono.domain.Class());
+            model.addAttribute("classFilter", new Class());
         }
 
         return URL_TEACHER_STUDENT_INDEX;
     }
 
     @PostMapping("/student")
-    public String setFilter(HttpSession session, @ModelAttribute("clazz") com.polifono.domain.Class clazz) {
+    public String setFilter(HttpSession session, @ModelAttribute("clazz") Class clazz) {
         if (clazz.getId() > 0) {
             session.setAttribute("clazzId", clazz.getId());
         } else {
@@ -93,7 +94,7 @@ public class StudentController {
             }
 
             // The teacher only can add players in his own classes.
-            Optional<com.polifono.domain.Class> currentClass = classService.findById(classPlayer.getClazz().getId());
+            Optional<Class> currentClass = classService.findById(classPlayer.getClazz().getId());
 
             // If the class doesn't exist.
             if (currentClass.isEmpty()) {

@@ -2,7 +2,7 @@ package com.polifono.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.polifono.domain.Communication;
+import com.polifono.model.entity.Communication;
 import com.polifono.repository.ICommunicationRepository;
 import com.polifono.service.ICommunicationService;
 

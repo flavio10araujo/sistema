@@ -1,6 +1,6 @@
 package com.polifono.controller;
 
-import static com.polifono.common.TemplateConstants.URL_PRIVACY;
+import static com.polifono.common.constant.TemplateConstants.URL_PRIVACY;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

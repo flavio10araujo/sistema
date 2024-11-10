@@ -5,7 +5,7 @@ import java.util.Locale;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import com.polifono.util.EmailUtil;
+import com.polifono.common.util.EmailUtil;
 
 import lombok.RequiredArgsConstructor;
 

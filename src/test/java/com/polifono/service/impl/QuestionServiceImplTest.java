@@ -17,8 +17,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.domain.Content;
-import com.polifono.domain.Question;
+import com.polifono.model.entity.Content;
+import com.polifono.model.entity.Question;
 import com.polifono.repository.IQuestionRepository;
 
 /**
