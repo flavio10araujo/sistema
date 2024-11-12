@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.polifono.model.entity.Player;
-import com.polifono.service.impl.GenerateRandomStringService;
-import com.polifono.service.impl.SendEmailService;
 import com.polifono.service.impl.player.PlayerService;
 
 import lombok.NonNull;
@@ -25,15 +23,15 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class EmailConfirmationController {
 
+    private static final int CODE_REGISTER_SUCCESS = 1;
+    private static final int CODE_REGISTER_ERROR = 2;
+
     private final PlayerService playerService;
-    private final SendEmailService emailSendUtil;
     private final MessageSource messagesResource;
-    private final GenerateRandomStringService generateRandomStringService;
 
     @GetMapping("/emailconfirmation")
     public String emailConfirmation(final Model model) {
-        model.addAttribute("playerResend", new Player());
-        model.addAttribute("player", new Player());
+        prepareModelForEmailConfirmation(model, new Player(), new Player(), 0, null);
         return URL_EMAIL_CONFIRMATION;
     }
 
@@ -44,42 +42,26 @@ public class EmailConfirmationController {
             Locale locale) {
 
         Optional<Player> playerOldOpt = playerService.findByEmail(player.getEmail());
-
         if (playerOldOpt.isEmpty()) {
-            model.addAttribute("playerResend", new Player());
-            model.addAttribute("player", player);
-            model.addAttribute("codRegister", 2);
-            model.addAttribute("msgRegister",
-                    "<br />" + messagesResource.getMessage("msg.emailConfirmation.notFound", new Object[] { player.getEmail() }, locale));
-            return URL_EMAIL_CONFIRMATION;
+            return prepareErrorModel(model, new Player(), player, "msg.emailConfirmation.notFound", locale);
         }
 
+        Player playerOld = playerOldOpt.get();
+
         // If the player was already confirmed.
-        if (playerOldOpt.get().isIndEmailConfirmed()) {
-            model.addAttribute("playerResend", new Player());
-            model.addAttribute("player", player);
-            model.addAttribute("codRegister", 2);
-            model.addAttribute("msgRegister", "<br />" + messagesResource.getMessage("msg.emailConfirmation.alreadyConfirmed", null, locale));
-            return URL_EMAIL_CONFIRMATION;
+        if (playerOld.isIndEmailConfirmed()) {
+            return prepareErrorModel(model, new Player(), player, "msg.emailConfirmation.alreadyConfirmed", locale);
         }
 
         // If the code informed is not correct.
-        if (!player.getEmailConfirmed().equals(playerOldOpt.get().getEmailConfirmed())) {
-            model.addAttribute("playerResend", new Player());
-            model.addAttribute("player", player);
-            model.addAttribute("codRegister", 2);
-            model.addAttribute("msgRegister", "<br />" + messagesResource.getMessage("msg.emailConfirmation.incorrectCode", null, locale));
-            return URL_EMAIL_CONFIRMATION;
+        if (!player.getEmailConfirmed().equals(playerOld.getEmailConfirmed())) {
+            return prepareErrorModel(model, new Player(), player, "msg.emailConfirmation.incorrectCode", locale);
         }
 
-        playerOldOpt.get().setIndEmailConfirmed(true);
-        playerService.save(playerOldOpt.get());
+        playerService.confirmEmail(playerOld);
 
-        model.addAttribute("playerResend", new Player());
-        model.addAttribute("player", new Player());
-        model.addAttribute("codRegister", 1);
-        model.addAttribute("msgRegister",
-                "<br />" + messagesResource.getMessage("msg.emailConfirmation.success", new Object[] { player.getEmail() }, locale));
+        prepareModelForEmailConfirmation(model, new Player(), new Player(), CODE_REGISTER_SUCCESS,
+                messagesResource.getMessage("msg.emailConfirmation.success", new Object[] { player.getEmail() }, locale));
         return URL_EMAIL_CONFIRMATION;
     }
 
@@ -93,33 +75,39 @@ public class EmailConfirmationController {
 
         // If there is no player with this email.
         if (playerOldOpt.isEmpty()) {
-            model.addAttribute("playerResend", player);
-            model.addAttribute("player", new Player());
-            model.addAttribute("codRegister", 2);
-            model.addAttribute("msgRegister",
-                    "<br />" + messagesResource.getMessage("msg.emailConfirmation.notFound", new Object[] { player.getEmail() }, locale));
-            return URL_EMAIL_CONFIRMATION;
+            return prepareErrorModel(model, player, new Player(), "msg.emailConfirmation.notFound", locale);
         }
+
+        Player playerOld = playerOldOpt.get();
 
         // If the player was already confirmed.
-        if (playerOldOpt.get().isIndEmailConfirmed()) {
-            model.addAttribute("playerResend", player);
-            model.addAttribute("player", new Player());
-            model.addAttribute("codRegister", 2);
-            model.addAttribute("msgRegister", "<br />" + messagesResource.getMessage("msg.emailConfirmation.alreadyConfirmed", null, locale));
-            return URL_EMAIL_CONFIRMATION;
+        if (playerOld.isIndEmailConfirmed()) {
+            return prepareErrorModel(model, player, new Player(), "msg.emailConfirmation.alreadyConfirmed", locale);
         }
 
-        playerOldOpt.get().setEmailConfirmed(generateRandomStringService.generate(10));
-        playerService.save(playerOldOpt.get());
-        emailSendUtil.sendEmailConfirmRegister(playerOldOpt.get());
+        playerService.resendEmailConfirmation(playerOld);
 
-        model.addAttribute("playerResend", new Player());
-        model.addAttribute("player", new Player());
-        model.addAttribute("codRegister", 1);
-        model.addAttribute("msgRegister",
-                "<br />" + messagesResource.getMessage("msg.emailConfirmation.resend", new Object[] { player.getEmail() }, locale));
+        prepareModelForEmailConfirmation(model, new Player(), new Player(), CODE_REGISTER_SUCCESS,
+                messagesResource.getMessage("msg.emailConfirmation.resend", new Object[] { player.getEmail() }, locale));
+        return URL_EMAIL_CONFIRMATION;
+    }
 
+    private void prepareModelForEmailConfirmation(Model model, Player playerResend, Player player, int codRegister, String msgRegister) {
+        model.addAttribute("playerResend", playerResend);
+        model.addAttribute("player", player);
+
+        if (codRegister > 0) {
+            model.addAttribute("codRegister", codRegister);
+        }
+
+        if (msgRegister != null) {
+            model.addAttribute("msgRegister", "<br />" + msgRegister);
+        }
+    }
+
+    private String prepareErrorModel(Model model, Player playerResend, Player player, String messageKey, Locale locale) {
+        prepareModelForEmailConfirmation(model, playerResend, player, CODE_REGISTER_ERROR,
+                messagesResource.getMessage(messageKey, new Object[] { player.getEmail() }, locale));
         return URL_EMAIL_CONFIRMATION;
     }
 }

@@ -12,6 +12,7 @@ import com.polifono.model.entity.Player;
 import com.polifono.model.enums.Role;
 import com.polifono.repository.IPlayerRepository;
 import com.polifono.service.impl.GenerateRandomStringService;
+import com.polifono.service.impl.SendEmailService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ public class PlayerService {
     private final ConfigsCreditsProperties configsCreditsProperties;
     private final GenerateRandomStringService generateRandomStringService;
     private final IPlayerRepository repository;
+    private final SendEmailService emailSendUtil;
 
     public Player save(Player player) {
         return repository.save(player);
@@ -98,5 +100,16 @@ public class PlayerService {
         player.setRole(Role.USER);
         player.setEmailConfirmed(generateRandomStringService.generate(10)); // This field is sent to the player's email to confirm if the email is real.
         return player;
+    }
+
+    public void confirmEmail(Player player) {
+        player.setIndEmailConfirmed(true);
+        save(player);
+    }
+
+    public void resendEmailConfirmation(Player player) {
+        player.setEmailConfirmed(generateRandomStringService.generate(10));
+        save(player);
+        emailSendUtil.sendEmailConfirmRegister(player);
     }
 }
