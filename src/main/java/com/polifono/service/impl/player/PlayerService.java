@@ -51,10 +51,6 @@ public class PlayerService {
         return repository.findByLogin(login);
     }
 
-    public Optional<Player> findByIdFacebook(Long id) {
-        return repository.findByIdFacebook(id);
-    }
-
     public List<Player> findByDateIncRange(Date dateBegin, Date dateEnd) {
         return repository.findByDateIncRange(dateBegin, dateEnd);
     }
