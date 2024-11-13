@@ -22,10 +22,11 @@ public class Application {
     @Bean
     public WebServerFactoryCustomizer<ConfigurableWebServerFactory> webServerCustomizer() {
         return factory -> {
+            ErrorPage error400Page = new ErrorPage(HttpStatus.BAD_REQUEST, "/error404");
             ErrorPage error403Page = new ErrorPage(HttpStatus.FORBIDDEN, "/error404");
             ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/error404");
             ErrorPage error500Page = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/error500");
-            factory.addErrorPages(error403Page, error404Page, error500Page);
+            factory.addErrorPages(error400Page, error403Page, error404Page, error500Page);
         };
     }
 }
