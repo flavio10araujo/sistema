@@ -24,7 +24,7 @@ import com.polifono.model.entity.Game;
 import com.polifono.model.entity.Level;
 import com.polifono.model.entity.Player;
 import com.polifono.model.enums.Role;
-import com.polifono.service.helper.GameHelperService;
+import com.polifono.service.handler.GameHandler;
 
 @ExtendWith(MockitoExtension.class)
 public class GameControllerTest {
@@ -36,7 +36,7 @@ public class GameControllerTest {
     private GameController gameController;
 
     @Mock
-    private GameHelperService gameHelperService;
+    private GameHandler gameHelperService;
 
     /* listGames - BEGIN */
     @Test

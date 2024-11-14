@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.polifono.service.helper.ContactHelperService;
+import com.polifono.service.handler.ContactHandler;
 import com.polifono.service.impl.ContactService;
 import com.polifono.service.impl.RecaptchaService;
 import com.polifono.service.impl.SendEmailService;
@@ -22,7 +22,7 @@ public class ContactController {
     private final RecaptchaService captchaService;
     private final SendEmailService sendEmailService;
     private final ContactService contactService;
-    private final ContactHelperService contactHelperService;
+    private final ContactHandler contactHandler;
 
     @PostMapping("/contact")
     public String contactSubmit(final Model model,
@@ -34,15 +34,15 @@ public class ContactController {
 
         String captchaVerifyMessage = captchaService.verifyRecaptcha(request.getRemoteAddr(), recaptchaResponse);
         if (captchaVerifyMessage != null && !captchaVerifyMessage.isEmpty()) {
-            return contactHelperService.handleCaptchaError(model, locale);
+            return contactHandler.handleCaptchaError(model, locale);
         }
 
         String validationMessage = contactService.validateContact(email, message, locale);
         if (!validationMessage.isEmpty()) {
-            return contactHelperService.handleError(model, validationMessage);
+            return contactHandler.handleError(model, validationMessage);
         }
 
         sendEmailService.sendEmailContact(email, message);
-        return contactHelperService.handleSuccess(model);
+        return contactHandler.handleSuccess(model);
     }
 }

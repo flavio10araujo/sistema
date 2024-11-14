@@ -30,7 +30,7 @@ import com.polifono.model.entity.Question;
 import com.polifono.service.IGameService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
-import com.polifono.service.helper.GameHelperService;
+import com.polifono.service.handler.GameHandler;
 import com.polifono.service.impl.SecurityService;
 
 import jakarta.servlet.http.HttpSession;
@@ -42,13 +42,13 @@ public class GameController {
 
     private final SecurityService securityService;
     private final IGameService gameService;
-    private final GameHelperService gameHelperService;
+    private final GameHandler gameHandler;
     private final IPhaseService phaseService;
     private final IPlayerPhaseService playerPhaseService;
 
     @GetMapping("/games")
     public String listGames(final Model model) {
-        gameHelperService.addRankingToModel(model);
+        gameHandler.addRankingToModel(model);
         return URL_GAMES_INDEX;
     }
 
@@ -58,9 +58,9 @@ public class GameController {
             final Model model,
             @PathVariable("gameNameLink") @ValidGameNameLink String gameNameLink
     ) {
-        Game game = gameHelperService.getGameByNamelinkOrRedirectHome(gameNameLink);
+        Game game = gameHandler.getGameByNamelinkOrRedirectHome(gameNameLink);
 
-        gameHelperService.addGameAndLevelsToModel(model, game);
+        gameHandler.addGameAndLevelsToModel(model, game);
         return URL_GAMES_LEVEL;
     }
 
@@ -72,10 +72,10 @@ public class GameController {
             @PathVariable("levelOrder") @ValidLevelOrder int levelOrder,
             @PathVariable("mapOrder") @ValidMapOrder int mapOrder
     ) {
-        Game game = gameHelperService.getGameByNamelinkOrRedirectHome(gameNameLink);
-        Map map = gameHelperService.getMapByGameLevelAndOrderOrRedirectHome(game, levelOrder, mapOrder);
+        Game game = gameHandler.getGameByNamelinkOrRedirectHome(gameNameLink);
+        Map map = gameHandler.getMapByGameLevelAndOrderOrRedirectHome(game, levelOrder, mapOrder);
 
-        gameHelperService.addGameMapAndPhasesToModel(model, game, map);
+        gameHandler.addGameMapAndPhasesToModel(model, game, map);
         return URL_GAMES_MAP;
     }
 
@@ -94,18 +94,18 @@ public class GameController {
             @PathVariable("phaseOrder") @ValidPhaseOrder int phaseOrder,
             Locale locale
     ) {
-        Game game = gameHelperService.getGameByNamelinkOrRedirectHome(gameNameLink);
-        Map map = gameHelperService.getMapByGameLevelAndOrderOrRedirectHome(game, levelOrder, mapOrder);
-        Phase phase = gameHelperService.getPhaseByMapAndOrderOrRedirectHome(map, phaseOrder);
-        Content content = gameHelperService.getContentByPhaseOrRedirectHome(phase);
+        Game game = gameHandler.getGameByNamelinkOrRedirectHome(gameNameLink);
+        Map map = gameHandler.getMapByGameLevelAndOrderOrRedirectHome(game, levelOrder, mapOrder);
+        Phase phase = gameHandler.getPhaseByMapAndOrderOrRedirectHome(map, phaseOrder);
+        Content content = gameHandler.getContentByPhaseOrRedirectHome(phase);
 
-        gameHelperService.isPlayerAllowedToAccessPhaseOrRedirectHome(phase);
+        gameHandler.isPlayerAllowedToAccessPhaseOrRedirectHome(phase);
 
         if (phaseService.shouldDisplayBuyCreditsPage(game, phase)) {
-            return gameHelperService.handleDisplayBuyCreditsPage(model, locale);
+            return gameHandler.handleDisplayBuyCreditsPage(model, locale);
         }
 
-        gameHelperService.addGameMapPhaseAndContentToModel(model, game, map, phase, content);
+        gameHandler.addGameMapPhaseAndContentToModel(model, game, map, phase, content);
         return URL_GAMES_PHASE_CONTENT;
     }
 
@@ -120,27 +120,27 @@ public class GameController {
             @PathVariable("phaseOrder") @ValidPhaseOrder int phaseOrder,
             Locale locale
     ) {
-        Game game = gameHelperService.getGameByNamelinkOrRedirectHome(gameNameLink);
-        Map map = gameHelperService.getMapByGameLevelAndOrderOrRedirectHome(game, levelOrder, mapOrder);
-        Phase phase = gameHelperService.getPhaseByMapAndOrderOrRedirectHome(map, phaseOrder);
-        Content content = gameHelperService.getQuestionaryContentByPhaseOrRedirectHome(phase);
+        Game game = gameHandler.getGameByNamelinkOrRedirectHome(gameNameLink);
+        Map map = gameHandler.getMapByGameLevelAndOrderOrRedirectHome(game, levelOrder, mapOrder);
+        Phase phase = gameHandler.getPhaseByMapAndOrderOrRedirectHome(map, phaseOrder);
+        Content content = gameHandler.getQuestionaryContentByPhaseOrRedirectHome(phase);
 
-        gameHelperService.isPlayerAllowedToAccessPhaseOrRedirectHome(phase);
+        gameHandler.isPlayerAllowedToAccessPhaseOrRedirectHome(phase);
 
         if (playerPhaseService.isPhaseAlreadyCompletedByPlayer(phase, securityService.getUserId())) {
             return REDIRECT_GAMES + "/" + gameNameLink;
         }
 
         if (phaseService.shouldDisplayBuyCreditsPage(game, phase)) {
-            return gameHelperService.handleDisplayBuyCreditsPage(model, locale);
+            return gameHandler.handleDisplayBuyCreditsPage(model, locale);
         }
 
         playerPhaseService.registerTestAttempt(phase);
 
-        List<Question> questions = gameHelperService.getQuestionsByContentOrRedirectHome(content);
+        List<Question> questions = gameHandler.getQuestionsByContentOrRedirectHome(content);
 
-        gameHelperService.addQuestionsIdToSession(session, questions);
-        gameHelperService.addGameMapPhaseAndQuestionsToModel(model, game, map, phase, questions);
+        gameHandler.addQuestionsIdToSession(session, questions);
+        gameHandler.addGameMapPhaseAndQuestionsToModel(model, game, map, phase, questions);
         return URL_GAMES_PHASE_TEST;
     }
 
@@ -150,14 +150,14 @@ public class GameController {
             final Model model,
             @RequestParam java.util.Map<String, String> playerAnswers // playerAnswers is all the parameters passed, not only the player's answers.
     ) {
-        List<Integer> questionsId = gameHelperService.getQuestionsIdFromSessionOrRedirectHome(session);
+        List<Integer> questionsId = gameHandler.getQuestionsIdFromSessionOrRedirectHome(session);
         int grade = gameService.calculateGrade(questionsId, playerAnswers);
         Phase currentPhase = gameService.getPhaseOfTheTest(questionsId);
 
         if (!phaseService.hasPlayerPassedPhase(grade)) {
-            return gameHelperService.handleFailedPhase(model, currentPhase, grade);
+            return gameHandler.handleFailedPhase(model, currentPhase, grade);
         }
 
-        return gameHelperService.handlePassedPhase(model, currentPhase, grade);
+        return gameHandler.handlePassedPhase(model, currentPhase, grade);
     }
 }

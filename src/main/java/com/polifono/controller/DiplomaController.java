@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.model.entity.Diploma;
 import com.polifono.service.IDiplomaService;
-import com.polifono.service.helper.DiplomaHelperService;
+import com.polifono.service.handler.DiplomaHandler;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +27,11 @@ import net.sf.jasperreports.engine.JRException;
 public class DiplomaController {
 
     private final IDiplomaService diplomaService;
-    private final DiplomaHelperService diplomaHelperService;
+    private final DiplomaHandler diplomaHandler;
 
     @GetMapping("/diplomas")
     public String diplomaSearch(final Model model) {
-        return diplomaHelperService.handleDiplomaSearch(model);
+        return diplomaHandler.handleDiplomaSearch(model);
     }
 
     @Validated
@@ -42,11 +42,11 @@ public class DiplomaController {
 
         Optional<Diploma> diplomaOpt = diplomaService.findByCode(code);
         if (diplomaOpt.isEmpty()) {
-            return diplomaHelperService.handleDiplomaNotFound(model, locale);
+            return diplomaHandler.handleDiplomaNotFound(model, locale);
         }
 
-        diplomaHelperService.addMessageAndDiplomaToModel(model, diplomaOpt.get());
-        return diplomaHelperService.handleDiplomaSearch(model);
+        diplomaHandler.addMessageAndDiplomaToModel(model, diplomaOpt.get());
+        return diplomaHandler.handleDiplomaSearch(model);
     }
 
     @Validated
@@ -57,7 +57,7 @@ public class DiplomaController {
 
         Optional<Diploma> diplomaOpt = diplomaService.findByCode(code);
         if (diplomaOpt.isEmpty()) {
-            return diplomaHelperService.handleDiplomaNotFound(model, locale);
+            return diplomaHandler.handleDiplomaNotFound(model, locale);
         }
 
         diplomaService.generateDiplomaPdf(response, diplomaOpt.get(), locale);

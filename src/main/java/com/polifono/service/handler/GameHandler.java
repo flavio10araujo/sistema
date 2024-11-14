@@ -1,4 +1,4 @@
-package com.polifono.service.helper;
+package com.polifono.service.handler;
 
 import static com.polifono.common.constant.TemplateConstants.URL_BUY_CREDITS;
 import static com.polifono.common.constant.TemplateConstants.URL_GAMES_END_OF_GAME;
@@ -43,7 +43,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class GameHelperService {
+public class GameHandler {
 
     private final MessageSource messagesResource;
     private final SecurityService securityService;

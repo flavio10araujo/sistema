@@ -1,4 +1,4 @@
-package com.polifono.service.helper;
+package com.polifono.service.handler;
 
 import static com.polifono.common.constant.TemplateConstants.URL_INDEX;
 
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class ContactHelperService {
+public class ContactHandler {
 
     private final MessageSource messagesResource;
 

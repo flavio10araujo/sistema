@@ -73,6 +73,7 @@ public class PlayerManagementService {
     /**
      * Verify if the player has all the mandatory attributes when we are updating a player.
      */
+    // TODO - i18n
     public String validateUpdateProfile(Player player) {
         String msg = "";
 
@@ -98,6 +99,7 @@ public class PlayerManagementService {
         return msg;
     }
 
+    // TODO - i18n
     public String validateAddVideo(Playervideo playervideo) {
         String msg = "";
 
@@ -112,6 +114,7 @@ public class PlayerManagementService {
         return msg;
     }
 
+    // TODO - i18n
     private String validatePassword(Player player, String msg) {
         if (player.getPassword() == null || player.getPassword().isEmpty()) {
             msg = msg + "<br />A senha precisa ser informada.";

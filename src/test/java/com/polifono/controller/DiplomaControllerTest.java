@@ -19,7 +19,7 @@ import org.springframework.ui.Model;
 
 import com.polifono.model.entity.Diploma;
 import com.polifono.service.IDiplomaService;
-import com.polifono.service.helper.DiplomaHelperService;
+import com.polifono.service.handler.DiplomaHandler;
 
 import jakarta.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
@@ -37,7 +37,7 @@ public class DiplomaControllerTest {
     private IDiplomaService diplomaService;
 
     @Mock
-    private DiplomaHelperService diplomaHelperService;
+    private DiplomaHandler diplomaHelperService;
 
     /* diplomaSearch - BEGIN */
     @Test

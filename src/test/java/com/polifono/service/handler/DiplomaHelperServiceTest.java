@@ -1,4 +1,4 @@
-package com.polifono.service.helper;
+package com.polifono.service.handler;
 
 import static com.polifono.common.constant.TemplateConstants.URL_DIPLOMA_OPEN_SEARCH;
 import static com.polifono.common.constant.TemplateConstants.URL_DIPLOMA_SEARCH;
@@ -28,7 +28,7 @@ public class DiplomaHelperServiceTest {
     private static final String MSG_THE_INFORMED_CERTIFICATE_DOES_NOT_EXIST = "The Informed Certificate Does Not Exist";
 
     @InjectMocks
-    private DiplomaHelperService diplomaHelperService;
+    private DiplomaHandler diplomaHelperService;
 
     @Mock
     private MessageSource messagesResource;
