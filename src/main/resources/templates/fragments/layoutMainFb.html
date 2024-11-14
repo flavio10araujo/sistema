@@ -135,11 +135,11 @@
 
                             <ul class="nav navbar-nav navbar-right">
 
-                                <li data-toggle="tooltip" th:title="#{msg.toseemygrades}"><a
+                                <li data-toggle="tooltip" th:title="#{msg.toSeeMyGrades}"><a
                                         th:href="@{|/profile/players/${#authentication.principal.user.id}/score|}"><span th:text="#{app.score}"></span>: <span
                                         sec:authentication="principal.user.coin"></span></a></li>
 
-                                <li data-toggle="tooltip" th:title="#{msg.buymorecredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>:
+                                <li data-toggle="tooltip" th:title="#{msg.buyMoreCredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>:
                                     <span sec:authentication="principal.user.totalCredit"></span></a></li>
 
                                 <li>

@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.polifono.model.entity.Transaction;
 import com.polifono.service.ITransactionService;
+import com.polifono.service.impl.transaction.PagSeguroHandler;
 import com.polifono.service.impl.transaction.PagSeguroService;
-import com.polifono.service.impl.transaction.PaymentHandler;
 import com.polifono.service.impl.transaction.TransactionUpdater;
 import com.polifono.service.impl.transaction.TransactionValidator;
 
@@ -36,7 +36,7 @@ public class PagSeguroController {
     private final PagSeguroService pagSeguroService;
     private final TransactionValidator transactionValidator;
     private final TransactionUpdater transactionUpdater;
-    private final PaymentHandler paymentHandler;
+    private final PagSeguroHandler pagSeguroHandler;
 
     @Validated
     @GetMapping("/pagseguroreturn")
@@ -65,8 +65,8 @@ public class PagSeguroController {
         transactionUpdater.updateTransaction(transaction, pagSeguroTransaction);
         transactionService.save(transaction);
 
-        if (paymentHandler.isTransactionPaidOrAvailable(pagSeguroTransaction)) {
-            paymentHandler.handleSuccess(transaction);
+        if (pagSeguroHandler.isTransactionPaidOrAvailable(pagSeguroTransaction)) {
+            pagSeguroHandler.handleSuccess(transaction);
         }
 
         prepareModelForBuyCreditsPage(model, locale);
@@ -91,8 +91,8 @@ public class PagSeguroController {
         Transaction newTransaction = transactionUpdater.createNewTransactionFromExisting(transactionOpt.get(), pagSeguroTransaction);
         transactionService.save(newTransaction);
 
-        if (paymentHandler.isTransactionPaidOrAvailable(pagSeguroTransaction)) {
-            paymentHandler.handleSuccess(newTransaction);
+        if (pagSeguroHandler.isTransactionPaidOrAvailable(pagSeguroTransaction)) {
+            pagSeguroHandler.handleSuccess(newTransaction);
         }
 
         return URL_BUY_CREDITS;

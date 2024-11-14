@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class PaymentHandler {
+public class PagSeguroHandler {
 
     private final ITransactionService transactionService;
     private final PlayerCreditService playerCreditService;
