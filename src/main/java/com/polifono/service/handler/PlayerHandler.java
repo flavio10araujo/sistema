@@ -1,12 +1,18 @@
-package com.polifono.service.impl.player;
+package com.polifono.service.handler;
 
+import java.util.Locale;
+import java.util.Optional;
+
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import com.polifono.common.util.EmailUtil;
+import com.polifono.common.util.PlayerUtil;
 import com.polifono.common.util.YouTubeUrlFormatter;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.Playervideo;
 import com.polifono.model.enums.Rank;
+import com.polifono.service.impl.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +20,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class PlayerManagementService {
+public class PlayerHandler {
+
+    private final MessageSource messagesResource;
+    private final PlayerService playerService;
 
     /**
      * Verify if the player has all the attributes mandatories when we are creating a new player.
@@ -125,5 +134,34 @@ public class PlayerManagementService {
         }
 
         return msg;
+    }
+
+    public String validateAndSanitizeEmail(Player player, Locale locale) {
+        if (player.getEmail() == null || player.getEmail().trim().isEmpty()) {
+            return null;
+        }
+
+        player.setEmail(EmailUtil.avoidWrongDomain(player.getEmail()));
+        Optional<Player> playerOpt = playerService.findByEmail(player.getEmail());
+
+        if (playerOpt.isPresent()) {
+            return messagesResource.getMessage("msg.register.emailAlreadyExists", new Object[] { player.getEmail() }, locale);
+        }
+
+        return null;
+    }
+
+    public void formatPlayerNames(Player player) {
+        String formattedName = PlayerUtil.formatNamePlayer(player.getName());
+        player.setName(getFirstName(formattedName));
+        player.setLastName(getLastName(formattedName));
+    }
+
+    private String getFirstName(String name) {
+        return name.contains(" ") ? name.substring(0, name.indexOf(" ")).trim() : name;
+    }
+
+    private String getLastName(String name) {
+        return name.contains(" ") ? name.substring(name.indexOf(" ") + 1).trim() : "";
     }
 }

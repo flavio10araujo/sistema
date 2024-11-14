@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.polifono.model.entity.Player;
 import com.polifono.service.handler.PasswordResetHandler;
-import com.polifono.service.impl.player.PlayerManagementService;
+import com.polifono.service.handler.PlayerHandler;
 import com.polifono.service.impl.player.PlayerService;
 
 import lombok.NonNull;
@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class PasswordController {
 
     private final PlayerService playerService;
-    private final PlayerManagementService playerManagementService;
+    private final PlayerHandler playerManagementService;
     private final PasswordResetHandler passwordResetHandler;
 
     @GetMapping("/passwordreset")

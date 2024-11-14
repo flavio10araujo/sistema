@@ -3,22 +3,22 @@ package com.polifono.controller;
 import static com.polifono.common.constant.TemplateConstants.REDIRECT_HOME;
 import static com.polifono.common.constant.TemplateConstants.URL_INDEX;
 
-import java.util.Optional;
+import java.util.Locale;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.polifono.common.util.EmailUtil;
-import com.polifono.common.util.PlayerUtil;
 import com.polifono.model.entity.Player;
+import com.polifono.service.handler.PlayerHandler;
 import com.polifono.service.impl.SendEmailService;
-import com.polifono.service.impl.player.PlayerManagementService;
 import com.polifono.service.impl.player.PlayerService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,69 +28,51 @@ import lombok.extern.slf4j.Slf4j;
 public class PlayerController {
 
     private final PlayerService playerService;
-    private final PlayerManagementService playerManagementService;
+    private final PlayerHandler playerHandler;
     private final SendEmailService emailSendUtil;
 
+    @Validated
     @PostMapping("/players")
-    public synchronized String createPlayer(HttpServletRequest request, final Model model, @ModelAttribute("player") Player player) {
+    public synchronized String createPlayer(HttpServletRequest request,
+            final Model model,
+            @ModelAttribute("player") @NonNull Player player,
+            Locale locale) {
 
-        model.addAttribute("playerResend", new Player());
-
-        if (player == null) {
-            log.debug("/players POST player is null");
-            model.addAttribute("player", new Player());
+        String emailError = playerHandler.validateAndSanitizeEmail(player, locale);
+        if (emailError != null) {
+            prepareModelForPlayerCreation(model, player, 2, emailError);
             return URL_INDEX;
         }
 
-        // Verify if the email is already in use.
-        Optional<Player> playerOld = null;
-
-        if (player.getEmail() != null && !player.getEmail().trim().isEmpty()) {
-            player.setEmail(EmailUtil.avoidWrongDomain(player.getEmail()));
-            playerOld = playerService.findByEmail(player.getEmail());
+        String validationError = playerHandler.validateCreatePlayer(player);
+        if (validationError != null) {
+            prepareModelForPlayerCreation(model, player, 2, validationError);
+            return URL_INDEX;
         }
 
-        if (playerOld.isPresent()) {
-            model.addAttribute("player", player);
-            model.addAttribute("codRegister", 2);
-            // TODO - buscar msg do messages.
-            model.addAttribute("msgRegister", "<br />O email " + player.getEmail() + " já está cadastrado para outra pessoa.");
-        } else {
-            String msg = playerManagementService.validateCreatePlayer(player);
+        playerHandler.formatPlayerNames(player);
+        playerService.create(player);
+        prepareModelForPlayerCreation(model, player, 1, null);
+        emailSendUtil.sendEmailConfirmRegister(player);
+        loginPlayer(request, player.getEmail(), player.getPassword());
 
-            // If there is not errors.
-            if (msg.isEmpty()) {
-                String password = player.getPassword();
+        return REDIRECT_HOME;
+    }
 
-                player.setName(PlayerUtil.formatNamePlayer(player.getName()));
-
-                String name = player.getName();
-                name = name.substring(0, name.indexOf(" "));
-
-                String lastName = player.getName();
-                lastName = lastName.substring(lastName.indexOf(" ") + 1).trim();
-
-                player.setLastName(lastName);
-                player.setName(name);
-
-                model.addAttribute("player", playerService.create(player));
-                model.addAttribute("codRegister", 1);
-                emailSendUtil.sendEmailConfirmRegister(player);
-
-                try {
-                    request.login(player.getEmail(), password);
-                } catch (ServletException e) {
-                    log.error("Error in the login of the player {} ", player.getEmail());
-                }
-
-                return REDIRECT_HOME;
-            } else {
-                model.addAttribute("player", player);
-                model.addAttribute("codRegister", 2);
-                model.addAttribute("msgRegister", msg);
-            }
+    private void prepareModelForPlayerCreation(Model model, Player player, int codRegister, String msg) {
+        model.addAttribute("playerResend", new Player());
+        model.addAttribute("player", player);
+        model.addAttribute("codRegister", codRegister);
+        if (msg != null) {
+            model.addAttribute("msgRegister", "<br />" + msg);
         }
+    }
 
-        return URL_INDEX;
+    private void loginPlayer(HttpServletRequest request, String email, String password) {
+        try {
+            request.login(email, password);
+        } catch (ServletException e) {
+            log.error("Error in the login of the player {} ", email, e);
+        }
     }
 }

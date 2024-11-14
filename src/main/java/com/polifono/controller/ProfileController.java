@@ -46,8 +46,8 @@ import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.IPlayervideoService;
 import com.polifono.service.ITransactionService;
+import com.polifono.service.handler.PlayerHandler;
 import com.polifono.service.impl.SecurityService;
-import com.polifono.service.impl.player.PlayerManagementService;
 import com.polifono.service.impl.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
@@ -61,7 +61,7 @@ public class ProfileController {
 
     private final SecurityService securityService;
     private final PlayerService playerService;
-    private final PlayerManagementService playerManagementService;
+    private final PlayerHandler playerManagementService;
     private final IPhaseService phaseService;
     private final IPlayerPhaseService playerPhaseService;
     private final IClassPlayerService classPlayerService;

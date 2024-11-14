@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.polifono.common.properties.ConfigsCreditsProperties;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.Transaction;
+import com.polifono.model.enums.Role;
 import com.polifono.service.ITransactionService;
 import com.polifono.service.impl.player.PlayerService;
 
@@ -35,7 +36,7 @@ public class PaymentHandler {
             return messagesResource.getMessage("msg.credits.NeedConfirmEmail", null, locale);
         }
 
-        if ("USER".equals(player.getRole())) {
+        if (Role.USER.equals(player.getRole())) {
             int creditsBuyMin = configsCreditsProperties.getMinBuyCredits();
             int creditsBuyMax = configsCreditsProperties.getMaxBuyCredits();
             if (quantity < creditsBuyMin || quantity > creditsBuyMax) {
@@ -43,7 +44,7 @@ public class PaymentHandler {
             }
         }
 
-        return null; // No validation errors
+        return null;
     }
 
     public String processPayment(Player player, int quantity) throws PagSeguroServiceException {

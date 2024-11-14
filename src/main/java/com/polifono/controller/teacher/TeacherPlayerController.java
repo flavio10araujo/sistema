@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.polifono.model.CurrentUser;
 import com.polifono.model.entity.Player;
+import com.polifono.service.handler.PlayerHandler;
 import com.polifono.service.impl.SecurityService;
-import com.polifono.service.impl.player.PlayerManagementService;
 import com.polifono.service.impl.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class TeacherPlayerController {
 
     private final SecurityService securityService;
     private final PlayerService playerService;
-    private final PlayerManagementService playerManagementService;
+    private final PlayerHandler playerManagementService;
 
     @GetMapping({ "/player", "/player/create" })
     public String indexPage(Model model) {
