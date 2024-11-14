@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,11 +25,6 @@ import com.polifono.service.impl.transaction.PaymentHandler;
 import com.polifono.service.impl.transaction.TransactionUpdater;
 import com.polifono.service.impl.transaction.TransactionValidator;
 
-import br.com.uol.pagseguro.exception.PagSeguroServiceException;
-import br.com.uol.pagseguro.properties.PagSeguroConfig;
-import br.com.uol.pagseguro.service.NotificationService;
-import br.com.uol.pagseguro.service.TransactionSearchService;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -44,18 +41,12 @@ public class PagSeguroController {
     @Validated
     @GetMapping("/pagseguroreturn")
     public String returnPagSeguro(final Model model,
-            @RequestParam("tid") @NonNull String transactionCode,
+            @RequestParam("tid") @NotBlank String transactionCode,
             Locale locale) {
-
-        if (transactionValidator.isEmptyTransactionCode(transactionCode)) {
-            return REDIRECT_HOME;
-        }
-
-        model.addAttribute("codRegister", "1");
-        model.addAttribute("msg", messagesResource.getMessage("msg.credits.thanks", null, locale));
 
         List<Transaction> transactions = transactionService.findByCode(transactionCode);
         if (transactionValidator.isTransactionAlreadyRegistered(transactions)) {
+            prepareModelForBuyCreditsPage(model, locale);
             return URL_BUY_CREDITS;
         }
 
@@ -78,16 +69,13 @@ public class PagSeguroController {
             paymentHandler.handleSuccess(transaction);
         }
 
+        prepareModelForBuyCreditsPage(model, locale);
         return URL_BUY_CREDITS;
     }
 
     @Validated
     @PostMapping("/pagseguronotification")
-    public @ResponseBody String pagSeguroNotification(@RequestParam("notificationCode") @NonNull String notificationCode) {
-
-        if (transactionValidator.isEmptyNotificationCode(notificationCode)) {
-            return null;
-        }
+    public @ResponseBody String pagSeguroNotification(@RequestParam("notificationCode") @NotBlank String notificationCode) {
 
         Optional<br.com.uol.pagseguro.domain.Transaction> pagSeguroTransactionOpt = pagSeguroService.getTransactionByNotificationCode(notificationCode);
         if (pagSeguroTransactionOpt.isEmpty()) {
@@ -108,5 +96,10 @@ public class PagSeguroController {
         }
 
         return URL_BUY_CREDITS;
+    }
+
+    private void prepareModelForBuyCreditsPage(Model model, Locale locale) {
+        model.addAttribute("codRegister", "1");
+        model.addAttribute("msg", messagesResource.getMessage("msg.credits.thanks", null, locale));
     }
 }
