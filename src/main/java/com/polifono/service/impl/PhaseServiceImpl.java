@@ -183,6 +183,9 @@ public class PhaseServiceImpl implements IPhaseService {
         return lastPhaseDone.get().getOrder() >= (phase.getOrder() - 1);
     }
 
+    /**
+     * Looking for the phases that have the q in its content and the user has already studied.
+     */
     @Override
     public List<Phase> findPhasesBySearchAndUser(String q, int playerId) {
         return repository.findPhasesBySearchAndUser("%" + q + "%", playerId, 3);
