@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.polifono.model.CurrentUser;
 import com.polifono.model.entity.Player;
-import com.polifono.service.handler.PlayerHandler;
 import com.polifono.service.impl.SecurityService;
+import com.polifono.service.impl.player.PlayerHandler;
 import com.polifono.service.impl.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;

@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 
 import com.polifono.model.entity.Player;
 import com.polifono.service.impl.SecurityService;
+import com.polifono.service.impl.diploma.DiplomaHandler;
 
 @ExtendWith(MockitoExtension.class)
 public class DiplomaHelperServiceTest {

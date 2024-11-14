@@ -1,4 +1,4 @@
-package com.polifono.service.handler;
+package com.polifono.service.impl.contact;
 
 import static com.polifono.common.constant.TemplateConstants.URL_INDEX;
 

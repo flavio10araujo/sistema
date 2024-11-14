@@ -282,14 +282,14 @@
                 },
                 methods: {
                     getInitialVideos() {
-                        //axios.get("/playervideos?page="+this.page+"&size=3")
-                        axios.get("/playervideos?restriction=0")
+                        //axios.get("/player_videos?page="+this.page+"&size=3")
+                        axios.get("/player_videos?restriction=0")
                             .then(response => {
-                                if (response.data.length == 0) {
+                                if (response.data.length === 0) {
                                     this.lastPage = true;
                                     this.msgNoVideos = 'Nenhum ensaio até o momento. Seja o primeiro a enviar um ensaio!';
                                 } else {
-                                    for (i = 0; i < response.data.length; i++) {
+                                    for (let i = 0; i < response.data.length; i++) {
                                         this.videos.push(response.data[i]);
                                         this.restriction = this.restriction + "," + response.data[i].id;
                                     }
@@ -305,14 +305,15 @@
 
                                 if (bottomOfWindow || bottomOfWindow1 || bottomOfWindow2) {
                                     this.page++;
-                                    //axios.get("/playervideos?page="+this.page+"&size=3")
-                                    axios.get("/playervideos?restriction=" + this.restriction)
+                                    //axios.get("/player_videos?page="+this.page+"&size=3")
+                                    axios.get("/player_videos?restriction=" + this.restriction)
                                         .then(response => {
-                                            if (response.data.length == 0) {
+                                            if (response.data.length === 0) {
                                                 this.lastPage = true;
+                                                // TODO - i18n
                                                 this.msgNoVideos = 'Não há mais vídeos para exibir.';
                                             } else {
-                                                for (i = 0; i < response.data.length; i++) {
+                                                for (let i = 0; i < response.data.length; i++) {
                                                     this.videos.push(response.data[i]);
                                                     this.restriction = this.restriction + "," + response.data[i].id;
                                                 }

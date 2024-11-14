@@ -112,7 +112,7 @@
                     },
                     methods: {
                         getInitialVideos() {
-                            axios.get("/playervideos/content/" + this.getContentId() + "?page=" + this.page + "&size=1")
+                            axios.get("/player_videos/content/" + this.getContentId() + "?page=" + this.page + "&size=1")
                                 .then(response => {
                                     if (response.data.length == 0) {
                                         this.lastPage = true;
@@ -131,7 +131,7 @@
 
                                     if (bottomOfWindow || bottomOfWindow1 || bottomOfWindow2) {
                                         this.page++;
-                                        axios.get("/playervideos/content/" + this.getContentId() + "?page=" + this.page + "&size=1")
+                                        axios.get("/player_videos/content/" + this.getContentId() + "?page=" + this.page + "&size=1")
                                             .then(response => {
                                                 if (response.data.length == 0) {
                                                     this.lastPage = true;

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.model.entity.Diploma;
 import com.polifono.service.IDiplomaService;
-import com.polifono.service.handler.DiplomaHandler;
+import com.polifono.service.impl.diploma.DiplomaHandler;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

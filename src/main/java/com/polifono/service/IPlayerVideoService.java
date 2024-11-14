@@ -9,7 +9,7 @@ import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.Playervideo;
 
-public interface IPlayervideoService {
+public interface IPlayerVideoService {
 
     Playervideo save(Playervideo o);
 

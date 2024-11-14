@@ -1,4 +1,4 @@
-package com.polifono.service.handler;
+package com.polifono.service.impl.player;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -12,7 +12,6 @@ import com.polifono.common.util.YouTubeUrlFormatter;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.Playervideo;
 import com.polifono.model.enums.Rank;
-import com.polifono.service.impl.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

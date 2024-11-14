@@ -44,10 +44,10 @@ import com.polifono.service.ILevelService;
 import com.polifono.service.ILoginService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
-import com.polifono.service.IPlayervideoService;
+import com.polifono.service.IPlayerVideoService;
 import com.polifono.service.ITransactionService;
-import com.polifono.service.handler.PlayerHandler;
 import com.polifono.service.impl.SecurityService;
+import com.polifono.service.impl.player.PlayerHandler;
 import com.polifono.service.impl.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
@@ -70,7 +70,7 @@ public class ProfileController {
     private final IGameService gameService;
     private final ILevelService levelService;
     private final ITransactionService transactionService;
-    private final IPlayervideoService playervideoService;
+    private final IPlayerVideoService playervideoService;
     private final IContentService contentService;
 
     @GetMapping("/players/{playerId}")

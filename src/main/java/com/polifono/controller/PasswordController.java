@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.polifono.model.entity.Player;
 import com.polifono.service.handler.PasswordResetHandler;
-import com.polifono.service.handler.PlayerHandler;
+import com.polifono.service.impl.player.PlayerHandler;
 import com.polifono.service.impl.player.PlayerService;
 
 import lombok.NonNull;

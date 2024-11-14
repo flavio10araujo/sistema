@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.polifono.model.entity.Player;
-import com.polifono.service.handler.PlayerHandler;
 
 @ExtendWith(MockitoExtension.class)
 public class PlayerManagementServiceTest {

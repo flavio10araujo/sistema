@@ -1,4 +1,4 @@
-package com.polifono.service.handler;
+package com.polifono.service.impl.diploma;
 
 import static com.polifono.common.constant.TemplateConstants.URL_DIPLOMA_OPEN_SEARCH;
 import static com.polifono.common.constant.TemplateConstants.URL_DIPLOMA_SEARCH;

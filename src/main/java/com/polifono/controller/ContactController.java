@@ -7,10 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.polifono.service.handler.ContactHandler;
-import com.polifono.service.impl.ContactService;
 import com.polifono.service.impl.RecaptchaService;
 import com.polifono.service.impl.SendEmailService;
+import com.polifono.service.impl.contact.ContactHandler;
+import com.polifono.service.impl.contact.ContactService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

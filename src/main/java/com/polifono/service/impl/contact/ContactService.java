@@ -1,4 +1,4 @@
-package com.polifono.service.impl;
+package com.polifono.service.impl.contact;
 
 import java.util.Locale;
 
