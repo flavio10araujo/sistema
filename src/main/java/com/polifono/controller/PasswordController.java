@@ -56,7 +56,7 @@ public class PasswordController {
         }
 
         existingPlayer.setPassword(player.getPassword());
-        String validationError = playerManagementService.validateChangePasswordPlayer(existingPlayer);
+        String validationError = playerManagementService.validateChangePasswordPlayer(existingPlayer, locale);
 
         if (!validationError.isEmpty()) {
             return passwordResetHandler.handleValidationError(model, player, validationError);

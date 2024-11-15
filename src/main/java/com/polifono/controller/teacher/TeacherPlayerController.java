@@ -3,6 +3,7 @@ package com.polifono.controller.teacher;
 import static com.polifono.common.constant.TemplateConstants.REDIRECT_HOME;
 import static com.polifono.common.constant.TemplateConstants.URL_TEACHER_PLAYER_INDEX;
 
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -36,7 +37,9 @@ public class TeacherPlayerController {
     }
 
     @PostMapping("/player/create")
-    public String createPlayer(final Model model, @ModelAttribute("player") Player player) {
+    public String createPlayer(final Model model,
+            @ModelAttribute("player") Player player,
+            Locale locale) {
 
         Optional<CurrentUser> currentUser = securityService.getCurrentAuthenticatedUser();
         if (currentUser.isEmpty()) {
@@ -62,7 +65,7 @@ public class TeacherPlayerController {
             // TODO - buscar msg do messages.
             model.addAttribute("msgRegister", "<br />O login " + player.getLogin() + " já está cadastrado para outra pessoa.");
         } else {
-            String msg = playerManagementService.validateCreatePlayerByTeacher(player);
+            String msg = playerManagementService.validateCreatePlayerByTeacher(player, locale);
 
             // If there are no errors.
             if (msg.isEmpty()) {

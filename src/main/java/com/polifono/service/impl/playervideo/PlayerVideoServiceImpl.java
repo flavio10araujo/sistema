@@ -2,6 +2,7 @@ package com.polifono.service.impl.playervideo;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class PlayerVideoServiceImpl implements IPlayerVideoService {
     }
 
     @Override
-    public Playervideo findByPlayerAndPhase(Player player, Phase phase) {
+    public Optional<Playervideo> findByPlayerAndPhase(Player player, Phase phase) {
         return repository.findByPlayerAndPhase(player.getId(), phase.getId());
     }
 

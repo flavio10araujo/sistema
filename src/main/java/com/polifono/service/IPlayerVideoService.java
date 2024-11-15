@@ -1,6 +1,7 @@
 package com.polifono.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 
@@ -21,7 +22,7 @@ public interface IPlayerVideoService {
 
     List<Playervideo> findAllByPlayer(Player player, Pageable pageable);
 
-    Playervideo findByPlayerAndPhase(Player player, Phase phase);
+    Optional<Playervideo> findByPlayerAndPhase(Player player, Phase phase);
 
     List<Playervideo> findRandomWithRestriction(String restriction);
 }

@@ -91,4 +91,5 @@ public class TemplateConstants {
     public static final String REDIRECT_TEACHER_CREDIT = "redirect:/teacher/credit";
     public static final String REDIRECT_CLASS_INVITATION = "redirect:/classinvitation";
     public static final String REDIRECT_GAMES = "redirect:/games";
+    public static final String REDIRECT_PROFILE_PLAYERS = "redirect:/profile/players";
 }

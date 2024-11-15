@@ -14,9 +14,7 @@ import com.polifono.model.entity.Playervideo;
 import com.polifono.model.enums.Rank;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class PlayerHandler {
@@ -25,27 +23,15 @@ public class PlayerHandler {
     private final PlayerService playerService;
 
     /**
-     * Verify if the player has all the attributes mandatories when we are creating a new player.
+     * Verify if the player has all the attributes mandatory when we are creating a new player.
      * If everything is OK, return an empty string.
      * Otherwise, return one string with the message of the error.
      */
-    public String validateCreatePlayer(Player player) {
+    public String validateCreatePlayer(Player player, Locale locale) {
         String msg = "";
-
-        if (player.getName() == null || player.getName().isEmpty()) {
-            msg = msg + "<br />O nome precisa ser informado.";
-        } else if (!player.getName().trim().contains(" ")) {
-            msg = msg + "<br />Por favor, informe o nome e o sobrenome.";
-        }
-
-        if (player.getEmail() == null || player.getEmail().isEmpty()) {
-            msg = msg + "<br />O e-mail precisa ser informado.";
-        } else if (!EmailUtil.validateEmail(player.getEmail())) {
-            msg = msg + "<br />O e-mail informado não é válido.";
-        }
-
-        msg = validatePassword(player, msg);
-
+        msg = validateName(player.getName(), msg, locale);
+        msg = validateEmail(player.getEmail(), msg, locale);
+        msg = validatePassword(player, msg, locale);
         return msg;
     }
 
@@ -56,43 +42,21 @@ public class PlayerHandler {
      * <p>
      * The difference between this method and the validateCreatePlayer is that here the player has a login and doesn't have an e-mail.
      */
-    public String validateCreatePlayerByTeacher(Player player) {
+    public String validateCreatePlayerByTeacher(Player player, Locale locale) {
         String msg = "";
-
-        if (player.getName() == null || player.getName().isEmpty()) {
-            msg = msg + "<br />O nome precisa ser informado.";
-        } else if (!player.getName().trim().contains(" ")) {
-            msg = msg + "<br />Por favor, informe o nome e o sobrenome.";
-        }
-
-        if (player.getLogin() == null || player.getLogin().isEmpty()) {
-            msg = msg + "<br />O login precisa ser informado.";
-        } else if (player.getLogin().length() < 6 || player.getLogin().length() > 20) {
-            msg = msg + "<br />O login precisa possuir entre 6 e 20 caracteres.";
-        } else if (!EmailUtil.validateLogin(player.getLogin())) {
-            msg = msg + "<br />O login só deve possuir letras e números. Não deve possuir espaços, acentos ou demais caracteres especiais.";
-        }
-
-        msg = validatePassword(player, msg);
-
+        msg = validateName(player.getName(), msg, locale);
+        msg = validateLogin(player.getLogin(), msg, locale);
+        msg = validatePassword(player, msg, locale);
         return msg;
     }
 
     /**
      * Verify if the player has all the mandatory attributes when we are updating a player.
      */
-    // TODO - i18n
-    public String validateUpdateProfile(Player player) {
+    public String validateUpdateProfile(Player player, Locale locale) {
         String msg = "";
-
-        if (player.getName() == null || player.getName().trim().isEmpty()) {
-            msg = "O nome precisa ser informado.<br />";
-        }
-
-        if (player.getLastName() == null || player.getLastName().trim().isEmpty()) {
-            msg = "O sobrenome precisa ser informado.<br />";
-        }
-
+        msg = validateName(player.getName(), msg, locale);
+        msg = validateLastName(player.getLastName(), msg, locale);
         return msg;
     }
 
@@ -101,38 +65,24 @@ public class PlayerHandler {
      * If everything is OK, return an empty string.
      * Otherwise, return one string with the message of the error.
      */
-    public String validateChangePasswordPlayer(Player player) {
-        String msg = "";
-        msg = validatePassword(player, msg);
-        return msg;
+    public String validateChangePasswordPlayer(Player player, Locale locale) {
+        return validatePassword(player, "", locale);
     }
 
-    // TODO - i18n
-    public String validateAddVideo(Playervideo playervideo) {
-        String msg = "";
-
+    public String validateAddVideo(Playervideo playervideo, Locale locale) {
         if (playervideo.getPlayer().getRankLevel() <= Rank.WHITE.getLevel()) {
-            return "<br />Você ainda não tem permissão para adicionar vídeos.<br />Continue estudando para desbloquear essa funcionalidade!";
-        } else if (playervideo.getContent() == null || playervideo.getContent().getPhase() == null || playervideo.getContent().getPhase().getId() == 0) {
-            msg = msg + "<br />Por favor, selecione uma fase.";
-        } else if (YouTubeUrlFormatter.formatUrl(playervideo.getUrl()).isEmpty()) {
-            msg = msg + "<br />O endereço do vídeo informado não parece estar correto.";
+            return "<br />" + messagesResource.getMessage("msg.playerProfile.addVideo.notAllowed.noPermission", null, locale);
         }
 
-        return msg;
-    }
-
-    // TODO - i18n
-    private String validatePassword(Player player, String msg) {
-        if (player.getPassword() == null || player.getPassword().isEmpty()) {
-            msg = msg + "<br />A senha precisa ser informada.";
-        } else if (player.getPassword().length() < 6 || player.getPassword().length() > 20) {
-            msg = msg + "<br />A senha precisa possuir entre 6 e 20 caracteres.";
-        } else if (!EmailUtil.validatePassword(player.getPassword())) {
-            msg = msg + "<br />A senha precisa possuir ao menos 1 número e ao menos 1 letra.";
+        if (playervideo.getContent() == null || playervideo.getContent().getPhase() == null || playervideo.getContent().getPhase().getId() == 0) {
+            return "<br />" + messagesResource.getMessage("msg.playerProfile.addVideo.notAllowed.noPhase", null, locale);
         }
 
-        return msg;
+        if (YouTubeUrlFormatter.formatUrl(playervideo.getUrl()).isEmpty()) {
+            return "<br />" + messagesResource.getMessage("msg.playerProfile.addVideo.notAllowed.invalidUrl", null, locale);
+        }
+
+        return "";
     }
 
     public String validateAndSanitizeEmail(Player player, Locale locale) {
@@ -162,5 +112,52 @@ public class PlayerHandler {
 
     private String getLastName(String name) {
         return name.contains(" ") ? name.substring(name.indexOf(" ") + 1).trim() : "";
+    }
+
+    private String validateName(String name, String msg, Locale locale) {
+        if (name == null || name.isEmpty()) {
+            msg += "<br />" + messagesResource.getMessage("msg.register.missingName", null, locale);
+        } else if (!name.trim().contains(" ")) {
+            msg += "<br />" + messagesResource.getMessage("msg.register.missingFullName", null, locale);
+        }
+        return msg;
+    }
+
+    private String validateLastName(String lastName, String msg, Locale locale) {
+        if (lastName == null || lastName.trim().isEmpty()) {
+            msg += messagesResource.getMessage("msg.register.missingLastName", null, locale) + "<br />";
+        }
+        return msg;
+    }
+
+    private String validateEmail(String email, String msg, Locale locale) {
+        if (email == null || email.isEmpty()) {
+            msg += "<br />" + messagesResource.getMessage("msg.register.missingEmail", null, locale);
+        } else if (!EmailUtil.validateEmail(email)) {
+            msg += "<br />" + messagesResource.getMessage("msg.register.invalidEmail", null, locale);
+        }
+        return msg;
+    }
+
+    private String validateLogin(String login, String msg, Locale locale) {
+        if (login == null || login.isEmpty()) {
+            msg += "<br />" + messagesResource.getMessage("msg.register.missingLogin", null, locale);
+        } else if (login.length() < 6 || login.length() > 20) {
+            msg += "<br />" + messagesResource.getMessage("msg.register.invalidLogin.size", null, locale);
+        } else if (!EmailUtil.validateLogin(login)) {
+            msg += "<br />" + messagesResource.getMessage("msg.register.invalidLogin.pattern", null, locale);
+        }
+        return msg;
+    }
+
+    private String validatePassword(Player player, String msg, Locale locale) {
+        if (player.getPassword() == null || player.getPassword().isEmpty()) {
+            msg += "<br />" + messagesResource.getMessage("msg.register.missingPassword", null, locale);
+        } else if (player.getPassword().length() < 6 || player.getPassword().length() > 20) {
+            msg += "<br />" + messagesResource.getMessage("msg.register.invalidPassword.size", null, locale);
+        } else if (!EmailUtil.validatePassword(player.getPassword())) {
+            msg += "<br />" + messagesResource.getMessage("msg.register.invalidPassword.pattern", null, locale);
+        }
+        return msg;
     }
 }

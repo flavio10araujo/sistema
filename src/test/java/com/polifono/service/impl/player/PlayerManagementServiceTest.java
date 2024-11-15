@@ -1,10 +1,16 @@
 package com.polifono.service.impl.player;
 
+import static org.mockito.Mockito.when;
+
+import java.util.Locale;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 
 import com.polifono.model.entity.Player;
 
@@ -14,6 +20,9 @@ public class PlayerManagementServiceTest {
     @InjectMocks
     private PlayerHandler service;
 
+    @Mock
+    private MessageSource messagesResource;
+
     /* validateCreatePlayer - begin */
     @Test
     public void validateCreatePlayer_WhenNoDataIsMissing_ReturnMsgEmpty() {
@@ -22,7 +31,7 @@ public class PlayerManagementServiceTest {
         player.setEmail("email@test.com");
         player.setPassword("password123");
 
-        Assertions.assertEquals("", service.validateCreatePlayer(player), "failure - expected msg returned equals");
+        Assertions.assertEquals("", service.validateCreatePlayer(player, Locale.ENGLISH), "failure - expected msg returned equals");
     }
 
     @Test
@@ -32,13 +41,17 @@ public class PlayerManagementServiceTest {
         player.setEmail("email@test.com");
         player.setPassword("password123");
 
-        Assertions.assertEquals("<br />O nome precisa ser informado.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
+        when(messagesResource.getMessage("msg.register.missingName", null, Locale.ENGLISH)).thenReturn("O nome precisa ser informado.");
+
+        Assertions.assertEquals("<br />O nome precisa ser informado.", service.validateCreatePlayer(player, Locale.ENGLISH),
+                "failure - expected msg returned equals");
 
         player.setName("");
         player.setEmail("email@test.com");
         player.setPassword("password123");
 
-        Assertions.assertEquals("<br />O nome precisa ser informado.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
+        Assertions.assertEquals("<br />O nome precisa ser informado.", service.validateCreatePlayer(player, Locale.ENGLISH),
+                "failure - expected msg returned equals");
     }
 
     @Test
@@ -48,13 +61,17 @@ public class PlayerManagementServiceTest {
         player.setEmail(null);
         player.setPassword("password123");
 
-        Assertions.assertEquals("<br />O e-mail precisa ser informado.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
+        when(messagesResource.getMessage("msg.register.missingEmail", null, Locale.ENGLISH)).thenReturn("O e-mail precisa ser informado.");
+
+        Assertions.assertEquals("<br />O e-mail precisa ser informado.", service.validateCreatePlayer(player, Locale.ENGLISH),
+                "failure - expected msg returned equals");
 
         player.setName("Name Completed");
         player.setEmail("");
         player.setPassword("password123");
 
-        Assertions.assertEquals("<br />O e-mail precisa ser informado.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
+        Assertions.assertEquals("<br />O e-mail precisa ser informado.", service.validateCreatePlayer(player, Locale.ENGLISH),
+                "failure - expected msg returned equals");
     }
 
     @Test
@@ -64,7 +81,10 @@ public class PlayerManagementServiceTest {
         player.setEmail("invalid_email");
         player.setPassword("password123");
 
-        Assertions.assertEquals("<br />O e-mail informado não é válido.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
+        when(messagesResource.getMessage("msg.register.invalidEmail", null, Locale.ENGLISH)).thenReturn("O e-mail informado não é válido.");
+
+        Assertions.assertEquals("<br />O e-mail informado não é válido.", service.validateCreatePlayer(player, Locale.ENGLISH),
+                "failure - expected msg returned equals");
     }
 
     @Test
@@ -74,13 +94,17 @@ public class PlayerManagementServiceTest {
         player.setEmail("email@test.com");
         player.setPassword(null);
 
-        Assertions.assertEquals("<br />A senha precisa ser informada.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
+        when(messagesResource.getMessage("msg.register.missingPassword", null, Locale.ENGLISH)).thenReturn("A senha precisa ser informada.");
+
+        Assertions.assertEquals("<br />A senha precisa ser informada.", service.validateCreatePlayer(player, Locale.ENGLISH),
+                "failure - expected msg returned equals");
 
         player.setName("Name Completed");
         player.setEmail("email@test.com");
         player.setPassword("");
 
-        Assertions.assertEquals("<br />A senha precisa ser informada.", service.validateCreatePlayer(player), "failure - expected msg returned equals");
+        Assertions.assertEquals("<br />A senha precisa ser informada.", service.validateCreatePlayer(player, Locale.ENGLISH),
+                "failure - expected msg returned equals");
     }
 
     @Test
@@ -90,15 +114,20 @@ public class PlayerManagementServiceTest {
         player.setEmail("email@test.com");
         player.setPassword("12345");
 
+        when(messagesResource.getMessage("msg.register.invalidPassword.size", null, Locale.ENGLISH)).thenReturn(
+                "A senha precisa possuir entre 6 e 20 caracteres.");
+        when(messagesResource.getMessage("msg.register.invalidPassword.pattern", null, Locale.ENGLISH)).thenReturn(
+                "A senha precisa possuir ao menos 1 número e ao menos 1 letra.");
+
         Assertions.assertEquals("<br />A senha precisa possuir entre 6 e 20 caracteres.",
-                service.validateCreatePlayer(player), "failure - expected msg returned equals");
+                service.validateCreatePlayer(player, Locale.ENGLISH), "failure - expected msg returned equals");
 
         player.setName("Name Completed");
         player.setEmail("email@test.com");
         player.setPassword("123456");
 
         Assertions.assertEquals("<br />A senha precisa possuir ao menos 1 número e ao menos 1 letra.",
-                service.validateCreatePlayer(player), "failure - expected msg returned equals");
+                service.validateCreatePlayer(player, Locale.ENGLISH), "failure - expected msg returned equals");
     }
 
     @Test
@@ -108,9 +137,13 @@ public class PlayerManagementServiceTest {
         player.setEmail("");
         player.setPassword("");
 
+        when(messagesResource.getMessage("msg.register.missingName", null, Locale.ENGLISH)).thenReturn("O nome precisa ser informado.");
+        when(messagesResource.getMessage("msg.register.missingEmail", null, Locale.ENGLISH)).thenReturn("O e-mail precisa ser informado.");
+        when(messagesResource.getMessage("msg.register.missingPassword", null, Locale.ENGLISH)).thenReturn("A senha precisa ser informada.");
+
         String msg = "<br />O nome precisa ser informado.<br />O e-mail precisa ser informado.<br />A senha precisa ser informada.";
 
-        Assertions.assertEquals(msg, service.validateCreatePlayer(player), "failure - expected msg returned equals");
+        Assertions.assertEquals(msg, service.validateCreatePlayer(player, Locale.ENGLISH), "failure - expected msg returned equals");
     }
     /* validateCreatePlayer - end */
 

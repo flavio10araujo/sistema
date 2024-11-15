@@ -44,7 +44,7 @@ public class PlayerController {
             return URL_INDEX;
         }
 
-        String validationError = playerHandler.validateCreatePlayer(player);
+        String validationError = playerHandler.validateCreatePlayer(player, locale);
         if (validationError != null) {
             prepareModelForPlayerCreation(model, player, 2, validationError);
             return URL_INDEX;
