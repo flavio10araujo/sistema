@@ -1,5 +1,8 @@
 package com.polifono.common.util;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class YouTubeUrlFormatter {
 
     public static String formatUrl(String url) {
@@ -16,20 +19,18 @@ public class YouTubeUrlFormatter {
     }
 
     private static String extractYoutubeVideoIdFromUrl(String url) {
-        String videoId = "";
-
-        if (url.startsWith("https://www.youtube.com/watch?v=")) {
-            videoId = url.substring(url.indexOf("?v=") + 3);
-        } else if (url.startsWith("https://youtu.be/")) {
-            videoId = url.substring(url.indexOf(".be/") + 4);
-        } else if (url.startsWith("https://m.youtube.com/watch?v=")) {
-            videoId = url.substring(url.indexOf("?v=") + 3);
+        if (url == null || url.isEmpty()) {
+            return "";
         }
 
-        if (videoId.contains("&")) {
-            videoId = videoId.substring(0, videoId.indexOf("&"));
+        String pattern = "^(?:https?:\\/\\/)?(?:www\\.|m\\.)?(?:youtube\\.com\\/watch\\?v=|youtu\\.be\\/)([a-zA-Z0-9_-]{11})(?:&.*)?$";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(url);
+
+        if (matcher.find()) {
+            return matcher.group(1);
         }
 
-        return videoId;
+        return "";
     }
 }

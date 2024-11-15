@@ -1,7 +1,7 @@
 package com.polifono.config;
 
 import java.io.IOException;
-import java.util.Collection;
+import java.util.Map;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -64,30 +64,19 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
      * Builds the target URL according to the logic defined in the main class Javadoc.
      */
     private String determineTargetUrl(Authentication authentication) {
-        boolean isUser = false, isTeacher = false, isAdmin = false;
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        Map<String, String> roleUrlMap = Map.of(
+                "USER", "/",
+                "TEACHER", "/teacher/report",
+                "ADMIN", "/admin"
+        );
 
-        for (GrantedAuthority grantedAuthority : authorities) {
-            if (grantedAuthority.getAuthority().equals("USER")) {
-                isUser = true;
-                break;
-            } else if (grantedAuthority.getAuthority().equals("TEACHER")) {
-                isTeacher = true;
-                break;
-            } else if (grantedAuthority.getAuthority().equals("ADMIN")) {
-                isAdmin = true;
-                break;
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            String url = roleUrlMap.get(authority.getAuthority());
+            if (url != null) {
+                return url;
             }
         }
 
-        if (isUser) {
-            return "/";
-        } else if (isTeacher) {
-            return "/teacher/report";
-        } else if (isAdmin) {
-            return "/admin";
-        } else {
-            throw new IllegalStateException();
-        }
+        throw new IllegalStateException();
     }
 }
