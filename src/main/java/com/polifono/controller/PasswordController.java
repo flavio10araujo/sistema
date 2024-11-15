@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.polifono.model.entity.Player;
-import com.polifono.service.handler.PasswordResetHandler;
 import com.polifono.service.impl.player.PlayerHandler;
+import com.polifono.service.impl.player.PlayerPasswordResetHandler;
 import com.polifono.service.impl.player.PlayerService;
 
 import lombok.NonNull;
@@ -25,7 +25,7 @@ public class PasswordController {
 
     private final PlayerService playerService;
     private final PlayerHandler playerManagementService;
-    private final PasswordResetHandler passwordResetHandler;
+    private final PlayerPasswordResetHandler passwordResetHandler;
 
     @GetMapping("/passwordreset")
     public String passwordReset(final Model model) {

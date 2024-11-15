@@ -1,4 +1,4 @@
-package com.polifono.service.handler;
+package com.polifono.service.impl.game;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

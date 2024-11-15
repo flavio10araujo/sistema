@@ -23,10 +23,10 @@ import com.polifono.model.entity.Content;
 import com.polifono.model.entity.Contenttype;
 import com.polifono.model.form.admin.basic.ContentFilterForm;
 import com.polifono.service.impl.ContentServiceImpl;
-import com.polifono.service.impl.GameServiceImpl;
 import com.polifono.service.impl.LevelServiceImpl;
 import com.polifono.service.impl.MapServiceImpl;
 import com.polifono.service.impl.PhaseServiceImpl;
+import com.polifono.service.impl.game.GameServiceImpl;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

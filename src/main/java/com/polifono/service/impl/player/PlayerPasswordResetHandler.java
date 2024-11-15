@@ -1,4 +1,4 @@
-package com.polifono.service.handler;
+package com.polifono.service.impl.player;
 
 import static com.polifono.common.constant.TemplateConstants.URL_INDEX;
 
@@ -12,13 +12,12 @@ import com.polifono.common.util.PasswordUtil;
 import com.polifono.model.entity.Player;
 import com.polifono.service.impl.GenerateRandomStringService;
 import com.polifono.service.impl.SendEmailService;
-import com.polifono.service.impl.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class PasswordResetHandler {
+public class PlayerPasswordResetHandler {
 
     private final MessageSource messagesResource;
     private final GenerateRandomStringService generateRandomStringService;

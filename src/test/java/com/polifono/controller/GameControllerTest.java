@@ -24,7 +24,7 @@ import com.polifono.model.entity.Game;
 import com.polifono.model.entity.Level;
 import com.polifono.model.entity.Player;
 import com.polifono.model.enums.Role;
-import com.polifono.service.handler.GameHandler;
+import com.polifono.service.impl.game.GameHandler;
 
 @ExtendWith(MockitoExtension.class)
 public class GameControllerTest {

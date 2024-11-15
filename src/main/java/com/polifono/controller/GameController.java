@@ -30,8 +30,8 @@ import com.polifono.model.entity.Question;
 import com.polifono.service.IGameService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
-import com.polifono.service.handler.GameHandler;
 import com.polifono.service.impl.SecurityService;
+import com.polifono.service.impl.game.GameHandler;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

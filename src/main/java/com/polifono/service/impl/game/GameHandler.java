@@ -1,4 +1,4 @@
-package com.polifono.service.handler;
+package com.polifono.service.impl.game;
 
 import static com.polifono.common.constant.TemplateConstants.URL_BUY_CREDITS;
 import static com.polifono.common.constant.TemplateConstants.URL_GAMES_END_OF_GAME;
