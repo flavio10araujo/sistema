@@ -1,4 +1,4 @@
-package com.polifono.service.handler;
+package com.polifono.service.impl.diploma;
 
 import static com.polifono.common.constant.TemplateConstants.URL_DIPLOMA_OPEN_SEARCH;
 import static com.polifono.common.constant.TemplateConstants.URL_DIPLOMA_SEARCH;
@@ -21,7 +21,6 @@ import org.springframework.ui.Model;
 
 import com.polifono.model.entity.Player;
 import com.polifono.service.impl.SecurityService;
-import com.polifono.service.impl.diploma.DiplomaHandler;
 
 @ExtendWith(MockitoExtension.class)
 public class DiplomaHelperServiceTest {
