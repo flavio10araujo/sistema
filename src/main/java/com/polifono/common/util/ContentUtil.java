@@ -4,9 +4,6 @@ import java.util.Optional;
 
 import com.polifono.model.entity.Content;
 
-/**
- * This class has methods to change the content of the classes.
- */
 public class ContentUtil {
 
     public static Optional<Content> formatContent(Content content) {

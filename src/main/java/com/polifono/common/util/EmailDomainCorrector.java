@@ -2,10 +2,8 @@ package com.polifono.common.util;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class EmailUtil {
+public class EmailDomainCorrector {
 
     private static final Map<String, String> DOMAIN_CORRECTIONS = new HashMap<>();
 
@@ -94,66 +92,7 @@ public class EmailUtil {
         DOMAIN_CORRECTIONS.put("@aiclod.com", "@icloud.com");
     }
 
-    /**
-     * Validate an email.
-     * Return true if the email is valid. False if the email is not valid.
-     */
-    public static boolean validateEmail(String s) {
-        if (s == null || s.isEmpty()) {
-            return false;
-        }
-
-        String PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-        Pattern pattern = Pattern.compile(PATTERN);
-        Matcher matcher = pattern.matcher(s);
-        return matcher.matches();
-    }
-
-    /**
-     * Validate a password.
-     * Return true if the password is valid. False if the password is not valid.
-     * Rules:
-     * - size between 6 and 20;
-     * - at least one number;
-     * - at least one letter;
-     * - no spaces.
-     */
-    public static boolean validatePassword(String s) {
-        if (s == null || s.isEmpty()) {
-            return false;
-        }
-
-        if (s.length() < 6 || s.length() > 20) {
-            return false;
-        }
-
-        String PATTERN = "\\S*(\\S*([a-zA-Z]\\S*[0-9])|([0-9]\\S*[a-zA-Z]))\\S*";
-        Pattern pattern = Pattern.compile(PATTERN);
-        Matcher matcher = pattern.matcher(s);
-        return matcher.matches();
-    }
-
-    /**
-     * Validate a login.
-     * Return true if the login is valid. False if the login is not valid.
-     * Rules:
-     * - size between 6 and 20;
-     * - only number and letters;
-     * - underline and hyphen are accepted;
-     * - no spaces and other special characters.
-     */
-    public static boolean validateLogin(String s) {
-        if (s == null || s.isEmpty()) {
-            return false;
-        }
-
-        String PATTERN = "^[a-z0-9_-]{6,20}$";
-        Pattern pattern = Pattern.compile(PATTERN);
-        Matcher matcher = pattern.matcher(s);
-        return matcher.matches();
-    }
-
-    public static String avoidWrongDomain(String email) {
+    public static String correctDomain(String email) {
         if (email == null || email.isEmpty()) {
             return email;
         }

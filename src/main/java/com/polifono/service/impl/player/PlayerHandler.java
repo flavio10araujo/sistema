@@ -6,7 +6,10 @@ import java.util.Optional;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import com.polifono.common.util.EmailUtil;
+import com.polifono.common.util.EmailDomainCorrector;
+import com.polifono.common.util.EmailValidator;
+import com.polifono.common.util.LoginValidator;
+import com.polifono.common.util.PasswordValidator;
 import com.polifono.common.util.PlayerUtil;
 import com.polifono.common.util.YouTubeUrlFormatter;
 import com.polifono.model.entity.Player;
@@ -90,7 +93,7 @@ public class PlayerHandler {
             return null;
         }
 
-        player.setEmail(EmailUtil.avoidWrongDomain(player.getEmail()));
+        player.setEmail(EmailDomainCorrector.correctDomain(player.getEmail()));
         Optional<Player> playerOpt = playerService.findByEmail(player.getEmail());
 
         if (playerOpt.isPresent()) {
@@ -133,7 +136,7 @@ public class PlayerHandler {
     private String validateEmail(String email, String msg, Locale locale) {
         if (email == null || email.isEmpty()) {
             msg += "<br />" + messagesResource.getMessage("msg.register.missingEmail", null, locale);
-        } else if (!EmailUtil.validateEmail(email)) {
+        } else if (!EmailValidator.isValid(email)) {
             msg += "<br />" + messagesResource.getMessage("msg.register.invalidEmail", null, locale);
         }
         return msg;
@@ -144,7 +147,7 @@ public class PlayerHandler {
             msg += "<br />" + messagesResource.getMessage("msg.register.missingLogin", null, locale);
         } else if (login.length() < 6 || login.length() > 20) {
             msg += "<br />" + messagesResource.getMessage("msg.register.invalidLogin.size", null, locale);
-        } else if (!EmailUtil.validateLogin(login)) {
+        } else if (!LoginValidator.isValid(login)) {
             msg += "<br />" + messagesResource.getMessage("msg.register.invalidLogin.pattern", null, locale);
         }
         return msg;
@@ -155,7 +158,7 @@ public class PlayerHandler {
             msg += "<br />" + messagesResource.getMessage("msg.register.missingPassword", null, locale);
         } else if (player.getPassword().length() < 6 || player.getPassword().length() > 20) {
             msg += "<br />" + messagesResource.getMessage("msg.register.invalidPassword.size", null, locale);
-        } else if (!EmailUtil.validatePassword(player.getPassword())) {
+        } else if (!PasswordValidator.isValid(player.getPassword())) {
             msg += "<br />" + messagesResource.getMessage("msg.register.invalidPassword.pattern", null, locale);
         }
         return msg;

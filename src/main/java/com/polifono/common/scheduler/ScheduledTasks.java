@@ -1,7 +1,5 @@
 package com.polifono.common.scheduler;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -19,14 +17,11 @@ import com.polifono.service.impl.SendEmailService;
 import com.polifono.service.impl.player.PlayerCommunicationService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Component
 public class ScheduledTasks {
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     private final PlayerCommunicationService playerService;
     private final ICommunicationService communicationService;
     private final IPlayerCommunicationService playerCommunicationService;
@@ -39,8 +34,6 @@ public class ScheduledTasks {
      */
     @Scheduled(initialDelay = 300000, fixedDelay = 4200000)
     public void sendEmailGroup04AndGroup05() {
-        log.info("Job sendEmailGroup04AndGroup05() :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
-
         // GROUP 04
         Groupcommunication groupCommunicationG4 = new Groupcommunication();
         groupCommunicationG4.setId(4);
@@ -59,7 +52,6 @@ public class ScheduledTasks {
             // Time estimated for running this job (send all the emails in this case).
             TimeUnit.MINUTES.sleep(5);
         } catch (InterruptedException ex) {
-            log.error("sendEmailGroup04AndGroup05() - Ran into an error", ex);
             throw new IllegalStateException(ex);
         }
     }
