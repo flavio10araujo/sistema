@@ -85,30 +85,14 @@ public class ProfileController {
     public String profilePlayer(final Model model,
             @PathVariable("playerId") @Min(1) int playerId) {
 
-        Optional<Player> playerOpt = playerService.findById(playerId);
-        if (playerOpt.isEmpty()) {
-            return URL_PROFILE_PROFILE_NOT_FOUND;
-        }
-
         Optional<CurrentUser> currentUserOpt = securityService.getCurrentAuthenticatedUser();
         if (currentUserOpt.isEmpty()) {
             return REDIRECT_HOME;
         }
 
-        CurrentUser currentUser = currentUserOpt.get();
-
-        // If the user is accessing his own profile OR if the user is an admin.
-        if (currentUser.getUser().getId() == playerId || Role.ADMIN.equals(currentUser.getUser().getRole())) {
-            model.addAttribute("editAvailable", true);
-
-            if (Role.ADMIN.equals(currentUser.getUser().getRole())) {
-                model.addAttribute("deleteAvailable", true);
-            } else {
-                model.addAttribute("deleteAvailable", false);
-            }
-        } else {
-            model.addAttribute("editAvailable", false);
-            model.addAttribute("deleteAvailable", false);
+        Optional<Player> playerOpt = playerService.findById(playerId);
+        if (playerOpt.isEmpty()) {
+            return URL_PROFILE_PROFILE_NOT_FOUND;
         }
 
         Player player = playerOpt.get();
@@ -128,10 +112,7 @@ public class ProfileController {
             diplomas = new ArrayList<>();
         }
 
-        model.addAttribute("player", player);
-        model.addAttribute("phases", phases);
-        model.addAttribute("playerPhases", playerPhases);
-        model.addAttribute("diplomas", diplomas);
+        prepareModelForProfilePlayer(model, currentUserOpt.get(), playerId, player, phases, playerPhases, diplomas);
 
         return URL_PROFILE_PROFILE_PLAYER;
     }
@@ -141,32 +122,26 @@ public class ProfileController {
     public String score(final Model model,
             @PathVariable("playerId") @Min(1) int playerId) {
 
-        Optional<Player> playerOpt = playerService.findById(playerId);
-        if (playerOpt.isEmpty()) {
-            return URL_PROFILE_PROFILE_NOT_FOUND;
-        }
-
         Optional<CurrentUser> currentUserOpt = securityService.getCurrentAuthenticatedUser();
         if (currentUserOpt.isEmpty()) {
             return REDIRECT_HOME;
         }
 
+        Optional<Player> playerOpt = playerService.findById(playerId);
+        if (playerOpt.isEmpty()) {
+            return URL_PROFILE_PROFILE_NOT_FOUND;
+        }
+
         CurrentUser currentUser = currentUserOpt.get();
 
-        if (currentUser.getUser().getId() != playerId &&
-                !Role.ADMIN.equals(currentUser.getUser().getRole()) &&
-                !Role.TEACHER.equals(currentUser.getUser().getRole())) {
+        if (isNotOwnProfileAndItIsNotAdminOrTeacher(playerId, currentUser)) {
             return REDIRECT_HOME;
         }
 
         Player player = playerOpt.get();
 
-        // The teacher only can see his own page and of his students.
-        if (currentUser.getUser().getId() != playerId &&
-                Role.TEACHER.equals(currentUser.getUser().getRole())) {
-            if (!classPlayerService.isMyStudent(currentUser.getUser(), player)) {
-                return REDIRECT_HOME;
-            }
+        if (isTeacherAccessingWrongStudent(player, currentUser)) {
+            return REDIRECT_HOME;
         }
 
         List<PlayerPhase> playerPhases = playerPhaseService.findByPlayer(player.getId());
@@ -178,13 +153,9 @@ public class ProfileController {
             playerPhasesGames = playerPhaseService.filterPlayerPhasesListByGame(playerPhases);
         }
 
-        model.addAttribute("player", player);
-        model.addAttribute("playerPhases", playerPhases);
-        model.addAttribute("playerPhasesGames", playerPhasesGames);
-        model.addAttribute("levels", levelService.findAll());
+        prepareModelForScore(model, player, playerPhases, playerPhasesGames);
 
-        if (Role.USER.equals(currentUser.getUser().getRole()) ||
-                Role.ADMIN.equals(currentUser.getUser().getRole())) {
+        if (isUserOrAdmin(currentUser)) {
             model.addAttribute("editAvailable", true);
             return URL_PROFILE_PROFILE_SCORE_OWNER;
         } else {
@@ -209,20 +180,14 @@ public class ProfileController {
 
         CurrentUser currentUser = currentUserOpt.get();
 
-        if (currentUser.getUser().getId() != playerId &&
-                !Role.ADMIN.equals(currentUser.getUser().getRole()) &&
-                !Role.TEACHER.equals(currentUser.getUser().getRole())) {
+        if (isNotOwnProfileAndItIsNotAdminOrTeacher(playerId, currentUser)) {
             return REDIRECT_HOME;
         }
 
         Player player = playerOpt.get();
 
-        // The teacher only can see his own page and of his students.
-        if (currentUser.getUser().getId() != playerId &&
-                Role.TEACHER.equals(currentUser.getUser().getRole())) {
-            if (!classPlayerService.isMyStudent(currentUser.getUser(), player)) {
-                return REDIRECT_HOME;
-            }
+        if (isTeacherAccessingWrongStudent(player, currentUser)) {
+            return REDIRECT_HOME;
         }
 
         List<Login> logins = loginService.findByPlayer(player.getId());
@@ -233,8 +198,7 @@ public class ProfileController {
         model.addAttribute("player", player);
         model.addAttribute("logins", logins);
 
-        if (Role.USER.equals(currentUser.getUser().getRole()) ||
-                Role.ADMIN.equals(currentUser.getUser().getRole())) {
+        if (isUserOrAdmin(currentUser)) {
             model.addAttribute("editAvailable", true);
             return URL_PROFILE_PROFILE_ATTENDANCE_OWNER;
         } else {
@@ -259,8 +223,7 @@ public class ProfileController {
 
         CurrentUser currentUser = currentUserOpt.get();
 
-        // If the player logged in is not the player ID && is not ADMIN.
-        if (currentUser.getUser().getId() != playerId && !Role.ADMIN.equals(currentUser.getUser().getRole())) {
+        if (!isUserOrAdmin(currentUser)) {
             return REDIRECT_HOME;
         }
 
@@ -299,16 +262,7 @@ public class ProfileController {
             return URL_PROFILE_PROFILE_NOT_FOUND;
         }
 
-        CurrentUser currentUser = currentUserOpt.get();
-
-        if (currentUser.getUser().getId() != playerId && !Role.ADMIN.equals(currentUser.getUser().getRole())) {
-            model.addAttribute("editAvailable", false);
-        } else {
-            model.addAttribute("editAvailable", true);
-        }
-
-        model.addAttribute("player", playerOpt.get());
-
+        prepareModelForVideos(model, currentUserOpt.get(), playerOpt.get());
         return URL_PROFILE_PROFILE_VIDEOS;
     }
 
@@ -348,18 +302,17 @@ public class ProfileController {
             return REDIRECT_HOME;
         }
 
-        CurrentUser currentUser = currentUserOpt.get();
-
-        if (currentUser.getUser().getId() != playerId && !Role.ADMIN.equals(currentUser.getUser().getRole())) {
-            return REDIRECT_HOME;
-        }
-
         Optional<Player> playerOpt = playerService.findById(playerId);
         if (playerOpt.isEmpty()) {
             return URL_PROFILE_PROFILE_NOT_FOUND;
         }
 
+        CurrentUser currentUser = currentUserOpt.get();
         Player player = playerOpt.get();
+
+        if (isNotOwnProfileAndIsNotAdmin(currentUser, player)) {
+            return REDIRECT_HOME;
+        }
 
         model.addAttribute("player", player);
         // Filter.
@@ -386,15 +339,14 @@ public class ProfileController {
 
         CurrentUser currentUser = currentUserOpt.get();
 
-        if (currentUser.getUser().getId() != edit.getId() && !Role.ADMIN.equals(currentUser.getUser().getRole())) {
+        if (isNotOwnProfileAndIsNotAdmin(currentUser, edit)) {
             return REDIRECT_HOME;
         }
 
-        String msg = playerManagementService.validateUpdateProfile(edit, locale);
-
-        if (!msg.isEmpty()) {
+        String validationError = playerManagementService.validateUpdateProfile(edit, locale);
+        if (!validationError.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "error");
-            redirectAttributes.addFlashAttribute("messageContent", msg);
+            redirectAttributes.addFlashAttribute("messageContent", validationError);
             return REDIRECT_PROFILE_PLAYERS + "/" + edit.getId() + "/edit";
         }
 
@@ -445,7 +397,7 @@ public class ProfileController {
         }
 
         CurrentUser currentUser = currentUserOpt.get();
-        if (currentUser.getUser().getId() != playervideo.getPlayer().getId() && !Role.ADMIN.equals(currentUser.getUser().getRole())) {
+        if (isNotOwnProfileAndIsNotAdmin(currentUser, playervideo.getPlayer())) {
             return REDIRECT_HOME;
         }
 
@@ -459,8 +411,6 @@ public class ProfileController {
         playervideo.setPlayer(player);
 
         String validationError = playerManagementService.validateAddVideo(playervideo, locale);
-
-        // If no problems have been detected until now.
         if (validationError.isEmpty()) {
             // The player cannot add a video in a phase that he hasn't finished yet.
             if (playerPhaseService.findByPlayerPhaseAndStatus(player.getId(), playervideo.getContent().getPhase().getId(), 3).isEmpty()) {
@@ -502,5 +452,55 @@ public class ProfileController {
         }
 
         return REDIRECT_PROFILE_PLAYERS + "/" + playervideo.getPlayer().getId() + "/videos";
+    }
+
+    private void prepareModelForProfilePlayer(Model model, CurrentUser currentUser, int playerId, Player player, List<Phase> phases,
+            List<PlayerPhase> playerPhases, List<Diploma> diplomas) {
+        boolean isAdmin = Role.ADMIN.equals(currentUser.getUser().getRole());
+        boolean isCurrentUser = currentUser.getUser().getId() == playerId;
+
+        model.addAttribute("editAvailable", isCurrentUser || isAdmin);
+        model.addAttribute("deleteAvailable", isAdmin);
+        model.addAttribute("player", player);
+        model.addAttribute("phases", phases);
+        model.addAttribute("playerPhases", playerPhases);
+        model.addAttribute("diplomas", diplomas);
+    }
+
+    private void prepareModelForScore(Model model, Player player, List<PlayerPhase> playerPhases, List<Game> playerPhasesGames) {
+        model.addAttribute("player", player);
+        model.addAttribute("playerPhases", playerPhases);
+        model.addAttribute("playerPhasesGames", playerPhasesGames);
+        model.addAttribute("levels", levelService.findAll());
+    }
+
+    private void prepareModelForVideos(Model model, CurrentUser currentUser, Player player) {
+        if (isNotOwnProfileAndIsNotAdmin(currentUser, player)) {
+            model.addAttribute("editAvailable", false);
+        } else {
+            model.addAttribute("editAvailable", true);
+        }
+
+        model.addAttribute("player", player);
+    }
+
+    private static boolean isNotOwnProfileAndIsNotAdmin(CurrentUser currentUser, Player player) {
+        return currentUser.getUser().getId() != player.getId() && !Role.ADMIN.equals(currentUser.getUser().getRole());
+    }
+
+    private boolean isNotOwnProfileAndItIsNotAdminOrTeacher(int playerId, CurrentUser currentUser) {
+        return currentUser.getUser().getId() != playerId &&
+                !Role.ADMIN.equals(currentUser.getUser().getRole()) &&
+                !Role.TEACHER.equals(currentUser.getUser().getRole());
+    }
+
+    private boolean isTeacherAccessingWrongStudent(Player player, CurrentUser currentUser) {
+        return currentUser.getUser().getId() != player.getId() &&
+                Role.TEACHER.equals(currentUser.getUser().getRole()) &&
+                !classPlayerService.isMyStudent(currentUser.getUser(), player);
+    }
+
+    private boolean isUserOrAdmin(CurrentUser currentUser) {
+        return Role.USER.equals(currentUser.getUser().getRole()) || Role.ADMIN.equals(currentUser.getUser().getRole());
     }
 }
