@@ -38,13 +38,9 @@ public class CompressResponseFilter implements Filter {
         if (!shouldCompress(req.getRequestURI())) {
             filterChain.doFilter(request, response);
         } else {
-            HtmlResponseWrapper capturingResponseWrapper = new HtmlResponseWrapper((HttpServletResponse) response);
+            HtmlResponseWrapper capturingResponseWrapper = createHtmlResponseWrapper(response);
             filterChain.doFilter(request, capturingResponseWrapper);
-
-            if (response.getContentType() != null) {
-                String content = capturingResponseWrapper.getCaptureAsString();
-                response.getWriter().write(compressor.compress(content));
-            }
+            compressAndWriteResponse(response, capturingResponseWrapper);
         }
     }
 
@@ -56,21 +52,37 @@ public class CompressResponseFilter implements Filter {
      * Return true if the content need to be compressed.
      */
     private boolean shouldCompress(String uri) {
-        Set<String> excludedExtensions = Set.of(".js", ".css", ".ico", ".png", ".jpg", ".gif", ".bmp", ".pdf");
-        Set<String> excludedPaths = Set.of("/static/", "/vendors/", "/diplomas/");
+        return !isExcludedExtension(uri) && !isExcludedPath(uri);
+    }
 
+    private boolean isExcludedExtension(String uri) {
+        Set<String> excludedExtensions = Set.of(".js", ".css", ".ico", ".png", ".jpg", ".gif", ".bmp", ".pdf");
         for (String ext : excludedExtensions) {
             if (uri.contains(ext)) {
-                return false;
+                return true;
             }
         }
+        return false;
+    }
 
+    private boolean isExcludedPath(String uri) {
+        Set<String> excludedPaths = Set.of("/static/", "/vendors/", "/diplomas/");
         for (String path : excludedPaths) {
             if (uri.contains(path)) {
-                return false;
+                return true;
             }
         }
+        return false;
+    }
 
-        return true;
+    private HtmlResponseWrapper createHtmlResponseWrapper(ServletResponse response) {
+        return new HtmlResponseWrapper((HttpServletResponse) response);
+    }
+
+    private void compressAndWriteResponse(ServletResponse response, HtmlResponseWrapper capturingResponseWrapper) throws IOException {
+        if (response.getContentType() != null) {
+            String content = capturingResponseWrapper.getCaptureAsString();
+            response.getWriter().write(compressor.compress(content));
+        }
     }
 }
