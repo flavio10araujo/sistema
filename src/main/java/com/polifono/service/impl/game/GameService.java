@@ -5,34 +5,29 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.polifono.model.entity.Answer;
 import com.polifono.model.entity.Game;
 import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Question;
 import com.polifono.repository.IGameRepository;
-import com.polifono.service.IGameService;
 import com.polifono.service.IQuestionService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class GameServiceImpl implements IGameService {
+public class GameService {
 
     private final IGameRepository repository;
     private final IQuestionService questionService;
 
-    @Override
     public List<Game> findAll() {
         return repository.findAll();
     }
 
-    @Override
     public List<Game> findByActive(boolean active) {
         return repository.findByActive(active);
     }
 
-    @Override
     public Optional<Game> findByNamelink(String namelink) {
         return Optional.ofNullable(repository.findByNamelink(namelink));
     }
@@ -40,7 +35,6 @@ public class GameServiceImpl implements IGameService {
     /**
      * This method is used to calculate the correct score to the player.
      */
-    @Override
     public int calculateScore(int numAttempts, int grade) {
 		/*
 		 1
@@ -105,44 +99,27 @@ public class GameServiceImpl implements IGameService {
      * playerAnswers are the answers of the player.
      * This method returns the percentage of right answers given by the player.
      */
-    @Override
     public int calculateGrade(List<Integer> questionsId, java.util.Map<String, String> playerAnswers) {
-        Question questionAux;
-        int countQuestionsRight = 0, phaseOrder = 0;
-        String playerAnswer;
+        long countQuestionsRight = questionsId.stream()
+                .map(questionService::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(question -> {
+                    String playerAnswer = playerAnswers.get(String.valueOf(question.getId()));
+                    return playerAnswer != null && question.getAnswers().stream()
+                            .anyMatch(answer -> answer.getId() == Integer.parseInt(playerAnswer) && answer.isRight());
+                })
+                .count();
 
-        // For each question submitted:
-        for (Integer questionId : questionsId) {
-            // Get the question from the database by your ID.
-            questionAux = questionService.findById(questionId).get();
-
-            if (questionAux.getContent().getPhase().getOrder() > phaseOrder) {
-                phaseOrder = questionAux.getContent().getPhase().getOrder();
-            }
-
-            playerAnswer = playerAnswers.get(questionId.toString());
-
-            // If playerAnswer is null, it is because the player hasn't answered this question.
-            if (playerAnswer != null) {
-                for (Answer answer : questionAux.getAnswers()) {
-                    // If the player has chosen the right answer.
-                    if ((answer.getId() == Integer.parseInt(playerAnswer)) && answer.isRight()) {
-                        countQuestionsRight++;
-                    }
-                }
-            }
-        }
-
-        return (countQuestionsRight * 100) / questionsId.size();
+        return (int) ((countQuestionsRight * 100) / questionsId.size());
     }
 
     /**
      * Get the phase of a test based on the ID of the last question of the test.
      */
-    @Override
     public Phase getPhaseOfTheTest(List<Integer> questionsId) {
         Integer questionId = questionsId.get(questionsId.size() - 1);
-        Question questionAux = questionService.findById(questionId).get();
+        Question questionAux = questionService.findById(questionId).orElseThrow(() -> new IllegalArgumentException("Question not found"));
         return questionAux.getContent().getPhase();
     }
 }

@@ -18,10 +18,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.model.entity.Phase;
 import com.polifono.model.form.admin.basic.PhaseFilterForm;
-import com.polifono.service.IGameService;
 import com.polifono.service.ILevelService;
 import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
+import com.polifono.service.impl.game.GameService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin/basic")
 public class PhaseController {
 
-    private final IGameService gameService;
+    private final GameService gameService;
     private final ILevelService levelService;
     private final IMapService mapService;
     private final IPhaseService phaseService;

@@ -22,9 +22,9 @@ import com.polifono.model.entity.PlayerGame;
 import com.polifono.model.form.teacher.TransferCreditGroupForm;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
-import com.polifono.service.IGameService;
 import com.polifono.service.IPlayerGameService;
 import com.polifono.service.impl.SecurityService;
+import com.polifono.service.impl.game.GameService;
 import com.polifono.service.impl.player.PlayerCreditService;
 import com.polifono.service.impl.player.PlayerService;
 
@@ -36,7 +36,7 @@ import lombok.RequiredArgsConstructor;
 public class TransferCreditController {
 
     private final SecurityService securityService;
-    private final IGameService gameService;
+    private final GameService gameService;
     private final PlayerService playerService;
     private final PlayerCreditService playerCreditService;
     private final IClassService classService;

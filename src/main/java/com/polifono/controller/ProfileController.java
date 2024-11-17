@@ -45,7 +45,6 @@ import com.polifono.model.enums.Role;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IContentService;
 import com.polifono.service.IDiplomaService;
-import com.polifono.service.IGameService;
 import com.polifono.service.ILevelService;
 import com.polifono.service.ILoginService;
 import com.polifono.service.IPhaseService;
@@ -53,6 +52,7 @@ import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.IPlayerVideoService;
 import com.polifono.service.ITransactionService;
 import com.polifono.service.impl.SecurityService;
+import com.polifono.service.impl.game.GameService;
 import com.polifono.service.impl.player.PlayerHandler;
 import com.polifono.service.impl.player.PlayerService;
 
@@ -73,7 +73,7 @@ public class ProfileController {
     private final IClassPlayerService classPlayerService;
     private final ILoginService loginService;
     private final IDiplomaService diplomaService;
-    private final IGameService gameService;
+    private final GameService gameService;
     private final ILevelService levelService;
     private final ITransactionService transactionService;
     private final IPlayerVideoService playerVideoService;

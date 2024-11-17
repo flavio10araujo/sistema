@@ -18,9 +18,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.model.entity.Game;
 import com.polifono.model.entity.Map;
-import com.polifono.service.IGameService;
 import com.polifono.service.ILevelService;
 import com.polifono.service.IMapService;
+import com.polifono.service.impl.game.GameService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin/basic")
 public class MapController {
 
-    private final IGameService gameService;
+    private final GameService gameService;
     private final ILevelService levelService;
     private final IMapService mapService;
 

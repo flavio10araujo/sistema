@@ -19,9 +19,9 @@ import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerPhase;
 import com.polifono.model.form.teacher.ReportGeneralForm;
 import com.polifono.repository.IPlayerPhaseRepository;
-import com.polifono.service.IGameService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
+import com.polifono.service.impl.game.GameService;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 
     private final IPlayerPhaseRepository repository;
-    private final IGameService gameService;
+    private final GameService gameService;
     private final IPhaseService phaseService;
     private final SecurityService securityService;
 

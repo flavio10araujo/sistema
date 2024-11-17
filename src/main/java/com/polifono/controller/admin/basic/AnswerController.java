@@ -21,11 +21,11 @@ import com.polifono.model.entity.Answer;
 import com.polifono.model.entity.Question;
 import com.polifono.model.form.admin.basic.AnswerFilterForm;
 import com.polifono.service.IAnswerService;
-import com.polifono.service.IGameService;
 import com.polifono.service.ILevelService;
 import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IQuestionService;
+import com.polifono.service.impl.game.GameService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin/basic")
 public class AnswerController {
 
-    private final IGameService gameService;
+    private final GameService gameService;
     private final ILevelService levelService;
     private final IMapService mapService;
     private final IPhaseService phaseService;

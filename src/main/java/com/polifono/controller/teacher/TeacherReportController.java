@@ -20,9 +20,9 @@ import com.polifono.model.entity.ClassPlayer;
 import com.polifono.model.form.teacher.ReportGeneralForm;
 import com.polifono.service.IClassPlayerService;
 import com.polifono.service.IClassService;
-import com.polifono.service.IGameService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.impl.SecurityService;
+import com.polifono.service.impl.game.GameService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class TeacherReportController {
 
     private final SecurityService securityService;
-    private final IGameService gameService;
+    private final GameService gameService;
     private final IClassService classService;
     private final IClassPlayerService classPlayerService;
     private final IPlayerPhaseService playerPhaseService;

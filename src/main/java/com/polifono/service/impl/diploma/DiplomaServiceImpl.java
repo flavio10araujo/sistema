@@ -62,6 +62,7 @@ public class DiplomaServiceImpl implements IDiplomaService {
         return repository.findByCode(code);
     }
 
+    @Override
     public void generateDiplomaPdf(HttpServletResponse response, Diploma diploma, Locale locale) throws JRException, IOException {
         List<Diploma> list = new ArrayList<>();
         list.add(diploma);
@@ -77,6 +78,13 @@ public class DiplomaServiceImpl implements IDiplomaService {
         JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
     }
 
+    @Override
+    public Diploma setupDiploma(Player player, Phase currentPhase) {
+        Diploma diploma = configureDiploma(player, currentPhase.getMap().getGame(), currentPhase.getMap().getLevel());
+        save(diploma);
+        return diploma;
+    }
+
     private Map<String, Object> createParams(Locale locale) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("company", messagesResource.getMessage("diploma.company", null, locale));
@@ -85,13 +93,6 @@ public class DiplomaServiceImpl implements IDiplomaService {
         params.put("img_logo", new ClassPathResource("img/diploma/logo.png").getURL());
         params.put("img_assinatura", new ClassPathResource("img/diploma/assinatura.png").getURL());
         return params;
-    }
-
-    @Override
-    public Diploma setupDiploma(Player player, Phase currentPhase) {
-        Diploma diploma = configureDiploma(player, currentPhase.getMap().getGame(), currentPhase.getMap().getLevel());
-        save(diploma);
-        return diploma;
     }
 
     private Diploma configureDiploma(Player player, Game game, Level level) {

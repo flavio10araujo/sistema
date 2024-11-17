@@ -27,11 +27,11 @@ import com.polifono.model.entity.Game;
 import com.polifono.model.entity.Map;
 import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Question;
-import com.polifono.service.IGameService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.impl.SecurityService;
 import com.polifono.service.impl.game.GameHandler;
+import com.polifono.service.impl.game.GameService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +41,7 @@ import lombok.RequiredArgsConstructor;
 public class GameController {
 
     private final SecurityService securityService;
-    private final IGameService gameService;
+    private final GameService gameService;
     private final GameHandler gameHandler;
     private final IPhaseService phaseService;
     private final IPlayerPhaseService playerPhaseService;

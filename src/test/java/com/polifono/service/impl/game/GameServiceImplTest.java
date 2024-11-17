@@ -16,8 +16,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.polifono.model.entity.Answer;
+import com.polifono.model.entity.Content;
 import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.entity.Question;
 import com.polifono.repository.IGameRepository;
+import com.polifono.service.IQuestionService;
 
 /**
  * Unit test methods for the GameService.
@@ -26,12 +31,13 @@ import com.polifono.repository.IGameRepository;
 public class GameServiceImplTest {
 
     @InjectMocks
-    private GameServiceImpl service;
+    private GameService service;
 
     @Mock
     private IGameRepository repository;
 
-    private final String NAME_LINK = "recorder";
+    @Mock
+    private IQuestionService questionService;
 
     /* findAll - begin */
     @Test
@@ -54,7 +60,8 @@ public class GameServiceImplTest {
     public void findByNamelink_WhenSearchByNamelinkExistent_ReturnGame() {
         Optional<Game> entity = getEntityStubData();
 
-        when(repository.findByNamelink(NAME_LINK)).thenReturn(entity.get());
+        String NAME_LINK = "recorder";
+        when(repository.findByNamelink(NAME_LINK)).thenReturn(entity.orElse(null));
 
         Optional<Game> entityReturned = service.findByNamelink(NAME_LINK);
         Assertions.assertTrue(entityReturned.isPresent(), "failure - expected not null for '" + NAME_LINK + "'");
@@ -103,6 +110,112 @@ public class GameServiceImplTest {
     /* calculateScore - end */
 
     /* calculateGrade - begin */
+    @Test
+    public void givenAllAnswersAreRight_whenCalculateGrade_thenReturn100() {
+        List<Integer> questionsId = List.of(101, 102, 103, 104, 105);
+        Optional<Question> q1 = getQuestion(101);
+        Optional<Question> q2 = getQuestion(102);
+        Optional<Question> q3 = getQuestion(103);
+        Optional<Question> q4 = getQuestion(104);
+        Optional<Question> q5 = getQuestion(105);
+
+        java.util.Map<String, String> playerAnswers = new java.util.HashMap<>();
+        playerAnswers.put("101", "104");
+        playerAnswers.put("102", "105");
+        playerAnswers.put("103", "106");
+        playerAnswers.put("104", "107");
+        playerAnswers.put("105", "108");
+
+        when(questionService.findById(101)).thenReturn(q1);
+        when(questionService.findById(102)).thenReturn(q2);
+        when(questionService.findById(103)).thenReturn(q3);
+        when(questionService.findById(104)).thenReturn(q4);
+        when(questionService.findById(105)).thenReturn(q5);
+
+        int ret = service.calculateGrade(questionsId, playerAnswers);
+
+        Assertions.assertEquals(100, ret);
+    }
+
+    @Test
+    public void given80AnswersAreRight_whenCalculateGrade_thenReturn80() {
+        List<Integer> questionsId = List.of(101, 102, 103, 104, 105);
+        Optional<Question> q1 = getQuestion(101);
+        Optional<Question> q2 = getQuestion(102);
+        Optional<Question> q3 = getQuestion(103);
+        Optional<Question> q4 = getQuestion(104);
+        Optional<Question> q5 = getQuestion(105);
+
+        java.util.Map<String, String> playerAnswers = new java.util.HashMap<>();
+        playerAnswers.put("101", "104");
+        playerAnswers.put("102", "105");
+        playerAnswers.put("103", "106");
+        playerAnswers.put("104", "999"); // wrong answer
+        playerAnswers.put("105", "108");
+
+        when(questionService.findById(101)).thenReturn(q1);
+        when(questionService.findById(102)).thenReturn(q2);
+        when(questionService.findById(103)).thenReturn(q3);
+        when(questionService.findById(104)).thenReturn(q4);
+        when(questionService.findById(105)).thenReturn(q5);
+
+        int ret = service.calculateGrade(questionsId, playerAnswers);
+
+        Assertions.assertEquals(80, ret);
+    }
+
+    @Test
+    public void givenAllAnswersAreWrong_whenCalculateGrade_thenReturn0() {
+        List<Integer> questionsId = List.of(101, 102, 103, 104, 105);
+        Optional<Question> q1 = getQuestion(101);
+        Optional<Question> q2 = getQuestion(102);
+        Optional<Question> q3 = getQuestion(103);
+        Optional<Question> q4 = getQuestion(104);
+        Optional<Question> q5 = getQuestion(105);
+
+        java.util.Map<String, String> playerAnswers = new java.util.HashMap<>();
+        playerAnswers.put("101", "999");
+        playerAnswers.put("102", "999");
+        playerAnswers.put("103", "999");
+        playerAnswers.put("104", "999");
+        playerAnswers.put("105", "999");
+
+        when(questionService.findById(101)).thenReturn(q1);
+        when(questionService.findById(102)).thenReturn(q2);
+        when(questionService.findById(103)).thenReturn(q3);
+        when(questionService.findById(104)).thenReturn(q4);
+        when(questionService.findById(105)).thenReturn(q5);
+
+        int ret = service.calculateGrade(questionsId, playerAnswers);
+
+        Assertions.assertEquals(0, ret);
+    }
+
+    @Test
+    public void givenOneQuestionWasNotAnswered_whenCalculateGrade_thenReturn80() {
+        List<Integer> questionsId = List.of(101, 102, 103, 104, 105);
+        Optional<Question> q1 = getQuestion(101);
+        Optional<Question> q2 = getQuestion(102);
+        Optional<Question> q3 = getQuestion(103); // not answered
+        Optional<Question> q4 = getQuestion(104);
+        Optional<Question> q5 = getQuestion(105);
+
+        java.util.Map<String, String> playerAnswers = new java.util.HashMap<>();
+        playerAnswers.put("101", "104");
+        playerAnswers.put("102", "105");
+        playerAnswers.put("104", "107");
+        playerAnswers.put("105", "108");
+
+        when(questionService.findById(101)).thenReturn(q1);
+        when(questionService.findById(102)).thenReturn(q2);
+        when(questionService.findById(103)).thenReturn(q3);
+        when(questionService.findById(104)).thenReturn(q4);
+        when(questionService.findById(105)).thenReturn(q5);
+
+        int ret = service.calculateGrade(questionsId, playerAnswers);
+
+        Assertions.assertEquals(80, ret);
+    }
     /* calculateGrade - end */
 
     /* getPhaseOfTheTest - begin */
@@ -117,13 +230,44 @@ public class GameServiceImplTest {
     private List<Game> getEntityListStubData() {
         List<Game> list = new ArrayList<>();
 
-        Game entity1 = getEntityStubData().get();
-        Game entity2 = getEntityStubData().get();
+        Game entity1 = getEntityStubData().orElse(null);
+        Game entity2 = getEntityStubData().orElse(null);
 
         list.add(entity1);
         list.add(entity2);
 
         return list;
+    }
+
+    public Optional<Question> getQuestion(int id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setOrder(id);
+        question.setName("Question " + id);
+        question.setContent(getContent(id));
+        question.setAnswers(getAnswers(id));
+        return Optional.of(question);
+    }
+
+    public Content getContent(int id) {
+        Content content = new Content();
+        content.setPhase(getPhase(id));
+        return content;
+    }
+
+    public Phase getPhase(int id) {
+        Phase phase = new Phase();
+        phase.setOrder(id);
+        return phase;
+    }
+
+    public List<Answer> getAnswers(int id) {
+        List<Answer> answers = new ArrayList<>();
+        answers.add(Answer.builder().id(id + 1).name("Answer 1").right(false).build());
+        answers.add(Answer.builder().id(id + 2).name("Answer 2").right(false).build());
+        answers.add(Answer.builder().id(id + 3).name("Answer 3").right(true).build());
+        answers.add(Answer.builder().id(id + 4).name("Answer 4").right(false).build());
+        return answers;
     }
     /* stubs - end */
 }

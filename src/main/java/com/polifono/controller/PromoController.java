@@ -37,12 +37,12 @@ import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerPromo;
 import com.polifono.model.entity.Promo;
 import com.polifono.service.IContentService;
-import com.polifono.service.IGameService;
 import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPromoService;
 import com.polifono.service.IPromoService;
 import com.polifono.service.impl.SecurityService;
+import com.polifono.service.impl.game.GameService;
 import com.polifono.service.impl.player.PlayerCreditService;
 import com.polifono.service.impl.player.PlayerService;
 
@@ -60,7 +60,7 @@ public class PromoController {
     private final SecurityService securityService;
     private final PlayerService playerService;
     private final PlayerCreditService playerCreditService;
-    private final IGameService gameService;
+    private final GameService gameService;
     private final IMapService mapService;
     private final IPhaseService phaseService;
     private final IContentService contentService;

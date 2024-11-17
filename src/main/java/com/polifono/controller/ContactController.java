@@ -1,5 +1,7 @@
 package com.polifono.controller;
 
+import static com.polifono.common.constant.TemplateConstants.URL_INDEX;
+
 import java.util.Locale;
 
 import org.springframework.stereotype.Controller;
@@ -9,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.service.impl.RecaptchaService;
 import com.polifono.service.impl.SendEmailService;
-import com.polifono.service.impl.contact.ContactHandler;
+import com.polifono.service.impl.contact.ContactModelPreparer;
 import com.polifono.service.impl.contact.ContactService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +24,7 @@ public class ContactController {
     private final RecaptchaService captchaService;
     private final SendEmailService sendEmailService;
     private final ContactService contactService;
-    private final ContactHandler contactHandler;
+    private final ContactModelPreparer contactModelPreparer;
 
     @PostMapping("/contact")
     public String contactSubmit(final Model model,
@@ -34,15 +36,18 @@ public class ContactController {
 
         String captchaVerifyMessage = captchaService.verifyRecaptcha(request.getRemoteAddr(), recaptchaResponse);
         if (captchaVerifyMessage != null && !captchaVerifyMessage.isEmpty()) {
-            return contactHandler.handleCaptchaError(model, locale);
+            contactModelPreparer.prepareModelForCaptchaError(model, locale);
+            return URL_INDEX;
         }
 
         String validationMessage = contactService.validateContact(email, message, locale);
         if (!validationMessage.isEmpty()) {
-            return contactHandler.handleError(model, validationMessage);
+            contactModelPreparer.prepareModelForContactError(model, validationMessage);
+            return URL_INDEX;
         }
 
         sendEmailService.sendEmailContact(email, message);
-        return contactHandler.handleSuccess(model);
+        contactModelPreparer.prepareModelForContactSuccess(model);
+        return URL_INDEX;
     }
 }

@@ -26,7 +26,7 @@ import com.polifono.service.impl.ContentServiceImpl;
 import com.polifono.service.impl.LevelServiceImpl;
 import com.polifono.service.impl.MapServiceImpl;
 import com.polifono.service.impl.PhaseServiceImpl;
-import com.polifono.service.impl.game.GameServiceImpl;
+import com.polifono.service.impl.game.GameService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin/basic")
 public class ContentController {
 
-    private final GameServiceImpl gameService;
+    private final GameService gameService;
     private final LevelServiceImpl levelService;
     private final MapServiceImpl mapService;
     private final PhaseServiceImpl phaseService;

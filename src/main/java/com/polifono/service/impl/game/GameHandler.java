@@ -28,7 +28,6 @@ import com.polifono.model.entity.PlayerPhase;
 import com.polifono.model.entity.Question;
 import com.polifono.service.IContentService;
 import com.polifono.service.IDiplomaService;
-import com.polifono.service.IGameService;
 import com.polifono.service.ILevelService;
 import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
@@ -49,7 +48,7 @@ public class GameHandler {
     private final SecurityService securityService;
     private final PlayerService playerService;
     private final PlayerCreditService playerCreditService;
-    private final IGameService gameService;
+    private final GameService gameService;
     private final ILevelService levelService;
     private final IMapService mapService;
     private final IPhaseService phaseService;
@@ -102,26 +101,6 @@ public class GameHandler {
 
     public void addRankingToModel(Model model) {
         model.addAttribute("ranking_monthly", playerPhaseService.getRankingMonthly());
-    }
-
-    public void addScoreToModel(Model model, int score) {
-        model.addAttribute("score", score);
-    }
-
-    public void addGradeToModel(Model model, int grade) {
-        model.addAttribute("grade", grade);
-    }
-
-    public void addDiplomaToModel(Model model, Diploma diploma) {
-        model.addAttribute("diploma", diploma);
-    }
-
-    public void addCurrentPhaseToModel(Model model, Phase currentPhase) {
-        model.addAttribute("phase", currentPhase);
-    }
-
-    public void addNextPhaseToModel(Model model, Map map, PlayerPhase playerPhase) {
-        model.addAttribute("phase", setNextPhase(getPhasesCheckedByMapAndPlayerPhase(map, playerPhase)));
     }
 
     public void addQuestionsIdToSession(HttpSession session, List<Question> questions) {
@@ -185,7 +164,7 @@ public class GameHandler {
     }
 
     public String handleFailedPhase(Model model, Phase currentPhase, int grade) {
-        addCurrentPhaseToModel(model, currentPhase);
+        addPhaseToModel(model, currentPhase);
         addGradeToModel(model, grade);
         return URL_GAMES_RESULT_TEST;
     }
@@ -203,7 +182,7 @@ public class GameHandler {
             return handleLevelOrGameCompletion(map);
         }
 
-        addNextPhaseToModel(model, map, playerPhase);
+        addPhaseToModel(model, setNextPhase(getPhasesCheckedByMapAndPlayerPhase(map, playerPhase)));
         addGradeToModel(model, grade);
         return URL_GAMES_RESULT_TEST;
     }
@@ -273,5 +252,21 @@ public class GameHandler {
 
     private List<Phase> getPhasesCheckedByMapAndPlayerPhase(Map map, PlayerPhase playerPhase) {
         return phaseService.findPhasesCheckedByMap(map, playerPhase);
+    }
+
+    private void addScoreToModel(Model model, int score) {
+        model.addAttribute("score", score);
+    }
+
+    private void addGradeToModel(Model model, int grade) {
+        model.addAttribute("grade", grade);
+    }
+
+    private void addDiplomaToModel(Model model, Diploma diploma) {
+        model.addAttribute("diploma", diploma);
+    }
+
+    private void addPhaseToModel(Model model, Phase phase) {
+        model.addAttribute("phase", phase);
     }
 }
