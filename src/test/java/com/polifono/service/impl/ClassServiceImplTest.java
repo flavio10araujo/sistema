@@ -16,8 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.polifono.model.entity.Player;
 import com.polifono.model.entity.Class;
+import com.polifono.model.entity.Player;
 import com.polifono.repository.IClassRepository;
 
 /**
@@ -27,7 +27,7 @@ import com.polifono.repository.IClassRepository;
 public class ClassServiceImplTest {
 
     @InjectMocks
-    private ClassServiceImpl service;
+    private ClassService service;
 
     @Mock
     private IClassRepository repository;

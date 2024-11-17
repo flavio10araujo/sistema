@@ -12,7 +12,7 @@ import com.polifono.model.entity.Content;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.Playervideo;
 
-public interface IPlayervideoRepository extends JpaRepository<Playervideo, Integer> {
+public interface IPlayerVideoRepository extends JpaRepository<Playervideo, Integer> {
 
     @Query("SELECT playervideo FROM Playervideo playervideo WHERE playervideo.active = true ORDER BY playervideo.dtInc DESC")
     List<Playervideo> findGeneral(Pageable pageable);

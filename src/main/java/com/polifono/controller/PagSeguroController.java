@@ -19,11 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.polifono.model.entity.Transaction;
-import com.polifono.service.ITransactionService;
 import com.polifono.service.impl.transaction.PagSeguroHandler;
 import com.polifono.service.impl.transaction.PagSeguroService;
+import com.polifono.service.impl.transaction.TransactionService;
 import com.polifono.service.impl.transaction.TransactionUpdater;
-import com.polifono.service.impl.transaction.TransactionValidator;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,9 +31,8 @@ import lombok.RequiredArgsConstructor;
 public class PagSeguroController {
 
     private final MessageSource messagesResource;
-    private final ITransactionService transactionService;
+    private final TransactionService transactionService;
     private final PagSeguroService pagSeguroService;
-    private final TransactionValidator transactionValidator;
     private final TransactionUpdater transactionUpdater;
     private final PagSeguroHandler pagSeguroHandler;
 
@@ -45,7 +43,7 @@ public class PagSeguroController {
             Locale locale) {
 
         List<Transaction> transactions = transactionService.findByCode(transactionCode);
-        if (transactionValidator.isTransactionAlreadyRegistered(transactions)) {
+        if (transactionService.isTransactionListNotEmpty(transactions)) {
             prepareModelForBuyCreditsPage(model, locale);
             return URL_BUY_CREDITS;
         }

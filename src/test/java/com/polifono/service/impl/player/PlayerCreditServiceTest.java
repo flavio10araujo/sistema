@@ -44,7 +44,7 @@ public class PlayerCreditServiceTest {
 
     /* playerHasCredits - begin */
     @Test
-    public void playerHasCredits_WhenPlayerHasGenericCredits_ReturnTrue() {
+    public void givenPlayerHasGenericCredits_whenPlayerHasCredits_thenReturnTrue() {
         int id = PLAYER_ID_EXISTENT;
 
         Player player = new Player();
@@ -59,7 +59,7 @@ public class PlayerCreditServiceTest {
     }
 
     @Test
-    public void playerHasCredits_WhenPlayerHasSpecificCredits_ReturnTrue() {
+    public void givenPlayerHasSpecificCredits_whenPlayerHasCredits_thenReturnTrue() {
         Player entity = getPlayerWithSpecificCreditsStubData();
         entity.setCredit(0); // Assuring that the player has no generic credits.
 
@@ -72,7 +72,7 @@ public class PlayerCreditServiceTest {
     }
 
     @Test
-    public void playerHasCredits_WhenPlayerHasGenericAndSpecificCredits_ReturnTrue() {
+    public void givenPlayerHasGenericAndSpecificCredits_whenPlayerHasCredits_thenReturnTrue() {
         Player entity = getPlayerWithSpecificCreditsStubData();
         entity.setCredit(30); // Assuring that the player has generic credits.
 
@@ -85,13 +85,13 @@ public class PlayerCreditServiceTest {
     }
 
     @Test
-    public void playerHasCredits_WhenPlayerHasNotCredits_ReturnFalse() {
-        Optional<Player> entity = getEntityStubData();
-        entity.get().setCredit(0); // Assuring that the player has no generic credits.
+    public void givenPlayerHasNotCredits_whenPlayerHasCredits_thenReturnFalse() {
+        Player entity = getEntityStubData();
+        entity.setCredit(0); // Assuring that the player has no generic credits.
 
-        when(playerService.findById(PLAYER_ID_EXISTENT)).thenReturn(entity);
+        when(playerService.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(entity));
 
-        Assertions.assertFalse(service.playerHasCredits(entity.get().getId(), getPhaseStubData()));
+        Assertions.assertFalse(service.playerHasCredits(entity.getId(), getPhaseStubData()));
 
         verify(playerService, times(1)).findById(PLAYER_ID_EXISTENT);
         verifyNoMoreInteractions(playerService);
@@ -100,11 +100,11 @@ public class PlayerCreditServiceTest {
 
     /* addCreditsToPlayer - begin */
     @Test
-    public void addCreditsToPlayer_WhenEverythingIsOK_ReturnPlayerWithMoreCredits() {
-        Optional<Player> entity = getEntityStubData();
+    public void givenEverythingIsOK_whenAddCreditsToPlayer_thenReturnPlayerWithMoreCredits() {
+        Player entity = getEntityStubData();
 
-        when(playerService.findById(PLAYER_ID_EXISTENT)).thenReturn(entity);
-        when(playerService.save(entity.get())).thenReturn(entity.get());
+        when(playerService.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(entity));
+        when(playerService.save(entity)).thenReturn(entity);
 
         Player entityReturned = service.addCreditsToPlayer(PLAYER_ID_EXISTENT, 10);
 
@@ -112,18 +112,18 @@ public class PlayerCreditServiceTest {
         Assertions.assertEquals(PLAYER_ID_EXISTENT.intValue(), entityReturned.getId(), "failure - expected id attribute match");
 
         verify(playerService, times(1)).findById(PLAYER_ID_EXISTENT);
-        verify(playerService, times(1)).save(entity.get());
+        verify(playerService, times(1)).save(entity);
         verifyNoMoreInteractions(playerService);
     }
     /* addCreditsToPlayer - end */
 
     /* removeCreditsFromPlayer - begin */
     @Test
-    public void removeCreditsFromPlayer_WhenEverythingIsOK_ReturnPlayerWithLessCredits() {
-        Optional<Player> entity = getEntityStubData();
+    public void givenEverythingIsOK_whenRemoveCreditsFromPlayer_thenReturnPlayerWithLessCredits() {
+        Player entity = getEntityStubData();
 
-        when(playerService.findById(PLAYER_ID_EXISTENT)).thenReturn(entity);
-        when(playerService.save(entity.get())).thenReturn(entity.get());
+        when(playerService.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(entity));
+        when(playerService.save(entity)).thenReturn(entity);
 
         Player entityReturned = service.removeCreditsFromPlayer(PLAYER_ID_EXISTENT, 5);
 
@@ -131,14 +131,14 @@ public class PlayerCreditServiceTest {
         Assertions.assertEquals(PLAYER_ID_EXISTENT.intValue(), entityReturned.getId(), "failure - expected id attribute match");
 
         verify(playerService, times(1)).findById(PLAYER_ID_EXISTENT);
-        verify(playerService, times(1)).save(entity.get());
+        verify(playerService, times(1)).save(entity);
         verifyNoMoreInteractions(playerService);
     }
     /* removeCreditsFromPlayer - end */
 
     /* removeOneCreditFromPlayer - begin */
     @Test
-    public void removeOneCreditFromPlayer_WhenThePlayerHasSpecificCreditsOfTheGame_ReturnPlayerWithOneSpecificCreditLess() {
+    public void givenPlayerHasSpecificCreditsOfTheGame_whenRemoveOneCreditFromPlayer_thenReturnPlayerWithOneSpecificCreditLess() {
         Player entity = getPlayerWithSpecificCreditsStubData();
 
         Game game = new Game();
@@ -161,22 +161,22 @@ public class PlayerCreditServiceTest {
     }
 
     @Test
-    public void removeOneCreditFromPlayer_WhenThePlayerDoesntHaveSpecificCreditsOfTheGame_ReturnPlayerWithOneGenericCreditLess() {
-        Optional<Player> entity = getEntityStubData();
+    public void givenPlayerDoesntHaveSpecificCreditsOfTheGame_whenRemoveOneCreditFromPlayer_thenReturnPlayerWithOneGenericCreditLess() {
+        Player entity = getEntityStubData();
 
         Game game = new Game();
         game.setId(GAME_ID_EXISTENT);
 
-        when(playerService.findById(PLAYER_ID_EXISTENT)).thenReturn(entity);
-        when(playerService.save(entity.get())).thenReturn(entity.get());
+        when(playerService.findById(PLAYER_ID_EXISTENT)).thenReturn(Optional.of(entity));
+        when(playerService.save(entity)).thenReturn(entity);
 
-        Player entityReturned = service.removeOneCreditFromPlayer(entity.get(), game);
+        Player entityReturned = service.removeOneCreditFromPlayer(entity, game);
 
         Assertions.assertNotNull(entityReturned, "failure - expected not null");
         Assertions.assertEquals(PLAYER_ID_EXISTENT.intValue(), entityReturned.getId(), "failure - expected id attribute match");
 
         verify(playerService, times(1)).findById(PLAYER_ID_EXISTENT);
-        verify(playerService, times(1)).save(entity.get());
+        verify(playerService, times(1)).save(entity);
         verifyNoMoreInteractions(playerService);
     }
     /* removeOneCreditFromPlayer - end */
@@ -213,7 +213,7 @@ public class PlayerCreditServiceTest {
         return phase;
     }
 
-    private Optional<Player> getEntityStubData() {
+    private Player getEntityStubData() {
         List<PlayerGame> playerGameList = new ArrayList<>();
 
         Player entity = new Player();
@@ -222,10 +222,10 @@ public class PlayerCreditServiceTest {
         entity.setEmail(PLAYER_EMAIL_EXISTENT);
         entity.setPassword("password");
         entity.setRole(Role.USER);
-
+        entity.setCredit(10);
         entity.setPlayerGameList(playerGameList);
 
-        return Optional.of(entity);
+        return entity;
     }
     /* stubs - end */
 }

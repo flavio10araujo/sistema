@@ -18,9 +18,9 @@ import com.polifono.model.CurrentUser;
 import com.polifono.model.dto.teacher.ReportGeneralDTO;
 import com.polifono.model.entity.ClassPlayer;
 import com.polifono.model.form.teacher.ReportGeneralForm;
-import com.polifono.service.IClassPlayerService;
-import com.polifono.service.IClassService;
 import com.polifono.service.IPlayerPhaseService;
+import com.polifono.service.impl.ClassPlayerService;
+import com.polifono.service.impl.ClassService;
 import com.polifono.service.impl.SecurityService;
 import com.polifono.service.impl.game.GameService;
 
@@ -33,8 +33,8 @@ public class TeacherReportController {
 
     private final SecurityService securityService;
     private final GameService gameService;
-    private final IClassService classService;
-    private final IClassPlayerService classPlayerService;
+    private final ClassService classService;
+    private final ClassPlayerService classPlayerService;
     private final IPlayerPhaseService playerPhaseService;
 
     @GetMapping("/report")

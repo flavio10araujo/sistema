@@ -20,8 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.polifono.model.CurrentUser;
 import com.polifono.model.entity.Class;
 import com.polifono.model.entity.ClassPlayer;
-import com.polifono.service.IClassPlayerService;
-import com.polifono.service.IClassService;
+import com.polifono.service.impl.ClassPlayerService;
+import com.polifono.service.impl.ClassService;
 import com.polifono.service.impl.SecurityService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,8 +32,8 @@ import lombok.RequiredArgsConstructor;
 public class ClassController {
 
     private final SecurityService securityService;
-    private final IClassService classService;
-    private final IClassPlayerService classPlayerService;
+    private final ClassService classService;
+    private final ClassPlayerService classPlayerService;
 
     @GetMapping({ "/class", "/class/savepage" })
     public String savePage(Model model) {

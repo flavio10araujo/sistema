@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.polifono.common.util.PagingUtil;
 import com.polifono.model.dto.PlayervideoDTO;
 import com.polifono.service.IContentService;
-import com.polifono.service.IPlayerVideoService;
 import com.polifono.service.impl.player.PlayerService;
 import com.polifono.service.impl.playervideo.PlayerVideoHandler;
 import com.polifono.service.impl.playervideo.PlayerVideoMapper;
+import com.polifono.service.impl.playervideo.PlayerVideoService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class PlayerVideoController {
 
-    private final IPlayerVideoService playerVideoService;
+    private final PlayerVideoService playerVideoService;
     private final IContentService contentService;
     private final PlayerService playerService;
     private final PlayerVideoMapper playerVideoMapper;

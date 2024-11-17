@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.model.CurrentUser;
 import com.polifono.model.entity.ClassPlayer;
-import com.polifono.service.IClassPlayerService;
+import com.polifono.service.impl.ClassPlayerService;
 import com.polifono.service.impl.SecurityService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ClassInvitationController {
 
     private final SecurityService securityService;
-    private final IClassPlayerService classPlayerService;
+    private final ClassPlayerService classPlayerService;
 
     @GetMapping("/classinvitation")
     public String classInvitation(final Model model) {

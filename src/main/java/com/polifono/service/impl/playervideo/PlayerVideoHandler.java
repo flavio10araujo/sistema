@@ -23,7 +23,6 @@ public class PlayerVideoHandler {
             return true;
         }
 
-        return Arrays.stream(restriction.split(","))
-                .noneMatch(r -> r.equals(String.valueOf(id)));
+        return Arrays.stream(restriction.split(",")).noneMatch(r -> r.equals(String.valueOf(id)));
     }
 }

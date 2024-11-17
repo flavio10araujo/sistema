@@ -4,17 +4,17 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.model.entity.Transaction;
 import com.polifono.model.enums.TransactionStatus;
-import com.polifono.service.ITransactionService;
 import com.polifono.service.impl.SendEmailService;
 import com.polifono.service.impl.player.PlayerCreditService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
 public class PagSeguroHandler {
 
-    private final ITransactionService transactionService;
+    private final TransactionService transactionService;
     private final PlayerCreditService playerCreditService;
     private final SendEmailService emailSendUtil;
 
@@ -23,6 +23,7 @@ public class PagSeguroHandler {
         return status == TransactionStatus.PAID.getValue() || status == TransactionStatus.AVAILABLE.getValue();
     }
 
+    @Transactional
     public void handleSuccess(Transaction transaction) {
         // Add credits to the player.
         playerCreditService.addCreditsToPlayer(transaction.getPlayer().getId(), transaction.getQuantity());

@@ -28,7 +28,7 @@ import com.polifono.repository.ITransactionRepository;
 public class TransactionServiceImplTest {
 
     @InjectMocks
-    private TransactionServiceImpl service;
+    private TransactionService service;
 
     @Mock
     private ITransactionRepository repository;

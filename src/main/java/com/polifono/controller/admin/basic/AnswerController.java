@@ -20,11 +20,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.polifono.model.entity.Answer;
 import com.polifono.model.entity.Question;
 import com.polifono.model.form.admin.basic.AnswerFilterForm;
-import com.polifono.service.IAnswerService;
 import com.polifono.service.ILevelService;
 import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IQuestionService;
+import com.polifono.service.impl.AnswerService;
 import com.polifono.service.impl.game.GameService;
 
 import jakarta.servlet.http.HttpSession;
@@ -40,7 +40,7 @@ public class AnswerController {
     private final IMapService mapService;
     private final IPhaseService phaseService;
     private final IQuestionService questionService;
-    private final IAnswerService answerService;
+    private final AnswerService answerService;
 
     @GetMapping({ "/answer", "/answer/savepage" })
     public String savePage(HttpSession session, Model model) {

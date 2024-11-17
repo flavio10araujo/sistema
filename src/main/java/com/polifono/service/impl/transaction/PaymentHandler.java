@@ -12,7 +12,6 @@ import com.polifono.common.properties.ConfigsCreditsProperties;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.Transaction;
 import com.polifono.model.enums.Role;
-import com.polifono.service.ITransactionService;
 import com.polifono.service.impl.player.PlayerService;
 
 import br.com.uol.pagseguro.domain.checkout.Checkout;
@@ -28,7 +27,7 @@ public class PaymentHandler {
 
     private final ConfigsCreditsProperties configsCreditsProperties;
     private final MessageSource messagesResource;
-    private final ITransactionService transactionService;
+    private final TransactionService transactionService;
     private final PlayerService playerService;
 
     public String validatePurchaseEligibility(Player player, int quantity, Locale locale) {

@@ -26,7 +26,7 @@ import com.polifono.repository.IAnswerRepository;
 public class AnswerServiceImplTest {
 
     @InjectMocks
-    private AnswerServiceImpl service;
+    private AnswerService service;
 
     @Mock
     private IAnswerRepository repository;

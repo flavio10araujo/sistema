@@ -20,9 +20,9 @@ import com.polifono.model.entity.ClassPlayer;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerGame;
 import com.polifono.model.form.teacher.TransferCreditGroupForm;
-import com.polifono.service.IClassPlayerService;
-import com.polifono.service.IClassService;
 import com.polifono.service.IPlayerGameService;
+import com.polifono.service.impl.ClassPlayerService;
+import com.polifono.service.impl.ClassService;
 import com.polifono.service.impl.SecurityService;
 import com.polifono.service.impl.game.GameService;
 import com.polifono.service.impl.player.PlayerCreditService;
@@ -39,9 +39,9 @@ public class TransferCreditController {
     private final GameService gameService;
     private final PlayerService playerService;
     private final PlayerCreditService playerCreditService;
-    private final IClassService classService;
+    private final ClassService classService;
     private final IPlayerGameService playerGameService;
-    private final IClassPlayerService classPlayerService;
+    private final ClassPlayerService classPlayerService;
 
     @GetMapping("/credit")
     public String transferCredit(Model model) {
