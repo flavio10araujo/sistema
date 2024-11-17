@@ -99,6 +99,10 @@ public class GameHandler {
         isAllowedOrRedirectHome(phaseService.canPlayerAccessPhase(phase, getUserId()));
     }
 
+    public void isPlayerAllowedToAccessMapOrRedirectHome(Map map) {
+        isAllowedOrRedirectHome(mapService.canPlayerAccessMap(map, getUserId()));
+    }
+
     public void addRankingToModel(Model model) {
         model.addAttribute("ranking_monthly", playerPhaseService.getRankingMonthly());
     }

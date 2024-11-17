@@ -75,6 +75,8 @@ public class GameController {
         Game game = gameHandler.getGameByNamelinkOrRedirectHome(gameNameLink);
         Map map = gameHandler.getMapByGameLevelAndOrderOrRedirectHome(game, levelOrder, mapOrder);
 
+        gameHandler.isPlayerAllowedToAccessMapOrRedirectHome(map);
+
         gameHandler.addGameMapAndPhasesToModel(model, game, map);
         return URL_GAMES_MAP;
     }

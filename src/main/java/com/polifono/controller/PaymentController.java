@@ -11,6 +11,7 @@ import javax.validation.constraints.Min;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,7 +52,7 @@ public class PaymentController {
         Player player = currentUser.get().getUser();
 
         String validationError = paymentHandler.validatePurchaseEligibility(player, quantity, locale);
-        if (validationError != null) {
+        if (StringUtils.hasText(validationError)) {
             model.addAttribute("codRegister", "2");
             model.addAttribute("msg", validationError);
             return URL_BUY_CREDITS;

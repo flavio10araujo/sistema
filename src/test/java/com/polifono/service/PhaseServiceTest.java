@@ -326,7 +326,7 @@ public class PhaseServiceTest {
         Phase phase = new Phase();
         phase.setId(123);
         listReturned.add(phase);
-        when(repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId)).thenReturn(listReturned);
+        when(repository.findLastPhaseFinishedByPlayerAndGame(playerId, gameId)).thenReturn(listReturned);
 
         Optional<Phase> entity = service.findLastPhaseDoneByPlayerAndGame(PLAYER_ID_EXISTENT, GAME_ID_EXISTENT);
         Assertions.assertTrue(entity.isPresent(), "failure - expected not null");
@@ -473,7 +473,7 @@ public class PhaseServiceTest {
         Player user = new Player();
         user.setId(playerId);
 
-        when(repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId)).thenReturn(new ArrayList<>());
+        when(repository.findLastPhaseFinishedByPlayerAndGame(playerId, gameId)).thenReturn(new ArrayList<>());
 
         Assertions.assertFalse(service.canPlayerAccessPhase(phase, user.getId()));
     }
@@ -498,7 +498,7 @@ public class PhaseServiceTest {
         item.setOrder(25); // Last phase done.
         listReturned.add(item);
 
-        when(repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId)).thenReturn(listReturned);
+        when(repository.findLastPhaseFinishedByPlayerAndGame(playerId, gameId)).thenReturn(listReturned);
 
         Assertions.assertTrue(service.canPlayerAccessPhase(phase, user.getId()));
     }
@@ -523,7 +523,7 @@ public class PhaseServiceTest {
         item.setOrder(19); // Last phase done.
         listReturned.add(item);
 
-        when(repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId)).thenReturn(listReturned);
+        when(repository.findLastPhaseFinishedByPlayerAndGame(playerId, gameId)).thenReturn(listReturned);
 
         Assertions.assertTrue(service.canPlayerAccessPhase(phase, user.getId()));
     }
@@ -548,7 +548,7 @@ public class PhaseServiceTest {
         item.setOrder(15); // Last phase done.
         listReturned.add(item);
 
-        when(repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId)).thenReturn(listReturned);
+        when(repository.findLastPhaseFinishedByPlayerAndGame(playerId, gameId)).thenReturn(listReturned);
 
         Assertions.assertFalse(service.canPlayerAccessPhase(phase, user.getId()));
     }

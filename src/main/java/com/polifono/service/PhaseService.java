@@ -75,7 +75,7 @@ public class PhaseService {
     }
 
     public Optional<Phase> findLastPhaseDoneByPlayerAndGame(int playerId, int gameId) {
-        List<Phase> list = repository.findLastPhaseDoneByPlayerAndGame(playerId, gameId);
+        List<Phase> list = repository.findLastPhaseFinishedByPlayerAndGame(playerId, gameId);
 
         if (list.isEmpty()) {
             return Optional.empty();

@@ -26,8 +26,8 @@ public interface IPhaseRepository extends JpaRepository<Phase, Integer> {
     @Query("SELECT phase FROM Phase phase WHERE phase.map.id = :mapId AND phase.order = :phaseOrder")
     Optional<Phase> findNextPhaseInThisMap(@Param("mapId") int mapId, @Param("phaseOrder") int phaseOrder);
 
-    @Query("SELECT phase FROM PlayerPhase playerPhase, Phase phase, Map map WHERE playerPhase.phase.id = phase.id AND phase.map.id = map.id AND playerPhase.player.id = :playerId AND map.game.id = :gameId ORDER BY phase.order DESC")
-    List<Phase> findLastPhaseDoneByPlayerAndGame(@Param("playerId") int playerId, @Param("gameId") int gameId);
+    @Query("SELECT phase FROM PlayerPhase playerPhase, Phase phase, Map map WHERE playerPhase.phase.id = phase.id AND phase.map.id = map.id AND playerPhase.player.id = :playerId AND map.game.id = :gameId AND playerPhase.phasestatus.id = 3 ORDER BY phase.order DESC")
+    List<Phase> findLastPhaseFinishedByPlayerAndGame(@Param("playerId") int playerId, @Param("gameId") int gameId);
 
     @Query("SELECT phase FROM Phase phase, Map map WHERE phase.map.id = map.id AND map.game.id = :gameId AND map.level.id = :levelId ORDER BY phase.order DESC")
     List<Phase> findLastPhaseOfTheLevel(@Param("gameId") int gameId, @Param("levelId") int levelId);

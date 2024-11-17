@@ -7,6 +7,7 @@ import java.util.Locale;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,22 +40,23 @@ public class PlayerController {
             Locale locale) {
 
         String emailError = playerHandler.validateAndSanitizeEmail(player, locale);
-        if (emailError != null) {
+        if (StringUtils.hasText(emailError)) {
             prepareModelForPlayerCreation(model, player, 2, emailError);
             return URL_INDEX;
         }
 
         String validationError = playerHandler.validateCreatePlayer(player, locale);
-        if (validationError != null) {
+        if (StringUtils.hasText(validationError)) {
             prepareModelForPlayerCreation(model, player, 2, validationError);
             return URL_INDEX;
         }
 
+        String password = player.getPassword();
         playerHandler.formatPlayerNames(player);
         playerService.create(player);
         prepareModelForPlayerCreation(model, player, 1, null);
         emailSendUtil.sendEmailConfirmRegister(player);
-        loginPlayer(request, player.getEmail(), player.getPassword());
+        loginPlayer(request, player.getEmail(), password);
 
         return REDIRECT_HOME;
     }
