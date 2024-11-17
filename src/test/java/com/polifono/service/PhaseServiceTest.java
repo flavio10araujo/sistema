@@ -363,20 +363,68 @@ public class PhaseServiceTest {
 
     /* findGamesForProfile - begin */
     @Test
+    public void givenNoGamesForProfile_whenFindGamesForProfile_thenReturnNull() {
+        int playerId = PLAYER_ID_EXISTENT;
+        when(repository.findGamesForProfile(playerId)).thenReturn(new ArrayList<>());
+
+        List<Phase> result = service.findGamesForProfile(playerId);
+
+        Assertions.assertNull(result, "failure - expected null");
+    }
+
+    @Test
+    public void givenPlayerPlayedMultiplePhasesInTheSameGame_whenFindGamesForProfile_thenReturnListWithOneGame() {
+        int playerId = PLAYER_ID_EXISTENT;
+        List<Phase> listReturned = new ArrayList<>();
+        Phase phase1 = new Phase();
+        Game game1 = new Game();
+        game1.setId(1);
+        Map map1 = new Map();
+        map1.setGame(game1);
+        phase1.setMap(map1);
+        listReturned.add(phase1);
+
+        Phase phase2 = new Phase();
+        phase2.setMap(map1); // Same game as phase1
+        listReturned.add(phase2);
+
+        when(repository.findGamesForProfile(playerId)).thenReturn(listReturned);
+
+        List<Phase> result = service.findGamesForProfile(playerId);
+
+        Assertions.assertNotNull(result, "failure - expected not null");
+        Assertions.assertEquals(1, result.size(), "failure - expected size 1");
+        Assertions.assertEquals(1, result.get(0).getMap().getGame().getId(), "failure - expected game id 1");
+    }
+
+    @Test
     public void givenPlayerExists_whenFindGamesForProfile_thenReturnList() {
         int playerId = PLAYER_ID_EXISTENT;
         List<Phase> listReturned = new ArrayList<>();
-        Phase item = new Phase();
-        Game game = new Game();
-        game.setId(4);
-        Map map = new Map();
-        map.setGame(game);
-        item.setMap(map);
-        listReturned.add(item);
+        Phase phase1 = new Phase();
+        Game game1 = new Game();
+        game1.setId(1);
+        Map map1 = new Map();
+        map1.setGame(game1);
+        phase1.setMap(map1);
+        listReturned.add(phase1);
+
+        Phase phase2 = new Phase();
+        Game game2 = new Game();
+        game2.setId(2);
+        Map map2 = new Map();
+        map2.setGame(game2);
+        phase2.setMap(map2);
+        listReturned.add(phase2);
+
         when(repository.findGamesForProfile(playerId)).thenReturn(listReturned);
 
-        List<Phase> list = service.findGamesForProfile(PLAYER_ID_EXISTENT);
-        Assertions.assertNotNull(list, "failure - expected not null");
+        List<Phase> result = service.findGamesForProfile(playerId);
+
+        Assertions.assertNotNull(result, "failure - expected not null");
+        Assertions.assertEquals(2, result.size(), "failure - expected size 2");
+        Assertions.assertEquals(1, result.get(0).getMap().getGame().getId(), "failure - expected game id 1");
+        Assertions.assertEquals(2, result.get(1).getMap().getGame().getId(), "failure - expected game id 2");
     }
     /* findGamesForProfile - end */
 

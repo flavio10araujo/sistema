@@ -101,18 +101,7 @@ public class PhaseService {
             return null;
         }
 
-        List<Phase> ret = new ArrayList<>();
-
-        int gameId = 0;
-
-        for (Phase phase : list) {
-            if (gameId != phase.getMap().getGame().getId()) {
-                gameId = phase.getMap().getGame().getId();
-                ret.add(phase);
-            }
-        }
-
-        return ret;
+        return getUniqueGamePhases(list);
     }
 
     /**
@@ -205,5 +194,19 @@ public class PhaseService {
 
     private boolean hasPlayerCompletedOrNextPhase(Phase lastPhaseDone, Phase phase) {
         return lastPhaseDone.getOrder() >= (phase.getOrder() - 1);
+    }
+
+    private List<Phase> getUniqueGamePhases(List<Phase> phases) {
+        List<Phase> uniqueGamePhases = new ArrayList<>();
+        int gameId = 0;
+
+        for (Phase phase : phases) {
+            if (gameId != phase.getMap().getGame().getId()) {
+                gameId = phase.getMap().getGame().getId();
+                uniqueGamePhases.add(phase);
+            }
+        }
+
+        return uniqueGamePhases;
     }
 }
