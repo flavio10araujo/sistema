@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.polifono.domain.Player;
+import com.polifono.model.entity.Player;
 
 public interface IPlayerRepository extends JpaRepository<Player, Integer> {
 
@@ -18,13 +18,13 @@ public interface IPlayerRepository extends JpaRepository<Player, Integer> {
     @Query("SELECT player FROM Player player WHERE player.login = :login AND player.active = :status")
     Optional<Player> findByLoginAndStatusForLogin(@Param("login") String login, @Param("status") boolean status);
 
-    Player findByEmailAndActive(String email, boolean active);
+    Optional<Player> findByEmailAndActive(String email, boolean active);
 
-    Player findByEmail(String email);
+    Optional<Player> findByEmail(String email);
 
-    Player findByLogin(String login);
+    Optional<Player> findByLogin(String login);
 
-    Player findByIdFacebook(Long idFacebook);
+    Optional<Player> findByIdFacebook(Long idFacebook);
 
     @Query("SELECT player FROM Player player WHERE DATE(player.dtInc) >= DATE(:dateBegin) AND DATE(player.dtInc) <= DATE(:dateEnd)")
     List<Player> findByDateIncRange(@Param("dateBegin") Date dateBegin, @Param("dateEnd") Date dateEnd);

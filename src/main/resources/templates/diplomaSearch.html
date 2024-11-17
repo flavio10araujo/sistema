@@ -22,12 +22,12 @@
                     <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-certificate" aria-hidden="true"></i></a>
                 </div>
 
-                <h4><a href="#" style="text-decoration:none;margin-right:8px; margin-top:-5px;"><strong th:text="#{app.certificado}">Certificado</strong></a>
+                <h4><a href="#" style="text-decoration:none;margin-right:8px; margin-top:-5px;"><strong th:text="#{app.certificate}">Certificado</strong></a>
                 </h4>
 
                 <hr />
 
-                <form th:action="@{/diploma}" method="post">
+                <form th:action="@{/diplomas}" method="post">
                     <div class="form-group">
                         <label for="code">Informe o código do certificado buscado:</label>
                         <input type="text" th:name="code" th:id="code" class="form-control" required="true" />
@@ -54,7 +54,7 @@
                     ministrado pela <span th:text="#{diploma.company}"></span>.<br />
                     Carga horária: <span th:text="${diploma.qtdHours}"></span> horas<br />
                     Data de conclusão: <span th:text="${diploma.dtStr}"></span><br /><br />
-                    Clique no link para baixar o certificado: <br /><a th:href="@{'/diploma/'+${diploma.code}}"><i class="fa fa-download"
+                    Clique no link para baixar o certificado: <br /><a th:href="@{'/diplomas/'+${diploma.code}}"><i class="fa fa-download"
                                                                                                                    aria-hidden="true"></i> Baixar</a></p>
             </div>
         </div>

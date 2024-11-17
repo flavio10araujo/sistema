@@ -86,7 +86,7 @@
                 '</div>' +
                 '<h2 class="title">ou Cadastre-se</h2>' +
                 '<div style="margin-left:10px;margin-right:10px">' +
-                '<form class="login-form" th:object="${player}" th:action="@{/player/create}" action="#" method="post">' +
+                '<form class="login-form" th:object="${player}" th:action="@{/players}" action="#" method="post">' +
                 '<div class="form-group">' +
                 '<input type="text" th:field="*{name}" class="form-control" required="true" th:placeholder="#{app.full_name}" />' +
                 '</div>' +
@@ -282,7 +282,7 @@
 
         <div class="login-form-container">
 
-            <form class="login-form" th:object="${player}" th:action="@{/player/create}" action="#" method="post">
+            <form class="login-form" th:object="${player}" th:action="@{/players}" action="#" method="post">
                 <div class="form-group">
                     <input type="text" th:field="*{name}" class="form-control" required="true" th:placeholder="#{app.full_name}" />
                 </div>

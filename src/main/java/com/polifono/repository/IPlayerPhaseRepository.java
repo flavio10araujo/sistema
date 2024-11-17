@@ -2,13 +2,14 @@ package com.polifono.repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.polifono.domain.PlayerPhase;
+import com.polifono.model.entity.PlayerPhase;
 
 public interface IPlayerPhaseRepository extends JpaRepository<PlayerPhase, UUID> {
 
@@ -33,7 +34,7 @@ public interface IPlayerPhaseRepository extends JpaRepository<PlayerPhase, UUID>
             FROM PlayerPhase playerPhase
             WHERE playerPhase.player.id = :playerId AND playerPhase.phase.id = :phaseId AND playerPhase.phasestatus.id = :phasestatusId
             """)
-    PlayerPhase findByPlayerPhaseAndStatus(@Param("playerId") int playerId, @Param("phaseId") int phaseId, @Param("phasestatusId") int phasestatusId);
+    Optional<PlayerPhase> findByPlayerPhaseAndStatus(@Param("playerId") int playerId, @Param("phaseId") int phaseId, @Param("phasestatusId") int phasestatusId);
 
     @Query("""
             SELECT playerPhase

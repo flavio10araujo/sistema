@@ -15,7 +15,7 @@
                 <div class="media">
 
                     <div align="center">
-                        <a th:href="@{'/profile/player/'+${player.id}}"><img class="thumbnail img-responsive"
+                        <a th:href="@{|/profile/players/${player.id}|}"><img class="thumbnail img-responsive"
                                                                              th:src="@{'https://www.gravatar.com/avatar/'+${player.emailMD5}+'.jpg?s=200'}"
                                                                              width="300px" height="300px" /></a>
                     </div>
@@ -90,7 +90,7 @@
                 <h1 class="panel-title pull-left" style="font-size:30px;" th:text="${player.name}+' '+${player.lastName}">Name</h1>
 
                 <div class="dropdown pull-right" th:if="${editAvailable == true}">
-                    <a th:href="@{'/profile/player/edit/'+${player.id}}" class="btn btn-success dropdown-toggle" th:title="#{app.edit}">Editar</a>
+                    <a th:href="@{|/profile/players/${player.id}/edit|}" class="btn btn-success dropdown-toggle" th:title="#{app.edit}">Editar</a>
                 </div>
 
                 <br /><br />
@@ -102,17 +102,17 @@
                 <span class="pull-left">
                     <a th:if="${editAvailable == false}" href="#" class="btn btn-link" style="text-decoration:none">Pontos <span class="badge"
                                                                                                                                  th:text="${player.score}">1</span></a>
-                    <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/score|}" data-toggle="tooltip"
+                    <a th:if="${editAvailable == true}" th:href="@{|/profile/players/${player.id}/score|}" data-toggle="tooltip"
                        title="Ver a pontuação obtida em cada fase" class="btn btn-link" style="text-decoration:none">Pontos <span class="badge"
                                                                                                                                   th:text="${player.score}">1</span></a>
 
-                    <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/attendance|}" data-toggle="tooltip"
+                    <a th:if="${editAvailable == true}" th:href="@{|/profile/players/${player.id}/attendance|}" data-toggle="tooltip"
                        title="Ver a frequência no curso" class="btn btn-link" style="text-decoration:none">Frequência</a>
 
-                    <a th:if="${editAvailable == true}" th:href="@{|/profile/player/${player.id}/credits|}" data-toggle="tooltip"
+                    <a th:if="${editAvailable == true}" th:href="@{|/profile/players/${player.id}/credits|}" data-toggle="tooltip"
                        title="Ver a quantidade de créditos adquiridos até o momento" class="btn btn-link" style="text-decoration:none">Créditos</a>
 
-                    <a th:href="@{|/profile/player/${player.id}/videos|}" class="btn btn-link" style="text-decoration:none">Vídeos</a>
+                    <a th:href="@{|/profile/players/${player.id}/videos|}" class="btn btn-link" style="text-decoration:none">Vídeos</a>
                 </span>
             </div>
         </div>

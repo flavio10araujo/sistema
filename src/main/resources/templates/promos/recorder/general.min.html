@@ -5533,7 +5533,7 @@
         </p>
         <h2 class="title">Cadastre-se</h2>
         <div class="login-form-container">
-            <form id="f_createFromMain" class="login-form" th:object="${player}" th:action="@{/player/create}" method="post">
+            <form id="f_createFromMain" class="login-form" th:object="${player}" th:action="@{/players}" method="post">
                 <div class="form-group"><input type="text" th:field="*{name}" class="form-control" required="true" placeholder="Nome e sobrenome"
                                                th:id="nameRegister" /></div>
                 <div class="form-group"><input type="text" th:field="*{email}" class="form-control" required="true" th:placeholder="#{app.email}"

@@ -1,12 +1,13 @@
 package com.polifono.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.polifono.domain.Map;
+import com.polifono.model.entity.Map;
 
 public interface IMapRepository extends JpaRepository<Map, Integer> {
 
@@ -20,5 +21,5 @@ public interface IMapRepository extends JpaRepository<Map, Integer> {
     List<Map> findMapsByGameLevelAndOrder(@Param("gameId") int gameId, @Param("levelId") int levelId, @Param("mapOrder") int mapOrder);
 
     @Query("SELECT map FROM Map map WHERE map.game.id = :gameId AND map.level.id = :levelId AND map.order > :mapOrder")
-    Map findNextMapSameLevel(@Param("gameId") int gameId, @Param("levelId") int levelId, @Param("mapOrder") int mapOrder);
+    Optional<Map> findNextMapSameLevel(@Param("gameId") int gameId, @Param("levelId") int levelId, @Param("mapOrder") int mapOrder);
 }

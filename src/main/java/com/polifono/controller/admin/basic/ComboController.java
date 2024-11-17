@@ -7,24 +7,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.polifono.controller.BaseController;
-import com.polifono.domain.Map;
-import com.polifono.domain.Phase;
-import com.polifono.domain.Question;
-import com.polifono.domain.bean.Combo;
-import com.polifono.service.IMapService;
-import com.polifono.service.IPhaseService;
-import com.polifono.service.IQuestionService;
+import com.polifono.model.Combo;
+import com.polifono.model.entity.Map;
+import com.polifono.model.entity.Phase;
+import com.polifono.model.entity.Question;
+import com.polifono.service.MapService;
+import com.polifono.service.PhaseService;
+import com.polifono.service.QuestionService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-public class ComboController extends BaseController {
+public class ComboController {
 
-    private final IMapService mapService;
-    private final IPhaseService phaseService;
-    private final IQuestionService questionService;
+    private final MapService mapService;
+    private final PhaseService phaseService;
+    private final QuestionService questionService;
 
     @RequestMapping("/comboMap")
     public List<Combo> comboMap(@RequestParam(value = "gameId") String gameId, @RequestParam(value = "levelId") String levelId) {

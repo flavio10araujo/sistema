@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.polifono.domain.Login;
+import com.polifono.model.entity.Login;
 
 public interface ILoginRepository extends JpaRepository<Login, Integer> {
 

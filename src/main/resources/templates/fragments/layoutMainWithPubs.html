@@ -99,11 +99,11 @@
 
                             <ul class="nav navbar-nav navbar-right">
 
-                                <li data-toggle="tooltip" th:title="#{msg.toseemygrades}"><a
-                                        th:href="@{|/profile/player/${#authentication.principal.user.id}/score|}"><span th:text="#{app.score}"></span>: <span
+                                <li data-toggle="tooltip" th:title="#{msg.toSeeMyGrades}"><a
+                                        th:href="@{|/profile/players/${#authentication.principal.user.id}/score|}"><span th:text="#{app.score}"></span>: <span
                                         sec:authentication="principal.user.coin"></span></a></li>
 
-                                <li data-toggle="tooltip" th:title="#{msg.buymorecredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>:
+                                <li data-toggle="tooltip" th:title="#{msg.buyMoreCredits}"><a th:href="@{/buycredits}"><span th:text="#{app.credits}"></span>:
                                     <span sec:authentication="principal.user.totalCredit"></span></a></li>
 
                                 <li>
@@ -148,9 +148,9 @@
 
                                                         <div class="divider"></div>
 
-                                                        <a th:href="@{|/profile/player/${#authentication.principal.user.id}|}" class="btn btn-default btn-xs"><i
+                                                        <a th:href="@{|/profile/players/${#authentication.principal.user.id}|}" class="btn btn-default btn-xs"><i
                                                                 class="fa fa-user-o" aria-hidden="true"></i> Perfil</a>
-                                                        <a th:href="@{|/profile/player/edit/${#authentication.principal.user.id}|}"
+                                                        <a th:href="@{|/profile/players/${#authentication.principal.user.id}/edit|}"
                                                            class="btn btn-default btn-xs"><i class="fa fa-cogs" aria-hidden="true"></i> Config</a>
 
                                                         <br /><br />

@@ -30,8 +30,8 @@ import br.com.uol.pagseguro.enums.HttpStatus;
 import br.com.uol.pagseguro.exception.PagSeguroServiceException;
 import br.com.uol.pagseguro.logs.Log;
 import br.com.uol.pagseguro.parser.TransactionParser;
-import br.com.uol.pagseguro.parser.paymentrequest.PaymentRequestParser;
 import br.com.uol.pagseguro.parser.authorization.AuthorizationParser;
+import br.com.uol.pagseguro.parser.paymentrequest.PaymentRequestParser;
 import br.com.uol.pagseguro.properties.PagSeguroSystem;
 import br.com.uol.pagseguro.utils.HttpConnection;
 import br.com.uol.pagseguro.xmlparser.ErrorsParser;
@@ -132,7 +132,7 @@ public class NotificationService {
 
     /**
      * checkAuthorization
-     * 
+     *
      * @param credentials
      * @param notificationCode
      * @throws Exception
@@ -173,7 +173,7 @@ public class NotificationService {
 
     /**
      * checkTransaction
-     * 
+     *
      * @param credentials
      * @param notificationCode
      * @throws Exception
@@ -182,36 +182,30 @@ public class NotificationService {
             throws PagSeguroServiceException {
 
         log.info(String.format(PREFIX + CHECK_TRANSACTION + SUFFIX_BEGIN, notificationCode));
-
-        Transaction transaction = null;
-
+        Transaction transaction;
         ConnectionData connectionData = new ConnectionData(credentials);
         String notificationURL = NotificationService.buildTransactionNotificationUrl(connectionData, notificationCode);
 
         HttpURLConnection response = NotificationService.checkNotification(credentials, notificationCode,
                 notificationURL, connectionData.getServiceTimeout(), connectionData.getCharset(),
-                NotificationService.CHECK_TRANSACTION);
+                NotificationService.CHECK_TRANSACTION
+        );
 
         try {
-
             transaction = TransactionParser.readTransaction(response.getInputStream());
-
         } catch (Exception e) {
             throw new PagSeguroServiceException("Parser error", e);
         } finally {
             response.disconnect();
         }
 
-        NotificationService.log.info(String.format(NotificationService.CHECK_TRANSACTION, notificationCode,
-                transaction.toString()));
-
+        NotificationService.log.info(String.format(NotificationService.CHECK_TRANSACTION, notificationCode, transaction.toString()));
         return transaction;
-
     }
 
     /**
      * checkNotification
-     * 
+     *
      * @param credentials
      * @param notificationCode
      * @param notificationURL

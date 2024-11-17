@@ -1,46 +1,37 @@
 package com.polifono.controller;
 
+import static com.polifono.common.constant.TemplateConstants.URL_GAMES_RESULT_SEARCH;
+
 import java.util.List;
-import java.util.Objects;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.HtmlUtils;
 
-import com.polifono.domain.Phase;
-import com.polifono.service.IPhaseService;
+import com.polifono.common.validation.ValidSearch;
+import com.polifono.model.entity.Phase;
+import com.polifono.service.PhaseService;
+import com.polifono.service.SecurityService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-public class SearchController extends BaseController {
+public class SearchController {
 
-    public static final String URL_GAMES_INDEX = "games/index";
-    public static final String URL_GAMES_RESULT_SEARCH = "games/resultSearch";
-    private final IPhaseService phaseService;
+    private final SecurityService securityService;
+    private final PhaseService phaseService;
 
-    /**
-     * Search q in all the classes that the user already studied.
-     */
-    @RequestMapping(value = { "/search" }, method = RequestMethod.GET, params = { "q" })
-    public final String searchContent(final Model model, @RequestParam(value = "q") String q) {
+    @Validated
+    @GetMapping(value = "/search", params = "q")
+    public String searchContent(final Model model,
+            @RequestParam(value = "q") @ValidSearch String q) {
 
-        if (q == null || q.trim().isEmpty()) {
-            return URL_GAMES_INDEX;
-        } else if (q.trim().length() < 3 || q.trim().length() > 25) {
-            return URL_GAMES_INDEX;
-        }
-
-        // Looking for the phases that have the q in its content and the user has already studied.
-        List<Phase> phases = phaseService.findPhasesBySearchAndUser(HtmlUtils.htmlEscape(q),
-                Objects.requireNonNull(this.currentAuthenticatedUser()).getUser().getId());
-
+        List<Phase> phases = phaseService.findPhasesBySearchAndUser(HtmlUtils.htmlEscape(q), securityService.getUserId());
         model.addAttribute("phases", phases);
-
         return URL_GAMES_RESULT_SEARCH;
     }
 }

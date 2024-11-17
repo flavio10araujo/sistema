@@ -8,12 +8,12 @@
 
 <section layout:fragment="contentTemplate" class="container intro">
     <div class="col-md-6">
-        <h2 th:text="#{app.certificado}" class="title">Certificado</h2>
+        <h2 th:text="#{app.certificate}" class="title">Certificado</h2>
         <p class="summary">Informe o código do certificado buscado e verificaremos se ele realmente foi emitido pela Polifono.com:</p>
 
         <div class="login-form-container">
 
-            <form class="login-form" th:action="@{/diploma}" method="post">
+            <form class="login-form" th:action="@{/diplomas}" method="post">
                 <div class="form-group">
                     <input type="text" th:name="code" th:id="code" class="form-control" required="true" placeholder="Código do certificado" />
                 </div>
@@ -37,7 +37,7 @@
                     th:text="${diploma.game.name}"></span></b>".<br />
                 Carga horária: <span th:text="${diploma.qtdHours}"></span> horas<br />
                 Data de conclusão: <span th:text="${diploma.dtStr}"></span><br /><br />
-                Clique para baixar o certificado: <a class="btn btn-cta btn-cta-secondary" th:href="@{'/diploma/'+${diploma.code}}"
+                Clique para baixar o certificado: <a class="btn btn-cta btn-cta-secondary" th:href="@{'/diplomas/'+${diploma.code}}"
                                                      th:text="${diploma.code}"></a>
             </div>
 

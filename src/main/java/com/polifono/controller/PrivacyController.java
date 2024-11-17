@@ -1,17 +1,15 @@
 package com.polifono.controller;
 
+import static com.polifono.common.constant.TemplateConstants.URL_PRIVACY;
+
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class PrivacyController extends BaseController {
+public class PrivacyController {
 
-    public static final String URL_PRIVACY = "privacy";
-
-    @RequestMapping(value = { "/privacy" }, method = RequestMethod.GET)
-    public final String diplomaSearch(final Model model) {
+    @GetMapping("/privacy")
+    public String diplomaSearch() {
         return URL_PRIVACY;
     }
 }

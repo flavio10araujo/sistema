@@ -1,21 +1,25 @@
 package com.polifono.controller.admin.message;
 
+import static com.polifono.common.constant.TemplateConstants.URL_ADMIN_MESSAGE_GROUP_04;
+import static com.polifono.common.constant.TemplateConstants.URL_ADMIN_MESSAGE_GROUP_05;
+
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.polifono.domain.Communication;
-import com.polifono.domain.Groupcommunication;
-import com.polifono.domain.Player;
-import com.polifono.domain.PlayerCommunication;
-import com.polifono.service.ICommunicationService;
-import com.polifono.service.IPlayerCommunicationService;
-import com.polifono.service.IPlayerService;
-import com.polifono.service.impl.SendEmailService;
+import com.polifono.model.entity.Communication;
+import com.polifono.model.entity.Groupcommunication;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.PlayerCommunication;
+import com.polifono.service.CommunicationService;
+import com.polifono.service.PlayerCommunicationService;
+import com.polifono.service.SendEmailService;
+import com.polifono.service.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,20 +28,17 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin/message")
 public class AdminMessageController {
 
-    public static final String URL_ADMIN_MSG_G04 = "admin/message/group04";
-    public static final String URL_ADMIN_MSG_G05 = "admin/message/group05";
-
-    private final IPlayerService playerService;
-    private final ICommunicationService communicationService;
-    private final IPlayerCommunicationService playerCommunicationService;
+    private final PlayerService playerService;
+    private final CommunicationService communicationService;
+    private final PlayerCommunicationService playerCommunicationService;
     private final SendEmailService sendEmailService;
 
-    @RequestMapping(value = { "/group04" }, method = RequestMethod.GET)
-    public String group04(Model model) {
-        return URL_ADMIN_MSG_G04;
+    @GetMapping("/group04")
+    public String group04() {
+        return URL_ADMIN_MESSAGE_GROUP_04;
     }
 
-    @RequestMapping(value = { "/group04" }, method = RequestMethod.POST)
+    @PostMapping("/group04")
     public String group04Submit(Model model) {
         Groupcommunication groupcommunication = new Groupcommunication();
         groupcommunication.setId(4);
@@ -49,15 +50,15 @@ public class AdminMessageController {
 
         model.addAttribute("players", players);
 
-        return URL_ADMIN_MSG_G04;
+        return URL_ADMIN_MESSAGE_GROUP_04;
     }
 
-    @RequestMapping(value = { "/group05" }, method = RequestMethod.GET)
-    public String group05(Model model) {
-        return URL_ADMIN_MSG_G05;
+    @GetMapping("/group05")
+    public String group05() {
+        return URL_ADMIN_MESSAGE_GROUP_05;
     }
 
-    @RequestMapping(value = { "/group05" }, method = RequestMethod.POST)
+    @PostMapping("/group05")
     public String group05Submit(Model model) {
 
         Groupcommunication groupcommunication = new Groupcommunication();
@@ -71,7 +72,7 @@ public class AdminMessageController {
 
         model.addAttribute("players", players);
 
-        return URL_ADMIN_MSG_G05;
+        return URL_ADMIN_MESSAGE_GROUP_05;
     }
 
     private void registerMessages(Groupcommunication groupcommunication, List<Player> players) {

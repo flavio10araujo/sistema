@@ -1,26 +1,32 @@
 package com.polifono.controller.admin.basic;
 
-import java.util.ArrayList;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_ADMIN_BASIC_CONTENT;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_ADMIN_BASIC_CONTENT_SAVE_PAGE;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_ADMIN_BASIC_CONTENT_TEST;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_ADMIN_BASIC_CONTENT_TEST_SAVE_PAGE;
+import static com.polifono.common.constant.TemplateConstants.URL_ADMIN_BASIC_CONTENT_EDIT_PAGE;
+import static com.polifono.common.constant.TemplateConstants.URL_ADMIN_BASIC_CONTENT_INDEX;
+import static com.polifono.common.constant.TemplateConstants.URL_ADMIN_BASIC_CONTENT_TEST_INDEX;
+
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.polifono.controller.BaseController;
-import com.polifono.domain.Content;
-import com.polifono.domain.Contenttype;
-import com.polifono.domain.Phase;
-import com.polifono.form.admin.basic.ContentFilterForm;
-import com.polifono.service.impl.ContentServiceImpl;
-import com.polifono.service.impl.GameServiceImpl;
-import com.polifono.service.impl.LevelServiceImpl;
-import com.polifono.service.impl.MapServiceImpl;
-import com.polifono.service.impl.PhaseServiceImpl;
+import com.polifono.model.entity.Content;
+import com.polifono.model.entity.Contenttype;
+import com.polifono.model.form.admin.basic.ContentFilterForm;
+import com.polifono.service.ContentService;
+import com.polifono.service.LevelService;
+import com.polifono.service.MapService;
+import com.polifono.service.PhaseService;
+import com.polifono.service.game.GameService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -28,24 +34,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/admin/basic")
-public class ContentController extends BaseController {
+public class ContentController {
 
-    public static final String URL_ADMIN_BASIC = "admin/basic/content";
-    public static final String URL_ADMIN_BASIC_INDEX = "admin/basic/content/index";
-    public static final String URL_ADMIN_BASIC_EDIT = "admin/basic/content/editPage";
-    public static final String URL_ADMIN_BASIC_SAVE_PAGE = "admin/basic/content/savepage";
+    private final GameService gameService;
+    private final LevelService levelService;
+    private final MapService mapService;
+    private final PhaseService phaseService;
+    private final ContentService contentService;
 
-    public static final String URL_ADMIN_BASIC_TEST = "admin/basic/contentTest";
-    public static final String URL_ADMIN_BASIC_INDEX_TEST = "admin/basic/contentTest/index";
-    public static final String URL_ADMIN_BASIC_SAVE_PAGE_TEST = "admin/basic/contentTest/savepage";
-
-    private final GameServiceImpl gameService;
-    private final LevelServiceImpl levelService;
-    private final MapServiceImpl mapService;
-    private final PhaseServiceImpl phaseService;
-    private final ContentServiceImpl contentService;
-
-    @RequestMapping(value = { "/content", "/content/savepage" }, method = RequestMethod.GET)
+    @GetMapping({ "/content", "/content/savepage" })
     public String savePage(HttpSession session, Model model) {
         model.addAttribute("content", new Content());
 
@@ -94,10 +91,10 @@ public class ContentController extends BaseController {
             model.addAttribute("contents", contentService.findAllText());
         }
 
-        return URL_ADMIN_BASIC_INDEX;
+        return URL_ADMIN_BASIC_CONTENT_INDEX;
     }
 
-    @RequestMapping(value = { "/contentTest", "/contentTest/savepage" }, method = RequestMethod.GET)
+    @GetMapping({ "/contentTest", "/contentTest/savepage" })
     public String savePageTest(HttpSession session, Model model) {
         model.addAttribute("content", new Content());
 
@@ -148,22 +145,22 @@ public class ContentController extends BaseController {
             model.addAttribute("contents", contentService.findAllTest());
         }
 
-        return URL_ADMIN_BASIC_INDEX_TEST;
+        return URL_ADMIN_BASIC_CONTENT_TEST_INDEX;
     }
 
-    @RequestMapping(value = { "/content" }, method = RequestMethod.POST)
+    @PostMapping("/content")
     public String setFilter(HttpSession session, @ModelAttribute("contentFilterForm") ContentFilterForm contentFilterForm) {
         session.setAttribute("contentFilterForm", contentFilterForm);
-        return "redirect:/" + URL_ADMIN_BASIC;
+        return REDIRECT_ADMIN_BASIC_CONTENT;
     }
 
-    @RequestMapping(value = { "/contentTest" }, method = RequestMethod.POST)
+    @PostMapping("/contentTest")
     public String setFilterTest(HttpSession session, @ModelAttribute("contentTestFilterForm") ContentFilterForm contentFilterForm) {
         session.setAttribute("contentTestFilterForm", contentFilterForm);
-        return "redirect:/" + URL_ADMIN_BASIC_TEST;
+        return REDIRECT_ADMIN_BASIC_CONTENT_TEST;
     }
 
-    @RequestMapping(value = { "/content/save" }, method = RequestMethod.POST)
+    @PostMapping("/content/save")
     public String save(@ModelAttribute("content") Content content, final RedirectAttributes redirectAttributes) {
         try {
             Contenttype contenttype = new Contenttype();
@@ -175,10 +172,10 @@ public class ContentController extends BaseController {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_ADMIN_BASIC_CONTENT_SAVE_PAGE;
     }
 
-    @RequestMapping(value = { "/contentTest/save" }, method = RequestMethod.POST)
+    @PostMapping("/contentTest/save")
     public String saveTest(@ModelAttribute("content") Content content, final RedirectAttributes redirectAttributes) {
         try {
             Contenttype contenttype = new Contenttype();
@@ -192,10 +189,10 @@ public class ContentController extends BaseController {
             redirectAttributes.addFlashAttribute("save", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE_TEST;
+        return REDIRECT_ADMIN_BASIC_CONTENT_TEST_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/content/{operation}/{id}", method = RequestMethod.GET)
+    @GetMapping("/content/{operation}/{id}")
     public String editRemove(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes,
             Model model) {
 
@@ -210,20 +207,18 @@ public class ContentController extends BaseController {
 
             if (edit.isPresent()) {
                 model.addAttribute("content", edit.get());
-                model.addAttribute("phases", (ArrayList<Phase>) phaseService.findAll());
-                return URL_ADMIN_BASIC_EDIT;
+                model.addAttribute("phases", phaseService.findAll());
+                return URL_ADMIN_BASIC_CONTENT_EDIT_PAGE;
             } else {
                 redirectAttributes.addFlashAttribute("status", "notfound");
             }
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_ADMIN_BASIC_CONTENT_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/contentTest/{operation}/{id}", method = RequestMethod.GET)
-    public String editRemoveTest(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes,
-            Model model) {
-
+    @GetMapping("/contentTest/{operation}/{id}")
+    public String editRemoveTest(@PathVariable("operation") String operation, @PathVariable("id") Long id, final RedirectAttributes redirectAttributes) {
         if (operation.equals("delete")) {
             if (contentService.delete(id.intValue())) {
                 redirectAttributes.addFlashAttribute("deletion", "success");
@@ -232,10 +227,10 @@ public class ContentController extends BaseController {
             }
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE_TEST;
+        return REDIRECT_ADMIN_BASIC_CONTENT_TEST_SAVE_PAGE;
     }
 
-    @RequestMapping(value = "/content/update", method = RequestMethod.POST)
+    @PostMapping("/content/update")
     public String update(@ModelAttribute("edit") Content edit, final RedirectAttributes redirectAttributes) {
 
         try {
@@ -249,6 +244,6 @@ public class ContentController extends BaseController {
             redirectAttributes.addFlashAttribute("edit", "unsuccess");
         }
 
-        return "redirect:/" + URL_ADMIN_BASIC_SAVE_PAGE;
+        return REDIRECT_ADMIN_BASIC_CONTENT_SAVE_PAGE;
     }
 }

@@ -21,10 +21,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.savedrequest.SavedRequest;
 
-import com.polifono.domain.Player;
-import com.polifono.domain.bean.CurrentUser;
-import com.polifono.domain.enums.Role;
-import com.polifono.service.impl.LoginServiceImpl;
+import com.polifono.model.CurrentUser;
+import com.polifono.model.entity.Player;
+import com.polifono.model.enums.Role;
+import com.polifono.service.LoginService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,7 +45,7 @@ public class CustomAuthenticationSuccessHandlerTest {
     private RedirectStrategy redirectStrategy;
 
     @Mock
-    private LoginServiceImpl loginService;
+    private LoginService loginService;
 
     @Mock
     private HttpServletRequest request;

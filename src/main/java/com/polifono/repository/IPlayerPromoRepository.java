@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.polifono.domain.PlayerPromo;
+import com.polifono.model.entity.PlayerPromo;
 
 public interface IPlayerPromoRepository extends JpaRepository<PlayerPromo, UUID> {
 

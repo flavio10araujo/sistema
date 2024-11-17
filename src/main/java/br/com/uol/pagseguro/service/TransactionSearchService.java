@@ -44,7 +44,7 @@ public class TransactionSearchService {
 
     /**
      * PagSeguro Log tool
-     * 
+     *
      * @see Log
      */
     private static Log log = new Log(TransactionSearchService.class);
@@ -71,7 +71,7 @@ public class TransactionSearchService {
 
     /**
      * Build Search Url By Code
-     * 
+     *
      * @param connectionData
      * @param transactionCode
      * @return
@@ -85,7 +85,7 @@ public class TransactionSearchService {
 
     /**
      * Build Search Url By Date
-     * 
+     *
      * @param connectionData
      * @param initialDate
      * @param finalDate
@@ -147,63 +147,44 @@ public class TransactionSearchService {
 
     /**
      * Finds a transaction with a matching transaction code
-     * 
+     *
      * @param credentials
      * @param transactionCode
      * @return
      * @throws Exception
      */
-    public static Transaction searchByCode(Credentials credentials, String transactionCode)
-            throws PagSeguroServiceException {
+    public static Transaction searchByCode(Credentials credentials, String transactionCode) throws PagSeguroServiceException {
 
-        TransactionSearchService.log.info("TransactionSearchService.SearchByCode(transactionCode=" + transactionCode
-                + ") - begin");
-
+        TransactionSearchService.log.info("TransactionSearchService.SearchByCode(transactionCode=" + transactionCode + ") - begin");
         ConnectionData connectionData = new ConnectionData(credentials);
-
         HttpConnection connection = new HttpConnection();
         HttpStatus httpStatusCode = null;
 
         HttpURLConnection response = connection.get(
                 TransactionSearchService.buildSearchUrlByCode(connectionData, transactionCode),
-                connectionData.getServiceTimeout(), connectionData.getCharset(), null);
+                connectionData.getServiceTimeout(), connectionData.getCharset(), null
+        );
 
         try {
-
             httpStatusCode = HttpStatus.fromCode(response.getResponseCode());
 
             if (HttpURLConnection.HTTP_OK == httpStatusCode.getCode().intValue()) {
-
                 Transaction transaction = TransactionParser.readTransaction(response.getInputStream());
-
-                TransactionSearchService.log.info(String.format(TransactionSearchService.SEARCH_BY_CODE,
-                        transactionCode, transaction.toString()));
-
+                TransactionSearchService.log.info(String.format(TransactionSearchService.SEARCH_BY_CODE, transactionCode, transaction.toString()));
                 return transaction;
-
             } else if (HttpURLConnection.HTTP_BAD_REQUEST == httpStatusCode.getCode().intValue()) {
-
                 List<Error> listErrors = ErrorsParser.readErrosXml(response.getErrorStream());
-
                 PagSeguroServiceException exception = new PagSeguroServiceException(httpStatusCode, listErrors);
-
-                TransactionSearchService.log.error(String.format(TransactionSearchService.SEARCH_BY_CODE,
-                        transactionCode, exception.getMessage()));
-
+                TransactionSearchService.log.error(String.format(TransactionSearchService.SEARCH_BY_CODE, transactionCode, exception.getMessage()));
                 throw exception;
             } else {
                 throw new PagSeguroServiceException(httpStatusCode);
             }
-
         } catch (PagSeguroServiceException e) {
             throw e;
         } catch (Exception e) {
-
-            TransactionSearchService.log.error(String.format(TransactionSearchService.SEARCH_BY_CODE, transactionCode,
-                    e.getMessage()));
-
+            TransactionSearchService.log.error(String.format(TransactionSearchService.SEARCH_BY_CODE, transactionCode, e.getMessage()));
             throw new PagSeguroServiceException(httpStatusCode, e);
-
         } finally {
             response.disconnect();
         }
@@ -211,7 +192,7 @@ public class TransactionSearchService {
 
     /**
      * Search transactions associated with this set of credentials within a date range
-     * 
+     *
      * @param credentials
      * @param initialDate
      * @param finalDate
