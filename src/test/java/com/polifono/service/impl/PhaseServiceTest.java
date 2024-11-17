@@ -115,7 +115,7 @@ public class PhaseServiceTest {
     }
     /* delete - end */
 
-    /* findOne - begin */
+    /* findById - begin */
     @Test
     public void findOne_WhenPhaseIsExistent_ReturnPhase() {
         Integer id = Integer.valueOf(PHASE_ID_EXISTENT);
@@ -138,7 +138,7 @@ public class PhaseServiceTest {
         Optional<Phase> entity = service.findById(id);
         Assertions.assertNull(entity, "failure - expected null");
     }
-    /* findOne - end */
+    /* findById - end */
 
     /* findAll - begin */
     @Test
@@ -153,7 +153,7 @@ public class PhaseServiceTest {
     }
     /* findAll - end */
 
-    /* findPhasesByGame - begin */
+    /* findByGame - begin */
     @Test
     public void findPhasesByGame_WhenSearchByGameExistent_ReturnList() {
         int gameId = GAME_ID_EXISTENT;
@@ -175,7 +175,7 @@ public class PhaseServiceTest {
         List<Phase> list = service.findByGame(GAME_ID_INEXISTENT);
         Assertions.assertEquals(0, list.size(), "failure - expected empty list");
     }
-    /* findPhasesByGame - end */
+    /* findByGame - end */
 
     /* findByGameAndLevel - begin */
     @Test
@@ -244,73 +244,6 @@ public class PhaseServiceTest {
         Assertions.assertEquals(0, list.size(), "failure - expected empty list");
     }
     /* findByMap - end */
-
-    /* findPhasesCheckedByMap - begin */
-    @Test
-    public void findPhasesCheckedByMap_WhenThereAreNotPhasesInTheMap_ReturnNull() {
-        int mapId = MAP_ID_EXISTENT;
-        when(repository.findByMap(mapId)).thenReturn(null);
-
-        Map map = new Map();
-        map.setId(MAP_ID_EXISTENT);
-
-        PlayerPhase lastPhaseCompleted = new PlayerPhase();
-
-        List<Phase> list = service.findPhasesCheckedByMap(map, lastPhaseCompleted);
-        Assertions.assertNull(list);
-    }
-
-    @Test
-    public void findPhasesCheckedByMap_WhenThePlayerHasNeverCompletedAnyPhaseOfThisGame_ReturnListOfPhasesWithTheFirstPhaseOpened() {
-        int mapId = MAP_ID_EXISTENT;
-        List<Phase> listReturned = new ArrayList<>();
-        listReturned.add(new Phase());
-        when(repository.findByMap(mapId)).thenReturn(listReturned);
-
-        Map map = new Map();
-        map.setId(MAP_ID_EXISTENT);
-
-        PlayerPhase lastPhaseCompleted = null;
-
-        List<Phase> list = service.findPhasesCheckedByMap(map, lastPhaseCompleted);
-        Phase firstPhase = list.get(0);
-        Assertions.assertTrue(firstPhase.isOpened());
-    }
-
-    @Test
-    public void findPhasesCheckedByMap_WhenThePlayerHasAlreadyCompletedAtLeastOnePhaseOfTheGame_ReturnListOfPhaseWithAllPhasesOpenedUntilTheNextPhase() {
-        int mapId = MAP_ID_EXISTENT;
-        List<Phase> listReturned = new ArrayList<>();
-        Phase p1 = new Phase();
-        p1.setOrder(1);
-        Phase p2 = new Phase();
-        p2.setOrder(2);
-        Phase p3 = new Phase();
-        p3.setOrder(3);
-        Phase p4 = new Phase();
-        p4.setOrder(4);
-        listReturned.add(p1);
-        listReturned.add(p2);
-        listReturned.add(p3);
-        listReturned.add(p4);
-        when(repository.findByMap(mapId)).thenReturn(listReturned);
-
-        Map map = new Map();
-        map.setId(MAP_ID_EXISTENT);
-
-        PlayerPhase lastPhaseCompleted = new PlayerPhase();
-        Phase phaseCompleted = new Phase();
-        phaseCompleted.setOrder(2);
-        lastPhaseCompleted.setPhase(phaseCompleted);
-
-        List<Phase> list = service.findPhasesCheckedByMap(map, lastPhaseCompleted);
-
-        Assertions.assertTrue(list.get(0).isOpened());
-        Assertions.assertTrue(list.get(1).isOpened());
-        Assertions.assertTrue(list.get(2).isOpened());
-        Assertions.assertFalse(list.get(3).isOpened());
-    }
-    /* findPhasesCheckedByMap - end */
 
     /* findByMapAndOrder - begin */
     @Test
@@ -430,7 +363,7 @@ public class PhaseServiceTest {
 
     /* findGamesForProfile - begin */
     @Test
-    public void findGamesForProfile_WhenPlayerIsExistent_ReturnList() {
+    public void givenPlayerExists_whenFindGamesForProfile_thenReturnList() {
         int playerId = PLAYER_ID_EXISTENT;
         List<Phase> listReturned = new ArrayList<>();
         Phase item = new Phase();
@@ -447,9 +380,76 @@ public class PhaseServiceTest {
     }
     /* findGamesForProfile - end */
 
-    /* playerCanAccessThisPhase - begin */
+    /* findPhasesCheckedByMap - begin */
     @Test
-    public void playerCanAccessThisPhase_WhenAccessingFirstPhase_ReturnTrue() {
+    public void givenThereAreNotPhasesInTheMap_whenFindPhasesCheckedByMap_thenReturnNull() {
+        int mapId = MAP_ID_EXISTENT;
+        when(repository.findByMap(mapId)).thenReturn(null);
+
+        Map map = new Map();
+        map.setId(MAP_ID_EXISTENT);
+
+        PlayerPhase lastPhaseCompleted = new PlayerPhase();
+
+        List<Phase> list = service.findPhasesCheckedByMap(map, lastPhaseCompleted);
+        Assertions.assertNull(list);
+    }
+
+    @Test
+    public void givenPlayerHasNeverCompletedAnyPhaseOfThisGame_whenFindPhasesCheckedByMap_thenReturnListOfPhasesWithTheFirstPhaseOpened() {
+        int mapId = MAP_ID_EXISTENT;
+        List<Phase> listReturned = new ArrayList<>();
+        listReturned.add(new Phase());
+        when(repository.findByMap(mapId)).thenReturn(listReturned);
+
+        Map map = new Map();
+        map.setId(MAP_ID_EXISTENT);
+
+        PlayerPhase lastPhaseCompleted = null;
+
+        List<Phase> list = service.findPhasesCheckedByMap(map, lastPhaseCompleted);
+        Phase firstPhase = list.get(0);
+        Assertions.assertTrue(firstPhase.isOpened());
+    }
+
+    @Test
+    public void givenPlayerHasAlreadyCompletedAtLeastOnePhaseOfTheGame_whenFindPhasesCheckedByMap_thenReturnListOfPhaseWithAllPhasesOpenedUntilTheNextPhase() {
+        int mapId = MAP_ID_EXISTENT;
+        List<Phase> listReturned = new ArrayList<>();
+        Phase p1 = new Phase();
+        p1.setOrder(1);
+        Phase p2 = new Phase();
+        p2.setOrder(2);
+        Phase p3 = new Phase();
+        p3.setOrder(3);
+        Phase p4 = new Phase();
+        p4.setOrder(4);
+        listReturned.add(p1);
+        listReturned.add(p2);
+        listReturned.add(p3);
+        listReturned.add(p4);
+        when(repository.findByMap(mapId)).thenReturn(listReturned);
+
+        Map map = new Map();
+        map.setId(MAP_ID_EXISTENT);
+
+        PlayerPhase lastPhaseCompleted = new PlayerPhase();
+        Phase phaseCompleted = new Phase();
+        phaseCompleted.setOrder(2);
+        lastPhaseCompleted.setPhase(phaseCompleted);
+
+        List<Phase> list = service.findPhasesCheckedByMap(map, lastPhaseCompleted);
+
+        Assertions.assertTrue(list.get(0).isOpened());
+        Assertions.assertTrue(list.get(1).isOpened());
+        Assertions.assertTrue(list.get(2).isOpened());
+        Assertions.assertFalse(list.get(3).isOpened());
+    }
+    /* findPhasesCheckedByMap - end */
+
+    /* canPlayerAccessPhase - begin */
+    @Test
+    public void givenAccessingFirstPhase_whenCanPlayerAccessPhase_thenReturnTrue() {
         Phase phase = new Phase();
         phase.setOrder(1);
 
@@ -459,7 +459,7 @@ public class PhaseServiceTest {
     }
 
     @Test
-    public void playerCanAccessThisPhase_WhenThePlayerIsTryingToAccessAPhaseButHeHadNeverFinishedAPhaseOfThisGame_ReturnFalse() {
+    public void givenPlayerIsTryingToAccessAPhaseButHeHadNeverFinishedAPhaseOfThisGame_whenCanPlayerAccessPhase_thenReturnFalse() {
         int playerId = 1, gameId = 1;
 
         Phase phase = new Phase();
@@ -479,7 +479,7 @@ public class PhaseServiceTest {
     }
 
     @Test
-    public void playerCanAccessThisPhase_WhenThePlayerIsTryingToAccessAPhaseThatHeHadAlreadyDone_ReturnTrue() {
+    public void givenPlayerIsTryingToAccessAPhaseThatHeHadAlreadyDone_whenCanPlayerAccessPhase_thenReturnTrue() {
         int playerId = 1, gameId = 1;
 
         Phase phase = new Phase();
@@ -504,7 +504,7 @@ public class PhaseServiceTest {
     }
 
     @Test
-    public void playerCanAccessThisPhase_WhenThePlayerIsTryingToAccessTheNextPhaseInTheRightSequence_ReturnTrue() {
+    public void givenPlayerIsTryingToAccessTheNextPhaseInTheRightSequence_whenCanPlayerAccessPhase_thenReturnTrue() {
         int playerId = 1, gameId = 1;
 
         Phase phase = new Phase();
@@ -529,7 +529,7 @@ public class PhaseServiceTest {
     }
 
     @Test
-    public void playerCanAccessThisPhase_WhenThePlayerIsTryingToAccessAFuturePhaseButItIsNotTheNextPhase_ReturnFalse() {
+    public void givenPlayerIsTryingToAccessAFuturePhaseButItIsNotTheNextPhase_whenCanPlayerAccessPhase_thenReturnFalse() {
         int playerId = 1, gameId = 1;
 
         Phase phase = new Phase();
@@ -552,5 +552,5 @@ public class PhaseServiceTest {
 
         Assertions.assertFalse(service.canPlayerAccessPhase(phase, user.getId()));
     }
-    /* playerCanAccessThisPhase - end */
+    /* canPlayerAccessPhase - end */
 }

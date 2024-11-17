@@ -1,8 +1,8 @@
 package com.polifono.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -101,18 +101,10 @@ public class PhaseService {
             return null;
         }
 
-        List<Phase> ret = new ArrayList<>();
-
-        int gameId = 0;
-
-        for (Phase phase : list) {
-            if (gameId != phase.getMap().getGame().getId()) {
-                gameId = phase.getMap().getGame().getId();
-                ret.add(phase);
-            }
-        }
-
-        return ret;
+        return list.stream()
+                .filter(phase -> phase.getMap().getGame().getId() != 0)
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     /**
@@ -131,16 +123,12 @@ public class PhaseService {
         // If the player has never completed any phase of this game.
         if (lastPhaseCompleted == null) {
             // Open the first phase of the map.
-            phases.get(0).setOpened(true);
+            openFirstPhaseIfNoCompletion(phases);
         }
         // If the player has already completed at least one phase of this game.
         else {
             // Open all phases until the next phase.
-            for (Phase phase : phases) {
-                if (phase.getOrder() <= (lastPhaseCompleted.getPhase().getOrder() + 1)) {
-                    phase.setOpened(true);
-                }
-            }
+            openPhasesUntilNext(phases, lastPhaseCompleted);
         }
 
         return phases;
@@ -151,21 +139,12 @@ public class PhaseService {
      * Return true if the player has the permission.
      */
     public boolean canPlayerAccessPhase(Phase phase, int playerId) {
-        // The first phase is always allowed.
-        if (phase.getOrder() == 1) {
+        if (isFirstPhase(phase)) {
             return true;
         }
 
-        // Get the last phase that the player has done in a specific game.
         Optional<Phase> lastPhaseDone = findLastPhaseDoneByPlayerAndGame(playerId, phase.getMap().getGame().getId());
-
-        // If the player is trying to access a phase, but he had never finished a phase of this game.
-        if (lastPhaseDone.isEmpty()) {
-            return false;
-        }
-
-        // If the player is trying to access a phase that he had already done OR the next phase in the right sequence.
-        return lastPhaseDone.get().getOrder() >= (phase.getOrder() - 1);
+        return lastPhaseDone.filter(value -> hasPlayerCompletedOrNextPhase(value, phase)).isPresent();
     }
 
     /**
@@ -194,5 +173,29 @@ public class PhaseService {
 
     private boolean isTryingToAccessNotFreePhaseWithoutCredits(Phase phase) {
         return !playerCreditService.playerHasCredits(securityService.getUserId(), phase) && phase.getOrder() > 1;
+    }
+
+    private void openFirstPhaseIfNoCompletion(List<Phase> phases) {
+        if (phases != null && !phases.isEmpty()) {
+            phases.get(0).setOpened(true);
+        }
+    }
+
+    private void openPhasesUntilNext(List<Phase> phases, PlayerPhase lastPhaseCompleted) {
+        if (phases != null && !phases.isEmpty()) {
+            for (Phase phase : phases) {
+                if (phase.getOrder() <= (lastPhaseCompleted.getPhase().getOrder() + 1)) {
+                    phase.setOpened(true);
+                }
+            }
+        }
+    }
+
+    private boolean isFirstPhase(Phase phase) {
+        return phase.getOrder() == 1;
+    }
+
+    private boolean hasPlayerCompletedOrNextPhase(Phase lastPhaseDone, Phase phase) {
+        return lastPhaseDone.getOrder() >= (phase.getOrder() - 1);
     }
 }

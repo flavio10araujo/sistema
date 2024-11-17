@@ -24,9 +24,7 @@ import com.polifono.service.impl.game.GameService;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
@@ -149,7 +147,6 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
         try {
             objects = repository.getRanking(DateUtil.getFirstDayOfTheCurrentMonth(), DateUtil.getLastDayOfTheCurrentMonth());
         } catch (ParseException e) {
-            log.error("getRankingMonthly : ", e);
             return ranking;
         }
 
