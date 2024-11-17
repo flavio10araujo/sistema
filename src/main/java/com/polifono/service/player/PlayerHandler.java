@@ -32,7 +32,7 @@ public class PlayerHandler {
      */
     public String validateCreatePlayer(Player player, Locale locale) {
         String msg = "";
-        msg = validateName(player.getName(), msg, locale);
+        msg = validateFullName(player.getName(), msg, locale);
         msg = validateEmail(player.getEmail(), msg, locale);
         msg = validatePassword(player, msg, locale);
         return msg;
@@ -47,7 +47,7 @@ public class PlayerHandler {
      */
     public String validateCreatePlayerByTeacher(Player player, Locale locale) {
         String msg = "";
-        msg = validateName(player.getName(), msg, locale);
+        msg = validateFullName(player.getName(), msg, locale);
         msg = validateLogin(player.getLogin(), msg, locale);
         msg = validatePassword(player, msg, locale);
         return msg;
@@ -58,7 +58,7 @@ public class PlayerHandler {
      */
     public String validateUpdateProfile(Player player, Locale locale) {
         String msg = "";
-        msg = validateName(player.getName(), msg, locale);
+        msg = validateFirstName(player.getName(), msg, locale);
         msg = validateLastName(player.getLastName(), msg, locale);
         return msg;
     }
@@ -117,11 +117,18 @@ public class PlayerHandler {
         return name.contains(" ") ? name.substring(name.indexOf(" ") + 1).trim() : "";
     }
 
-    private String validateName(String name, String msg, Locale locale) {
+    private String validateFullName(String name, String msg, Locale locale) {
         if (name == null || name.isEmpty()) {
             msg += "<br />" + messagesResource.getMessage("msg.register.missingName", null, locale);
         } else if (!name.trim().contains(" ")) {
             msg += "<br />" + messagesResource.getMessage("msg.register.missingFullName", null, locale);
+        }
+        return msg;
+    }
+
+    private String validateFirstName(String name, String msg, Locale locale) {
+        if (name == null || name.isEmpty()) {
+            msg += "<br />" + messagesResource.getMessage("msg.register.missingName", null, locale);
         }
         return msg;
     }
