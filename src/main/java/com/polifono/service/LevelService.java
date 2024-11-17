@@ -37,12 +37,16 @@ public class LevelService {
         List<Level> levels = new ArrayList<>();
 
         for (Level level : levelsAux) {
-            if (level.getOrder() <= levelPermitted) {
-                level.setOpened(true);
-            }
+            setLevelOpenedFlag(level, levelPermitted);
             levels.add(level);
         }
 
         return levels;
+    }
+
+    private void setLevelOpenedFlag(Level level, int levelPermitted) {
+        if (level.getOrder() <= levelPermitted) {
+            level.setOpened(true);
+        }
     }
 }

@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -36,7 +35,7 @@ public class LevelServiceTest {
 
     /* findAll - begin */
     @Test
-    public void findAll_WhenListAllLevels_ReturnList() {
+    public void whenFindAll_thenReturnList() {
         List<Level> list = getEntityListStubData();
 
         when(repository.findAll()).thenReturn(list);
@@ -52,7 +51,7 @@ public class LevelServiceTest {
 
     /* findByGame - begin */
     @Test
-    public void findByGame_WhenSearchByGameExistent_ReturnLevel() {
+    public void givenGameExists_whenFindByGame_thenReturnLevel() {
         List<Level> list = getEntityListStubData();
 
         when(repository.findByGame(GAME_ID_EXISTENT)).thenReturn(list);
@@ -66,7 +65,7 @@ public class LevelServiceTest {
     }
 
     @Test
-    public void findByGame_WhenSearchByGameInexistent_ReturnEmptyList() {
+    public void givenGameDoesNotExist_whenFindByGame_thenReturnEmptyList() {
         when(repository.findByGame(GAME_ID_INEXISTENT)).thenReturn(new ArrayList<>());
 
         List<Level> listReturned = service.findByGame(GAME_ID_INEXISTENT);
@@ -78,19 +77,77 @@ public class LevelServiceTest {
     /* findByGame - end */
 
     /* flagLevelsToOpenedOrNot - begin */
+    @Test
+    public void givenLevels_whenFlagLevelsToOpenedOrNot_thenReturnLevelsWithCorrectOpenedFlag() {
+        int gameId = GAME_ID_EXISTENT;
+        int levelPermitted = 2;
+
+        List<Level> levels = getEntityListStubData();
+        levels.get(0).setOrder(1);
+        levels.get(1).setOrder(3);
+
+        when(repository.findByGame(gameId)).thenReturn(levels);
+
+        List<Level> flaggedLevels = service.flagLevelsToOpenedOrNot(gameId, levelPermitted);
+
+        Assertions.assertNotNull(flaggedLevels, "failure - expected not null");
+        Assertions.assertEquals(2, flaggedLevels.size(), "failure - expected size 2");
+        Assertions.assertTrue(flaggedLevels.get(0).isOpened(), "failure - expected level 1 to be opened");
+        Assertions.assertFalse(flaggedLevels.get(1).isOpened(), "failure - expected level 3 to be closed");
+
+        verify(repository, times(1)).findByGame(gameId);
+        verifyNoMoreInteractions(repository);
+    }
+
+    @Test
+    public void givenNoLevels_whenFlagLevelsToOpenedOrNot_thenReturnEmptyList() {
+        int gameId = GAME_ID_EXISTENT;
+        int levelPermitted = 2;
+
+        when(repository.findByGame(gameId)).thenReturn(new ArrayList<>());
+
+        List<Level> flaggedLevels = service.flagLevelsToOpenedOrNot(gameId, levelPermitted);
+
+        Assertions.assertNotNull(flaggedLevels, "failure - expected not null");
+        Assertions.assertEquals(0, flaggedLevels.size(), "failure - expected size 0");
+
+        verify(repository, times(1)).findByGame(gameId);
+        verifyNoMoreInteractions(repository);
+    }
+
+    @Test
+    public void givenLevelsWithAllOpened_whenFlagLevelsToOpenedOrNot_thenReturnAllOpenedLevels() {
+        int gameId = GAME_ID_EXISTENT;
+        int levelPermitted = 3;
+
+        List<Level> levels = getEntityListStubData();
+        levels.get(0).setOrder(1);
+        levels.get(1).setOrder(2);
+
+        when(repository.findByGame(gameId)).thenReturn(levels);
+
+        List<Level> flaggedLevels = service.flagLevelsToOpenedOrNot(gameId, levelPermitted);
+
+        Assertions.assertNotNull(flaggedLevels, "failure - expected not null");
+        Assertions.assertEquals(2, flaggedLevels.size(), "failure - expected size 2");
+        Assertions.assertTrue(flaggedLevels.get(0).isOpened(), "failure - expected level 1 to be opened");
+        Assertions.assertTrue(flaggedLevels.get(1).isOpened(), "failure - expected level 2 to be opened");
+
+        verify(repository, times(1)).findByGame(gameId);
+        verifyNoMoreInteractions(repository);
+    }
     /* flagLevelsToOpenedOrNot - end */
 
     /* stubs - begin */
-    private Optional<Level> getEntityStubData() {
-        Level level = new Level();
-        return Optional.of(level);
+    private Level getEntityStubData() {
+        return new Level();
     }
 
     private List<Level> getEntityListStubData() {
         List<Level> list = new ArrayList<>();
 
-        Level entity1 = getEntityStubData().get();
-        Level entity2 = getEntityStubData().get();
+        Level entity1 = getEntityStubData();
+        Level entity2 = getEntityStubData();
 
         list.add(entity1);
         list.add(entity2);
