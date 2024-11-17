@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.polifono.model.entity.Player;
-import com.polifono.service.impl.SendEmailService;
-import com.polifono.service.impl.player.PlayerHandler;
-import com.polifono.service.impl.player.PlayerService;
+import com.polifono.service.SendEmailService;
+import com.polifono.service.player.PlayerHandler;
+import com.polifono.service.player.PlayerService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

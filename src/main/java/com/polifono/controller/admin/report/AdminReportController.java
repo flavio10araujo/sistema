@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.polifono.model.entity.Player;
 import com.polifono.model.form.admin.report.RegisterFilterForm;
-import com.polifono.service.impl.player.PlayerService;
+import com.polifono.service.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
 

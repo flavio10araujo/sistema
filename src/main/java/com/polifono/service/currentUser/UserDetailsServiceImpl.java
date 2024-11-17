@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.model.CurrentUser;
 import com.polifono.model.entity.Player;
-import com.polifono.service.impl.player.PlayerService;
+import com.polifono.service.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

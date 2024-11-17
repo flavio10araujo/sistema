@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.model.PlayerFacebook;
 import com.polifono.model.entity.Player;
-import com.polifono.service.impl.FacebookLoginService;
+import com.polifono.service.FacebookLoginService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

@@ -13,8 +13,8 @@ import org.springframework.web.util.HtmlUtils;
 
 import com.polifono.common.validation.ValidSearch;
 import com.polifono.model.entity.Phase;
-import com.polifono.service.impl.PhaseService;
-import com.polifono.service.impl.SecurityService;
+import com.polifono.service.PhaseService;
+import com.polifono.service.SecurityService;
 
 import lombok.RequiredArgsConstructor;
 

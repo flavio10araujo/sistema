@@ -36,15 +36,15 @@ import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerPromo;
 import com.polifono.model.entity.Promo;
-import com.polifono.service.impl.ContentService;
-import com.polifono.service.impl.MapService;
-import com.polifono.service.impl.PhaseService;
-import com.polifono.service.impl.PlayerPromoService;
-import com.polifono.service.impl.PromoService;
-import com.polifono.service.impl.SecurityService;
-import com.polifono.service.impl.game.GameService;
-import com.polifono.service.impl.player.PlayerCreditService;
-import com.polifono.service.impl.player.PlayerService;
+import com.polifono.service.ContentService;
+import com.polifono.service.MapService;
+import com.polifono.service.PhaseService;
+import com.polifono.service.PlayerPromoService;
+import com.polifono.service.PromoService;
+import com.polifono.service.SecurityService;
+import com.polifono.service.game.GameService;
+import com.polifono.service.player.PlayerCreditService;
+import com.polifono.service.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
 

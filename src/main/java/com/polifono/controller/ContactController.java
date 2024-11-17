@@ -9,10 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.polifono.service.impl.RecaptchaService;
-import com.polifono.service.impl.SendEmailService;
-import com.polifono.service.impl.contact.ContactModelPreparer;
-import com.polifono.service.impl.contact.ContactService;
+import com.polifono.service.RecaptchaService;
+import com.polifono.service.SendEmailService;
+import com.polifono.service.contact.ContactModelPreparer;
+import com.polifono.service.contact.ContactService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

@@ -18,11 +18,11 @@ import com.polifono.model.CurrentUser;
 import com.polifono.model.dto.teacher.ReportGeneralDTO;
 import com.polifono.model.entity.ClassPlayer;
 import com.polifono.model.form.teacher.ReportGeneralForm;
-import com.polifono.service.IPlayerPhaseService;
-import com.polifono.service.impl.ClassPlayerService;
-import com.polifono.service.impl.ClassService;
-import com.polifono.service.impl.SecurityService;
-import com.polifono.service.impl.game.GameService;
+import com.polifono.service.ClassPlayerService;
+import com.polifono.service.ClassService;
+import com.polifono.service.PlayerPhaseService;
+import com.polifono.service.SecurityService;
+import com.polifono.service.game.GameService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,7 +35,7 @@ public class TeacherReportController {
     private final GameService gameService;
     private final ClassService classService;
     private final ClassPlayerService classPlayerService;
-    private final IPlayerPhaseService playerPhaseService;
+    private final PlayerPhaseService playerPhaseService;
 
     @GetMapping("/report")
     public String reportGeneral(Model model) {

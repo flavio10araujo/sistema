@@ -20,11 +20,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.polifono.model.CurrentUser;
 import com.polifono.model.entity.Class;
 import com.polifono.model.entity.ClassPlayer;
-import com.polifono.service.impl.ClassPlayerService;
-import com.polifono.service.impl.ClassService;
-import com.polifono.service.impl.SecurityService;
-import com.polifono.service.impl.SendEmailService;
-import com.polifono.service.impl.player.PlayerService;
+import com.polifono.service.ClassPlayerService;
+import com.polifono.service.ClassService;
+import com.polifono.service.SecurityService;
+import com.polifono.service.SendEmailService;
+import com.polifono.service.player.PlayerService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

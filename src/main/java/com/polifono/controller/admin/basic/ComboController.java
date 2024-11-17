@@ -11,9 +11,9 @@ import com.polifono.model.Combo;
 import com.polifono.model.entity.Map;
 import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Question;
-import com.polifono.service.impl.MapService;
-import com.polifono.service.impl.PhaseService;
-import com.polifono.service.impl.QuestionService;
+import com.polifono.service.MapService;
+import com.polifono.service.PhaseService;
+import com.polifono.service.QuestionService;
 
 import lombok.RequiredArgsConstructor;
 

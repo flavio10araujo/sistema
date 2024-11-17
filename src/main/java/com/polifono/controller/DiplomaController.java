@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.model.entity.Diploma;
-import com.polifono.service.impl.diploma.DiplomaHandler;
-import com.polifono.service.impl.diploma.DiplomaService;
+import com.polifono.service.diploma.DiplomaHandler;
+import com.polifono.service.diploma.DiplomaService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

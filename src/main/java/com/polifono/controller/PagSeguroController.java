@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.polifono.model.entity.Transaction;
-import com.polifono.service.impl.transaction.PagSeguroHandler;
-import com.polifono.service.impl.transaction.PagSeguroService;
-import com.polifono.service.impl.transaction.TransactionService;
-import com.polifono.service.impl.transaction.TransactionUpdater;
+import com.polifono.service.transaction.PagSeguroHandler;
+import com.polifono.service.transaction.PagSeguroService;
+import com.polifono.service.transaction.TransactionService;
+import com.polifono.service.transaction.TransactionUpdater;
 
 import lombok.RequiredArgsConstructor;
 

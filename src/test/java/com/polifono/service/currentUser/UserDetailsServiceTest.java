@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.polifono.model.CurrentUser;
 import com.polifono.model.entity.Player;
 import com.polifono.model.enums.Role;
-import com.polifono.service.impl.player.PlayerService;
+import com.polifono.service.player.PlayerService;
 
 /**
  * Unit test methods for the UserDetailsServiceImpl.

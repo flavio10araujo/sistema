@@ -18,9 +18,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.model.entity.Game;
 import com.polifono.model.entity.Map;
-import com.polifono.service.impl.LevelService;
-import com.polifono.service.impl.MapService;
-import com.polifono.service.impl.game.GameService;
+import com.polifono.service.LevelService;
+import com.polifono.service.MapService;
+import com.polifono.service.game.GameService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

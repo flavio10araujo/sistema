@@ -18,7 +18,7 @@ import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerPhase;
 import com.polifono.model.entity.Question;
 import com.polifono.model.enums.Role;
-import com.polifono.service.impl.game.GameService;
+import com.polifono.service.game.GameService;
 
 /**
  * Unit tests for the GameController using Spring MVC Mocks.

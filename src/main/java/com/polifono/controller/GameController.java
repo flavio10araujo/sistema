@@ -27,11 +27,11 @@ import com.polifono.model.entity.Game;
 import com.polifono.model.entity.Map;
 import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Question;
-import com.polifono.service.IPlayerPhaseService;
-import com.polifono.service.impl.PhaseService;
-import com.polifono.service.impl.SecurityService;
-import com.polifono.service.impl.game.GameHandler;
-import com.polifono.service.impl.game.GameService;
+import com.polifono.service.PhaseService;
+import com.polifono.service.PlayerPhaseService;
+import com.polifono.service.SecurityService;
+import com.polifono.service.game.GameHandler;
+import com.polifono.service.game.GameService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +44,7 @@ public class GameController {
     private final GameService gameService;
     private final GameHandler gameHandler;
     private final PhaseService phaseService;
-    private final IPlayerPhaseService playerPhaseService;
+    private final PlayerPhaseService playerPhaseService;
 
     @GetMapping("/games")
     public String listGames(final Model model) {

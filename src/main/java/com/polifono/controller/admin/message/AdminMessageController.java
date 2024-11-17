@@ -16,10 +16,10 @@ import com.polifono.model.entity.Communication;
 import com.polifono.model.entity.Groupcommunication;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerCommunication;
-import com.polifono.service.impl.CommunicationService;
-import com.polifono.service.impl.PlayerCommunicationService;
-import com.polifono.service.impl.SendEmailService;
-import com.polifono.service.impl.player.PlayerService;
+import com.polifono.service.CommunicationService;
+import com.polifono.service.PlayerCommunicationService;
+import com.polifono.service.SendEmailService;
+import com.polifono.service.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
 

@@ -11,7 +11,7 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 
 import com.polifono.model.CurrentUser;
-import com.polifono.service.impl.LoginService;
+import com.polifono.service.LoginService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

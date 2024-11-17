@@ -18,8 +18,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
 
 import com.polifono.model.entity.Diploma;
-import com.polifono.service.impl.diploma.DiplomaHandler;
-import com.polifono.service.impl.diploma.DiplomaService;
+import com.polifono.service.diploma.DiplomaHandler;
+import com.polifono.service.diploma.DiplomaService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;

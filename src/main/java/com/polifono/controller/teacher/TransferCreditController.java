@@ -20,13 +20,13 @@ import com.polifono.model.entity.ClassPlayer;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerGame;
 import com.polifono.model.form.teacher.TransferCreditGroupForm;
-import com.polifono.service.impl.ClassPlayerService;
-import com.polifono.service.impl.ClassService;
-import com.polifono.service.impl.PlayerGameService;
-import com.polifono.service.impl.SecurityService;
-import com.polifono.service.impl.game.GameService;
-import com.polifono.service.impl.player.PlayerCreditService;
-import com.polifono.service.impl.player.PlayerService;
+import com.polifono.service.ClassPlayerService;
+import com.polifono.service.ClassService;
+import com.polifono.service.PlayerGameService;
+import com.polifono.service.SecurityService;
+import com.polifono.service.game.GameService;
+import com.polifono.service.player.PlayerCreditService;
+import com.polifono.service.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
 

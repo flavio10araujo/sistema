@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.model.CurrentUser;
 import com.polifono.model.entity.Player;
-import com.polifono.service.impl.SecurityService;
-import com.polifono.service.impl.transaction.PaymentHandler;
+import com.polifono.service.SecurityService;
+import com.polifono.service.transaction.PaymentHandler;
 
 import br.com.uol.pagseguro.exception.PagSeguroServiceException;
 import lombok.RequiredArgsConstructor;

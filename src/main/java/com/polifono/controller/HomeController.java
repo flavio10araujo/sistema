@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.polifono.model.entity.Player;
-import com.polifono.service.impl.SecurityService;
+import com.polifono.service.SecurityService;
 
 import lombok.RequiredArgsConstructor;
 

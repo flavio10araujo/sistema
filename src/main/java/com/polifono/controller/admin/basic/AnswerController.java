@@ -20,12 +20,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.polifono.model.entity.Answer;
 import com.polifono.model.entity.Question;
 import com.polifono.model.form.admin.basic.AnswerFilterForm;
-import com.polifono.service.impl.AnswerService;
-import com.polifono.service.impl.LevelService;
-import com.polifono.service.impl.MapService;
-import com.polifono.service.impl.PhaseService;
-import com.polifono.service.impl.QuestionService;
-import com.polifono.service.impl.game.GameService;
+import com.polifono.service.AnswerService;
+import com.polifono.service.LevelService;
+import com.polifono.service.MapService;
+import com.polifono.service.PhaseService;
+import com.polifono.service.QuestionService;
+import com.polifono.service.game.GameService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

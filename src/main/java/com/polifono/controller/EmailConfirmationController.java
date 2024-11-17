@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.polifono.model.entity.Player;
-import com.polifono.service.impl.player.PlayerService;
+import com.polifono.service.player.PlayerService;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
