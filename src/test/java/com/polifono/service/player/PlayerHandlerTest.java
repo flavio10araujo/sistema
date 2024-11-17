@@ -15,7 +15,7 @@ import org.springframework.context.MessageSource;
 import com.polifono.model.entity.Player;
 
 @ExtendWith(MockitoExtension.class)
-public class PlayerManagementServiceTest {
+public class PlayerHandlerTest {
 
     @InjectMocks
     private PlayerHandler service;
