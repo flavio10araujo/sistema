@@ -22,7 +22,7 @@ import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerGame;
 import com.polifono.model.enums.Role;
-import com.polifono.service.IPlayerGameService;
+import com.polifono.service.impl.PlayerGameService;
 
 @ExtendWith(MockitoExtension.class)
 public class PlayerCreditServiceTest {
@@ -34,7 +34,7 @@ public class PlayerCreditServiceTest {
     private PlayerService playerService;
 
     @Mock
-    private IPlayerGameService playerGameService;
+    private PlayerGameService playerGameService;
 
     private final Integer PLAYER_ID_EXISTENT = 1;
 

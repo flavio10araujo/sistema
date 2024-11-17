@@ -24,7 +24,7 @@ import com.polifono.repository.IPlayerGameRepository;
 public class PlayerGameServiceImplTest {
 
     @InjectMocks
-    private PlayerGameServiceImpl service;
+    private PlayerGameService service;
 
     @Mock
     private IPlayerGameRepository repository;

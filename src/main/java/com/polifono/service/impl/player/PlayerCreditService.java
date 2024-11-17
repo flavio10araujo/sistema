@@ -11,7 +11,7 @@ import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerGame;
 import com.polifono.model.entity.PlayerPhase;
-import com.polifono.service.IPlayerGameService;
+import com.polifono.service.impl.PlayerGameService;
 import com.polifono.service.impl.SecurityService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class PlayerCreditService {
     private final ConfigsCreditsProperties configsCreditsProperties;
     private final SecurityService securityService;
     private final PlayerService playerService;
-    private final IPlayerGameService playerGameService;
+    private final PlayerGameService playerGameService;
 
     /**
      * Verify if the player has enough credits to play the phase.
