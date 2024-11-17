@@ -15,6 +15,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import com.polifono.common.util.RandomStringGenerator;
 import com.polifono.model.entity.Diploma;
 import com.polifono.model.entity.Game;
 import com.polifono.model.entity.Level;
@@ -22,7 +23,6 @@ import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Player;
 import com.polifono.repository.IDiplomaRepository;
 import com.polifono.service.IDiplomaService;
-import com.polifono.service.impl.GenerateRandomStringService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,6 @@ public class DiplomaServiceImpl implements IDiplomaService {
 
     private final IDiplomaRepository repository;
     private final MessageSource messagesResource;
-    private final GenerateRandomStringService generateRandomStringService;
 
     public Diploma save(Diploma diploma) {
         return repository.save(diploma);
@@ -103,7 +102,7 @@ public class DiplomaServiceImpl implements IDiplomaService {
         diploma.setLevel(level);
 
         diploma.setDt(new Date());
-        diploma.setCode(player.getId() + "-" + game.getId() + "-" + level.getId() + "-" + generateRandomStringService.generate(10));
+        diploma.setCode(player.getId() + "-" + game.getId() + "-" + level.getId() + "-" + RandomStringGenerator.generate(10));
 
         return diploma;
     }

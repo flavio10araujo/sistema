@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.common.properties.ConfigsCreditsProperties;
 import com.polifono.common.util.PasswordUtil;
+import com.polifono.common.util.RandomStringGenerator;
 import com.polifono.model.entity.Player;
 import com.polifono.model.enums.Role;
 import com.polifono.repository.IPlayerRepository;
-import com.polifono.service.impl.GenerateRandomStringService;
 import com.polifono.service.impl.SendEmailService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 public class PlayerService {
 
     private final ConfigsCreditsProperties configsCreditsProperties;
-    private final GenerateRandomStringService generateRandomStringService;
     private final IPlayerRepository repository;
     private final SendEmailService emailSendUtil;
 
@@ -94,7 +93,7 @@ public class PlayerService {
         player.setPassword(PasswordUtil.encryptPassword(player.getPassword()));
         player.setCredit(configsCreditsProperties.getCreation()); // n credits are given to the player when he creates the account.
         player.setRole(Role.USER);
-        player.setEmailConfirmed(generateRandomStringService.generate(10)); // This field is sent to the player's email to confirm if the email is real.
+        player.setEmailConfirmed(RandomStringGenerator.generate(10)); // This field is sent to the player's email to confirm if the email is real.
         return player;
     }
 
@@ -104,7 +103,7 @@ public class PlayerService {
     }
 
     public void resendEmailConfirmation(Player player) {
-        player.setEmailConfirmed(generateRandomStringService.generate(10));
+        player.setEmailConfirmed(RandomStringGenerator.generate(10));
         save(player);
         emailSendUtil.sendEmailConfirmRegister(player);
     }

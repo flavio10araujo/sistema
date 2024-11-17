@@ -11,8 +11,8 @@ import com.polifono.model.entity.Communication;
 import com.polifono.model.entity.Groupcommunication;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerCommunication;
-import com.polifono.service.ICommunicationService;
 import com.polifono.service.IPlayerCommunicationService;
+import com.polifono.service.impl.CommunicationService;
 import com.polifono.service.impl.SendEmailService;
 import com.polifono.service.impl.player.PlayerCommunicationService;
 
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class ScheduledTasks {
 
     private final PlayerCommunicationService playerService;
-    private final ICommunicationService communicationService;
+    private final CommunicationService communicationService;
     private final IPlayerCommunicationService playerCommunicationService;
     private final SendEmailService sendEmailService;
 

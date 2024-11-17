@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.polifono.common.util.PasswordUtil;
+import com.polifono.common.util.RandomStringGenerator;
 import com.polifono.model.entity.Player;
-import com.polifono.service.impl.GenerateRandomStringService;
 import com.polifono.service.impl.SendEmailService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 public class PlayerPasswordResetHandler {
 
     private final MessageSource messagesResource;
-    private final GenerateRandomStringService generateRandomStringService;
     private final PlayerService playerService;
     private final SendEmailService emailSendUtil;
 
@@ -67,7 +66,7 @@ public class PlayerPasswordResetHandler {
     }
 
     public void resetPlayerPassword(Player player) {
-        player.setPasswordReset(generateRandomStringService.generate(10));
+        player.setPasswordReset(RandomStringGenerator.generate(10));
         playerService.save(player);
     }
 

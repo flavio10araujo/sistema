@@ -22,7 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.polifono.model.entity.Content;
 import com.polifono.model.entity.Contenttype;
 import com.polifono.model.form.admin.basic.ContentFilterForm;
-import com.polifono.service.impl.ContentServiceImpl;
+import com.polifono.service.impl.ContentService;
 import com.polifono.service.impl.LevelServiceImpl;
 import com.polifono.service.impl.MapServiceImpl;
 import com.polifono.service.impl.PhaseServiceImpl;
@@ -40,7 +40,7 @@ public class ContentController {
     private final LevelServiceImpl levelService;
     private final MapServiceImpl mapService;
     private final PhaseServiceImpl phaseService;
-    private final ContentServiceImpl contentService;
+    private final ContentService contentService;
 
     @GetMapping({ "/content", "/content/savepage" })
     public String savePage(HttpSession session, Model model) {

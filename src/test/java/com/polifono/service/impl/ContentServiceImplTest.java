@@ -32,7 +32,7 @@ import com.polifono.repository.IContentRepository;
 public class ContentServiceImplTest {
 
     @InjectMocks
-    private ContentServiceImpl service;
+    private ContentService service;
 
     @Mock
     private IContentRepository repository;

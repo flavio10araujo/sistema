@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import com.polifono.common.util.RandomStringGenerator;
 import com.polifono.common.util.UrlReaderUtil;
 import com.polifono.model.PlayerFacebook;
 import com.polifono.model.entity.Player;
@@ -24,7 +25,6 @@ public class FacebookLoginService {
 
     private final IPlayerRepository repository;
     private final SecurityService securityService;
-    private final GenerateRandomStringService generateRandomStringService;
     private final LoginServiceImpl loginService;
     private final PlayerService playerService;
 
@@ -77,7 +77,7 @@ public class FacebookLoginService {
         player.setName(playerFacebook.getFirstName());
         player.setLastName(playerFacebook.getLastName());
         player.setEmail(playerFacebook.getEmail());
-        player.setPassword(generateRandomStringService.generate(6));
+        player.setPassword(RandomStringGenerator.generate(6));
         player.setIndEmailConfirmed(false);
         playerService.create(player);
         loginExistingPlayer(request, player);
@@ -89,7 +89,7 @@ public class FacebookLoginService {
         player.setName(playerFacebook.getFirstName());
         player.setLastName(playerFacebook.getLastName());
         player.setLogin(playerFacebook.getId() + "");
-        player.setPassword(generateRandomStringService.generate(6));
+        player.setPassword(RandomStringGenerator.generate(6));
         player.setIndEmailConfirmed(false);
         playerService.create(player);
         loginExistingPlayer(request, player);

@@ -28,6 +28,7 @@ public class EmailMessageBuilder {
         };
     }
 
+    // TODO - i18n
     public String getEmailSubject(int messageType, String[] args) {
         return switch (messageType) {
             case 1 -> "Confirme seu cadastro na " + emailCompany;
@@ -53,6 +54,7 @@ public class EmailMessageBuilder {
         };
     }
 
+    // TODO - i18n
     private String getMessageType1() {
         return """
                 <table cellpadding="0" cellspacing="0" align="center" width="550" summary="">
@@ -123,6 +125,7 @@ public class EmailMessageBuilder {
                 """.formatted(emailCompany, emailCompany, emailUrl, emailUrl, emailCompany, emailCompany, emailCompanySlogan, emailUrl, emailUrl);
     }
 
+    // TODO - i18n
     private String getMessageType2() {
         return """
                 <table cellpadding="0" cellspacing="0" align="center" width="550" summary="">
@@ -207,6 +210,7 @@ public class EmailMessageBuilder {
                 """.formatted(emailCompany, emailCompany, emailUrl, emailUrl, emailCompany, emailCompany, emailCompanySlogan, emailUrl, emailUrl);
     }
 
+    // TODO - i18n
     private String getMessageType3() {
         return """
                 <table cellpadding="0" cellspacing="0" align="center" width="550" summary="">
@@ -275,6 +279,7 @@ public class EmailMessageBuilder {
                 """.formatted(emailCompany, emailCompany, emailCompany, emailCompanySlogan, emailUrl, emailUrl);
     }
 
+    // TODO - i18n
     private String getMessageType4() {
         return """
                 <table cellpadding="0" cellspacing="0" align="center" width="550" summary="">
@@ -338,6 +343,7 @@ public class EmailMessageBuilder {
                 """.formatted(emailCompany, emailUrl, emailUrl, emailCompany, emailCompany, emailCompanySlogan, emailUrl, emailUrl);
     }
 
+    // TODO - i18n
     private String getMessageType5() {
         return """
                 <table cellpadding="0" cellspacing="0" align="center" width="550" summary="">
@@ -389,6 +395,7 @@ public class EmailMessageBuilder {
                 """.formatted(emailCompany, emailCompany, emailCompany, emailCompanySlogan, emailUrl, emailUrl);
     }
 
+    // TODO - i18n
     private String getMessageType104() {
         return """
                 <table cellpadding="0" cellspacing="0" align="center" width="550" summary="">
@@ -512,6 +519,7 @@ public class EmailMessageBuilder {
                 """.formatted(emailCompany, emailCompany, emailUrl, emailUrl, emailCompany, emailCompany, emailCompanySlogan, emailUrl, emailUrl);
     }
 
+    // TODO - i18n
     private String getMessageType105(String[] args) {
         String message = """
                 <table cellpadding="0" cellspacing="0" align="center" width="550" summary="">

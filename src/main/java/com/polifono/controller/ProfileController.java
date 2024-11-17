@@ -42,13 +42,13 @@ import com.polifono.model.entity.PlayerPhase;
 import com.polifono.model.entity.Playervideo;
 import com.polifono.model.entity.Transaction;
 import com.polifono.model.enums.Role;
-import com.polifono.service.IContentService;
 import com.polifono.service.IDiplomaService;
 import com.polifono.service.ILevelService;
 import com.polifono.service.ILoginService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.impl.ClassPlayerService;
+import com.polifono.service.impl.ContentService;
 import com.polifono.service.impl.SecurityService;
 import com.polifono.service.impl.game.GameService;
 import com.polifono.service.impl.player.PlayerHandler;
@@ -77,7 +77,7 @@ public class ProfileController {
     private final ILevelService levelService;
     private final TransactionService transactionService;
     private final PlayerVideoService playerVideoService;
-    private final IContentService contentService;
+    private final ContentService contentService;
     private final PlayerHandler playerHandler;
 
     @Validated

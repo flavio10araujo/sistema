@@ -7,9 +7,7 @@ import com.polifono.common.properties.EmailProperties;
 import com.polifono.common.util.HTMLEntitiesUtil;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Component
 public class EmailSender {
@@ -33,7 +31,6 @@ public class EmailSender {
                 new MailAsync().start();
             }
         } catch (Exception e) {
-            log.error("Error sending {} email", sync ? "sync" : "async", e);
             return false;
         }
 
@@ -46,7 +43,7 @@ public class EmailSender {
             try {
                 sendEmail();
             } catch (Exception e) {
-                log.error("Error sending async email", e);
+                // Do nothing.
             }
         }
     }

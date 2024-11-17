@@ -7,13 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.polifono.model.entity.Content;
 import com.polifono.repository.IContentRepository;
-import com.polifono.service.IContentService;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class ContentServiceImpl implements IContentService {
+public class ContentService {
 
     private final IContentRepository repository;
 

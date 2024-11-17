@@ -18,13 +18,13 @@ import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerPhase;
 import com.polifono.model.entity.Question;
 import com.polifono.model.enums.Role;
-import com.polifono.service.IContentService;
 import com.polifono.service.IDiplomaService;
 import com.polifono.service.ILevelService;
 import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.IQuestionService;
+import com.polifono.service.impl.ContentService;
 import com.polifono.service.impl.game.GameService;
 import com.polifono.service.impl.player.PlayerService;
 
@@ -53,7 +53,7 @@ public class GameControllerIT /*extends AbstractControllerTest*/ {
     private IMapService mapService;
 
     @Mock
-    private IContentService contentService;
+    private ContentService contentService;
 
     @Mock
     private PlayerService playerService;
