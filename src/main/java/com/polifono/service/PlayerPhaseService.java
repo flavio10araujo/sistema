@@ -3,8 +3,10 @@ package com.polifono.service;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -111,18 +113,18 @@ public class PlayerPhaseService {
      * Based on a list of playerPhase, get the games only once.
      */
     public List<Game> filterPlayerPhasesListByGame(List<PlayerPhase> list) {
-        List<Game> ret = new ArrayList<>();
-
-        int gameId = 0;
+        List<Game> result = new ArrayList<>();
+        Set<Integer> gameIds = new HashSet<>();
 
         for (PlayerPhase pf : list) {
-            if (gameId != pf.getPhase().getMap().getGame().getId()) {
-                gameId = pf.getPhase().getMap().getGame().getId();
-                ret.add(pf.getPhase().getMap().getGame());
+            int currentGameId = pf.getPhase().getMap().getGame().getId();
+            if (!gameIds.contains(currentGameId)) {
+                gameIds.add(currentGameId);
+                result.add(pf.getPhase().getMap().getGame());
             }
         }
 
-        return ret;
+        return result;
     }
 
     /**
@@ -141,13 +143,7 @@ public class PlayerPhaseService {
         }
 
         for (Object[] o : objects) {
-            Player p = new Player();
-            p.setId((int) o[0]);
-            p.setName((String) o[1]);
-            p.setLastName((String) o[2]);
-
-            RankingDTO r = new RankingDTO(p, ((Number) o[3]).intValue());
-            ranking.add(r);
+            ranking.add(createRankingDTO(o));
         }
 
         return ranking;
@@ -155,23 +151,13 @@ public class PlayerPhaseService {
 
     public int getPermittedLevelForPlayer(int playerId, int gameId) {
         Optional<PlayerPhase> lastPlayerPhaseCompleted = findLastPhaseCompleted(playerId, gameId);
-
         if (lastPlayerPhaseCompleted.isEmpty()) {
             return 1;
         }
 
         Level lastLevel = lastPlayerPhaseCompleted.get().getPhase().getMap().getLevel();
         Optional<Phase> lastPhaseOfTheLevel = phaseService.findLastPhaseOfTheLevel(gameId, lastLevel.getId());
-
-        if (lastPhaseOfTheLevel.isEmpty()) {
-            return 1;
-        }
-
-        if (lastPlayerPhaseCompleted.get().getPhase().getId() != lastPhaseOfTheLevel.get().getId()) {
-            return lastLevel.getOrder();
-        } else {
-            return lastLevel.getOrder() + 1;
-        }
+        return lastPhaseOfTheLevel.map(phase -> calculatePermittedLevel(lastPlayerPhaseCompleted.get(), phase, lastLevel)).orElse(1);
     }
 
     public PlayerPhase setupPlayerPhaseInProgress(Phase currentPhase, int grade) {
@@ -208,5 +194,22 @@ public class PlayerPhaseService {
         playerPhase.setNumAttempts(1);
         playerPhase.setPhase(currentPhase);
         return playerPhase;
+    }
+
+    private RankingDTO createRankingDTO(Object[] o) {
+        Player p = new Player();
+        p.setId((int) o[0]);
+        p.setName((String) o[1]);
+        p.setLastName((String) o[2]);
+
+        return new RankingDTO(p, ((Number) o[3]).intValue());
+    }
+
+    private int calculatePermittedLevel(PlayerPhase lastPlayerPhaseCompleted, Phase lastPhaseOfTheLevel, Level lastLevel) {
+        if (lastPlayerPhaseCompleted.getPhase().getId() != lastPhaseOfTheLevel.getId()) {
+            return lastLevel.getOrder();
+        } else {
+            return lastLevel.getOrder() + 1;
+        }
     }
 }

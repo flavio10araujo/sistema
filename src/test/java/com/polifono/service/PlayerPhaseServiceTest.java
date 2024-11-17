@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,9 +17,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.polifono.common.util.DateUtil;
+import com.polifono.model.dto.RankingDTO;
 import com.polifono.model.entity.Game;
+import com.polifono.model.entity.Level;
+import com.polifono.model.entity.Map;
 import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Phasestatus;
 import com.polifono.model.entity.Player;
@@ -37,6 +44,9 @@ public class PlayerPhaseServiceTest {
 
     @Mock
     private IPlayerPhaseRepository repository;
+
+    @Mock
+    private PhaseService phaseService;
 
     private final Integer PLAYER_ID_EXISTENT = 1;
     private final Integer PLAYER_ID_INEXISTENT = Integer.MAX_VALUE;
@@ -86,66 +96,27 @@ public class PlayerPhaseServiceTest {
         Assertions.assertEquals(1, entity.getNumAttempts(), "failure - expected num attempts attribute match");
         Assertions.assertEquals(0, entity.getScore(), "failure - expected score attribute match");
     }
-
-    /*@Test
-    public void save_whenTestCompleted_saveTheGradeOfTheTest() {
-    	Player player = new Player();
-    	player.setId(PLAYER_ID_EXISTENT);
-
-    	Phase phase = new Phase();
-    	phase.setId(PHASE_ID_EXISTENT);
-
-    	Phasestatus phasestatus = new Phasestatus();
-    	phasestatus.setId(PHASESTATUS_CONCLUDED);
-
-    	PlayerPhase playerPhase = new PlayerPhase();
-    	playerPhase.setPlayer(player);
-    	playerPhase.setPhase(phase);
-    	playerPhase.setPhasestatus(phasestatus);
-    	playerPhase.setGrade(70);
-    	playerPhase.setDtTest(new Date());
-    	playerPhase.setNumAttempts(1);
-    	playerPhase.setScore(50);
-    	playerPhase.setId(1);
-
-    	when(repository.save(playerPhase)).thenReturn(playerPhase);
-
-    	PlayerPhase entity = service.save(playerPhase);
-
-    	Assertions.assertNotNull("failure - expected not null", entity);
-    	Assertions.assertNotEquals("failure - expected id attribute bigger than 0", 0, entity.getId());
-    	Assertions.assertEquals("failure - expected id player attribute match", PLAYER_ID_EXISTENT.intValue(), entity.getPlayer().getId());
-    	Assertions.assertEquals("failure - expected id phase attribute match", PHASE_ID_EXISTENT.intValue(), entity.getPhase().getId());
-    	Assertions.assertEquals("failure - expected phase status attribute match", PHASESTATUS_CONCLUDED.intValue(), entity.getPhasestatus().getId());
-    	Assertions.assertTrue("failure - expected grade attribute match", entity.getGrade() >= 70);
-    	Assertions.assertNotNull("failure - expected not null", entity.getDtTest());
-    	Assertions.assertTrue("failure - expected num attempts attribute match", entity.getNumAttempts() >= 1);
-    	Assertions.assertTrue("failure - expected score attribute match", entity.getScore() >= 10);
-    }*/
     /* save - end */
 
-    /* findLastPhaseCompleted - begin */
+    /* findByPlayer - begin */
     @Test
-    public void findLastPhaseCompleted_WhenPlayerHasAlreadyCompletedAtLeastOnePhaseOfTheGame_ReturnPlayerPhase() {
-        //PlayerPhase entity = service.findLastPhaseCompleted(PLAYER_ID_EXISTENT, GAME_ID_EXISTENT);
-        //Assertions.assertNotNull("failure - expected not null", entity);
-        //Assertions.assertNotEquals("failure - expected id attribute bigger than 0", 0, entity.getId());
+    public void findPlayerPhasesByPlayer_WhenSearchByPlayerExistent_ReturnList() {
+        int playerId = PLAYER_ID_EXISTENT;
+        List<PlayerPhase> listReturned = new ArrayList<>();
+        listReturned.add(new PlayerPhase());
+        when(repository.findByPlayer(playerId)).thenReturn(listReturned);
 
-        //buscar a próxima fase (order + 1)
-        //se for null, o usuário já completou a última fase do game
-        //verificar na T007 se essa próxima fase está registrada
-        //se não estiver, ok o método buscou a última fase completada
-        //se estiver, verificar se o status dela é em andamento
-        //se sim, ok
-        //se não, o método não buscou a última fase concluída
+        List<PlayerPhase> list = service.findByPlayer(PLAYER_ID_EXISTENT);
+        Assertions.assertNotNull(list, "failure - expected not null");
+        Assertions.assertNotEquals(0, list.size(), "failure - not expected list size 0");
     }
 
     @Test
-    public void findLastPhaseCompleted_WhenPlayerHasntCompletedAnyPhaseOfTheGame_ReturnNull() {
-        Optional<PlayerPhase> entity = service.findLastPhaseCompleted(PLAYER_ID_EXISTENT, GAME_ID_INEXISTENT);
-        Assertions.assertFalse(entity.isPresent(), "failure - expected null");
+    public void findPlayerPhasesByPlayer_WhenSearchByPlayerInexistent_ReturnNull() {
+        List<PlayerPhase> list = service.findByPlayer(PLAYER_ID_INEXISTENT);
+        Assertions.assertNull(list, "failure - expected null");
     }
-    /* findLastPhaseCompleted - end */
+    /* findByPlayer - end */
 
     /* findByPlayerPhaseAndStatus - begin */
     @Test
@@ -169,25 +140,28 @@ public class PlayerPhaseServiceTest {
     }
     /* findByPlayerPhaseAndStatus - end */
 
-    /* findPlayerPhasesByPlayer - begin */
+    /* findLastPhaseCompleted - begin */
     @Test
-    public void findPlayerPhasesByPlayer_WhenSearchByPlayerExistent_ReturnList() {
-        int playerId = PLAYER_ID_EXISTENT;
-        List<PlayerPhase> listReturned = new ArrayList<>();
-        listReturned.add(new PlayerPhase());
-        when(repository.findByPlayer(playerId)).thenReturn(listReturned);
+    public void findLastPhaseCompleted_WhenPlayerHasAlreadyCompletedAtLeastOnePhaseOfTheGame_ReturnPlayerPhase() {
+        //PlayerPhase entity = service.findLastPhaseCompleted(PLAYER_ID_EXISTENT, GAME_ID_EXISTENT);
+        //Assertions.assertNotNull("failure - expected not null", entity);
+        //Assertions.assertNotEquals("failure - expected id attribute bigger than 0", 0, entity.getId());
 
-        List<PlayerPhase> list = service.findByPlayer(PLAYER_ID_EXISTENT);
-        Assertions.assertNotNull(list, "failure - expected not null");
-        Assertions.assertNotEquals(0, list.size(), "failure - not expected list size 0");
+        //buscar a próxima fase (order + 1)
+        //se for null, o usuário já completou a última fase do game
+        //verificar na T007 se essa próxima fase está registrada
+        //se não estiver, ok o método buscou a última fase completada
+        //se estiver, verificar se o status dela é em andamento
+        //se sim, ok
+        //se não, o método não buscou a última fase concluída
     }
 
     @Test
-    public void findPlayerPhasesByPlayer_WhenSearchByPlayerInexistent_ReturnNull() {
-        List<PlayerPhase> list = service.findByPlayer(PLAYER_ID_INEXISTENT);
-        Assertions.assertNull(list, "failure - expected null");
+    public void findLastPhaseCompleted_WhenPlayerHasntCompletedAnyPhaseOfTheGame_ReturnNull() {
+        Optional<PlayerPhase> entity = service.findLastPhaseCompleted(PLAYER_ID_EXISTENT, GAME_ID_INEXISTENT);
+        Assertions.assertFalse(entity.isPresent(), "failure - expected null");
     }
-    /* findPlayerPhasesByPlayer - end */
+    /* findLastPhaseCompleted - end */
 
     /* findForReportGeneral - begin */
     @Test
@@ -240,7 +214,7 @@ public class PlayerPhaseServiceTest {
     /* setTestAttempt - begin */
     @Test
     public void setTestAttempt_WhenItIsNotTheFirstAttemptToDoThisTest_ReturnPlayerPhaseWithMoreThanOneAttempt() {
-        PlayerPhase entity = getEntityStubData().get();
+        PlayerPhase entity = getEntityStubData();
         entity.setNumAttempts(2);
 
         when(repository.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASE_STATUS_ONGOING)).thenReturn(Optional.of(entity));
@@ -265,7 +239,7 @@ public class PlayerPhaseServiceTest {
 
     @Test
     public void setTestAttempt_WhenItIsTheFirstAttemptToDoThisTest_ReturnPlayerPhaseWithOneAttempt() {
-        PlayerPhase entity = getEntityStubData().get();
+        PlayerPhase entity = getEntityStubData();
         entity.setNumAttempts(1);
 
         when(repository.findByPlayerPhaseAndStatus(PLAYER_ID_EXISTENT, PHASE_ID_EXISTENT, PHASE_STATUS_ONGOING)).thenReturn(Optional.empty());
@@ -289,8 +263,230 @@ public class PlayerPhaseServiceTest {
     }
     /* setTestAttempt - end */
 
+    /* filterPlayerPhasesListByGame - begin */
+    @Test
+    public void givenListIsEmpty_whenFilterPlayerPhasesListByGame_thenReturnEmptyList() {
+        List<PlayerPhase> list = new ArrayList<>();
+        List<Game> result = service.filterPlayerPhasesListByGame(list);
+
+        Assertions.assertNotNull(result, "failure - expected not null");
+        Assertions.assertTrue(result.isEmpty(), "failure - expected empty list");
+    }
+
+    @Test
+    public void givenListContainsPhasesFromSameGame_whenFilterPlayerPhasesListByGame_thenReturnSingleGame() {
+        Game game = new Game();
+        game.setId(GAME_ID_EXISTENT);
+
+        Map map = new Map();
+        map.setGame(game);
+
+        Phase phase1 = new Phase();
+        phase1.setMap(map);
+
+        Phase phase2 = new Phase();
+        phase2.setMap(map);
+
+        PlayerPhase playerPhase1 = new PlayerPhase();
+        playerPhase1.setPhase(phase1);
+
+        PlayerPhase playerPhase2 = new PlayerPhase();
+        playerPhase2.setPhase(phase2);
+
+        List<PlayerPhase> list = new ArrayList<>();
+        list.add(playerPhase1);
+        list.add(playerPhase2);
+
+        List<Game> result = service.filterPlayerPhasesListByGame(list);
+
+        Assertions.assertNotNull(result, "failure - expected not null");
+        Assertions.assertEquals(1, result.size(), "failure - expected list size 1");
+        Assertions.assertEquals(GAME_ID_EXISTENT.intValue(), result.get(0).getId(), "failure - expected game id match");
+    }
+
+    @Test
+    public void givenListContainsPhasesFromDifferentGames_whenFilterPlayerPhasesListByGame_thenReturnMultipleGames() {
+        Game game1 = new Game();
+        game1.setId(GAME_ID_EXISTENT);
+
+        Game game2 = new Game();
+        game2.setId(GAME_ID_EXISTENT + 1);
+
+        Map map1 = new Map();
+        map1.setGame(game1);
+
+        Map map2 = new Map();
+        map2.setGame(game2);
+
+        Phase phase1 = new Phase();
+        phase1.setMap(map1);
+
+        Phase phase2 = new Phase();
+        phase2.setMap(map2);
+
+        PlayerPhase playerPhase1 = new PlayerPhase();
+        playerPhase1.setPhase(phase1);
+
+        PlayerPhase playerPhase2 = new PlayerPhase();
+        playerPhase2.setPhase(phase2);
+
+        List<PlayerPhase> list = new ArrayList<>();
+        list.add(playerPhase1);
+        list.add(playerPhase2);
+
+        List<Game> result = service.filterPlayerPhasesListByGame(list);
+
+        Assertions.assertNotNull(result, "failure - expected not null");
+        Assertions.assertEquals(2, result.size(), "failure - expected list size 2");
+        Assertions.assertEquals(GAME_ID_EXISTENT.intValue(), result.get(0).getId(), "failure - expected first game id match");
+        Assertions.assertEquals(GAME_ID_EXISTENT + 1, result.get(1).getId(), "failure - expected second game id match");
+    }
+    /* filterPlayerPhasesListByGame - end */
+
+    /* getRankingMonthly - begin */
+    @Test
+    public void givenRepositoryReturnsEmptyList_whenGetRankingMonthly_thenReturnEmptyRanking() throws ParseException {
+        when(repository.getRanking(DateUtil.getFirstDayOfTheCurrentMonth(), DateUtil.getLastDayOfTheCurrentMonth())).thenReturn(new Object[0][0]);
+
+        List<RankingDTO> ranking = service.getRankingMonthly();
+
+        Assertions.assertNotNull(ranking, "failure - expected not null");
+        Assertions.assertTrue(ranking.isEmpty(), "failure - expected empty list");
+    }
+
+    @Test
+    public void givenRepositoryReturnsListOfPlayers_whenGetRankingMonthly_thenReturnRanking() throws ParseException {
+        Object[][] objects = {
+                { 1, "John", "Doe", 100 },
+                { 2, "Jane", "Smith", 90 }
+        };
+        when(repository.getRanking(DateUtil.getFirstDayOfTheCurrentMonth(), DateUtil.getLastDayOfTheCurrentMonth())).thenReturn(objects);
+
+        List<RankingDTO> ranking = service.getRankingMonthly();
+
+        Assertions.assertNotNull(ranking, "failure - expected not null");
+        Assertions.assertEquals(2, ranking.size(), "failure - expected list size 2");
+
+        RankingDTO first = ranking.get(0);
+        Assertions.assertEquals(1, first.player().getId(), "failure - expected player id match");
+        Assertions.assertEquals("John", first.player().getName(), "failure - expected player name match");
+        Assertions.assertEquals("Doe", first.player().getLastName(), "failure - expected player last name match");
+        Assertions.assertEquals(100, first.score(), "failure - expected score match");
+
+        RankingDTO second = ranking.get(1);
+        Assertions.assertEquals(2, second.player().getId(), "failure - expected player id match");
+        Assertions.assertEquals("Jane", second.player().getName(), "failure - expected player name match");
+        Assertions.assertEquals("Smith", second.player().getLastName(), "failure - expected player last name match");
+        Assertions.assertEquals(90, second.score(), "failure - expected score match");
+    }
+
+    @Test
+    public void givenParseExceptionThrown_whenGetRankingMonthly_thenReturnEmptyRanking() {
+        try (MockedStatic<DateUtil> mockedDateUtil = Mockito.mockStatic(DateUtil.class)) {
+            mockedDateUtil.when(DateUtil::getFirstDayOfTheCurrentMonth).thenThrow(ParseException.class);
+            mockedDateUtil.when(DateUtil::getLastDayOfTheCurrentMonth).thenThrow(ParseException.class);
+
+            List<RankingDTO> ranking = service.getRankingMonthly();
+
+            Assertions.assertNotNull(ranking, "failure - expected not null");
+            Assertions.assertTrue(ranking.isEmpty(), "failure - expected empty list");
+        }
+    }
+    /* getRankingMonthly - end */
+
+    /* getPermittedLevelForPlayer - begin */
+    @Test
+    public void givenPlayerHasNotCompletedAnyPhase_whenGetPermittedLevelForPlayer_thenReturnLevel1() {
+        int playerId = PLAYER_ID_EXISTENT;
+        int gameId = GAME_ID_EXISTENT;
+
+        when(repository.findLastPhaseCompleted(playerId, gameId)).thenReturn(new ArrayList<>());
+
+        int level = service.getPermittedLevelForPlayer(playerId, gameId);
+
+        Assertions.assertEquals(1, level, "failure - expected level 1");
+    }
+
+    @Test
+    public void givenPlayerHasCompletedPhasesButLastPhaseOfLevelNotFound_whenGetPermittedLevelForPlayer_thenReturnLevel1() {
+        int playerId = PLAYER_ID_EXISTENT;
+        int gameId = GAME_ID_EXISTENT;
+
+        PlayerPhase playerPhase = new PlayerPhase();
+        Phase phase = new Phase();
+        Map map = new Map();
+        Level level = new Level();
+        level.setId(1);
+        level.setOrder(1);
+        map.setLevel(level);
+        phase.setMap(map);
+        playerPhase.setPhase(phase);
+
+        when(repository.findLastPhaseCompleted(playerId, gameId)).thenReturn(List.of(playerPhase));
+        when(phaseService.findLastPhaseOfTheLevel(gameId, level.getId())).thenReturn(Optional.empty());
+
+        int permittedLevel = service.getPermittedLevelForPlayer(playerId, gameId);
+
+        Assertions.assertEquals(1, permittedLevel, "failure - expected level 1");
+    }
+
+    @Test
+    public void givenPlayerHasCompletedPhasesAndLastPhaseOfLevelFoundButNotSameAsLastCompletedPhase_whenGetPermittedLevelForPlayer_thenReturnCurrentLevelOrder() {
+        int playerId = PLAYER_ID_EXISTENT;
+        int gameId = GAME_ID_EXISTENT;
+
+        PlayerPhase playerPhase = new PlayerPhase();
+        Phase phase = new Phase();
+        phase.setId(1);
+        Map map = new Map();
+        Level level = new Level();
+        level.setId(1);
+        level.setOrder(1);
+        map.setLevel(level);
+        phase.setMap(map);
+        playerPhase.setPhase(phase);
+
+        Phase lastPhaseOfLevel = new Phase();
+        lastPhaseOfLevel.setId(2);
+
+        when(repository.findLastPhaseCompleted(playerId, gameId)).thenReturn(List.of(playerPhase));
+        when(phaseService.findLastPhaseOfTheLevel(gameId, level.getId())).thenReturn(Optional.of(lastPhaseOfLevel));
+
+        int permittedLevel = service.getPermittedLevelForPlayer(playerId, gameId);
+
+        Assertions.assertEquals(level.getOrder(), permittedLevel, "failure - expected current level order");
+    }
+
+    @Test
+    public void givenPlayerHasCompletedPhasesAndLastPhaseOfLevelFoundAndSameAsLastCompletedPhase_whenGetPermittedLevelForPlayer_thenReturnNextLevelOrder() {
+        int playerId = PLAYER_ID_EXISTENT;
+        int gameId = GAME_ID_EXISTENT;
+
+        PlayerPhase playerPhase = new PlayerPhase();
+        Phase phase = new Phase();
+        phase.setId(1);
+        Map map = new Map();
+        Level level = new Level();
+        level.setId(1);
+        level.setOrder(1);
+        map.setLevel(level);
+        phase.setMap(map);
+        playerPhase.setPhase(phase);
+
+        Phase lastPhaseOfLevel = new Phase();
+        lastPhaseOfLevel.setId(1);
+
+        when(repository.findLastPhaseCompleted(playerId, gameId)).thenReturn(List.of(playerPhase));
+        when(phaseService.findLastPhaseOfTheLevel(gameId, level.getId())).thenReturn(Optional.of(lastPhaseOfLevel));
+
+        int permittedLevel = service.getPermittedLevelForPlayer(playerId, gameId);
+
+        Assertions.assertEquals(level.getOrder() + 1, permittedLevel, "failure - expected next level order");
+    }
+    /* getPermittedLevelForPlayer - end */
+
     /* stubs - begin */
-    private Optional<PlayerPhase> getEntityStubData() {
+    private PlayerPhase getEntityStubData() {
         Phase phase = new Phase();
         phase.setId(PLAYER_ID_EXISTENT);
 
@@ -306,7 +502,7 @@ public class PlayerPhaseServiceTest {
         entity.setPlayer(player);
         entity.setPhasestatus(phasestatus);
 
-        return Optional.of(entity);
+        return entity;
     }
     /* stubs - end */
 }
