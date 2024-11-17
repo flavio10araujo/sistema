@@ -25,7 +25,7 @@ import com.polifono.repository.ITransactionRepository;
  * Unit test methods for the TransactionService.
  */
 @ExtendWith(MockitoExtension.class)
-public class TransactionServiceImplTest {
+public class TransactionServiceTest {
 
     @InjectMocks
     private TransactionService service;

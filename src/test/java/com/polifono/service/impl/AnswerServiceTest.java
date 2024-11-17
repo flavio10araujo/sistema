@@ -23,7 +23,7 @@ import com.polifono.model.entity.Question;
 import com.polifono.repository.IAnswerRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class AnswerServiceImplTest {
+public class AnswerServiceTest {
 
     @InjectMocks
     private AnswerService service;

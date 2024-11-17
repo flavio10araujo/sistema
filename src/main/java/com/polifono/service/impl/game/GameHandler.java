@@ -26,14 +26,14 @@ import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerPhase;
 import com.polifono.model.entity.Question;
-import com.polifono.service.IDiplomaService;
-import com.polifono.service.ILevelService;
 import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.IQuestionService;
 import com.polifono.service.impl.ContentService;
+import com.polifono.service.impl.LevelService;
 import com.polifono.service.impl.SecurityService;
+import com.polifono.service.impl.diploma.DiplomaService;
 import com.polifono.service.impl.player.PlayerCreditService;
 import com.polifono.service.impl.player.PlayerService;
 
@@ -49,13 +49,13 @@ public class GameHandler {
     private final PlayerService playerService;
     private final PlayerCreditService playerCreditService;
     private final GameService gameService;
-    private final ILevelService levelService;
+    private final LevelService levelService;
     private final IMapService mapService;
     private final IPhaseService phaseService;
     private final ContentService contentService;
     private final IQuestionService questionService;
     private final IPlayerPhaseService playerPhaseService;
-    private final IDiplomaService diplomaService;
+    private final DiplomaService diplomaService;
 
     public Player getPlayerOrRedirectHome() {
         return getOrRedirectHome(playerService.findById(getUserId()));

@@ -18,13 +18,13 @@ import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerPhase;
 import com.polifono.model.entity.Question;
 import com.polifono.model.enums.Role;
-import com.polifono.service.IDiplomaService;
-import com.polifono.service.ILevelService;
 import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.IQuestionService;
 import com.polifono.service.impl.ContentService;
+import com.polifono.service.impl.LevelService;
+import com.polifono.service.impl.diploma.DiplomaService;
 import com.polifono.service.impl.game.GameService;
 import com.polifono.service.impl.player.PlayerService;
 
@@ -44,7 +44,7 @@ public class GameControllerIT /*extends AbstractControllerTest*/ {
     private IPlayerPhaseService playerPhaseService;
 
     @Mock
-    private ILevelService levelService;
+    private LevelService levelService;
 
     @Mock
     private IPhaseService phaseService;
@@ -62,7 +62,7 @@ public class GameControllerIT /*extends AbstractControllerTest*/ {
     private IQuestionService questionService;
 
     @Mock
-    private IDiplomaService diplomaService;
+    private DiplomaService diplomaService;
 
     private final Integer GAME_ID_EXISTENT = 123;
     private final Integer GAME_ORDER_EXISTENT = 3;

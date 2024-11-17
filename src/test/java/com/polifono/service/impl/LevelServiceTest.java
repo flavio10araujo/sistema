@@ -23,10 +23,10 @@ import com.polifono.repository.ILevelRepository;
  * Unit test methods for the LevelService.
  */
 @ExtendWith(MockitoExtension.class)
-public class LevelServiceImplTest {
+public class LevelServiceTest {
 
     @InjectMocks
-    private LevelServiceImpl service;
+    private LevelService service;
 
     @Mock
     private ILevelRepository repository;

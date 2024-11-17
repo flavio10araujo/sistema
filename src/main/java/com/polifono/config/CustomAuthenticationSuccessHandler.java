@@ -11,7 +11,7 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 
 import com.polifono.model.CurrentUser;
-import com.polifono.service.impl.LoginServiceImpl;
+import com.polifono.service.impl.LoginService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final RedirectStrategy redirectStrategy;
-    private final LoginServiceImpl loginService;
+    private final LoginService loginService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {

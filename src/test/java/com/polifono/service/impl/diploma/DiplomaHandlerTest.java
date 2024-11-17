@@ -23,7 +23,7 @@ import com.polifono.model.entity.Player;
 import com.polifono.service.impl.SecurityService;
 
 @ExtendWith(MockitoExtension.class)
-public class DiplomaHelperServiceTest {
+public class DiplomaHandlerTest {
 
     private static final String MSG_THE_INFORMED_CERTIFICATE_DOES_NOT_EXIST = "The Informed Certificate Does Not Exist";
 

@@ -24,7 +24,7 @@ import com.polifono.repository.IClassRepository;
  * Unit test methods for the ClassService.
  */
 @ExtendWith(MockitoExtension.class)
-public class ClassServiceImplTest {
+public class ClassServiceTest {
 
     @InjectMocks
     private ClassService service;

@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,10 +28,10 @@ import com.polifono.repository.ILoginRepository;
  * Unit test methods for the LoginService.
  */
 @ExtendWith(MockitoExtension.class)
-public class LoginServiceImplTest {
+public class LoginServiceTest {
 
     @InjectMocks
-    private LoginServiceImpl service;
+    private LoginService service;
 
     @Mock
     private ILoginRepository repository;
@@ -45,8 +44,8 @@ public class LoginServiceImplTest {
 
     /* registerLogin - begin */
     @Test
-    public void registerLogin_WhenPlayerExistent_RegisterLogin() {
-        Login entity = getEntityStubData().get();
+    public void givenPlayerExists_whenRegisterLogin_thenRegisterLogin() {
+        Login entity = getEntityStubData();
 
         when(repository.save(any())).thenReturn(entity);
 
@@ -73,7 +72,7 @@ public class LoginServiceImplTest {
 
     /* findByPlayer - begin */
     @Test
-    public void findByPlayer_WhenSearchByPlayerExistent_ReturnList() {
+    public void givenPlayerExists_whenFindByPlayer_thenReturnList() {
         List<Date> list = getEntityListDateStubData();
 
         when(repository.findByPlayer(eq(PLAYER_ID_EXISTENT), any())).thenReturn(list);
@@ -88,7 +87,7 @@ public class LoginServiceImplTest {
     }
 
     @Test
-    public void findByPlayer_WhenSearchByPlayerInexistent_ReturnNull() {
+    public void givenPlayerDoesNotExist_whenFindByPlayer_thenReturnNull() {
         when(repository.findByPlayer(eq(PLAYER_ID_INEXISTENT), any())).thenReturn(new ArrayList<>());
 
         List<Login> listReturned = service.findByPlayer(PLAYER_ID_INEXISTENT);
@@ -100,10 +99,10 @@ public class LoginServiceImplTest {
     /* findByPlayer - end */
 
     /* stubs - begin */
-    private Optional<Login> getEntityStubData() {
+    private Login getEntityStubData() {
         Login entity = new Login();
         entity.setId(2);
-        return Optional.of(entity);
+        return entity;
     }
 
     private List<Date> getEntityListDateStubData() {

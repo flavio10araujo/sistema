@@ -29,7 +29,7 @@ import com.polifono.repository.IContentRepository;
  * Unit test methods for the ContentService.
  */
 @ExtendWith(MockitoExtension.class)
-public class ContentServiceImplTest {
+public class ContentServiceTest {
 
     @InjectMocks
     private ContentService service;

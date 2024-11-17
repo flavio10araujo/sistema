@@ -28,7 +28,7 @@ import com.polifono.service.IQuestionService;
  * Unit test methods for the GameService.
  */
 @ExtendWith(MockitoExtension.class)
-public class GameServiceImplTest {
+public class GameServiceTest {
 
     @InjectMocks
     private GameService service;

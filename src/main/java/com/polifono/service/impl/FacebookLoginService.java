@@ -25,7 +25,7 @@ public class FacebookLoginService {
 
     private final IPlayerRepository repository;
     private final SecurityService securityService;
-    private final LoginServiceImpl loginService;
+    private final LoginService loginService;
     private final PlayerService playerService;
 
     public Optional<Player> findByIdFacebook(Long id) {

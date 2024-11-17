@@ -22,7 +22,6 @@ import com.polifono.model.entity.Level;
 import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Player;
 import com.polifono.repository.IDiplomaRepository;
-import com.polifono.service.IDiplomaService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +35,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 
 @RequiredArgsConstructor
 @Service
-public class DiplomaServiceImpl implements IDiplomaService {
+public class DiplomaService {
 
     private final IDiplomaRepository repository;
     private final MessageSource messagesResource;
@@ -45,7 +44,6 @@ public class DiplomaServiceImpl implements IDiplomaService {
         return repository.save(diploma);
     }
 
-    @Override
     public List<Diploma> findByPlayer(int playerId) {
         List<Diploma> list = repository.findByPlayer(playerId);
 
@@ -56,12 +54,10 @@ public class DiplomaServiceImpl implements IDiplomaService {
         return list;
     }
 
-    @Override
     public Optional<Diploma> findByCode(String code) {
         return repository.findByCode(code);
     }
 
-    @Override
     public void generateDiplomaPdf(HttpServletResponse response, Diploma diploma, Locale locale) throws JRException, IOException {
         List<Diploma> list = new ArrayList<>();
         list.add(diploma);
@@ -77,7 +73,6 @@ public class DiplomaServiceImpl implements IDiplomaService {
         JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
     }
 
-    @Override
     public Diploma setupDiploma(Player player, Phase currentPhase) {
         Diploma diploma = configureDiploma(player, currentPhase.getMap().getGame(), currentPhase.getMap().getLevel());
         save(diploma);

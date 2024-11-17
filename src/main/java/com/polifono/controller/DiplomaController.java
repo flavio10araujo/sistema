@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.polifono.model.entity.Diploma;
-import com.polifono.service.IDiplomaService;
 import com.polifono.service.impl.diploma.DiplomaHandler;
+import com.polifono.service.impl.diploma.DiplomaService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ import net.sf.jasperreports.engine.JRException;
 @Controller
 public class DiplomaController {
 
-    private final IDiplomaService diplomaService;
+    private final DiplomaService diplomaService;
     private final DiplomaHandler diplomaHandler;
 
     @GetMapping("/diplomas")
