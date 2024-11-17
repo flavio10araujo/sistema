@@ -26,14 +26,11 @@ import com.polifono.model.entity.PlayerPhase;
 import com.polifono.repository.IMapRepository;
 import com.polifono.service.IPhaseService;
 
-/**
- * Unit test methods for the MapService.
- */
 @ExtendWith(MockitoExtension.class)
-public class MapServiceImplTest {
+public class MapServiceTest {
 
     @InjectMocks
-    private MapServiceImpl service;
+    private MapService service;
 
     @Mock
     private IMapRepository repository;
@@ -53,19 +50,19 @@ public class MapServiceImplTest {
     /* save - begin */
     @Test
     public void save_WhenSaveMap_ReturnMapSaved() {
-        Optional<Map> entity = getEntityStubData();
+        Map entity = getEntityStubData();
 
-        when(repository.save(entity.get())).thenReturn(entity.get());
+        when(repository.save(entity)).thenReturn(entity);
 
         // Saving the changes.
-        Map entityReturned = service.save(entity.get());
+        Map entityReturned = service.save(entity);
 
-        Assertions.assertEquals(entity.get().getName(), entityReturned.getName(), "failure - expected name attribute match");
-        Assertions.assertEquals(entity.get().getOrder(), entityReturned.getOrder(), "failure - expected order attribute match");
-        Assertions.assertEquals(entity.get().getGame().getId(), entityReturned.getGame().getId(), "failure - expected game attribute match");
-        Assertions.assertEquals(entity.get().getLevel().getId(), entityReturned.getLevel().getId(), "failure - expected level attribute match");
+        Assertions.assertEquals(entity.getName(), entityReturned.getName(), "failure - expected name attribute match");
+        Assertions.assertEquals(entity.getOrder(), entityReturned.getOrder(), "failure - expected order attribute match");
+        Assertions.assertEquals(entity.getGame().getId(), entityReturned.getGame().getId(), "failure - expected game attribute match");
+        Assertions.assertEquals(entity.getLevel().getId(), entityReturned.getLevel().getId(), "failure - expected level attribute match");
 
-        verify(repository, times(1)).save(entity.get());
+        verify(repository, times(1)).save(entity);
         verifyNoMoreInteractions(repository);
     }
     /* save - end */
@@ -73,15 +70,15 @@ public class MapServiceImplTest {
     /* delete - begin */
     @Test
     public void delete_WhenMapIsExistent_ReturnTrue() {
-        Optional<Map> entity = getEntityStubData();
+        Map entity = getEntityStubData();
 
-        when(repository.findById(MAP_ID_EXISTENT)).thenReturn(entity);
-        doNothing().when(repository).delete(entity.get());
+        when(repository.findById(MAP_ID_EXISTENT)).thenReturn(Optional.of(entity));
+        doNothing().when(repository).delete(entity);
 
         Assertions.assertTrue(service.delete(MAP_ID_EXISTENT), "failure - expected return true");
 
         verify(repository, times(1)).findById(MAP_ID_EXISTENT);
-        verify(repository, times(1)).delete(entity.get());
+        verify(repository, times(1)).delete(entity);
         verifyNoMoreInteractions(repository);
     }
 
@@ -99,9 +96,9 @@ public class MapServiceImplTest {
     /* findOne - begin */
     @Test
     public void findOne_WhenMapIsExistent_ReturnMap() {
-        Optional<Map> entity = getEntityStubData();
+        Map entity = getEntityStubData();
 
-        when(repository.findById(MAP_ID_EXISTENT)).thenReturn(entity);
+        when(repository.findById(MAP_ID_EXISTENT)).thenReturn(Optional.of(entity));
 
         Optional<Map> entityReturned = service.findById(MAP_ID_EXISTENT);
 
@@ -302,9 +299,9 @@ public class MapServiceImplTest {
     }
     /* findNextMapSameLevel - end */
 
-    /* playerCanAccessThisMap - begin */
+    /* canPlayerAccessMap - begin */
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessTheFirstMapOfTheFirstLevel_ReturnTrue() {
+    public void givenPlayerIsTryingToAccessTheFirstMapOfTheFirstLevel_whenCanPlayerAccessMap_thenReturnTrue() {
         Level level = new Level();
         level.setOrder(1);
 
@@ -318,7 +315,7 @@ public class MapServiceImplTest {
     }
 
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessAMapDifferentOfTheFirstMapOfTheFirstLevelAndThePlayerHasNeverFinishedAPhaseOfThisGame_ReturnFalse() {
+    public void givenPlayerIsTryingToAccessAMapDifferentOfTheFirstMapOfTheFirstLevelAndThePlayerHasNeverFinishedAPhaseOfThisGame_whenCanPlayerAccessMap_thenReturnFalse() {
         Game game = new Game();
         game.setId(1);
 
@@ -339,7 +336,7 @@ public class MapServiceImplTest {
     }
 
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessAMapInAPreviousLevelThanTheLastPhaseDonesLevel_ReturnTrue() {
+    public void givenPlayerIsTryingToAccessAMapInAPreviousLevelThanTheLastPhaseDoneLevel_whenCanPlayerAccessMap_thenReturnTrue() {
         Game game = new Game();
         game.setId(1);
 
@@ -369,7 +366,7 @@ public class MapServiceImplTest {
     }
 
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessAPreviousMapAtTheSameLevelOfTheLastPhaseDone_ReturnTrue() {
+    public void givenPlayerIsTryingToAccessAPreviousMapAtTheSameLevelOfTheLastPhaseDone_whenCanPlayerAccessMap_thenReturnTrue() {
         Game game = new Game();
         game.setId(1);
 
@@ -400,7 +397,7 @@ public class MapServiceImplTest {
     }
 
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapButTheLastPhaseDoneIsNotTheLastPhaseOfTheLevel_ReturnFalse() {
+    public void givenPlayerIsTryingToAccessANextMapButTheLastPhaseDoneIsNotTheLastPhaseOfTheLevel_whenCanPlayerAccessMap_thenReturnFalse() {
         Game game = new Game();
         game.setId(1);
 
@@ -443,7 +440,7 @@ public class MapServiceImplTest {
     }
 
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapIsInTheSameLevelAndItIsTheNext_ReturnTrue() {
+    public void givenPlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapIsInTheSameLevelAndItIsTheNext_whenCanPlayerAccessMap_thenReturnTrue() {
         Game game = new Game();
         game.setId(1);
 
@@ -486,7 +483,7 @@ public class MapServiceImplTest {
     }
 
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapIsInTheSameLevelButItIsNotTheNext_ReturnFalse() {
+    public void givenPlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapIsInTheSameLevelButItIsNotTheNext_whenCanPlayerAccessMap_thenReturnFalse() {
         Game game = new Game();
         game.setId(1);
 
@@ -529,7 +526,7 @@ public class MapServiceImplTest {
     }
 
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapIsTheFirstOfTheNextLevel_ReturnTrue() {
+    public void givenPlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapIsTheFirstOfTheNextLevel_whenCanPlayerAccessMap_thenReturnTrue() {
         Game game = new Game();
         game.setId(1);
 
@@ -572,7 +569,7 @@ public class MapServiceImplTest {
     }
 
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapINotTheFirstOfTheNextLevel_ReturnFalse() {
+    public void givenPlayerIsTryingToAccessANextMapAndTheLastPhaseDoneIsTheLastPhaseOfTheLevelTheMapINotTheFirstOfTheNextLevel_whenCanPlayerAccessMap_thenReturnFalse() {
         Game game = new Game();
         game.setId(1);
 
@@ -615,7 +612,7 @@ public class MapServiceImplTest {
     }
 
     @Test
-    public void playerCanAccessThisMap_WhenThePlayerIsTryingToAccessMapButTheLevelOfThisMapIsNotTheNextLevel_ReturnFalse() {
+    public void givenPlayerIsTryingToAccessMapButTheLevelOfThisMapIsNotTheNextLevel_whenCanPlayerAccessMap_thenReturnFalse() {
         Game game = new Game();
         game.setId(1);
 
@@ -656,11 +653,11 @@ public class MapServiceImplTest {
 
         Assertions.assertFalse(service.canPlayerAccessMap(map, player.getId()));
     }
-    /* playerCanAccessThisMap - end */
+    /* canPlayerAccessMap - end */
 
     /* findCurrentMap - begin */
     @Test
-    public void findCurrentMap_WhenPlayerHasNeverCompletedAnyPhaseOfTheGame_ReturnFirstMapOfTheFirstLevelOfTheGame() {
+    public void givenPlayerHasNeverCompletedAnyPhaseOfTheGame_whenFindCurrentMap_thenReturnFirstMapOfTheFirstLevelOfTheGame() {
         int gameId = 1, levelId = 1;
 
         List<Map> listReturned = new ArrayList<Map>();
@@ -689,7 +686,7 @@ public class MapServiceImplTest {
     }
 
     @Test
-    public void findCurrentMap_WhenNextPhaseIsInTheSameMapThatTheLastPhaseCompleted_ReturnSameMapOfTheLastPhaseCompleted() {
+    public void givenNextPhaseIsInTheSameMapThatTheLastPhaseCompleted_whenFindCurrentMap_thenReturnSameMapOfTheLastPhaseCompleted() {
         Game game = new Game();
         game.setId(GAME_ID_EXISTENT);
 
@@ -714,7 +711,7 @@ public class MapServiceImplTest {
     }
 
     @Test
-    public void findCurrentMap_WhenNextPhaseIsInTheNextMapInTheSameLevel_ReturnMapWithNextOrderAndInTheSameLevel() {
+    public void givenNextPhaseIsInTheNextMapInTheSameLevel_whenFindCurrentMap_thenReturnMapWithNextOrderAndInTheSameLevel() {
         Game game = new Game();
         game.setId(GAME_ID_EXISTENT);
 
@@ -749,7 +746,7 @@ public class MapServiceImplTest {
     }
 
     @Test
-    public void findCurrentMap_WhenNextPhaseIsInTheNextLevel_ReturnFirstMapOfNextLevelWithFlagLevelCompletedChecked() {
+    public void givenNextPhaseIsInTheNextLevel_whenFindCurrentMap_thenReturnFirstMapOfNextLevelWithFlagLevelCompletedChecked() {
         int gameId = 1, levelId = 1;
 
         Game game = new Game();
@@ -794,7 +791,7 @@ public class MapServiceImplTest {
     }
 
     @Test
-    public void findCurrentMap_WhenItDoesntExistNextMap_ReturnSameMapOfTheLastPhaseCompletedWithFlagGameCompletedChecked() {
+    public void givenItDoesntExistNextMap_whenFindCurrentMap_thenReturnSameMapOfTheLastPhaseCompletedWithFlagGameCompletedChecked() {
         int gameId = 1, levelId = 1;
 
         Game game = new Game();
@@ -831,7 +828,7 @@ public class MapServiceImplTest {
     /* findCurrentMap - end */
 
     /* stubs - begin */
-    private Optional<Map> getEntityStubData() {
+    private Map getEntityStubData() {
         Game game = new Game();
         game.setId(GAME_ID_EXISTENT);
 
@@ -845,14 +842,14 @@ public class MapServiceImplTest {
         map.setGame(game);
         map.setLevel(level);
 
-        return Optional.of(map);
+        return map;
     }
 
     private List<Map> getEntityListStubData() {
         List<Map> list = new ArrayList<>();
 
-        Map entity1 = getEntityStubData().get();
-        Map entity2 = getEntityStubData().get();
+        Map entity1 = getEntityStubData();
+        Map entity2 = getEntityStubData();
 
         list.add(entity1);
         list.add(entity2);

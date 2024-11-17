@@ -18,15 +18,7 @@ import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerPhase;
 import com.polifono.model.entity.Question;
 import com.polifono.model.enums.Role;
-import com.polifono.service.IMapService;
-import com.polifono.service.IPhaseService;
-import com.polifono.service.IPlayerPhaseService;
-import com.polifono.service.IQuestionService;
-import com.polifono.service.impl.ContentService;
-import com.polifono.service.impl.LevelService;
-import com.polifono.service.impl.diploma.DiplomaService;
 import com.polifono.service.impl.game.GameService;
-import com.polifono.service.impl.player.PlayerService;
 
 /**
  * Unit tests for the GameController using Spring MVC Mocks.
@@ -39,30 +31,6 @@ public class GameControllerIT /*extends AbstractControllerTest*/ {
 
     @Mock
     private GameService gameService;
-
-    @Mock
-    private IPlayerPhaseService playerPhaseService;
-
-    @Mock
-    private LevelService levelService;
-
-    @Mock
-    private IPhaseService phaseService;
-
-    @Mock
-    private IMapService mapService;
-
-    @Mock
-    private ContentService contentService;
-
-    @Mock
-    private PlayerService playerService;
-
-    @Mock
-    private IQuestionService questionService;
-
-    @Mock
-    private DiplomaService diplomaService;
 
     private final Integer GAME_ID_EXISTENT = 123;
     private final Integer GAME_ORDER_EXISTENT = 3;

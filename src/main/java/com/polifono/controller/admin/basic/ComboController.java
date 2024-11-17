@@ -11,9 +11,9 @@ import com.polifono.model.Combo;
 import com.polifono.model.entity.Map;
 import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Question;
-import com.polifono.service.IMapService;
 import com.polifono.service.IPhaseService;
 import com.polifono.service.IQuestionService;
+import com.polifono.service.impl.MapService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class ComboController {
 
-    private final IMapService mapService;
+    private final MapService mapService;
     private final IPhaseService phaseService;
     private final IQuestionService questionService;
 

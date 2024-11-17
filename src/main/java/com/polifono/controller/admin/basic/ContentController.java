@@ -24,7 +24,7 @@ import com.polifono.model.entity.Contenttype;
 import com.polifono.model.form.admin.basic.ContentFilterForm;
 import com.polifono.service.impl.ContentService;
 import com.polifono.service.impl.LevelService;
-import com.polifono.service.impl.MapServiceImpl;
+import com.polifono.service.impl.MapService;
 import com.polifono.service.impl.PhaseServiceImpl;
 import com.polifono.service.impl.game.GameService;
 
@@ -38,7 +38,7 @@ public class ContentController {
 
     private final GameService gameService;
     private final LevelService levelService;
-    private final MapServiceImpl mapService;
+    private final MapService mapService;
     private final PhaseServiceImpl phaseService;
     private final ContentService contentService;
 

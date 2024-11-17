@@ -18,8 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.model.entity.Game;
 import com.polifono.model.entity.Map;
-import com.polifono.service.IMapService;
 import com.polifono.service.impl.LevelService;
+import com.polifono.service.impl.MapService;
 import com.polifono.service.impl.game.GameService;
 
 import jakarta.servlet.http.HttpSession;
@@ -32,7 +32,7 @@ public class MapController {
 
     private final GameService gameService;
     private final LevelService levelService;
-    private final IMapService mapService;
+    private final MapService mapService;
 
     @GetMapping({ "/map", "/map/savepage" })
     public String savePage(HttpSession session, Model model) {
