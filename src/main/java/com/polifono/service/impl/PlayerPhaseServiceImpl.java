@@ -19,7 +19,6 @@ import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerPhase;
 import com.polifono.model.form.teacher.ReportGeneralForm;
 import com.polifono.repository.IPlayerPhaseRepository;
-import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
 import com.polifono.service.impl.game.GameService;
 
@@ -34,7 +33,7 @@ public class PlayerPhaseServiceImpl implements IPlayerPhaseService {
 
     private final IPlayerPhaseRepository repository;
     private final GameService gameService;
-    private final IPhaseService phaseService;
+    private final PhaseService phaseService;
     private final SecurityService securityService;
 
     @Override

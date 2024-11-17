@@ -24,10 +24,10 @@ import com.polifono.repository.IPhaseRepository;
  * Unit test methods for the PhaseService.
  */
 @ExtendWith(MockitoExtension.class)
-public class PhaseServiceImplTest {
+public class PhaseServiceTest {
 
     @InjectMocks
-    private PhaseServiceImpl service;
+    private PhaseService service;
 
     @Mock
     private IPhaseRepository repository;

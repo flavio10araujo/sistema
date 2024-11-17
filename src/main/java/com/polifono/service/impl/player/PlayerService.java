@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.polifono.common.properties.ConfigsCreditsProperties;
+import com.polifono.common.util.DateUtil;
 import com.polifono.common.util.PasswordUtil;
 import com.polifono.common.util.RandomStringGenerator;
 import com.polifono.model.entity.Player;
@@ -106,5 +107,13 @@ public class PlayerService {
         player.setEmailConfirmed(RandomStringGenerator.generate(10));
         save(player);
         emailSendUtil.sendEmailConfirmRegister(player);
+    }
+
+    public List<Player> findCommunicationGroup04() {
+        return repository.findCommunicationGroup04(DateUtil.subtractMonth(new Date(), 1), DateUtil.subtractMonth(new Date(), 2));
+    }
+
+    public List<Player> findCommunicationGroup05() {
+        return repository.findCommunicationGroup05(DateUtil.subtractMonth(new Date(), 1), DateUtil.subtractMonth(new Date(), 2));
     }
 }

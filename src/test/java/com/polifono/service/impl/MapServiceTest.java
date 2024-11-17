@@ -24,7 +24,6 @@ import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerPhase;
 import com.polifono.repository.IMapRepository;
-import com.polifono.service.IPhaseService;
 
 @ExtendWith(MockitoExtension.class)
 public class MapServiceTest {
@@ -36,7 +35,7 @@ public class MapServiceTest {
     private IMapRepository repository;
 
     @Mock
-    private IPhaseService phaseService;
+    private PhaseService phaseService;
 
     private final Integer GAME_ID_EXISTENT = 1;
     private final Integer GAME_ID_INEXISTENT = Integer.MAX_VALUE;

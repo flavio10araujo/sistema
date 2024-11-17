@@ -10,7 +10,6 @@ import com.polifono.model.entity.Map;
 import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.PlayerPhase;
 import com.polifono.repository.IMapRepository;
-import com.polifono.service.IPhaseService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class MapService {
 
     private final IMapRepository repository;
-    private final IPhaseService phaseService;
+    private final PhaseService phaseService;
 
     public Map save(Map map) {
         return repository.save(map);

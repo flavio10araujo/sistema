@@ -16,10 +16,10 @@ import com.polifono.model.entity.Communication;
 import com.polifono.model.entity.Groupcommunication;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerCommunication;
-import com.polifono.service.IPlayerCommunicationService;
 import com.polifono.service.impl.CommunicationService;
+import com.polifono.service.impl.PlayerCommunicationService;
 import com.polifono.service.impl.SendEmailService;
-import com.polifono.service.impl.player.PlayerCommunicationService;
+import com.polifono.service.impl.player.PlayerService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,9 +28,9 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin/message")
 public class AdminMessageController {
 
-    private final PlayerCommunicationService playerService;
+    private final PlayerService playerService;
     private final CommunicationService communicationService;
-    private final IPlayerCommunicationService playerCommunicationService;
+    private final PlayerCommunicationService playerCommunicationService;
     private final SendEmailService sendEmailService;
 
     @GetMapping("/group04")

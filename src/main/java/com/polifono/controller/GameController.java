@@ -27,8 +27,8 @@ import com.polifono.model.entity.Game;
 import com.polifono.model.entity.Map;
 import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Question;
-import com.polifono.service.IPhaseService;
 import com.polifono.service.IPlayerPhaseService;
+import com.polifono.service.impl.PhaseService;
 import com.polifono.service.impl.SecurityService;
 import com.polifono.service.impl.game.GameHandler;
 import com.polifono.service.impl.game.GameService;
@@ -43,7 +43,7 @@ public class GameController {
     private final SecurityService securityService;
     private final GameService gameService;
     private final GameHandler gameHandler;
-    private final IPhaseService phaseService;
+    private final PhaseService phaseService;
     private final IPlayerPhaseService playerPhaseService;
 
     @GetMapping("/games")

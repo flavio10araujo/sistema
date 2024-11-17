@@ -18,9 +18,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.polifono.model.entity.Phase;
 import com.polifono.model.form.admin.basic.PhaseFilterForm;
-import com.polifono.service.IPhaseService;
 import com.polifono.service.impl.LevelService;
 import com.polifono.service.impl.MapService;
+import com.polifono.service.impl.PhaseService;
 import com.polifono.service.impl.game.GameService;
 
 import jakarta.servlet.http.HttpSession;
@@ -34,7 +34,7 @@ public class PhaseController {
     private final GameService gameService;
     private final LevelService levelService;
     private final MapService mapService;
-    private final IPhaseService phaseService;
+    private final PhaseService phaseService;
 
     @GetMapping({ "/phase", "/phase/savepage" })
     public String savePage(HttpSession session, Model model) {
