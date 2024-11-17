@@ -1,8 +1,8 @@
 package com.polifono.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -94,17 +94,25 @@ public class PhaseService {
         return Optional.of(list.get(0));
     }
 
-    public List<Phase> findGamesForProfile(int playerId) {
+    public final List<Phase> findGamesForProfile(int playerId) {
         List<Phase> list = repository.findGamesForProfile(playerId);
 
-        if (list.isEmpty()) {
+        if (list == null || list.isEmpty()) {
             return null;
         }
 
-        return list.stream()
-                .filter(phase -> phase.getMap().getGame().getId() != 0)
-                .distinct()
-                .collect(Collectors.toList());
+        List<Phase> ret = new ArrayList<>();
+
+        int gameId = 0;
+
+        for (Phase phase : list) {
+            if (gameId != phase.getMap().getGame().getId()) {
+                gameId = phase.getMap().getGame().getId();
+                ret.add(phase);
+            }
+        }
+
+        return ret;
     }
 
     /**

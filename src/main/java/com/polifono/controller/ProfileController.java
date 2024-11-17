@@ -83,8 +83,7 @@ public class ProfileController {
 
     @Validated
     @GetMapping("/players/{playerId}")
-    public String profilePlayer(final Model model,
-            @PathVariable("playerId") @Min(1) int playerId) {
+    public String profilePlayer(final Model model, @PathVariable("playerId") @Min(1) int playerId) {
 
         Optional<CurrentUser> currentUserOpt = securityService.getCurrentAuthenticatedUser();
         if (currentUserOpt.isEmpty()) {
@@ -120,8 +119,7 @@ public class ProfileController {
 
     @Validated
     @GetMapping("/players/{playerId}/score")
-    public String score(final Model model,
-            @PathVariable("playerId") @Min(1) int playerId) {
+    public String score(final Model model, @PathVariable("playerId") @Min(1) int playerId) {
 
         Optional<CurrentUser> currentUserOpt = securityService.getCurrentAuthenticatedUser();
         if (currentUserOpt.isEmpty()) {
@@ -166,8 +164,7 @@ public class ProfileController {
 
     @Validated
     @GetMapping("/players/{playerId}/attendance")
-    public String attendance(final Model model,
-            @PathVariable("playerId") @Min(1) int playerId) {
+    public String attendance(final Model model, @PathVariable("playerId") @Min(1) int playerId) {
 
         Optional<CurrentUser> currentUserOpt = securityService.getCurrentAuthenticatedUser();
         if (currentUserOpt.isEmpty()) {
@@ -209,8 +206,7 @@ public class ProfileController {
 
     @Validated
     @GetMapping("/players/{playerId}/credits")
-    public String credits(final Model model,
-            @PathVariable("playerId") @Min(1) int playerId) {
+    public String credits(final Model model, @PathVariable("playerId") @Min(1) int playerId) {
 
         Optional<CurrentUser> currentUserOpt = securityService.getCurrentAuthenticatedUser();
         if (currentUserOpt.isEmpty()) {
@@ -223,12 +219,11 @@ public class ProfileController {
         }
 
         CurrentUser currentUser = currentUserOpt.get();
+        Player player = playerOpt.get();
 
-        if (!isUserOrAdmin(currentUser)) {
+        if (isNotOwnProfileAndIsNotAdmin(currentUser, player)) {
             return REDIRECT_HOME;
         }
-
-        Player player = playerOpt.get();
 
         List<Transaction> transactions = transactionService.findByPlayerAndStatus(player, 3);
         List<Transaction> transactions4 = transactionService.findByPlayerAndStatus(player, 4); // PagSeguro
@@ -250,8 +245,7 @@ public class ProfileController {
 
     @Validated
     @GetMapping("/players/{playerId}/videos")
-    public String videos(final Model model,
-            @PathVariable("playerId") @Min(1) int playerId) {
+    public String videos(final Model model, @PathVariable("playerId") @Min(1) int playerId) {
 
         Optional<CurrentUser> currentUserOpt = securityService.getCurrentAuthenticatedUser();
         if (currentUserOpt.isEmpty()) {
@@ -269,8 +263,7 @@ public class ProfileController {
 
     @Validated
     @GetMapping("/players/{playerId}/edit")
-    public String profilePlayerEdit(final Model model,
-            @PathVariable("playerId") @Min(1) int playerId) {
+    public String profilePlayerEdit(final Model model, @PathVariable("playerId") @Min(1) int playerId) {
 
         Optional<CurrentUser> currentUserOpt = securityService.getCurrentAuthenticatedUser();
         if (currentUserOpt.isEmpty()) {
@@ -295,8 +288,7 @@ public class ProfileController {
 
     @Validated
     @GetMapping("/players/{playerId}/addVideo")
-    public String profilePlayerAddVideo(final Model model,
-            @PathVariable("playerId") @Min(1) int playerId) {
+    public String profilePlayerAddVideo(final Model model, @PathVariable("playerId") @Min(1) int playerId) {
 
         Optional<CurrentUser> currentUserOpt = securityService.getCurrentAuthenticatedUser();
         if (currentUserOpt.isEmpty()) {
@@ -329,9 +321,7 @@ public class ProfileController {
 
     @Validated
     @PostMapping("/players/update")
-    public String update(@ModelAttribute("edit") @NonNull Player edit,
-            final RedirectAttributes redirectAttributes,
-            Locale locale) {
+    public String update(@ModelAttribute("edit") @NonNull Player edit, final RedirectAttributes redirectAttributes, Locale locale) {
 
         Optional<CurrentUser> currentUserOpt = securityService.getCurrentAuthenticatedUser();
         if (currentUserOpt.isEmpty()) {
