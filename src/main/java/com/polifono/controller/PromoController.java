@@ -36,11 +36,11 @@ import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerPromo;
 import com.polifono.model.entity.Promo;
-import com.polifono.service.IPlayerPromoService;
-import com.polifono.service.IPromoService;
 import com.polifono.service.impl.ContentService;
 import com.polifono.service.impl.MapService;
 import com.polifono.service.impl.PhaseService;
+import com.polifono.service.impl.PlayerPromoService;
+import com.polifono.service.impl.PromoService;
 import com.polifono.service.impl.SecurityService;
 import com.polifono.service.impl.game.GameService;
 import com.polifono.service.impl.player.PlayerCreditService;
@@ -64,8 +64,8 @@ public class PromoController {
     private final MapService mapService;
     private final PhaseService phaseService;
     private final ContentService contentService;
-    private final IPromoService promoService;
-    private final IPlayerPromoService playerPromoService;
+    private final PromoService promoService;
+    private final PlayerPromoService playerPromoService;
 
     @GetMapping({ "/promo", "/promos" })
     public String promo(final Model model) {

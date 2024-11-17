@@ -9,7 +9,7 @@ import com.polifono.model.entity.Game;
 import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Question;
 import com.polifono.repository.IGameRepository;
-import com.polifono.service.IQuestionService;
+import com.polifono.service.impl.QuestionService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class GameService {
 
     private final IGameRepository repository;
-    private final IQuestionService questionService;
+    private final QuestionService questionService;
 
     public List<Game> findAll() {
         return repository.findAll();

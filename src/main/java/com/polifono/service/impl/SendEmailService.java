@@ -24,34 +24,6 @@ public class SendEmailService {
     private final EmailSender emailSender;
     private final EmailMessageBuilder emailMessageBuilder;
 
-    private void sendHtmlMail(boolean sync, int messageType, String to, String[] args) {
-        String from = emailMessageBuilder.getEmailFrom(messageType);
-        String subject = emailMessageBuilder.getEmailSubject(messageType, args);
-        String message = emailMessageBuilder.getEmailMessage(messageType, args); // TODO - i18n for email messages.
-
-        emailSender.sendEmail(sync, from, subject, replaceParamsMessage(message, args), to);
-    }
-
-    /**
-     * This method get an email and replaces the strings into the email by the args strings.<br>
-     * Eg:<br>
-     * {0} will be replaced by the first argument into the array<br>
-     * {1} will be replaced by the second argument into the array
-     *
-     * @param message the message
-     * @param args    the string to replace into the email string.
-     * @return The new string email with the correct messages.
-     */
-    private String replaceParamsMessage(String message, String[] args) {
-        for (int i = 0; i < args.length; i++) {
-            if (args[i] != null) {
-                message = message.replace("{" + i + "}", args[i]);
-            }
-        }
-
-        return message;
-    }
-
     /**
      * This method is used to send the email to the user confirm his email.
      */
@@ -163,5 +135,33 @@ public class SendEmailService {
                 log.error("sendEmailCommunication", e);
             }
         }
+    }
+
+    private void sendHtmlMail(boolean sync, int messageType, String to, String[] args) {
+        String from = emailMessageBuilder.getEmailFrom(messageType);
+        String subject = emailMessageBuilder.getEmailSubject(messageType, args);
+        String message = emailMessageBuilder.getEmailMessage(messageType, args);
+
+        emailSender.sendEmail(sync, from, subject, replaceParamsMessage(message, args), to);
+    }
+
+    /**
+     * This method get an email and replaces the strings into the email by the args strings.<br>
+     * Eg:<br>
+     * {0} will be replaced by the first argument into the array<br>
+     * {1} will be replaced by the second argument into the array
+     *
+     * @param message the message
+     * @param args    the string to replace into the email string.
+     * @return The new string email with the correct messages.
+     */
+    private String replaceParamsMessage(String message, String[] args) {
+        for (int i = 0; i < args.length; i++) {
+            if (args[i] != null) {
+                message = message.replace("{" + i + "}", args[i]);
+            }
+        }
+
+        return message;
     }
 }

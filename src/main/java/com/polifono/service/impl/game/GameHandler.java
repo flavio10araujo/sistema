@@ -27,11 +27,11 @@ import com.polifono.model.entity.Player;
 import com.polifono.model.entity.PlayerPhase;
 import com.polifono.model.entity.Question;
 import com.polifono.service.IPlayerPhaseService;
-import com.polifono.service.IQuestionService;
 import com.polifono.service.impl.ContentService;
 import com.polifono.service.impl.LevelService;
 import com.polifono.service.impl.MapService;
 import com.polifono.service.impl.PhaseService;
+import com.polifono.service.impl.QuestionService;
 import com.polifono.service.impl.SecurityService;
 import com.polifono.service.impl.diploma.DiplomaService;
 import com.polifono.service.impl.player.PlayerCreditService;
@@ -53,7 +53,7 @@ public class GameHandler {
     private final MapService mapService;
     private final PhaseService phaseService;
     private final ContentService contentService;
-    private final IQuestionService questionService;
+    private final QuestionService questionService;
     private final IPlayerPhaseService playerPhaseService;
     private final DiplomaService diplomaService;
 

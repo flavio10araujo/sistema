@@ -22,7 +22,7 @@ import com.polifono.model.entity.Game;
 import com.polifono.model.entity.Phase;
 import com.polifono.model.entity.Question;
 import com.polifono.repository.IGameRepository;
-import com.polifono.service.IQuestionService;
+import com.polifono.service.impl.QuestionService;
 
 /**
  * Unit test methods for the GameService.
@@ -37,7 +37,7 @@ public class GameServiceTest {
     private IGameRepository repository;
 
     @Mock
-    private IQuestionService questionService;
+    private QuestionService questionService;
 
     /* findAll - begin */
     @Test

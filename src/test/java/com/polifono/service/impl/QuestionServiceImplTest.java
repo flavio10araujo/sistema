@@ -28,7 +28,7 @@ import com.polifono.repository.IQuestionRepository;
 public class QuestionServiceImplTest {
 
     @InjectMocks
-    private QuestionServiceImpl service;
+    private QuestionService service;
 
     @Mock
     private IQuestionRepository repository;

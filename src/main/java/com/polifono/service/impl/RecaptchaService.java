@@ -38,10 +38,7 @@ public class RecaptchaService {
 
         if (!recaptchaSuccess) {
             List<String> errorCodes = (List) responseBody.get("error-codes");
-
-            return errorCodes.stream()
-                    .map(RecaptchaUtil.RECAPTCHA_ERROR_CODE::get)
-                    .collect(Collectors.joining(", "));
+            return errorCodes.stream().map(RecaptchaUtil.RECAPTCHA_ERROR_CODE::get).collect(Collectors.joining(", "));
         } else {
             return "";
         }
