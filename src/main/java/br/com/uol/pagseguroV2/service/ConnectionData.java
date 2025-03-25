@@ -163,11 +163,7 @@ public class ConnectionData {
      * @return string
      */
     private String validUrlWebService() {
-
-        String url = PagSeguroSystem.getUrlProduction();
-
-        return url + PagSeguroSystem.getCheckoutServicePath();
-
+        return PagSeguroSystem.getUrlProduction() + PagSeguroSystem.getCheckoutServicePath();
     }
 
     /**

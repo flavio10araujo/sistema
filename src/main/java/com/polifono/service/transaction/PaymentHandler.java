@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
@@ -47,7 +48,7 @@ public class PaymentHandler {
     }
 
     public String processPayment(String apiVersion, Player player, int quantity)
-            throws PagSeguroServiceException, br.com.uol.pagseguroV2.exception.PagSeguroServiceException {
+            throws PagSeguroServiceException, br.com.uol.pagseguroV2.exception.PagSeguroServiceException, IOException {
         Transaction transaction = createTransaction(player, quantity);
         return ("V2".equals(apiVersion) ? openPagSeguroV2(transaction, player, quantity) : openPagSeguro(transaction, player, quantity));
     }
@@ -94,7 +95,8 @@ public class PaymentHandler {
         return checkout.register(PagSeguroConfig.getAccountCredentials(), onlyCheckoutCode);
     }
 
-    private String openPagSeguroV2(Transaction transaction, Player player, int quantity) throws br.com.uol.pagseguroV2.exception.PagSeguroServiceException {
+    private String openPagSeguroV2(Transaction transaction, Player player, int quantity)
+            throws br.com.uol.pagseguroV2.exception.PagSeguroServiceException, IOException {
         br.com.uol.pagseguroV2.domain.checkout.Checkout checkout = new br.com.uol.pagseguroV2.domain.checkout.Checkout();
 
         checkout.setReferenceId("" + transaction.getId()); // Sets a reference code for this payment request. The T012.C002_ID is used in this attribute.
@@ -112,7 +114,7 @@ public class PaymentHandler {
         checkout.setRedirectURL("https://www.polifono.com/pagseguroreturn");
         checkout.setPaymentNotificationUrls(List.of("https://www.polifono.com/pagseguronotification"));
 
-        return checkout.register(br.com.uol.pagseguroV2.properties.PagSeguroConfig.getAccountCredentials(), false);
+        return checkout.register(br.com.uol.pagseguroV2.properties.PagSeguroConfig.getAccountCredentials());
     }
 
     private BigDecimal getPriceForEachUnity(int quantity) {

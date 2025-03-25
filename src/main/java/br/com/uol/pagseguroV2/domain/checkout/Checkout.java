@@ -8,6 +8,7 @@ import br.com.uol.pagseguroV2.service.checkout.CheckoutService;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +38,8 @@ public class Checkout {
         return this.items;
     }
 
-    public String register(Credentials credentials) throws PagSeguroServiceException {
-        return this.register(credentials, false);
-    }
-
-    public String register(Credentials credentials, Boolean onlyCheckoutCode) throws PagSeguroServiceException {
-        return CheckoutService.createCheckoutRequest(credentials, this, onlyCheckoutCode);
+    public String register(Credentials credentials) throws PagSeguroServiceException, IOException {
+        return CheckoutService.createCheckoutRequest(credentials, this);
     }
 
     @Override

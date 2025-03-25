@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.constraints.Min;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -58,7 +59,7 @@ public class PaymentController {
         try {
             String redirectUrl = paymentHandler.processPayment("V2", player, quantity);
             return "redirect:" + redirectUrl;
-        } catch (PagSeguroServiceException | br.com.uol.pagseguroV2.exception.PagSeguroServiceException e) {
+        } catch (IOException | PagSeguroServiceException | br.com.uol.pagseguroV2.exception.PagSeguroServiceException e) {
             model.addAttribute("codRegister", "2");
             model.addAttribute("msg", messagesResource.getMessage("msg.credits.error.access", null, locale));
             return URL_BUY_CREDITS;
