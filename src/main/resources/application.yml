@@ -35,9 +35,15 @@ pagSeguro:
   environment:
     type: production
     production:
-      webserviceUrl: https://ws.pagseguro.uol.com.br
+      v1:
+        webserviceUrl: https://ws.pagseguro.uol.com.br
+      v2:
+        webserviceUrl: https://api.pagseguro.com
     sandbox:
-      webserviceUrl: https://ws.sandbox.pagseguro.uol.com.br
+      v1:
+        webserviceUrl: https://ws.sandbox.pagseguro.uol.com.br
+      v2:
+        webserviceUrl: https://sandbox.api.pagseguro.com
   credential:
     email: ${PAGSEGURO_CRED_EMAIL}
     production:
@@ -53,7 +59,10 @@ pagSeguro:
   log:
     active: true
   checkoutService:
-    servicePath: /v2/checkout
+    v1:
+      servicePath: /v2/checkout
+    v2:
+      servicePath: /checkouts
     production:
       checkoutUrl: https://pagseguro.uol.com.br/v2/checkout/payment.html
     sandbox:

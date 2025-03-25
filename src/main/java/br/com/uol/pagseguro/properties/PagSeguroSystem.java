@@ -67,7 +67,7 @@ public class PagSeguroSystem {
     private PagSeguroSystem() {
     }
 
-    @Value("${pagSeguro.checkoutService.servicePath}")
+    @Value("${pagSeguro.checkoutService.v1.servicePath}")
     public void setPagSeguroCheckoutServiceServicePath(String pagSeguroCheckoutServiceServicePath) {
         PagSeguroSystem.pagSeguroCheckoutServiceServicePath = pagSeguroCheckoutServiceServicePath;
     }
@@ -92,12 +92,12 @@ public class PagSeguroSystem {
         PagSeguroSystem.pagSeguroPaymentRequestServiceFindByCodePath = pagSeguroPaymentRequestServiceFindByCodePath;
     }
 
-    @Value("${pagSeguro.environment.production.webserviceUrl}")
+    @Value("${pagSeguro.environment.production.v1.webserviceUrl}")
     public void setPagSeguroEnvironmentProductionWebserviceUrl(String pagSeguroEnvironmentProductionWebserviceUrl) {
         PagSeguroSystem.pagSeguroEnvironmentProductionWebserviceUrl = pagSeguroEnvironmentProductionWebserviceUrl;
     }
 
-    @Value("${pagSeguro.environment.sandbox.webserviceUrl}")
+    @Value("${pagSeguro.environment.sandbox.v1.webserviceUrl}")
     public void setPagSeguroEnvironmentSandboxWebserviceUrl(String pagSeguroEnvironmentSandboxWebserviceUrl) {
         PagSeguroSystem.pagSeguroEnvironmentSandboxWebserviceUrl = pagSeguroEnvironmentSandboxWebserviceUrl;
     }

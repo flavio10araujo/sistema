@@ -224,7 +224,7 @@ public class TransactionParser {
                 // setting <transaction><items><item><id>
                 tagValue = XMLParserUtils.getTagValue("id", itElement);
                 if (tagValue != null) {
-                    item.setId(tagValue);
+                    item.setReferenceId(tagValue);
                 }
 
                 // setting <transaction><items><item><description>

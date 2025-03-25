@@ -398,7 +398,7 @@ public class PaymentRequest {
      * @return the reference of this checkout request
      */
     public String getReference() {
-        return this.checkout.getReference();
+        return this.checkout.getReferenceId();
     }
 
     /**
@@ -407,7 +407,7 @@ public class PaymentRequest {
      * @param reference
      */
     public void setReference(String reference) {
-        this.checkout.setReference(reference);
+        this.checkout.setReferenceId(reference);
     }
 
     /**

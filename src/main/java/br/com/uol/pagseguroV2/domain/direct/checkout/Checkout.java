@@ -487,8 +487,8 @@ public abstract class Checkout {
             int count = 1;
 
             for (Item item : items) {
-                if (item.getId() != null && !"".equals(item.getId())) {
-                    data.put("itemId" + count, item.getId());
+                if (item.getReferenceId() != null && !"".equals(item.getReferenceId())) {
+                    data.put("itemId" + count, item.getReferenceId());
                 }
 
                 if (item.getDescription() != null && !"".equals(item.getDescription())) {

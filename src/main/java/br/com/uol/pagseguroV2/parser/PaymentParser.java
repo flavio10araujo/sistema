@@ -145,8 +145,8 @@ public class PaymentParser {
             for (Item item : payment.getItems()) {
                 count++;
 
-                if (item.getId() != null && !"".equals(item.getId())) {
-                    data.put("itemId" + count.toString(), item.getId());
+                if (item.getReferenceId() != null && !"".equals(item.getReferenceId())) {
+                    data.put("itemId" + count.toString(), item.getReferenceId());
                 }
 
                 if (item.getDescription() != null && !"".equals(item.getDescription())) {

@@ -54,8 +54,8 @@ public class CheckoutParser {
         Map<Object, Object> data = new HashMap<Object, Object>();
 
         // SET REFERENCE
-        if (checkout.getReference() != null) {
-            data.put("reference", checkout.getReference());
+        if (checkout.getReferenceId() != null) {
+            data.put("reference", checkout.getReferenceId());
         }
 
         /**
@@ -134,8 +134,8 @@ public class CheckoutParser {
             for (Item item : checkout.getItems()) {
                 count++;
 
-                if (item.getId() != null && !"".equals(item.getId())) {
-                    data.put("itemId" + count.toString(), item.getId());
+                if (item.getReferenceId() != null && !"".equals(item.getReferenceId())) {
+                    data.put("itemId" + count.toString(), item.getReferenceId());
                 }
 
                 if (item.getDescription() != null && !"".equals(item.getDescription())) {

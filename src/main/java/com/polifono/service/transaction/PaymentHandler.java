@@ -5,6 +5,7 @@ import br.com.uol.pagseguro.enums.Currency;
 import br.com.uol.pagseguro.exception.PagSeguroServiceException;
 import br.com.uol.pagseguro.properties.PagSeguroConfig;
 import br.com.uol.pagseguro.properties.PagSeguroSystem;
+import br.com.uol.pagseguroV2.enums.PaymentMethodType;
 import com.polifono.common.properties.ConfigsCreditsProperties;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.Transaction;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 @RequiredArgsConstructor
@@ -95,22 +97,22 @@ public class PaymentHandler {
     private String openPagSeguroV2(Transaction transaction, Player player, int quantity) throws br.com.uol.pagseguroV2.exception.PagSeguroServiceException {
         br.com.uol.pagseguroV2.domain.checkout.Checkout checkout = new br.com.uol.pagseguroV2.domain.checkout.Checkout();
 
+        checkout.setReferenceId("" + transaction.getId()); // Sets a reference code for this payment request. The T012.C002_ID is used in this attribute.
+        checkout.setCustomerModifiable(true);
+
         checkout.addItem(
                 "0001", // Item's number.
-                PagSeguroSystem.getPagSeguroPaymentServiceNfDescription(), // Item's name.
+                br.com.uol.pagseguroV2.properties.PagSeguroSystem.getPagSeguroPaymentServiceNfDescription(), // Item's name.
+                br.com.uol.pagseguroV2.properties.PagSeguroSystem.getPagSeguroPaymentServiceNfDescription(), // Item's description.
                 quantity, // Item's quantity.
-                getPriceForEachUnity(quantity), // Price for each unity.
-                0L, // Weight.
-                null // ShippingCost
+                getPriceForEachUnity(quantity * 100) // Price for each unity in cents.
         );
 
-        checkout.setShippingCost(new BigDecimal("0.00"));
-        checkout.setSender(player.getFullName(), player.getEmail());
-        checkout.setCurrency(br.com.uol.pagseguroV2.enums.Currency.BRL);
-        checkout.setReference("" + transaction.getId()); // Sets a reference code for this payment request. The T012.C002_ID is used in this attribute.
+        checkout.setPaymentMethods(List.of(PaymentMethodType.CREDIT_CARD, PaymentMethodType.BOLETO, PaymentMethodType.PIX));
+        checkout.setRedirectURL("https://www.polifono.com/pagseguroreturn");
+        checkout.setPaymentNotificationUrls(List.of("https://www.polifono.com/pagseguronotification"));
 
-        Boolean onlyCheckoutCode = false;
-        return checkout.register(br.com.uol.pagseguroV2.properties.PagSeguroConfig.getAccountCredentials(), onlyCheckoutCode);
+        return checkout.register(br.com.uol.pagseguroV2.properties.PagSeguroConfig.getAccountCredentials(), false);
     }
 
     private BigDecimal getPriceForEachUnity(int quantity) {
