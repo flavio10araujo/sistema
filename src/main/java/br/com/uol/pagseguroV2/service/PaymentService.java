@@ -72,18 +72,6 @@ public class PaymentService {
 
     /**
      * @param credentials
-     * @param checkout
-     * @param onlyCheckoutCode
-     * @return string
-     * @throws Exception
-     */
-    public static String createCheckoutRequest(Credentials credentials, Checkout checkout, Boolean onlyCheckoutCode)
-            throws PagSeguroServiceException {
-        return CheckoutService.createCheckoutRequest(credentials, checkout, onlyCheckoutCode);
-    }
-
-    /**
-     * @param credentials
      * @param paymentRequest
      * @param onlyCheckoutCode
      * @return string

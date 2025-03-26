@@ -1,6 +1,5 @@
 package br.com.uol.pagseguroV2.domain.checkout;
 
-import br.com.uol.pagseguroV2.domain.Credentials;
 import br.com.uol.pagseguroV2.domain.Item;
 import br.com.uol.pagseguroV2.enums.PaymentMethodType;
 import br.com.uol.pagseguroV2.exception.PagSeguroServiceException;
@@ -38,8 +37,8 @@ public class Checkout {
         return this.items;
     }
 
-    public String register(Credentials credentials) throws PagSeguroServiceException, IOException {
-        return CheckoutService.createCheckoutRequest(credentials, this);
+    public String register() throws PagSeguroServiceException, IOException {
+        return CheckoutService.createCheckoutRequest(this);
     }
 
     @Override

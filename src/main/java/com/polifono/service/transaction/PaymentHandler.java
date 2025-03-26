@@ -114,7 +114,7 @@ public class PaymentHandler {
         checkout.setRedirectURL("https://www.polifono.com/pagseguroreturn");
         checkout.setPaymentNotificationUrls(List.of("https://www.polifono.com/pagseguronotification"));
 
-        return checkout.register(br.com.uol.pagseguroV2.properties.PagSeguroConfig.getAccountCredentials());
+        return checkout.register();
     }
 
     private BigDecimal getPriceForEachUnity(int quantity) {
