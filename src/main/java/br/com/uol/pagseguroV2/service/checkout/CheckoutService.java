@@ -49,7 +49,6 @@ public class CheckoutService {
             if (httpCodeStatus == null) {
                 throw new PagSeguroServiceException("Connection Timeout");
             } else if (HttpURLConnection.HTTP_CREATED == httpCodeStatus.getCode()) {
-
                 String responseBody = response.body().string();
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode rootNode = objectMapper.readTree(responseBody);

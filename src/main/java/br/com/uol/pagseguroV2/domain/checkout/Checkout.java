@@ -5,6 +5,7 @@ import br.com.uol.pagseguroV2.enums.PaymentMethodType;
 import br.com.uol.pagseguroV2.exception.PagSeguroServiceException;
 import br.com.uol.pagseguroV2.service.checkout.CheckoutService;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,6 +32,7 @@ public class Checkout {
 
     @Getter
     @JsonProperty("payment_methods")
+    @JsonSerialize(using = PaymentMethodTypeSerializer.class)
     private List<PaymentMethodType> paymentMethods;
 
     @Getter
