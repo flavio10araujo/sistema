@@ -1,7 +1,7 @@
 package br.com.uol.pagseguroV2.domain;
 
 import br.com.uol.pagseguroV2.exception.PagSeguroServiceException;
-import br.com.uol.pagseguroV2.properties.PagSeguroConfig;
+import br.com.uol.pagseguroV2.properties.PagSeguroV2Config;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,7 +27,7 @@ public class AccountCredentials extends Credentials {
     }
 
     public String getToken() {
-        if (PagSeguroConfig.isSandboxEnvironment()) {
+        if (PagSeguroV2Config.isSandboxEnvironment()) {
             return this.sandboxToken;
         }
 
@@ -40,7 +40,7 @@ public class AccountCredentials extends Credentials {
         Map<Object, Object> attributeMap = new HashMap<>(HASH_SIZE);
 
         attributeMap.put("email", this.email);
-        if (PagSeguroConfig.isSandboxEnvironment()) {
+        if (PagSeguroV2Config.isSandboxEnvironment()) {
             if (this.sandboxToken == null || "".equals(this.sandboxToken)) {
                 throw new PagSeguroServiceException("Sandbox credentials not set.");
             }

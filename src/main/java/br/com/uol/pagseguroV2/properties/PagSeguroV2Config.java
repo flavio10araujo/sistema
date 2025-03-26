@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
  * Encapsulates PagSeguro configuration for API calls
  */
 @Component
-public class PagSeguroConfig {
+public class PagSeguroV2Config {
 
     private static final String PRODUCTION_ENVIRONMENT = "production";
     private static final String SANDBOX_ENVIRONMENT = "sandbox";
@@ -38,37 +38,37 @@ public class PagSeguroConfig {
     private static String pagSeguroApplicationCharset;
     private static String pagSeguroLogActive;
 
-    private PagSeguroConfig() {
+    private PagSeguroV2Config() {
     }
 
     @Value("${pagSeguro.environment.type}")
     public void setPagSeguroEnvironment(String pagSeguroEnvironment) {
-        PagSeguroConfig.pagSeguroEnvironment = pagSeguroEnvironment;
+        PagSeguroV2Config.pagSeguroEnvironment = pagSeguroEnvironment;
     }
 
     @Value("${pagSeguro.credential.email}")
     public void setPagSeguroCredentialEmail(String pagSeguroCredentialEmail) {
-        PagSeguroConfig.pagSeguroCredentialEmail = pagSeguroCredentialEmail;
+        PagSeguroV2Config.pagSeguroCredentialEmail = pagSeguroCredentialEmail;
     }
 
     @Value("${pagSeguro.credential.production.token}")
     public void setPagSeguroCredentialProductionToken(String pagSeguroCredentialProductionToken) {
-        PagSeguroConfig.pagSeguroCredentialProductionToken = pagSeguroCredentialProductionToken;
+        PagSeguroV2Config.pagSeguroCredentialProductionToken = pagSeguroCredentialProductionToken;
     }
 
     @Value("${pagSeguro.credential.sandbox.token}")
     public void setPagSeguroCredentialSandboxToken(String pagSeguroCredentialSandboxToken) {
-        PagSeguroConfig.pagSeguroCredentialSandboxToken = pagSeguroCredentialSandboxToken;
+        PagSeguroV2Config.pagSeguroCredentialSandboxToken = pagSeguroCredentialSandboxToken;
     }
 
     @Value("${pagSeguro.application.charset}")
     public void setPagSeguroApplicationCharset(String pagSeguroApplicationCharset) {
-        PagSeguroConfig.pagSeguroApplicationCharset = pagSeguroApplicationCharset;
+        PagSeguroV2Config.pagSeguroApplicationCharset = pagSeguroApplicationCharset;
     }
 
     @Value("${pagSeguro.log.active}")
     public void setPagSeguroLogActive(String pagSeguroLogActive) {
-        PagSeguroConfig.pagSeguroLogActive = pagSeguroLogActive;
+        PagSeguroV2Config.pagSeguroLogActive = pagSeguroLogActive;
     }
 
     public static AccountCredentials getAccountCredentials() throws PagSeguroServiceException {

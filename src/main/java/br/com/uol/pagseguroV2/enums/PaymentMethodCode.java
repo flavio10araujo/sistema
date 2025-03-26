@@ -67,28 +67,6 @@ public enum PaymentMethodCode {
 
     SANTANDER_BOLETO(PaymentMethodType.BOLETO, "SANTANDER BOLETO", 202),
 
-    BRADESCO_ONLINE_TRANSFER(PaymentMethodType.ONLINE_TRANSFER, "BRADESCO WIRE TRANSFER", 301),
-
-    ITAU_ONLINE_TRANSFER(PaymentMethodType.ONLINE_TRANSFER, "ITAÚ WIRE TRANSFER", 302),
-
-    UNIBANCO_ONLINE_TRANSFER(PaymentMethodType.ONLINE_TRANSFER, "UNIBANCO WIRE TRANSFER", 302),
-
-    BANCO_BRASIL_ONLINE_TRANSFER(PaymentMethodType.ONLINE_TRANSFER, "BANCO DO BRASIL WIRE TRANSFER", 304),
-
-    REAL_ONLINE_TRANSFER(PaymentMethodType.ONLINE_TRANSFER, "BANCO REAL WIRE TRANSFER", 305),
-
-    BANRISUL_ONLINE_TRANSFER(PaymentMethodType.ONLINE_TRANSFER, "BANRISUL WIRE TRANSFER", 306),
-
-    HSBC_ONLINE_TRANSFER(PaymentMethodType.ONLINE_TRANSFER, "HSBC WIRE TRANSFER", 307),
-
-    PS_BALANCE(PaymentMethodType.BALANCE, "PAGSEGURO BALANCE", 401),
-
-    OI_PAGGO(PaymentMethodType.OI_PAGGO, "OI PAGGO - IT'S A KIND OF MOBILE PAYMENT", 501),
-
-    BANCO_BRASIL_DIRECT_DEPOSIT(PaymentMethodType.DIRECT_DEPOSIT, "BANCO DO BRASIL DIRECT DEPOSIT", 701),
-
-    HSBC_DIRECT_DEPOSIT(PaymentMethodType.DIRECT_DEPOSIT, "HSBC DIRECT DEPOSIT", 702),
-
     UNKNOWN_CODE(PaymentMethodType.UNKNOWN_TYPE, "UNKNOWN CODE. SEE ONLINE DOCUMENTATION", -1);
 
     private PaymentMethodType type;
@@ -100,10 +78,8 @@ public enum PaymentMethodCode {
     /**
      * Initializes a newly created enum constant of this type with the specified arguments
      *
-     * @param description
-     *            - the description of the enum constant
-     * @param value
-     *            - the value of the enum constant
+     * @param description - the description of the enum constant
+     * @param value       - the value of the enum constant
      */
     PaymentMethodCode(PaymentMethodType type, String description, Integer value) {
         this.type = type;
@@ -115,8 +91,7 @@ public enum PaymentMethodCode {
      * Returns the enum constant of this type with the specified value. If a given value are not recognized return a
      * generic enum constant <code>UNKNOWN_CODE</code>
      *
-     * @param value
-     *            - the value of the enum constant to be returned
+     * @param value - the value of the enum constant to be returned
      * @return the enum constant from a given value
      */
     public static PaymentMethodCode fromValue(Integer value) {
@@ -140,8 +115,7 @@ public enum PaymentMethodCode {
     }
 
     /**
-     * @param type
-     *            the type to set
+     * @param type the type to set
      */
     public void setType(PaymentMethodType type) {
         this.type = type;
@@ -155,8 +129,7 @@ public enum PaymentMethodCode {
     }
 
     /**
-     * @param description
-     *            - new description for this enum constant
+     * @param description - new description for this enum constant
      */
     public void setDescription(String type) {
         this.description = type;
@@ -170,8 +143,7 @@ public enum PaymentMethodCode {
     }
 
     /**
-     * @param value
-     *            - new value for this enum constant
+     * @param value - new value for this enum constant
      */
     public void setValue(Integer value) {
         this.value = value;

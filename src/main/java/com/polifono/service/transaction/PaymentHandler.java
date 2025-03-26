@@ -6,6 +6,7 @@ import br.com.uol.pagseguro.exception.PagSeguroServiceException;
 import br.com.uol.pagseguro.properties.PagSeguroConfig;
 import br.com.uol.pagseguro.properties.PagSeguroSystem;
 import br.com.uol.pagseguroV2.enums.PaymentMethodType;
+import br.com.uol.pagseguroV2.properties.PagSeguroV2System;
 import com.polifono.common.properties.ConfigsCreditsProperties;
 import com.polifono.model.entity.Player;
 import com.polifono.model.entity.Transaction;
@@ -50,7 +51,7 @@ public class PaymentHandler {
     public String processPayment(String apiVersion, Player player, int quantity)
             throws PagSeguroServiceException, br.com.uol.pagseguroV2.exception.PagSeguroServiceException, IOException {
         Transaction transaction = createTransaction(player, quantity);
-        return ("V2".equals(apiVersion) ? openPagSeguroV2(transaction, player, quantity) : openPagSeguro(transaction, player, quantity));
+        return ("V2".equals(apiVersion) ? openPagSeguroV2(transaction, quantity) : openPagSeguro(transaction, player, quantity));
     }
 
     /**
@@ -95,7 +96,7 @@ public class PaymentHandler {
         return checkout.register(PagSeguroConfig.getAccountCredentials(), onlyCheckoutCode);
     }
 
-    private String openPagSeguroV2(Transaction transaction, Player player, int quantity)
+    private String openPagSeguroV2(Transaction transaction, int quantity)
             throws br.com.uol.pagseguroV2.exception.PagSeguroServiceException, IOException {
         br.com.uol.pagseguroV2.domain.checkout.Checkout checkout = new br.com.uol.pagseguroV2.domain.checkout.Checkout();
 
@@ -104,10 +105,10 @@ public class PaymentHandler {
 
         checkout.addItem(
                 "0001", // Item's number.
-                br.com.uol.pagseguroV2.properties.PagSeguroSystem.getPagSeguroPaymentServiceNfDescription(), // Item's name.
-                br.com.uol.pagseguroV2.properties.PagSeguroSystem.getPagSeguroPaymentServiceNfDescription(), // Item's description.
+                PagSeguroV2System.getPagSeguroPaymentServiceNfDescription(), // Item's name.
+                PagSeguroV2System.getPagSeguroPaymentServiceNfDescription(), // Item's description.
                 quantity, // Item's quantity.
-                getPriceForEachUnity(quantity * 100) // Price for each unity in cents.
+                getPriceForEachUnity(quantity).multiply(BigDecimal.valueOf(100)) // Price for each unity in cents.
         );
 
         checkout.setPaymentMethods(List.of(PaymentMethodType.CREDIT_CARD, PaymentMethodType.BOLETO, PaymentMethodType.PIX));

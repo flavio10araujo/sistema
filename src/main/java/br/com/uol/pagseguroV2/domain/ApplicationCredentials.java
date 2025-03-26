@@ -19,7 +19,7 @@
 package br.com.uol.pagseguroV2.domain;
 
 import br.com.uol.pagseguroV2.exception.PagSeguroServiceException;
-import br.com.uol.pagseguroV2.properties.PagSeguroConfig;
+import br.com.uol.pagseguroV2.properties.PagSeguroV2Config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -107,7 +107,7 @@ public class ApplicationCredentials extends Credentials {
             throw new PagSeguroServiceException("Application Credentials not set correctly.");
         }
 
-        if (PagSeguroConfig.isSandboxEnvironment()) {
+        if (PagSeguroV2Config.isSandboxEnvironment()) {
             this.sandboxAppId = appId.trim();
             this.sandboxAppKey = appKey.trim();
         } else {
@@ -137,7 +137,7 @@ public class ApplicationCredentials extends Credentials {
      * @return the application ID
      */
     public String getAppId() {
-        if (PagSeguroConfig.isSandboxEnvironment())
+        if (PagSeguroV2Config.isSandboxEnvironment())
             return this.sandboxAppId;
         return this.productionAppId;
     }
@@ -160,7 +160,7 @@ public class ApplicationCredentials extends Credentials {
      * @return the application key
      */
     public String getAppKey() {
-        if (PagSeguroConfig.isSandboxEnvironment())
+        if (PagSeguroV2Config.isSandboxEnvironment())
             return this.sandboxAppKey;
         return this.productionAppKey;
     }
@@ -202,7 +202,7 @@ public class ApplicationCredentials extends Credentials {
 
         Map<Object, Object> attributeMap = new HashMap<Object, Object>(HASH_SIZE);
 
-        if (PagSeguroConfig.isSandboxEnvironment()) {
+        if (PagSeguroV2Config.isSandboxEnvironment()) {
             if (this.sandboxAppId == null || "".equals(this.sandboxAppId)
                     || this.sandboxAppKey == null || "".equals(this.sandboxAppKey)) {
                 throw new PagSeguroServiceException("Sandbox credentials not set.");

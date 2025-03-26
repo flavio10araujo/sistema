@@ -19,24 +19,21 @@
 package br.com.uol.pagseguroV2.helper;
 
 import br.com.uol.pagseguroV2.exception.PagSeguroServiceException;
-import br.com.uol.pagseguroV2.properties.PagSeguroSystem;
+import br.com.uol.pagseguroV2.properties.PagSeguroV2System;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TimeZone;
 
 /**
  * @author asilva
- *
  */
 public class PagSeguroUtil {
 
@@ -104,30 +101,6 @@ public class PagSeguroUtil {
         return value.replaceAll("\\D+", "").toString();
     }
 
-    /**
-     * Format Decimal number
-     *
-     * @param numeric
-     * @return string
-     */
-    public static String decimalFormat(Double numeric) {
-        Locale.setDefault(new Locale("pt", "BR"));
-        DecimalFormat decimal = new DecimalFormat();
-        decimal.applyPattern("#,##0.00");
-        return decimal.format(numeric / NUMBER_100).replaceAll(",", ".");
-    }
-
-    /**
-     * Truncate a String and add final end chars to them
-     *
-     * @param String
-     *            value
-     * @param Integer
-     *            limit
-     * @param String
-     *            endChars
-     * @return String
-     */
     public static String truncateValue(String value, int limit, String endChars) {
         String result = value;
         if (value != null && value.length() > limit) {
@@ -136,66 +109,10 @@ public class PagSeguroUtil {
         return result;
     }
 
-    /**
-     * Remove extra spaces from String
-     *
-     * @param String
-     *            value
-     * @return String
-     */
     public static String removeExtraSpaces(String value) {
         return value.replaceAll("( +)", " ").trim();
     }
 
-    /**
-     * Format a String dropping extra spaces and truncate value
-     *
-     * @param String
-     *            value
-     * @param Integer
-     *            limit
-     * @param String
-     *            endChars
-     * @return String
-     */
-    public static String formatString(String value, int limit, String endChars) {
-        return PagSeguroUtil.truncateValue(PagSeguroUtil.removeExtraSpaces(value), limit, endChars);
-    }
-
-    /**
-     * Removes Accents and special characters
-     *
-     * @param value
-     * @return
-     */
-    public static String removeAccents(String value) {
-        String result = value;
-        result = value.replaceAll("[Ã‚Ã€Ã�Ã„Ãƒ]", "A");
-        result = value.replaceAll("[Ã¢Ã£Ã Ã¡Ã¤]", "a");
-        result = value.replaceAll("[ÃŠÃˆÃ‰Ã‹]", "E");
-        result = value.replaceAll("[ÃªÃ¨Ã©Ã«]", "e");
-        result = value.replaceAll("ÃŽÃ�ÃŒÃ�", "I");
-        result = value.replaceAll("Ã®Ã­Ã¬Ã¯", "i");
-        result = value.replaceAll("[Ã”Ã•Ã’Ã“Ã–]", "O");
-        result = value.replaceAll("[Ã´ÃµÃ²Ã³Ã¶]", "o");
-        result = value.replaceAll("[Ã›Ã™ÃšÃœ]", "U");
-        result = value.replaceAll("[Ã»ÃºÃ¹Ã¼]", "u");
-        result = value.replaceAll("Ã‡", "C");
-        result = value.replaceAll("Ã§", "c");
-        result = value.replaceAll("Ã�", "Y");
-        result = value.replaceAll("[Ã½Ã¿]", "y");
-        result = value.replaceAll("Ã‘", "N");
-        result = value.replaceAll("Ã±", "n");
-        result = value.replaceAll("-", "");
-        result = value.replaceAll("_", "");
-        result = value.replaceAll("[^\\p{ASCII}]", "");
-        return result;
-    }
-
-    /**
-     * @param number
-     * @return
-     */
     public static String removeCharacterPhone(String number) {
         String result = number;
         result = number.replaceAll("[()]", "");
@@ -204,12 +121,6 @@ public class PagSeguroUtil {
         return result;
     }
 
-    /**
-     * Create url
-     *
-     * @param map
-     * @return string
-     */
     public static String urlQuery(Map<Object, Object> map) throws PagSeguroServiceException {
 
         boolean first = true;
@@ -224,9 +135,9 @@ public class PagSeguroUtil {
             }
 
             try {
-                sb.append(URLEncoder.encode(pay.getKey().toString(), PagSeguroSystem.getPagSeguroEncoding()));
+                sb.append(URLEncoder.encode(pay.getKey().toString(), PagSeguroV2System.getPagSeguroEncoding()));
                 sb.append("=");
-                sb.append(URLEncoder.encode(pay.getValue().toString(), PagSeguroSystem.getPagSeguroEncoding()));
+                sb.append(URLEncoder.encode(pay.getValue().toString(), PagSeguroV2System.getPagSeguroEncoding()));
             } catch (UnsupportedEncodingException e) {
                 throw new PagSeguroServiceException("Error when trying enconde", e);
             } catch (Exception e) {

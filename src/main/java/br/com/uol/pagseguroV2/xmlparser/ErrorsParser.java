@@ -18,7 +18,7 @@
 package br.com.uol.pagseguroV2.xmlparser;
 
 import br.com.uol.pagseguroV2.domain.Error;
-import br.com.uol.pagseguroV2.properties.PagSeguroSystem;
+import br.com.uol.pagseguroV2.properties.PagSeguroV2System;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -57,7 +57,7 @@ public class ErrorsParser {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         InputSource is = new InputSource(xml);
-        is.setEncoding(PagSeguroSystem.getPagSeguroEncoding());
+        is.setEncoding(PagSeguroV2System.getPagSeguroEncoding());
         Document doc = dBuilder.parse(is);
 
         Element errorsElement = doc.getDocumentElement();

@@ -4,6 +4,7 @@ import br.com.uol.pagseguroV2.domain.Item;
 import br.com.uol.pagseguroV2.enums.PaymentMethodType;
 import br.com.uol.pagseguroV2.exception.PagSeguroServiceException;
 import br.com.uol.pagseguroV2.service.checkout.CheckoutService;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,12 +19,27 @@ import java.util.List;
  */
 @Setter
 public class Checkout {
-    @Getter private String referenceId;
-    @Getter private boolean customerModifiable;
+    @Getter
+    @JsonProperty("reference_id")
+    private String referenceId;
+
+    @Getter
+    @JsonProperty("customer_modifiable")
+    private boolean customerModifiable;
+
     private List<Item> items;
-    @Getter private List<PaymentMethodType> paymentMethods;
-    @Getter private String redirectURL;
-    @Getter private List<String> paymentNotificationUrls;
+
+    @Getter
+    @JsonProperty("payment_methods")
+    private List<PaymentMethodType> paymentMethods;
+
+    @Getter
+    @JsonProperty("redirect_url")
+    private String redirectURL;
+
+    @Getter
+    @JsonProperty("payment_notification_urls")
+    private List<String> paymentNotificationUrls;
 
     public void addItem(String referenceId, String name, String description, Integer quantity, BigDecimal amount) {
         this.getItems().add(new Item(referenceId, name, description, quantity, amount));

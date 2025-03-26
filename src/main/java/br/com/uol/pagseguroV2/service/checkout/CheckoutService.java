@@ -4,7 +4,8 @@ import br.com.uol.pagseguroV2.domain.AccountCredentials;
 import br.com.uol.pagseguroV2.domain.checkout.Checkout;
 import br.com.uol.pagseguroV2.enums.HttpStatus;
 import br.com.uol.pagseguroV2.exception.PagSeguroServiceException;
-import br.com.uol.pagseguroV2.service.ConnectionData;
+import br.com.uol.pagseguroV2.properties.PagSeguroV2Config;
+import br.com.uol.pagseguroV2.properties.PagSeguroV2System;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.MediaType;
@@ -21,23 +22,14 @@ public class CheckoutService {
     private CheckoutService() {
     }
 
-    public static String buildCheckoutRequestUrl(ConnectionData connectionData) throws PagSeguroServiceException {
-        return connectionData.getWebServiceUrl() + "?" + connectionData.getCredentialsUrlQuery();
-    }
-
-    private static String buildCheckoutUrl(ConnectionData connection, String code) {
-        return connection.getCheckoutUrl() + "?code=" + code;
-    }
-
     private static String convertCheckoutToJson(Checkout checkout) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(checkout);
     }
 
     public static String createCheckoutRequest(Checkout checkout) throws PagSeguroServiceException, IOException {
-        AccountCredentials credentials = br.com.uol.pagseguroV2.properties.PagSeguroConfig.getAccountCredentials();
-        ConnectionData connectionData = new ConnectionData(credentials);
-        String url = CheckoutService.buildCheckoutRequestUrl(connectionData);
+        AccountCredentials credentials = PagSeguroV2Config.getAccountCredentials();
+        String url = PagSeguroV2System.getCompleteCheckoutServicePath();
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
         String json = convertCheckoutToJson(checkout);
