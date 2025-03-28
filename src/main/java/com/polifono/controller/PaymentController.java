@@ -57,7 +57,7 @@ public class PaymentController {
         }
 
         try {
-            String redirectUrl = paymentHandler.processPayment("V2", player, quantity);
+            String redirectUrl = paymentHandler.processPayment("V1", player, quantity);
             return "redirect:" + redirectUrl;
         } catch (IOException | PagSeguroServiceException | br.com.uol.pagseguroV2.exception.PagSeguroServiceException e) {
             model.addAttribute("codRegister", "2");
