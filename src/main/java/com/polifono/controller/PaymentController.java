@@ -1,13 +1,11 @@
 package com.polifono.controller;
 
-import static com.polifono.common.constant.TemplateConstants.REDIRECT_HOME;
-import static com.polifono.common.constant.TemplateConstants.URL_BUY_CREDITS;
-
-import java.util.Locale;
-import java.util.Optional;
-
-import javax.validation.constraints.Min;
-
+import br.com.uol.pagseguro.exception.PagSeguroServiceException;
+import com.polifono.model.CurrentUser;
+import com.polifono.model.entity.Player;
+import com.polifono.service.SecurityService;
+import com.polifono.service.transaction.PaymentHandler;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,13 +15,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.polifono.model.CurrentUser;
-import com.polifono.model.entity.Player;
-import com.polifono.service.SecurityService;
-import com.polifono.service.transaction.PaymentHandler;
+import javax.validation.constraints.Min;
+import java.io.IOException;
+import java.util.Locale;
+import java.util.Optional;
 
-import br.com.uol.pagseguro.exception.PagSeguroServiceException;
-import lombok.RequiredArgsConstructor;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.constant.TemplateConstants.URL_BUY_CREDITS;
 
 @RequiredArgsConstructor
 @Controller
@@ -59,9 +57,9 @@ public class PaymentController {
         }
 
         try {
-            String redirectUrl = paymentHandler.processPayment(player, quantity);
+            String redirectUrl = paymentHandler.processPayment("V1", player, quantity);
             return "redirect:" + redirectUrl;
-        } catch (PagSeguroServiceException e) {
+        } catch (IOException | PagSeguroServiceException | br.com.uol.pagseguroV2.exception.PagSeguroServiceException e) {
             model.addAttribute("codRegister", "2");
             model.addAttribute("msg", messagesResource.getMessage("msg.credits.error.access", null, locale));
             return URL_BUY_CREDITS;

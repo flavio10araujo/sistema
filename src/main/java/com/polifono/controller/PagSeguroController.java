@@ -1,14 +1,11 @@
 package com.polifono.controller;
 
-import static com.polifono.common.constant.TemplateConstants.REDIRECT_HOME;
-import static com.polifono.common.constant.TemplateConstants.URL_BUY_CREDITS;
-
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-
-import javax.validation.constraints.NotBlank;
-
+import com.polifono.model.entity.Transaction;
+import com.polifono.service.transaction.PagSeguroHandler;
+import com.polifono.service.transaction.PagSeguroService;
+import com.polifono.service.transaction.TransactionService;
+import com.polifono.service.transaction.TransactionUpdater;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,13 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.polifono.model.entity.Transaction;
-import com.polifono.service.transaction.PagSeguroHandler;
-import com.polifono.service.transaction.PagSeguroService;
-import com.polifono.service.transaction.TransactionService;
-import com.polifono.service.transaction.TransactionUpdater;
+import javax.validation.constraints.NotBlank;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
-import lombok.RequiredArgsConstructor;
+import static com.polifono.common.constant.TemplateConstants.REDIRECT_HOME;
+import static com.polifono.common.constant.TemplateConstants.URL_BUY_CREDITS;
 
 @RequiredArgsConstructor
 @Controller
@@ -38,9 +35,7 @@ public class PagSeguroController {
 
     @Validated
     @GetMapping("/pagseguroreturn")
-    public String returnPagSeguro(final Model model,
-            @RequestParam("tid") @NotBlank String transactionCode,
-            Locale locale) {
+    public String returnPagSeguro(final Model model, @RequestParam("tid") @NotBlank String transactionCode, Locale locale) {
 
         List<Transaction> transactions = transactionService.findByCode(transactionCode);
         if (transactionService.isTransactionListNotEmpty(transactions)) {

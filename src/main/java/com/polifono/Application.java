@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-@ComponentScan(basePackages = { "com.polifono", "br.com.uol.pagseguro.properties" })
+@ComponentScan(basePackages = { "com.polifono", "br.com.uol.pagseguro.properties", "br.com.uol.pagseguroV2.properties" })
 public class Application {
 
     public static void main(String[] args) {

@@ -1,25 +1,27 @@
 package com.polifono.service.transaction;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Date;
-import java.util.Locale;
-
-import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Service;
-
-import com.polifono.common.properties.ConfigsCreditsProperties;
-import com.polifono.model.entity.Player;
-import com.polifono.model.entity.Transaction;
-import com.polifono.model.enums.Role;
-import com.polifono.service.player.PlayerService;
-
 import br.com.uol.pagseguro.domain.checkout.Checkout;
 import br.com.uol.pagseguro.enums.Currency;
 import br.com.uol.pagseguro.exception.PagSeguroServiceException;
 import br.com.uol.pagseguro.properties.PagSeguroConfig;
 import br.com.uol.pagseguro.properties.PagSeguroSystem;
+import br.com.uol.pagseguroV2.enums.PaymentMethodType;
+import br.com.uol.pagseguroV2.properties.PagSeguroV2System;
+import com.polifono.common.properties.ConfigsCreditsProperties;
+import com.polifono.model.entity.Player;
+import com.polifono.model.entity.Transaction;
+import com.polifono.model.enums.Role;
+import com.polifono.service.player.PlayerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 @RequiredArgsConstructor
 @Service
@@ -46,9 +48,10 @@ public class PaymentHandler {
         return null;
     }
 
-    public String processPayment(Player player, int quantity) throws PagSeguroServiceException {
+    public String processPayment(String apiVersion, Player player, int quantity)
+            throws PagSeguroServiceException, br.com.uol.pagseguroV2.exception.PagSeguroServiceException, IOException {
         Transaction transaction = createTransaction(player, quantity);
-        return openPagSeguro(transaction, player, quantity);
+        return ("V2".equals(apiVersion) ? openPagSeguroV2(transaction, quantity) : openPagSeguro(transaction, player, quantity));
     }
 
     /**
@@ -91,6 +94,28 @@ public class PaymentHandler {
 
         Boolean onlyCheckoutCode = false;
         return checkout.register(PagSeguroConfig.getAccountCredentials(), onlyCheckoutCode);
+    }
+
+    private String openPagSeguroV2(Transaction transaction, int quantity)
+            throws br.com.uol.pagseguroV2.exception.PagSeguroServiceException, IOException {
+        br.com.uol.pagseguroV2.domain.checkout.Checkout checkout = new br.com.uol.pagseguroV2.domain.checkout.Checkout();
+
+        checkout.setReferenceId("" + transaction.getId()); // Sets a reference code for this payment request. The T012.C002_ID is used in this attribute.
+        checkout.setCustomerModifiable(true);
+
+        checkout.addItem(
+                "0001", // Item's number.
+                PagSeguroV2System.getPagSeguroPaymentServiceNfDescription(), // Item's name.
+                PagSeguroV2System.getPagSeguroPaymentServiceNfDescription(), // Item's description.
+                quantity, // Item's quantity.
+                getPriceForEachUnity(quantity).multiply(BigDecimal.valueOf(100)) // Price for each unity in cents.
+        );
+
+        checkout.setPaymentMethods(List.of(PaymentMethodType.CREDIT_CARD, PaymentMethodType.BOLETO, PaymentMethodType.PIX));
+        checkout.setRedirectURL("https://www.polifono.com/pagseguroreturn");
+        checkout.setPaymentNotificationUrls(List.of("https://www.polifono.com/pagseguronotification"));
+
+        return checkout.register();
     }
 
     private BigDecimal getPriceForEachUnity(int quantity) {
